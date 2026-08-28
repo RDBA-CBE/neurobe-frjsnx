@@ -1,0 +1,366 @@
+import instance from "@/utils/axios.utils";
+
+const auth = {
+  login: (body: any) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `auth/login/`;
+      instance()
+        .post(url, body)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response?.data);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  singup: (body: any) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `register/`;
+      instance()
+        .post(url, body)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response?.data);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  change_password: (body: any) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `auth/change-password/`;
+      instance()
+        .post(url, body)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response?.data);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  forget_password: (body: any) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `auth/forgot-password/`;
+
+      instance()
+        .post(url, body)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response?.data);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  profile: () => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `auth/profile/`;
+      instance()
+        .get(url)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response?.data);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  userList: (page: any, body = {} as any) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `users/?page=${page}`;
+      if (body.role) {
+        url = url + `&role=${body.role}`;
+      }
+
+       if (body.current_position) {
+        url = url + `&current_position=${body.current_position}`;
+      }
+
+      if (body.current_location) {
+        url = url + `&current_location=${body.current_location}`;
+      }
+
+      if (body.user_id) {
+        url = url + `&user_id=${body.user_id}`;
+      }
+
+      if (body.reveal_name == "Yes") {
+        url = url + `&reveal_name=${true}`;
+      }
+      if (body?.search) {
+        url = url + `&search=${body.search}`;
+      }
+      if (body?.college_id) {
+        url = url + `&college_id=${body.college_id}`;
+      }
+
+      if (body?.experience_id) {
+        url = url + `&experience=${body.experience_id}`;
+      }
+
+      if (body?.department_id) {
+        url = url + `&department_id=${body.department_id}`;
+      }
+      if (body?.institution_id) {
+        url = url + `&institution_id=${body.institution_id}`;
+      }
+
+      if (body.created_by) {
+        url = url + `&created_by=${body.created_by}`;
+      }
+
+      if (body.net_cleared) {
+        url = url + `&net_cleared=${true}`;
+      }
+      if (body.set_cleared) {
+        url = url + `&set_cleared=${true}`;
+      }
+      if (body.slet_cleared) {
+        url = url + `&slet_cleared=${true}`;
+      }
+      if (body.phd_completed) {
+        url = url + `&phd_completed=${true}`;
+      }
+
+      if (body.team == "No") {
+        url = url + `&team=${false}`;
+      }
+
+      if (body.team == "Yes") {
+        url = url + `&team=${true}`;
+      }
+
+      if (body?.ordering) {
+        url += `&ordering=${encodeURIComponent(body.ordering)}`;
+      }
+
+       if (body?.start_date) {
+        url += `&created_from=${encodeURIComponent(body.start_date)}`;
+      }
+
+       if (body?.end_date) {
+        url += `&created_to=${encodeURIComponent(body.end_date)}`;
+      }
+
+      if (body?.active_job_seeker == "Yes") {
+        url += `&active_job_seeker=${encodeURIComponent(true)}`;
+      }
+
+      if (body?.department_master_id) {
+        url += `&department_master_id=${encodeURIComponent(body?.department_master_id)}`;
+      }
+      
+      if (body?.additional_academic_responsibility_ids) {
+        url += `&additional_academic_responsibility_ids=${encodeURIComponent(body?.additional_academic_responsibility_ids)}`;
+      }
+
+      instance()
+        .get(url)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response?.data);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  prompt_user: (data: any) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `users/search`;
+      if(data.prompt) url += `?prompt=${data.prompt}`
+      else{
+        url += `?prompt=""`;
+      }
+      if(data.limit) url += `&limit=${data.limit}`;
+      instance()
+        .get(url)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  createUser: (body = {} as any) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `users/`;
+      instance()
+        .post(url, body)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  updateUser: (id: any, data = {} as any) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `users/${id}/`;
+      instance()
+        .patch(url, data)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response?.data);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  getUser: (id: any,) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `users/${id}/`;
+      instance()
+        .get(url)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response?.data);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  deleteUser: (id: any) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `users/${id}/`;
+      instance()
+        .delete(url)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response?.data);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  logout: (body: any) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `auth/logout/`;
+      instance()
+        .post(url, body)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response?.data);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  hr_request_list: (body: any) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `hr-registrations/`;
+      instance()
+        .get(url, body)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response?.data);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  contact_hr :  (body: any) => {
+    let promise = new Promise((resolve, reject) => {
+      let url = `approved-by-institution-admin/`;
+      instance()
+        .post(url, body)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            reject(error.response?.data);
+          } else {
+            reject(error);
+          }
+        });
+    });
+    return promise;
+  },
+
+  
+
+};
+
+export default auth;

@@ -1,0 +1,910 @@
+export const CLIENT_ID =
+  "625052261407-4p8ihs05c67d778mr5d91lqjvnvpkd8k.apps.googleusercontent.com";
+
+// export const BACKEND_URL = "http://31.97.206.165/api/";
+
+// export const BACKEND_URL = "http://88.222.213.249/api/";
+export const BACKEND_URL = "https://user-service.88.222.213.249.nip.io/api/";
+export const FRONTEND_URL = "https://www.facultypro.in/";
+
+export const CALENDAR_CLIENT_ID = "130334216230-5ur5a79k0k203lu20eri4crgkic25j9q.apps.googleusercontent.com"
+
+
+export const  CAPTCHA_SITE_KEY = "6LeEe9gsAAAAAKddSPmwNUF4J-v7zaz8CgeKZ7n3"
+
+
+export const ROLES = {
+  SUPER_ADMIN: "super_admin",
+  INSTITUTION_ADMIN: "institution_admin",
+  HR: "hr",
+  HOD: "hod",
+  APPLICANT: "applicant",
+};
+
+export const DROPDOWN_ROLES = [
+  {
+    value: ROLES.INSTITUTION_ADMIN,
+    label: "Institution Admin",
+  },
+  {
+    value: ROLES.HR,
+    label: "HR",
+  },
+];
+
+export const DROPDOWN_JOB_ROLES = [
+  {
+    value: ROLES.INSTITUTION_ADMIN,
+    label: "Institution Admin",
+  },
+  {
+    value: ROLES.HR,
+    label: "HR",
+  },
+  {
+    value: ROLES.HOD,
+    label: "HOD",
+  },
+];
+
+export const DROPDOWN_INSTITUTION_ADMIN = [
+  {
+    value: ROLES.HR,
+    label: "HR",
+  },
+  {
+    value: ROLES.HOD,
+    label: "HOD",
+  },
+];
+
+// menuConfig.ts
+export const menuConfig = {
+  super_admin: [
+    // {
+    //   type: "link",
+    //   icon: "IconMenuDashboard",
+    //   label: "dashboard",
+    //   href: "faculty/dashboard",
+    // },
+
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Colleges & Departments",
+      href: "/faculty/admin_college_and_departments",
+    },
+
+    // {
+    //   type: "link",
+    //   icon: "IconMenuUsers",
+    //   label: "Users",
+    //   href: "/faculty/users",
+    // },
+
+    // {
+    //   type: "link",
+    //   icon: "IconMenuScrumboard",
+    //   label: "HOD Management",
+    //   href: "/faculty/hod_management",
+    // },
+
+    {
+      type: "link",
+      icon: "IconMenuForms",
+      label: "Job Postings",
+      href: "/faculty/job",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuTables",
+      label: "Applications",
+      href: "/faculty/application",
+    },
+    // {
+    //   type: "link",
+    //   icon: "IconMenuCharts",
+    //   label: "Reports",
+    //   href: "/",
+    // },
+    {
+      type: "submenu",
+      icon: "IconMenuCharts",
+      label: "Master",
+      key: "master",
+      children: [
+        {
+          label: "Panel Members",
+          href: "/faculty/master/panel",
+        },
+        {
+          label: "Experience",
+          href: "/faculty/master/experience",
+        },
+        {
+          label: "Job Validation",
+          href: "/faculty/master/job_validation",
+        },
+
+        {
+          label: "Category",
+          href: "/faculty/master/category",
+        },
+
+        {
+          label: "Location",
+          href: "/faculty/master/location",
+        },
+        {
+          label: "Salary Range",
+          href: "/faculty/master/salary_range",
+        },
+        // {
+        //   label: "Skill",
+        //   href: "/faculty/master/skill",
+        // },
+        // {
+        //   label: "Tags",
+        //   href: "/faculty/master/tags",
+        // },
+        {
+          label: "Application Status",
+          href: "/faculty/master/application_status",
+        },
+
+        {
+          label: "College Type",
+          href: "/faculty/master/college_type",
+        },
+        {
+          label: "NAAC Accreditation",
+          href: "/faculty/master/naac_accreditation",
+        },
+        {
+          label: "NIRF Band",
+          href: "/faculty/master/nirf_band",
+        },
+        {
+          label: "NIRF Category",
+          href: "/faculty/master/nirf_category",
+        },
+      ],
+    },
+  ],
+
+  institution_admin: [
+    // {
+    //   type: "link",
+    //   icon: "IconMenuDashboard",
+    //   label: "dashboard",
+    //   href: "faculty/dashboard",
+    // },
+
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Colleges & Departments",
+      href: "/faculty/institute_college_and_departments",
+    },
+
+    // {
+    //   type: "link",
+    //   icon: "IconMenuUsers",
+    //   label: "Users",
+    //   href: "/faculty/my_users",
+    // },
+
+    {
+      type: "link",
+      icon: "IconMenuForms",
+      label: "Job Postings",
+      href: "/faculty/job",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuTables",
+      label: "Applications",
+      href: "/faculty/application",
+    },
+    // {
+    //   type: "link",
+    //   icon: "IconMenuCharts",
+    //   label: "Reports",
+    //   href: "/",
+    // },
+    {
+      type: "submenu",
+      icon: "IconMenuCharts",
+      label: "Master",
+      key: "master",
+      children: [
+        {
+          label: "Panel Members",
+          href: "/faculty/master/panel",
+        },
+        {
+          label: "Experience",
+          href: "/faculty/master/experience",
+        },
+        {
+          label: "Job Validation",
+          href: "/faculty/master/job_validation",
+        },
+
+        // {
+        //   label: "Category",
+        //   href: "/faculty/master/category",
+        // },
+
+        {
+          label: "Location",
+          href: "/faculty/master/location",
+        },
+        {
+          label: "Salary Range",
+          href: "/faculty/master/salary_range",
+        },
+        // {
+        //   label: "Skill",
+        //   href: "/faculty/master/skill",
+        // },
+        // {
+        //   label: "Tags",
+        //   href: "/faculty/master/tags",
+        // },
+        {
+          label: "Application Status",
+          href: "/faculty/master/application_status",
+        },
+
+        {
+          label: "College Type",
+          href: "/faculty/master/college_type",
+        },
+        {
+          label: "NAAC Accreditation",
+          href: "/faculty/master/naac_accreditation",
+        },
+        {
+          label: "NIRF Band",
+          href: "/faculty/master/nirf_band",
+        },
+        {
+          label: "NIRF Category",
+          href: "/faculty/master/nirf_category",
+        },
+      ],
+    },
+  ],
+
+  hr: [
+    // {
+    //   type: "link",
+    //   icon: "IconMenuDashboard",
+    //   label: "dashboard",
+    //   href: "faculty/dashboard",
+    // },
+
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Departments",
+      href: "/faculty/departments",
+    },
+
+    // {
+    //   type: "link",
+    //   icon: "IconMenuUsers",
+    //   label: "Users",
+    //   href: "/faculty/users",
+    // },
+
+    {
+      type: "link",
+      icon: "IconMenuForms",
+      label: "Job Postings",
+      href: "/faculty/job",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuTables",
+      label: "Applications",
+      href: "/faculty/application",
+    },
+    // {
+    //   type: "link",
+    //   icon: "IconMenuCharts",
+    //   label: "Reports",
+    //   href: "/",
+    // },
+    {
+      type: "submenu",
+      icon: "IconMenuCharts",
+      label: "Master",
+      key: "master",
+      children: [
+        {
+          label: "Panel Members",
+          href: "/faculty/master/panel",
+        },
+        {
+          label: "Experience",
+          href: "/faculty/master/experience",
+        },
+        {
+          label: "Job Validation",
+          href: "/faculty/master/job_validation",
+        },
+
+        // {
+        //   label: "Category",
+        //   href: "/faculty/master/category",
+        // },
+
+        {
+          label: "Location",
+          href: "/faculty/master/location",
+        },
+        {
+          label: "Salary Range",
+          href: "/faculty/master/salary_range",
+        },
+        // {
+        //   label: "Skill",
+        //   href: "/faculty/master/skill",
+        // },
+        // {
+        //   label: "Tags",
+        //   href: "/faculty/master/tags",
+        // },
+        {
+          label: "Application Status",
+          href: "/faculty/master/application_status",
+        },
+
+        {
+          label: "College Type",
+          href: "/faculty/master/college_type",
+        },
+        {
+          label: "NAAC Accreditation",
+          href: "/faculty/master/naac_accreditation",
+        },
+        {
+          label: "NIRF Band",
+          href: "/faculty/master/nirf_band",
+        },
+        {
+          label: "NIRF Category",
+          href: "/faculty/master/nirf_category",
+        },
+      ],
+    },
+  ],
+  
+};
+
+export const OwnmenuConfig = {
+  super_admin: [
+    {
+      type: "link",
+      icon: "IconMenuDashboard",
+      label: "dashboard",
+      href: "/",
+    },
+    {
+      type: "link",
+      icon: "IconMenuForms",
+      label: "Job Postings",
+      href: "/faculty/admin_job",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuTables",
+      label: "Applications",
+      href: "/faculty/admin_application",
+      // notifyKey: "new_application_count",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuApps",
+      label: "Institutions",
+      href: "/faculty/admin_institution",
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Colleges & Departments",
+      href: "/faculty/admin_college_and_department",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuUsers",
+      label: "Users",
+      href: "/faculty/admin_users",
+    },
+
+    // {
+    //   type: "link",
+    //   icon: "IconMenuScrumboard",
+    //   label: "HOD Management",
+    //   href: "/faculty/hod_management",
+    // },
+
+    {
+      type: "submenu",
+      icon: "IconMenuCharts",
+      label: "Master",
+      key: "master",
+      children: [
+        {
+          label: "Departments",
+          href: "/faculty/master/master_department",
+        },
+        {
+          label: "Additional Acedemic Responsibilities",
+          href: "/faculty/master/additional_academic_responsibilities",
+        },
+        {
+          label: "Panel Members",
+          href: "/faculty/master/panel",
+        },
+        {
+          label: "Experience",
+          href: "/faculty/master/experience",
+        },
+        {
+          label: "Job Validation",
+          href: "/faculty/master/job_validation",
+        },
+
+        {
+          label: "Category",
+          href: "/faculty/master/category",
+        },
+
+        {
+          label: "Location",
+          href: "/faculty/master/location",
+        },
+        {
+          label: "Salary Range",
+          href: "/faculty/master/salary_range",
+        },
+       
+        // {
+        //   label: "Skill",
+        //   href: "/faculty/master/skill",
+        // },
+        // {
+        //   label: "Tags",
+        //   href: "/faculty/master/tags",
+        // },
+        {
+          label: "Application Status",
+          href: "/faculty/master/application_status",
+        },
+
+        {
+          label: "Job Roles",
+          href: "/faculty/master/job_role",
+        },
+
+        {
+          label: "College Type",
+          href: "/faculty/master/college_type",
+        },
+        {
+          label: "NAAC Accreditation",
+          href: "/faculty/master/naac_accreditation",
+        },
+        {
+          label: "NIRF Band",
+          href: "/faculty/master/nirf_band",
+        },
+        {
+          label: "NIRF Category",
+          href: "/faculty/master/nirf_category",
+        },
+      ],
+    },
+  ],
+
+  institution_admin: [
+    {
+      type: "link",
+      icon: "IconMenuDashboard",
+      label: "dashboard",
+      href: "/",
+    },
+    {
+      type: "link",
+      icon: "IconMenuForms",
+      label: "Job Postings",
+      href: "/faculty/institution_job",
+    },
+    {
+      type: "link",
+      icon: "IconMenuTables",
+      label: "Applications",
+      href: "/faculty/ins_application",
+      // notifyKey: "new_application_count",
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Colleges & Departments",
+      href: "/faculty/institute_college_and_department",
+    },
+    {
+      type: "link",
+      icon: "IconMenuUsers",
+      label: "Users",
+      href: "/faculty/hr_user",
+    },
+
+    {
+      type: "submenu",
+      icon: "IconMenuCharts",
+      label: "Master",
+      key: "master",
+      children: [
+        {
+          label: "Additional Acedemic Responsibilities",
+          href: "/faculty/master/additional_academic_responsibilities",
+        },
+        {
+          label: "Panel Members",
+          href: "/faculty/master/ins_panel",
+        },
+      ],
+    },
+  ],
+
+  hr: [
+    {
+      type: "link",
+      icon: "IconMenuDashboard",
+      label: "Academic Setup",
+      href: "/neurobe/academic-setup",
+    },
+    {
+      type: "link",
+      icon: "IconMenuForms",
+      label: "Course Offerings",
+      href: "/",
+    },
+    {
+      type: "link",
+      icon: "IconMenuUsers",
+      label: "User Management",
+      href: "/",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuTables",
+      label: "Roles & Permissions",
+      href: "/",
+      notifyKey: "new_application_count",
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Bulk Import",
+      href: "/neurobe/bulk-import",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Audit Trial",
+      href: "/",
+    },
+
+    // {
+    //   type: "submenu",
+    //   icon: "IconMenuCharts",
+    //   label: "Masters",
+    //   key: "master",
+    //   children: [
+    //     {
+    //       label: "Panel Members",
+    //       href: "/faculty/master/hr_panel",
+    //     },
+    //     {
+    //       label: "Additional Acedemic Responsibilities",
+    //       href: "/faculty/master/additional_academic_responsibilities",
+    //     },
+    //   ],
+    // },
+  ],
+
+  hod: [
+    {
+      type: "link",
+      icon: "IconMenuUsers",
+      label: "Users",
+      href: "/faculty/my_users",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuForms",
+      label: "Job Postings",
+      href: "/faculty/my_job",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuTables",
+      label: "Applications",
+      href: "/faculty/my_application",
+    },
+  ],
+};
+
+export const propertyType = [
+  { value: 1, label: "Sale" },
+  { value: 2, label: "Rent" },
+  { value: 3, label: "Lease" },
+
+  { value: 4, label: "Plot" },
+];
+
+export const FURNISHING_TYPE = [
+  { value: "furnished", label: "Furnished" },
+  {
+    value: "semi_furnished",
+    label: "Semi-Furnished",
+  },
+  { value: "unfurnished", label: "Unfurnished" },
+];
+
+export const ListType = [
+  { value: "sale", label: "Sale" },
+  { value: "rent", label: "Rent" },
+  { value: "lease", label: "Lease" },
+];
+
+export const commemrcialType = [
+  { value: 1, label: "Buy" },
+  { value: 2, label: "Lease" },
+];
+
+export const facingDirection = [
+  { value: 1, label: "North" },
+  { value: 2, label: "East" },
+  { value: 3, label: "West" },
+  { value: 4, label: "South" },
+  { value: 5, label: "North-East" },
+  { value: 6, label: "South-East" },
+  { value: 7, label: "South-West" },
+  { value: 8, label: "North-West" },
+  { value: 9, label: "East-Facing Corner" },
+  { value: 10, label: "West-Facing Corner" },
+];
+
+export const Furnishing = [
+  { value: 1, label: "Furnished" },
+  {
+    value: 2,
+    label: "Semi-Furnished",
+  },
+  { value: 3, label: "Unfurnished" },
+];
+
+export const FLOORPLANS_CATEGORY = [
+  { value: "plots", label: "Plots" },
+  { value: "1bhk", label: "1 BHK" },
+  { value: "2bhk", label: "2 BHK" },
+  { value: "3bhk", label: "3 BHK" },
+  { value: "4bhk", label: "4 BHK" },
+];
+
+export const Property_status = [
+  { value: "available", label: "Available" },
+  {
+    value: "sold",
+    label: "Sold",
+  },
+  { value: "rented", label: "Rented" },
+  { value: "off_market", label: "Off Market" },
+  { value: "under_contract", label: "Under Contract" },
+  { value: "pending", label: "pending" },
+];
+
+export const PROPERTY_TYPE = {
+  COMMERCIAL: "Commercial",
+  RESIDENTIAL: "Residential",
+  INDUSTRY: "Industry",
+  AGRICULTURAL: "Agricultural",
+};
+
+export const LISTING_TYPE = {
+  SALE: "Sale",
+  RENT: "Rent",
+  LEASE: "Lease",
+};
+
+export const LISTING_TYPE_LIST = {
+  LEASE: "lease",
+  SALE: "sale",
+  RENT: "rent",
+};
+
+export const roleList = [
+  {
+    value: "developer",
+    label: "Developer",
+  },
+  {
+    value: "agent",
+    label: "Agent",
+  },
+  {
+    value: "seller",
+    label: "Seller",
+  },
+  {
+    value: "buyer",
+    label: "Buyer",
+  },
+];
+
+export const PROPERTY_IMG = [
+  "https://www.pexels.com/photo/sun-piercing-of-brown-concrete-house-near-sea-1732414/",
+  "https://www.pexels.com/photo/high-angle-photography-of-village-280221/",
+  "https://www.pexels.com/photo/white-and-gray-wooden-house-near-grass-field-and-trees-280222/",
+  "https://www.pexels.com/photo/lighted-beige-house-1396132/",
+];
+
+export const LEAD_SOURCE_OPTIONS = [
+  { value: "website", label: "Website" },
+  { value: "referral", label: "Referral" },
+  { value: "social_media", label: "Social Media" },
+  { value: "advertisement", label: "Advertisement" },
+  { value: "cold_call", label: "Cold Call" },
+  { value: "email_campaign", label: "Email Campaign" },
+  { value: "walk_in", label: "Walk In" },
+  // { value: "other", label: "Other" }
+];
+
+export const STATUS_OPTIONS = [
+  { value: "new", label: "New" },
+  { value: "contacted", label: "Contacted" },
+  { value: "qualified", label: "Qualified" },
+  { value: "proposal_sent", label: "Proposal Sent" },
+  { value: "negotiation", label: "Negotiation" },
+  { value: "won", label: "Won" },
+  { value: "lost", label: "Lost" },
+  { value: "cancelled", label: "Cancelled" },
+];
+
+export const PRIORITY_OPTIONS = [
+  { value: "low", label: "Low" },
+  { value: "medium", label: "Medium" },
+  { value: "high", label: "High" },
+  { value: "urgent", label: "Urgent" },
+];
+
+export const FILTER_ROLES = [
+  {
+    value: "developer",
+    label: "Developer",
+  },
+  {
+    value: "agent",
+    label: "Agent",
+  },
+  {
+    value: "seller",
+    label: "Seller",
+  },
+];
+
+export const GENDER_OPTION = [
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+  { value: "other", label: "Other" },
+];
+
+export const EXPERIENCE = [
+  { value: "fresher", label: "Fresher" },
+  { value: "0 – 1 Year", label: "0 – 1 Year" },
+  { value: "1 – 3 Years", label: "1 – 3 Years" },
+  { value: "3 – 5 Years", label: "3 – 5 Years" },
+  { value: "5 – 10 Years", label: "5 – 10 Years" },
+  { value: "10+ Years", label: "10+ Years" },
+];
+
+export const JOB_TYPE = [
+  { value: "Full Time", label: "Full Time" },
+  { value: "Part Time", label: "Part Time" },
+  { value: "Contract", label: "Contract" },
+  { value: "Internship", label: "Internship" },
+];
+
+export const STATUS_COLOR = {
+  Applied: "bg-gray-100 text-gray-800",
+  Shortlisted: "bg-indigo-100 text-indigo-800",
+  "Interview Scheduled ": "bg-blue-100 text-blue-800",
+  Selected: "bg-green-100 text-green-800",
+  Rejected: "bg-red-100 text-red-800",
+};
+
+export const JOB_STATUS = [
+  { value: "approved", label: "Approved" },
+  { value: "pending", label: "Pending" },
+];
+
+export const RECORDS = [
+  {
+    value: 1,
+    label: "All Records",
+  },
+  {
+    value: 2,
+    label: "Hr Records",
+  },
+  {
+    value: 3,
+    label: "Admin Records",
+  },
+];
+
+export const RECORDS_FOR_INS_ADMIN = [
+  {
+    value: 1,
+    label: "All Records",
+  },
+  {
+    value: 2,
+    label: "College Admin Records",
+  },
+  {
+    value: 3,
+    label: "Admin Records",
+  },
+];
+
+export const PREFERENCES = [
+  {
+    value: 1,
+    label: "PhD Completed",
+  },
+  {
+    value: 2,
+    label: "NET Cleared",
+  },
+  {
+    value: 3,
+    label: "SET Cleared",
+  },
+  {
+    value: 4,
+    label: "SLET Cleared",
+  },
+];
+
+
+export const RECORDS_FOR_ADMIN = [
+  {
+    value: 1,
+    label: "All Records",
+  },
+  {
+    value: 2,
+    label: "Own Records",
+  },
+  {
+    value: 3,
+    label: "Not Own Records",
+  },
+];

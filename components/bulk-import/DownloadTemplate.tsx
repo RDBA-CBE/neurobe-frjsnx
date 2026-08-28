@@ -1,0 +1,81 @@
+type ImportType = "user" | "course";
+
+interface DownloadTemplateProps {
+  importType: ImportType;
+  onDownload?: () => void;
+}
+
+const TEMPLATE_META: Record<
+  ImportType,
+  { required: string[]; optional: string[]; filename: string }
+> = {
+  user: {
+    required: ["Email", "Register Number", "First Name", "Programme", "Department", "Batch"],
+    optional: ["Last Name"],
+    filename: "user_import_template.xlsx",
+  },
+  course: {
+    required: ["Course Code", "Course Title", "Department", "Programme", "Semester"],
+    optional: ["Credits", "Description"],
+    filename: "course_import_template.xlsx",
+  },
+};
+
+const DownloadTemplate = ({ importType, onDownload }: DownloadTemplateProps) => {
+  const meta = TEMPLATE_META[importType];
+
+  return (
+    <div className="flex h-full flex-col">
+      {/* Section heading */}
+      <div className="mb-4 flex items-center gap-1.5">
+        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-color2 text-xs font-bold text-white">
+          1
+        </span>
+        <h3 className="text-sm font-semibold text-gray-800 dark:text-white">
+          Download Template
+        </h3>
+      </div>
+
+      <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
+        Download the standardized template file before uploading{" "}
+        {importType === "user" ? "user" : "course"} data.
+      </p>
+
+      {/* Required / Optional fields card */}
+      <div className="mb-5 flex-1 rounded-xl border border-dashed border-gray-300 bg-gray-50 px-5 py-4 dark:border-gray-600 dark:bg-gray-800/50">
+        <p className="mb-2 text-sm text-gray-600 dark:text-gray-300">
+          <span className="font-semibold text-gray-800 dark:text-white">Required: </span>
+          {meta.required.join(", ")}
+        </p>
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          <span className="font-semibold text-gray-800 dark:text-white">Optional: </span>
+          {meta.optional.join(", ")}
+        </p>
+      </div>
+
+      {/* Download button */}
+      <button
+        onClick={onDownload}
+        className="flex w-full items-center justify-center gap-2 rounded-lg border border-color2 bg-white py-2.5 text-sm font-medium text-color2 transition-colors duration-200 hover:bg-color2-l dark:bg-transparent dark:hover:bg-color2/10"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 4v12m0 0l-4-4m4 4l4-4"
+          />
+        </svg>
+        Download {importType === "user" ? "User" : "Course"} Template
+      </button>
+    </div>
+  );
+};
+
+export default DownloadTemplate;
