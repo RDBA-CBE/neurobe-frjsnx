@@ -31,8 +31,8 @@ const ProgrammesTable = ({ search, statusFilter, loading }: Props) => {
       columns={[
         { accessor: "code",       title: "CODE",       render: ({ code }) => <span className="font-medium text-[#7c3aed]">{code}</span> },
         { accessor: "name",       title: "PROGRAMME NAME", render: ({ name }) => <span className="text-gray-800 dark:text-gray-200">{name}</span> },
-        { accessor: "department", title: "DEPARTMENT", render: ({ department }) => <span className="text-gray-600 dark:text-gray-400">{department}</span> },
-        { accessor: "duration",   title: "DURATION",   render: ({ duration }) => <span className="text-gray-600 dark:text-gray-400">{duration}</span> },
+        { accessor: "department", title: "DEPARTMENT", render: ({ department }) => <span className="text-[#000] dark:text-gray-400">{department}</span> },
+        { accessor: "duration",   title: "DURATION",   render: ({ duration }) => <span className="text-[#000] dark:text-gray-400">{duration}</span> },
         { accessor: "type",       title: "TYPE",       render: ({ type }) => (
           <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">{type}</span>
         )},

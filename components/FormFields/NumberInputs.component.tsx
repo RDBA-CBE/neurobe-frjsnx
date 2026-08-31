@@ -32,7 +32,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
       {title && (
         <label
           htmlFor={name}
-          className="block text-sm font-bold text-gray-700 mb-1"
+          className="block text-sm font-bold text-[#000] mb-1"
         >
           {title} {required && <span className="text-red-500">*</span>}
         </label>

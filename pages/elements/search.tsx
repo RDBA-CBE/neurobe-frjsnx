@@ -102,7 +102,7 @@ const Search = () => {
                             onClick={() => {
                                 toggleCode('code1');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -132,7 +132,7 @@ const Search = () => {
                                         <div
                                             key={item.email}
                                             className="flex min-w-[625px] items-center justify-between rounded-xl bg-white p-3 font-semibold
-                                         text-gray-500 shadow-[0_0_4px_2px_rgb(31_45_61_/_10%)] transition-all duration-300 hover:scale-[1.01] hover:text-primary dark:bg-[#1b2e4b]"
+                                         text-[#000] shadow-[0_0_4px_2px_rgb(31_45_61_/_10%)] transition-all duration-300 hover:scale-[1.01] hover:text-primary dark:bg-[#1b2e4b]"
                                         >
                                             <div className="user-profile">
                                                 <img src={`/assets/images/${item.thumb}`} alt="img" className="h-8 w-8 rounded-md object-cover" />
@@ -225,7 +225,7 @@ useEffect(() => {
                 <div
                     key={item.email}
                     className="bg-white dark:bg-[#1b2e4b] rounded-xl shadow-[0_0_4px_2px_rgb(31_45_61_/_10%)] p-3 flex items-center justify-between
-                        text-gray-500 font-semibold min-w-[625px] hover:text-primary transition-all duration-300 hover:scale-[1.01]"
+                        text-[#000] font-semibold min-w-[625px] hover:text-primary transition-all duration-300 hover:scale-[1.01]"
                 >
                     <div className="user-profile">
                         <img src={\`/assets/images/\${item.thumb}\`} alt="img" className="w-8 h-8 rounded-md object-cover" />
@@ -253,7 +253,7 @@ useEffect(() => {
                             onClick={() => {
                                 toggleCode('code2');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -324,7 +324,7 @@ const overlayClickAway = () => {
                             onClick={() => {
                                 toggleCode('code3');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />

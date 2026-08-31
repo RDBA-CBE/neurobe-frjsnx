@@ -79,7 +79,7 @@ export default function Modal(props: any) {
                         onClick={() => close()}
                         className="ml-4 rounded-md p-1 transition hover:bg-gray-200 dark:hover:bg-gray-700"
                       >
-                        <X className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+                        <X className="h-5 w-5 text-[#000] dark:text-gray-300" />
                       </button>
                     )}
                   </div>

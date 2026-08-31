@@ -94,7 +94,7 @@ const Select2 = () => {
                     <div className="panel" id="basic">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Basic</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code1')}>
+                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code1')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -123,7 +123,7 @@ const options = [
                     <div className="panel" id="nested">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Nested</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code2')}>
+                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code2')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -161,7 +161,7 @@ const options1 = [
                     <div className="panel" id="disabling_options">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Disabling options</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code3')}>
+                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code3')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -190,7 +190,7 @@ const options2 = [
                     <div className="panel" id="tagging">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Searchable</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code5')}>
+                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code5')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -219,7 +219,7 @@ const options3 = [
                     <div className="panel" id="placeholder">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Placeholder</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code4')}>
+                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code4')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -248,7 +248,7 @@ const options4 = [
                     <div className="panel" id="limit_tagging">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Multiple select</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code6')}>
+                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code6')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code

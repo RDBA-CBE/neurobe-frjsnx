@@ -54,7 +54,7 @@ const FileUploadDropzone = ({ onFileSelect }: FileUploadDropzoneProps) => {
             Upload Excel or CSV File
           </h3>
         </div>
-        <span className="text-xs text-gray-400 dark:text-gray-500">
+        <span className="text-xs text-gray-400 dark:text-[#000]">
           Excel (.xlsx, .xls) and CSV (.csv)
         </span>
       </div>
@@ -100,7 +100,7 @@ const FileUploadDropzone = ({ onFileSelect }: FileUploadDropzoneProps) => {
               <p className="text-sm font-semibold text-gray-800 dark:text-white">
                 {selectedFile.name}
               </p>
-              <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+              <p className="mt-0.5 text-xs text-[#000] dark:text-gray-400">
                 {(selectedFile.size / 1024).toFixed(1)} KB · Click to replace
               </p>
             </div>
@@ -134,10 +134,10 @@ const FileUploadDropzone = ({ onFileSelect }: FileUploadDropzoneProps) => {
               </svg>
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+              <p className="text-sm font-semibold text-[#000] dark:text-gray-200">
                 Click to select or drag and drop your file
               </p>
-              <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
+              <p className="mt-1 text-xs text-gray-400 dark:text-[#000]">
                 Upload your file to validate the data before import.
               </p>
             </div>

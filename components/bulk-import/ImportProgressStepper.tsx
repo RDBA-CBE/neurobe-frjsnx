@@ -1,3 +1,5 @@
+import { ArrowRightIcon } from "lucide-react";
+
 export type StepStatus = "active" | "completed" | "pending";
 
 export interface Step {
@@ -53,7 +55,7 @@ const StepCircle = ({ step, status }: { step: Step; status: StepStatus }) => {
 
   // pending
   return (
-    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-gray-300 text-sm font-semibold text-gray-400 dark:border-gray-600 dark:text-gray-500">
+    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-gray-300 text-sm font-semibold text-gray-400 dark:border-gray-600 dark:text-[#000]">
       {step.number}
     </div>
   );
@@ -79,11 +81,11 @@ const ImportProgressStepper = ({
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
           </svg>
-          <span className="text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-400">
+          <span className="text-xs font-semibold uppercase tracking-widest text-[#000] dark:text-gray-400">
             Import Progress
           </span>
         </div>
-        <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-600 dark:bg-amber-900/20 dark:text-amber-400">
+        <span className="rounded-lg bg-sec px-3 py-1 text-xs font-medium text-pri ">
           {statusLabel}
         </span>
       </div>
@@ -97,12 +99,12 @@ const ImportProgressStepper = ({
           return (
             <div key={step.number} className="flex flex-1 items-center">
               {/* Step item */}
-              <div className="flex items-center gap-2.5">
+              <div className="flex flex-1 items-center gap-2.5 border border-gray-100 rounded-lg p-2 bg-sec">
                 <StepCircle step={step} status={status} />
                 <span
                   className={`text-sm font-medium whitespace-nowrap ${
                     status === "pending"
-                      ? "text-gray-400 dark:text-gray-500"
+                      ? "text-gray-400 dark:text-[#000]"
                       : "text-gray-800 dark:text-white"
                   }`}
                 >
@@ -112,9 +114,9 @@ const ImportProgressStepper = ({
 
               {/* Connector arrow — not after last step */}
               {!isLast && (
-                <div className="mx-3 flex flex-1 items-center">
-                  <div className="h-px flex-1 border-t border-dashed border-gray-300 dark:border-gray-600" />
-                  <svg
+                <div className="mx-3 flex items-center">
+                  {/* <div className="h-px flex-1 border-t border-dashed border-gray-300 dark:border-gray-600" /> */}
+                  {/* <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-4 w-4 shrink-0 text-gray-400"
                     fill="none"
@@ -123,7 +125,8 @@ const ImportProgressStepper = ({
                     strokeWidth={2}
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
+                  </svg> */}
+                  <ArrowRightIcon className="w-4 h-4"/>
                 </div>
               )}
             </div>

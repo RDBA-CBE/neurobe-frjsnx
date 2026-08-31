@@ -172,11 +172,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             <Upload className="h-6 w-6 text-blue-600" />
           </div>
 
-          <p className="text-base font-semibold text-gray-700">
+          <p className="text-base font-semibold text-[#000]">
             Upload college logo
           </p>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-[#000]">
             JPEG, PNG, WEBP (Max 10MB)
           </p>
 

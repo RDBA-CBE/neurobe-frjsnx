@@ -71,7 +71,7 @@ const LoginCover = () => {
               {/* Google Button - Using FaGoogle with corrected import */}
               <button
                 type="button"
-                className="flex w-full items-center justify-center rounded-[50px] border border-black py-3 text-sm font-medium text-gray-700 transition duration-150 hover:bg-gray-100"
+                className="flex w-full items-center justify-center rounded-[50px] border border-black py-3 text-sm font-medium text-[#000] transition duration-150 hover:bg-gray-100"
               >
                 {/* FaGoogle is styled red to match the minimal look */}
                 {/* <FaGoogle className="mr-3 h-5 w-5 text-red-500" /> */}
@@ -81,7 +81,7 @@ const LoginCover = () => {
               {/* Twitter Button */}
               <button
                 type="button"
-                className="flex w-full items-center justify-center rounded-[50px] border border-black py-3 text-sm font-medium text-gray-700 transition duration-150 hover:bg-gray-100"
+                className="flex w-full items-center justify-center rounded-[50px] border border-black py-3 text-sm font-medium text-[#000] transition duration-150 hover:bg-gray-100"
               >
                 <Twitter className="mr-3 h-5 w-5 text-sky-500" />
                 Continue with Twitter
@@ -103,7 +103,7 @@ const LoginCover = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="mb-1 block text-sm font-light text-gray-500"
+                  className="mb-1 block text-sm font-light text-[#000]"
                 >
                   User name or email address
                 </label>
@@ -123,14 +123,14 @@ const LoginCover = () => {
                 <div className="mb-1 flex items-center justify-between">
                   <label
                     htmlFor="password"
-                    className="block text-sm font-light text-gray-500"
+                    className="block text-sm font-light text-[#000]"
                   >
                     Your password
                   </label>
                   <button
                     type="button"
                     onClick={() => setPasswordVisible(!passwordVisible)}
-                    className="flex items-center text-xs font-semibold text-gray-500 hover:text-gray-700"
+                    className="flex items-center text-xs font-semibold text-[#000] hover:text-[#000]"
                   >
                     <span className="mr-1">Hide</span>
                     <EyeIcon className="h-4 w-4 text-gray-400" />
@@ -148,7 +148,7 @@ const LoginCover = () => {
                 <div className="mt-2 text-right">
                   <Link
                     href="/auth/forgot-password"
-                    className="text-xs text-gray-500 hover:text-gray-700 hover:underline"
+                    className="text-xs text-[#000] hover:text-[#000] hover:underline"
                   >
                     Forget your password
                   </Link>

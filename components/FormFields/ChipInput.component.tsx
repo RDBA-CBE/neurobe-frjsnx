@@ -41,7 +41,7 @@ const ChipInput: React.FC<ChipInputProps> = ({
   return (
     <div className="w-full">
       {title && (
-        <label className="mb-2 block text-sm font-medium text-gray-700">
+        <label className="mb-2 block text-sm font-medium text-[#000]">
           {title}
           {required && <span className="text-red-500"> *</span>}
         </label>

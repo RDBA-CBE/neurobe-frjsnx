@@ -361,7 +361,7 @@ const LoginBoxed = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-sm rounded-lg bg-white p-6 text-center shadow-xl">
             <h2 className="mb-3 text-lg font-bold text-dblue">Access Restricted</h2>
-            <p className="mb-5 text-sm text-gray-600">
+            <p className="mb-5 text-sm text-[#000]">
               This portal is only for HR login. If you are a Faculty, please login below portal:
             </p>
             <a

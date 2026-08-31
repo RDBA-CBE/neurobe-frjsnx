@@ -44,7 +44,7 @@ const LogCard = (props: any) => {
           {onClose && (
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              className="text-[#000] hover:text-[#000] dark:text-gray-400 dark:hover:text-gray-200"
             >
               <svg
                 className="h-6 w-6"
@@ -83,7 +83,7 @@ const LogCard = (props: any) => {
               <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
                 No logs found
               </h3>
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+              <p className="mt-2 text-sm text-[#000] dark:text-gray-400">
                 There are no activity logs to display yet.
               </p>
             </div>

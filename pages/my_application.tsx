@@ -1506,7 +1506,7 @@ const Application = () => {
             <h1 className="page-ti  text-transparent">
               Application Management
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-[#000] dark:text-gray-400">
               Manage and review job applications
             </p>
           </div>
@@ -1548,7 +1548,7 @@ const Application = () => {
               <p className="text-2xl  leading-none text-gray-900 dark:text-white">
                 {state.applicationCount?.count || 0}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-[#000] dark:text-gray-400">
                 Applications
               </p>
             </div>
@@ -1572,7 +1572,7 @@ const Application = () => {
                   state.applicationCount?.applications_by_status?.Applied ||
                   0}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-[#000] dark:text-gray-400">
                 Applied
               </p>
             </div>
@@ -1594,7 +1594,7 @@ const Application = () => {
               <p className="text-2xl  leading-none text-gray-900 dark:text-white">
                 {state.applicationCount?.applications_by_status?.Selected || 0}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-[#000] dark:text-gray-400">
                 Selected
               </p>
             </div>
@@ -1624,7 +1624,7 @@ const Application = () => {
                   ] ||
                   0}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-[#000] dark:text-gray-400">
                 Interview Scheduled
               </p>
             </div>
@@ -1850,7 +1850,7 @@ const Application = () => {
               <div className="flex items-center justify-center py-12">
                 <div className="flex items-center gap-3">
                   <IconLoader className="h-6 w-6 animate-spin text-blue-600" />
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <span className="text-[#000] dark:text-gray-400">
                     Loading applications...
                   </span>
                 </div>
@@ -1867,7 +1867,7 @@ const Application = () => {
                   <Link
                     href={`/faculty/application_detail?id=${row?.id}`}
                     title={row?.applicant_name}
-                    className={`inline-flex items-center gap-2 ${!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-gray-600 dark:text-gray-400'}`}
+                    className={`inline-flex items-center gap-2 ${!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-gray-400'}`}
                   >
                     {row?.applicant_name}
                   </Link>
@@ -1881,7 +1881,7 @@ const Application = () => {
                   <Link
                     href={`/faculty/job_details?id=${row?.job_id}`}
                     title={row?.job_title}
-                    className={!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-gray-600 dark:text-gray-400'}
+                    className={!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-gray-400'}
                   >
                     {row?.job_short_title}
                   </Link>
@@ -1895,7 +1895,7 @@ const Application = () => {
                 render: (row) => (
                   <div
                     title={row?.college_name}
-                    className={!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-gray-600 dark:text-gray-400'}
+                    className={!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-gray-400'}
                   >
                     {row?.college_name}
                   </div>
@@ -1922,7 +1922,7 @@ const Application = () => {
                       {/* First department text */}
                       <span
                         title={firstDept}
-                        className={`text-sm ${!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-gray-700 dark:text-gray-300'}`}
+                        className={`text-sm ${!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-gray-300'}`}
                       >
                         {firstDept}
                       </span>
@@ -1980,7 +1980,7 @@ const Application = () => {
               //   accessor: "applicant_phone",
               //   title: "Phone",
               //   render: ({ applicant_phone }) => (
-              //     <div className="text-gray-600 dark:text-gray-400">
+              //     <div className="text-[#000] dark:text-gray-400">
               //       {applicant_phone}
               //     </div>
               //   ),
@@ -1989,7 +1989,7 @@ const Application = () => {
               //   accessor: "experience",
               //   title: "Experience",
               //   render: ({ experience }) => (
-              //     <div className="text-gray-600 dark:text-gray-400">
+              //     <div className="text-[#000] dark:text-gray-400">
               //       {experience}
               //     </div>
               //   ),
@@ -2138,7 +2138,7 @@ const Application = () => {
                     selectedStatus: null,
                   })
                 }
-                className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2 text-[#000] hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
               >
                 Cancel
               </button>
@@ -2375,7 +2375,7 @@ const Application = () => {
                 />
                 <label
                   htmlFor="requestForChange"
-                  className="text-sm pt-2 font-medium text-gray-700 dark:text-gray-300"
+                  className="text-sm pt-2 font-medium text-[#000] dark:text-gray-300"
                 >
                   Request the candidate to change the interview slot
                 </label>
@@ -2424,7 +2424,7 @@ const Application = () => {
                     />
                     <label
                       htmlFor="connectGoogleCalendar"
-                      className="pt-2  text-sm font-medium text-gray-700 dark:text-gray-300"
+                      className="pt-2  text-sm font-medium text-[#000] dark:text-gray-300"
                     >
                       {`Connect Google Calendar (Optional)`}
                       {state.googleAuthCode && (
@@ -2455,7 +2455,7 @@ const Application = () => {
                     googleAuthCode: "",
                   })
                 }
-                className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2 text-[#000] hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
               >
                 Cancel
               </button>
@@ -2485,7 +2485,7 @@ const Application = () => {
             <div className="flex-1 space-y-2 overflow-y-auto px-2">
               {/* Candidate */}
               <div className="rounded-xl border bg-white px-2 py-2 shadow-sm">
-                <p className="mb-2 text-sm font-semibold text-gray-500">
+                <p className="mb-2 text-sm font-semibold text-[#000]">
                   Application Details
                 </p>
 
@@ -2501,7 +2501,7 @@ const Application = () => {
                 </div>
 
                 {/* Email + Phone in single row */}
-                <div className="mt-3 flex flex-wrap items-center gap-6 text-sm text-gray-600">
+                <div className="mt-3 flex flex-wrap items-center gap-6 text-sm text-[#000]">
                   {/* Email */}
                   <div className="flex min-w-[200px] items-center gap-2">
                     <Mail className="h-4 w-4 text-gray-400" />
@@ -2553,14 +2553,14 @@ const Application = () => {
                           >
                             {capitalizeFLetter(round.status)}
                           </span>
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-[#000]">
                             {formatScheduleDateTime(
                               round.scheduled_date,
                               round.scheduled_time,
                             )}
                           </p>
                           <svg
-                            className={`h-4 w-4 text-gray-500 transition-transform ${
+                            className={`h-4 w-4 text-[#000] transition-transform ${
                               isRoundOpen ? "rotate-180" : ""
                             }`}
                             fill="none"
@@ -2769,7 +2769,7 @@ const Application = () => {
               <div className="flex items-center justify-between">
                 {/* Status */}
                 <div>
-                  <p className="text-xs text-gray-500">Application Status</p>
+                  <p className="text-xs text-[#000]">Application Status</p>
                   <span className="mt-1 inline-block rounded bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
                     {capitalizeFLetter(state.application?.status || "Pending")}
                   </span>

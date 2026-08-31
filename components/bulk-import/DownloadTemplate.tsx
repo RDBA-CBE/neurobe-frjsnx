@@ -36,18 +36,18 @@ const DownloadTemplate = ({ importType, onDownload }: DownloadTemplateProps) => 
         </h3>
       </div>
 
-      <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
+      <p className="mb-4 text-sm text-[#000] dark:text-gray-400">
         Download the standardized template file before uploading{" "}
         {importType === "user" ? "user" : "course"} data.
       </p>
 
       {/* Required / Optional fields card */}
-      <div className="mb-5 flex-1 rounded-xl border border-dashed border-gray-300 bg-gray-50 px-5 py-4 dark:border-gray-600 dark:bg-gray-800/50">
-        <p className="mb-2 text-sm text-gray-600 dark:text-gray-300">
+      <div className="mb-5 flex-1 rounded-xl border  border-gray-300 bg-gray-50 px-5 py-4 dark:border-gray-600 dark:bg-gray-800/50">
+        <p className="mb-2 text-sm text-[#000] dark:text-gray-300">
           <span className="font-semibold text-gray-800 dark:text-white">Required: </span>
           {meta.required.join(", ")}
         </p>
-        <p className="text-sm text-gray-600 dark:text-gray-300">
+        <p className="text-sm text-[#000] dark:text-gray-300">
           <span className="font-semibold text-gray-800 dark:text-white">Optional: </span>
           {meta.optional.join(", ")}
         </p>

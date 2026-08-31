@@ -248,8 +248,8 @@ const UpdatePropertyImagePreview: React.FC<ImageUploadProps> = ({
 
         <Upload className="mx-auto mb-4 h-5 w-15 text-blue-500" />
 
-        <p className="text-lg font-semibold text-gray-700">{title}</p>
-        <p className="text-sm text-gray-500">
+        <p className="text-lg font-semibold text-[#000]">{title}</p>
+        <p className="text-sm text-[#000]">
           {description ||
             `Allowed: JPEG, PNG, WEBP (Max 10MB each)`}
         </p>

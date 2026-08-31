@@ -31,7 +31,7 @@ const TextInput: React.FC<TextInputProps> = ({
       {title && (
         <label
           htmlFor={name}
-          className="block text-sm font-bold text-gray-700 mb-1"
+          className="block text-sm font-bold text-[#000] mb-1"
         >
           {title} {required && <span className="text-red-500">*</span>}
         </label>
@@ -55,7 +55,7 @@ const TextInput: React.FC<TextInputProps> = ({
           className={`form-input w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-primary ${
             error ? "border-red-500" : "border-gray-300"
           } ${icon ? "pl-10" : ""} ${rightIcon ? "pr-10" : ""} ${
-            rest.disabled ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""
+            rest.disabled ? "bg-gray-100 text-[#000] cursor-not-allowed" : ""
           } ${className || 'w-full'}`}
           {...rest}
         />

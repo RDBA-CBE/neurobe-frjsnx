@@ -80,7 +80,7 @@ function TreeNodeRow({
             onClick={(e) => e.stopPropagation()}
             className="h-4 w-4 text-blue-600"
           />
-          <span className={`text-sm ${depth === 0 ? "font-semibold text-gray-800" : "text-gray-700"}`}>
+          <span className={`text-sm ${depth === 0 ? "font-semibold text-gray-800" : "text-[#000]"}`}>
             {capitalizeFLetter(node.name)}
           </span>
         </div>
@@ -91,7 +91,7 @@ function TreeNodeRow({
             </button>
           )}
           {node.children?.length > 0 && (
-            <button onClick={(e) => { e.stopPropagation(); setExpanded((p) => !p); }} className="text-gray-400 hover:text-gray-600">
+            <button onClick={(e) => { e.stopPropagation(); setExpanded((p) => !p); }} className="text-gray-400 hover:text-[#000]">
               <ChevronRight className={`h-4 w-4 transition-transform ${expanded ? "rotate-90" : ""}`} />
             </button>
           )}
@@ -133,7 +133,7 @@ export default function AccordionSelect({ title, placeholder = "Select", apiData
   return (
     <div className="relative w-full" ref={ref}>
       {title && (
-        <label className="mb-1 block text-sm font-medium text-gray-700">
+        <label className="mb-1 block text-sm font-medium text-[#000]">
           {title}{required && <span className="ml-1 text-red-500">*</span>}
         </label>
       )}

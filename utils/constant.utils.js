@@ -403,7 +403,7 @@ export const OwnmenuConfig = {
       type: "link",
       icon: "IconMenuForms",
       label: "Course Offerings",
-      href: "/neurobe/course-offerings",
+      href: "/neurobe/course-offering",
     },
     {
       type: "link",

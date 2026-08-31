@@ -926,7 +926,7 @@ const Widgets = () => {
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-primary ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Updated Server Logs</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">Just Now</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">Just Now</div>
 
                                     <span className="badge badge-outline-primary absolute bg-primary-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">
                                         Pending
@@ -935,7 +935,7 @@ const Widgets = () => {
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-success ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Send Mail to HR and Admin</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">2 min ago</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">2 min ago</div>
 
                                     <span className="badge badge-outline-success absolute bg-success-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">
                                         Completed
@@ -944,21 +944,21 @@ const Widgets = () => {
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-danger ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Backup Files EOD</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">14:00</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">14:00</div>
 
                                     <span className="badge badge-outline-danger absolute bg-danger-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">Pending</span>
                                 </div>
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-black ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Collect documents from Sara</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">16:00</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">16:00</div>
 
                                     <span className="badge badge-outline-dark absolute bg-dark-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">Completed</span>
                                 </div>
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-warning ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Conference call with Marketing Manager.</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">17:00</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">17:00</div>
 
                                     <span className="badge badge-outline-warning absolute bg-warning-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">
                                         In progress
@@ -967,14 +967,14 @@ const Widgets = () => {
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-info ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Rebooted Server</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">17:00</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">17:00</div>
 
                                     <span className="badge badge-outline-info absolute bg-info-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">Completed</span>
                                 </div>
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-secondary ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Send contract details to Freelancer</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">18:00</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">18:00</div>
 
                                     <span className="badge badge-outline-secondary absolute bg-secondary-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">
                                         Pending
@@ -983,7 +983,7 @@ const Widgets = () => {
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-primary ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Updated Server Logs</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">Just Now</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">Just Now</div>
 
                                     <span className="badge badge-outline-primary absolute bg-primary-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">
                                         Pending
@@ -992,7 +992,7 @@ const Widgets = () => {
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-success ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Send Mail to HR and Admin</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">2 min ago</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">2 min ago</div>
 
                                     <span className="badge badge-outline-success absolute bg-success-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">
                                         Completed
@@ -1001,21 +1001,21 @@ const Widgets = () => {
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-danger ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Backup Files EOD</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">14:00</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">14:00</div>
 
                                     <span className="badge badge-outline-danger absolute bg-danger-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">Pending</span>
                                 </div>
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-black ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Collect documents from Sara</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">16:00</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">16:00</div>
 
                                     <span className="badge badge-outline-dark absolute bg-dark-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">Completed</span>
                                 </div>
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-warning ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Conference call with Marketing Manager.</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">17:00</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">17:00</div>
 
                                     <span className="badge badge-outline-warning absolute bg-warning-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">
                                         In progress
@@ -1024,14 +1024,14 @@ const Widgets = () => {
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-info ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Rebooted Server</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">17:00</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">17:00</div>
 
                                     <span className="badge badge-outline-info absolute bg-info-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">Completed</span>
                                 </div>
                                 <div className="group relative flex items-center py-1.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-secondary ltr:mr-1 rtl:ml-1.5"></div>
                                     <div className="flex-1">Send contract details to Freelancer</div>
-                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-gray-500">18:00</div>
+                                    <div className="text-xs text-white-dark ltr:ml-auto rtl:mr-auto dark:text-[#000]">18:00</div>
 
                                     <span className="badge badge-outline-secondary absolute bg-secondary-light text-xs opacity-0 group-hover:opacity-100 ltr:right-0 rtl:left-0 dark:bg-black">
                                         Pending
@@ -1074,7 +1074,7 @@ const Widgets = () => {
                                     <span className="grid h-9 w-9 shrink-0 place-content-center rounded-md bg-success-light text-base text-success dark:bg-success dark:text-success-light">SP</span>
                                     <div className="flex-1 px-3">
                                         <div>Shaun Park</div>
-                                        <div className="text-xs text-white-dark dark:text-gray-500">10 Jan 1:00PM</div>
+                                        <div className="text-xs text-white-dark dark:text-[#000]">10 Jan 1:00PM</div>
                                     </div>
                                     <span className="whitespace-pre px-1 text-base text-success ltr:ml-auto rtl:mr-auto">+$36.11</span>
                                 </div>
@@ -1084,7 +1084,7 @@ const Widgets = () => {
                                     </span>
                                     <div className="flex-1 px-3">
                                         <div>Cash withdrawal</div>
-                                        <div className="text-xs text-white-dark dark:text-gray-500">04 Jan 1:00PM</div>
+                                        <div className="text-xs text-white-dark dark:text-[#000]">04 Jan 1:00PM</div>
                                     </div>
                                     <span className="whitespace-pre px-1 text-base text-danger ltr:ml-auto rtl:mr-auto">-$16.44</span>
                                 </div>
@@ -1094,7 +1094,7 @@ const Widgets = () => {
                                     </span>
                                     <div className="flex-1 px-3">
                                         <div>Amy Diaz</div>
-                                        <div className="text-xs text-white-dark dark:text-gray-500">10 Jan 1:00PM</div>
+                                        <div className="text-xs text-white-dark dark:text-[#000]">10 Jan 1:00PM</div>
                                     </div>
                                     <span className="whitespace-pre px-1 text-base text-success ltr:ml-auto rtl:mr-auto">+$66.44</span>
                                 </div>
@@ -1104,7 +1104,7 @@ const Widgets = () => {
                                     </span>
                                     <div className="flex-1 px-3">
                                         <div>Netflix</div>
-                                        <div className="text-xs text-white-dark dark:text-gray-500">04 Jan 1:00PM</div>
+                                        <div className="text-xs text-white-dark dark:text-[#000]">04 Jan 1:00PM</div>
                                     </div>
                                     <span className="whitespace-pre px-1 text-base text-danger ltr:ml-auto rtl:mr-auto">-$32.00</span>
                                 </div>
@@ -1112,7 +1112,7 @@ const Widgets = () => {
                                     <span className="grid h-9 w-9 shrink-0 place-content-center rounded-md bg-info-light text-base text-info dark:bg-info dark:text-info-light">DA</span>
                                     <div className="flex-1 px-3">
                                         <div>Daisy Anderson</div>
-                                        <div className="text-xs text-white-dark dark:text-gray-500">10 Jan 1:00PM</div>
+                                        <div className="text-xs text-white-dark dark:text-[#000]">10 Jan 1:00PM</div>
                                     </div>
                                     <span className="whitespace-pre px-1 text-base text-success ltr:ml-auto rtl:mr-auto">+$10.08</span>
                                 </div>
@@ -1122,7 +1122,7 @@ const Widgets = () => {
                                     </span>
                                     <div className="flex-1 px-3">
                                         <div>Electricity Bill</div>
-                                        <div className="text-xs text-white-dark dark:text-gray-500">04 Jan 1:00PM</div>
+                                        <div className="text-xs text-white-dark dark:text-[#000]">04 Jan 1:00PM</div>
                                     </div>
                                     <span className="whitespace-pre px-1 text-base text-danger ltr:ml-auto rtl:mr-auto">-$22.00</span>
                                 </div>

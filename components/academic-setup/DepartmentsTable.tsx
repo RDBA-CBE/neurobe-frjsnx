@@ -32,7 +32,7 @@ const DepartmentsTable = ({ search, statusFilter, loading }: Props) => {
       columns={[
         { accessor: "code",  title: "CODE",  render: ({ code }) => <span className="font-medium text-[#7c3aed]">{code}</span> },
         { accessor: "name",  title: "DEPARTMENT NAME", render: ({ name }) => <span className="text-gray-800 dark:text-gray-200">{name}</span> },
-        { accessor: "hod",   title: "HEAD OF DEPARTMENT", render: ({ hod }) => <span className="text-gray-600 dark:text-gray-400">{hod}</span> },
+        { accessor: "hod",   title: "HEAD OF DEPARTMENT", render: ({ hod }) => <span className="text-[#000] dark:text-gray-400">{hod}</span> },
         { accessor: "programmes", title: "PROGRAMMES", render: ({ programmes }) => (
           <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#ede9fe] text-xs font-bold text-[#7c3aed]">{programmes}</span>
         )},
