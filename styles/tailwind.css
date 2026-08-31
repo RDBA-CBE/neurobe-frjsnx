@@ -848,6 +848,10 @@ pre.hljs {
   border-color: #ECE3FC;
 }
 
+.border-input {
+  border-color: #d1d5db;
+}
+
 .bg-lyellow {
   background-color: #ffedc6;
 }
@@ -859,6 +863,13 @@ pre.hljs {
 .page-ti {
   font-size: 24px;
   color: #000;
+  font-weight: 700;
+}
+
+.section-ti{
+  font-size: 18px;
+  color: #000;
+  font-weight: 700;
 }
 
 p,
@@ -987,6 +998,10 @@ body > div[style*="z-index:2000000000"] > div:not(:has(iframe)) {
  background-color: #F8F7FF !important;
 }
 
+
+.filter-input {
+  width: 250px;
+}
 
 
 }

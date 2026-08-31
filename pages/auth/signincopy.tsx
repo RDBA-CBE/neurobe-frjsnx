@@ -64,7 +64,7 @@ const LoginCover = () => {
           <div className="w-full max-w-lg">
             {/* Top Sign Up link */}
 
-            <h2 className="mb-10 text-4xl font-light text-gray-800">Sign in</h2>
+            <h2 className="mb-10 text-4xl font-light text-[#000]">Sign in</h2>
 
             {/* Social Login Buttons */}
             <div className="mb-8 space-y-4">

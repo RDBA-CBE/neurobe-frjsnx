@@ -34,7 +34,7 @@ const PSOsTable = ({ search, statusFilter, loading }: Props) => {
         { accessor: "code",        title: "PSO CODE",   render: ({ code }) => <span className="font-medium text-[#7c3aed]">{code}</span> },
         { accessor: "programme",   title: "PROGRAMME",  render: ({ programme }) => <span className="text-[#000] dark:text-gray-400">{programme}</span> },
         { accessor: "description", title: "DESCRIPTION", render: ({ description }) => (
-          <span className="max-w-md whitespace-normal text-gray-800 dark:text-gray-200">{description}</span>
+          <span className="max-w-md whitespace-normal text-[#000] dark:text-gray-200">{description}</span>
         )},
         { accessor: "status", title: "STATUS", render: ({ status }) => (
           <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${status === "Active" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-600"}`}>

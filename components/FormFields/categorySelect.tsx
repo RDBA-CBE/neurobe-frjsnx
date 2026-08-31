@@ -274,7 +274,7 @@ export default function CategorySelector({
                     className="h-4 w-4 rounded border-gray-300 text-blue-600"
                   />
                   <span
-                    className="text-sm font-bold uppercase tracking-wide text-gray-800"
+                    className="text-sm font-bold uppercase tracking-wide text-[#000]"
                     onClick={(e) => { e.preventDefault(); toggleParent(parent.id); }}
                   >
                     {capitalizeFLetter(parent.name)}

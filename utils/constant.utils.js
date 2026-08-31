@@ -605,7 +605,7 @@ export const OwnmenuConfig = {
       type: "link",
       icon: "IconMenuNotes",
       label: "Audit Trial",
-      href: "/",
+      href: "/neurobe/audit-trial",
     },
 
     // {
@@ -832,7 +832,7 @@ export const JOB_TYPE = [
 ];
 
 export const STATUS_COLOR = {
-  Applied: "bg-gray-100 text-gray-800",
+  Applied: "bg-gray-100 text-[#000]",
   Shortlisted: "bg-indigo-100 text-indigo-800",
   "Interview Scheduled ": "bg-blue-100 text-blue-800",
   Selected: "bg-green-100 text-green-800",

@@ -1800,7 +1800,7 @@ const Application = () => {
         <div className="mb-4">
           <div className="flex items-center justify-between">
             {/* Left */}
-            <h3 className="text-lg font-bold text-gray-800 dark:text-white">
+            <h3 className="text-lg font-bold text-[#000] dark:text-white">
               Applicants List
             </h3>
 
@@ -1970,7 +1970,7 @@ const Application = () => {
               //   render: ({ applicant_email }) => (
               //     <span
               //       title={applicant_email}
-              //       className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+              //       className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-[#000] dark:bg-gray-700 dark:text-gray-200"
               //     >
               //       {truncateText(applicant_email)}
               //     </span>

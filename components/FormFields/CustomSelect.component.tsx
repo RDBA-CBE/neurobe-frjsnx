@@ -66,17 +66,21 @@ const CustomSelect = (props: SelectProps) => {
     }, 500);
   }, [onSearch]);
 
+  const isFilterInput = className?.includes("filter-input");
+  const focusColor = isFilterInput ? "#7c3aed" : "#3b82f6";
+
   const customStyles = {
     control: (provided: any, state: any) => ({
       ...provided,
-      borderColor: error ? "border-red-500" : state.isFocused ? "#3b82f6" : "#d1d5db",
-      boxShadow: error ? "0 0 0 0.9px red" : state.isFocused ? "0 0 0 1px #3b82f6" : "none",
+      borderColor: error ? "red" : state.isFocused ? focusColor : "#d1d5db",
+      boxShadow: error ? "0 0 0 0.9px red" : state.isFocused ? `0 0 0 0px ${focusColor}` : "none",
       "&:hover": {
-        borderColor: error ? "border-red-500" : state.isFocused ? "#3b82f6" : "#d1d5db",
+        borderColor: error ? "red" : state.isFocused ? focusColor : "#d1d5db",
       },
       borderRadius: borderRadius ? borderRadius : "6px",
       paddingLeft: leftIcon ? "40px" : "12px",
       minHeight: "38px",
+      
     }),
     valueContainer: (provided: any) => ({
       ...provided,

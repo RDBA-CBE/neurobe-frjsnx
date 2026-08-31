@@ -32,7 +32,7 @@ const BatchesTable = ({ search, statusFilter, loading }: Props) => {
       customLoader={<div className="flex items-center justify-center py-12"><IconLoader className="h-6 w-6 animate-spin text-[#7c3aed]" /></div>}
       columns={[
         { accessor: "code",      title: "BATCH CODE", render: ({ code }) => <span className="font-medium text-[#7c3aed]">{code}</span> },
-        { accessor: "name",      title: "BATCH NAME",  render: ({ name }) => <span className="text-gray-800 dark:text-gray-200">{name}</span> },
+        { accessor: "name",      title: "BATCH NAME",  render: ({ name }) => <span className="text-[#000] dark:text-gray-200">{name}</span> },
         { accessor: "programme", title: "PROGRAMME",   render: ({ programme }) => <span className="text-[#000] dark:text-gray-400">{programme}</span> },
         { accessor: "startYear", title: "START YEAR",  render: ({ startYear }) => <span className="text-[#000] dark:text-gray-400">{startYear}</span> },
         { accessor: "endYear",   title: "END YEAR",    render: ({ endYear }) => <span className="text-[#000] dark:text-gray-400">{endYear}</span> },

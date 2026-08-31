@@ -327,7 +327,7 @@ const Calendar = () => {
                                 <Dialog.Panel className="panel w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
                                     <button
                                         type="button"
-                                        className="absolute top-4 text-gray-400 outline-none hover:text-gray-800 ltr:right-4 rtl:left-4 dark:hover:text-[#000]"
+                                        className="absolute top-4 text-gray-400 outline-none hover:text-[#000] ltr:right-4 rtl:left-4 dark:hover:text-[#000]"
                                         onClick={() => setIsAddEventModal(false)}
                                     >
                                         <IconX />

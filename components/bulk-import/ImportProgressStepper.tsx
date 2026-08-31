@@ -105,7 +105,7 @@ const ImportProgressStepper = ({
                   className={`text-sm font-medium whitespace-nowrap ${
                     status === "pending"
                       ? "text-gray-400 dark:text-[#000]"
-                      : "text-gray-800 dark:text-white"
+                      : "text-[#000] dark:text-white"
                   }`}
                 >
                   {step.label}

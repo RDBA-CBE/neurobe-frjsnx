@@ -68,7 +68,7 @@ export default function Modal(props: any) {
                         </div>
                       )}
                       {subTitle && (
-                        <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                        <h3 className="text-lg font-semibold text-[#000] dark:text-white">
                           {subTitle}
                         </h3>
                       )}

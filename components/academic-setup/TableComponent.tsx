@@ -1,14 +1,14 @@
 import { DataTable } from "mantine-datatable";
 import IconLoader from "@/components/Icon/IconLoader";
 
-interface AcademicTableProps {
+interface TableComponentProps {
   records: any[];
   columns: any[];
   loading?: boolean;
   noRecordsText?: string;
 }
 
-const AcademicTable = ({ records, columns, loading, noRecordsText = "No records found" }: AcademicTableProps) => {
+const TableComponent = ({ records, columns, loading, noRecordsText = "No records found" }: TableComponentProps) => {
   return (
     <DataTable
       noRecordsText={noRecordsText}
@@ -27,4 +27,4 @@ const AcademicTable = ({ records, columns, loading, noRecordsText = "No records 
   );
 };
 
-export default AcademicTable;
+export default TableComponent;

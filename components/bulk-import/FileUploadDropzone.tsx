@@ -50,7 +50,7 @@ const FileUploadDropzone = ({ onFileSelect }: FileUploadDropzoneProps) => {
           <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-color2 text-xs font-bold text-white">
             2
           </span>
-          <h3 className="text-sm font-semibold text-gray-800 dark:text-white">
+          <h3 className="text-sm font-semibold text-[#000] dark:text-white">
             Upload Excel or CSV File
           </h3>
         </div>
@@ -97,7 +97,7 @@ const FileUploadDropzone = ({ onFileSelect }: FileUploadDropzoneProps) => {
               </svg>
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-800 dark:text-white">
+              <p className="text-sm font-semibold text-[#000] dark:text-white">
                 {selectedFile.name}
               </p>
               <p className="mt-0.5 text-xs text-[#000] dark:text-gray-400">

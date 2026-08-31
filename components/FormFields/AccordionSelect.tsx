@@ -80,7 +80,7 @@ function TreeNodeRow({
             onClick={(e) => e.stopPropagation()}
             className="h-4 w-4 text-blue-600"
           />
-          <span className={`text-sm ${depth === 0 ? "font-semibold text-gray-800" : "text-[#000]"}`}>
+          <span className={`text-sm ${depth === 0 ? "font-semibold text-[#000]" : "text-[#000]"}`}>
             {capitalizeFLetter(node.name)}
           </span>
         </div>
@@ -141,7 +141,7 @@ export default function AccordionSelect({ title, placeholder = "Select", apiData
         onClick={() => setOpen(!open)}
         className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm hover:border-blue-400"
       >
-        <span className={value ? "text-gray-800" : "text-gray-400"}>
+        <span className={value ? "text-[#000]" : "text-gray-400"}>
           {value ? capitalizeFLetter(value.label) : placeholder}
         </span>
         <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`} />

@@ -30,7 +30,7 @@ const BulkImportBanner = ({ importType, onTypeChange }: BulkImportBannerProps) =
           </svg>
         </div>
         <div>
-          <h2 className="text-base font-bold text-gray-800 dark:text-white">
+          <h2 className="text-base font-bold text-[#000] dark:text-white">
             Bulk Import
           </h2>
           <p className="mt-0.5 text-sm text-[#000] dark:text-gray-400">

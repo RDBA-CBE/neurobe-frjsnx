@@ -116,7 +116,7 @@ export const COURSE_OFFERING_COLUMNS = [
           {code}
         </span>
         <div>
-          <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{course}</p>
+          <p className="text-sm font-medium text-[#000] dark:text-gray-100">{course}</p>
           <p className="text-xs text-gray-400">{subtitle}</p>
         </div>
       </div>
@@ -139,7 +139,7 @@ export const COURSE_OFFERING_COLUMNS = [
     title: "ACADEMIC YEAR / TERM",
     render: ({ term, ay }: any) => (
       <div>
-        <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{term}</p>
+        <p className="text-sm font-medium text-[#000] dark:text-gray-100">{term}</p>
         <p className="text-xs text-gray-400">{ay}</p>
       </div>
     ),
@@ -153,7 +153,7 @@ export const COURSE_OFFERING_COLUMNS = [
           {coordinator.charAt(0)}
         </div>
         <div>
-          <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{coordinator}</p>
+          <p className="text-sm font-medium text-[#000] dark:text-gray-100">{coordinator}</p>
           <p className="text-xs text-gray-400">{coordinatorInfo}</p>
         </div>
       </div>

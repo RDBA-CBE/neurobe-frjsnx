@@ -38,7 +38,7 @@ const LogCard = (props: any) => {
     <div className="flex h-[600px] flex-col p-5">
       {/* {title && (
         <div className="mb-4 flex items-center justify-between border-b pb-3">
-          <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+          <h2 className="text-xl font-bold text-[#000] dark:text-white">
             {title}
           </h2>
           {onClose && (

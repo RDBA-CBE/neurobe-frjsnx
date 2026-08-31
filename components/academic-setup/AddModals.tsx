@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Edit, PenIcon, PlusIcon, X } from "lucide-react";
 import TextInput from "@/components/FormFields/TextInput.component";
 import TextArea from "@/components/FormFields/TextArea.component";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
@@ -10,17 +10,31 @@ interface ModalShellProps {
   open: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  icon: any
 }
 
-export const ModalShell = ({ title, open, onClose, children }: ModalShellProps) => {
+export const ModalShell = ({
+  title,
+  open,
+  onClose,
+  children,
+  icon
+}: ModalShellProps) => {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
       <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl dark:bg-gray-900">
         <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4 dark:border-gray-700">
-          <h3 className="text-base font-semibold text-gray-800 dark:text-white">{title}</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-[#000] dark:hover:text-gray-200">
-            <X className="h-5 w-5" />
+          
+          <h3 className="text-base font-semibold text-[#000] dark:text-white flex items-center gap-2">
+            {icon && <div className="text-color2 bg-gray-200 p-1.5 rounded-md w-fit">{icon}</div>}
+            {title}
+          </h3>
+          <button
+            onClick={onClose}
+            className="text-pri border border-gray-500 rounded-full p-0.5 hover:text-[#000] dark:hover:text-gray-200"
+          >
+            <X className="h-3 w-3" />
           </button>
         </div>
         <div className="max-h-[80vh] overflow-y-auto px-6 py-5">{children}</div>
@@ -29,7 +43,13 @@ export const ModalShell = ({ title, open, onClose, children }: ModalShellProps) 
   );
 };
 
-const ModalFooter = ({ onClose, submitLabel }: { onClose: () => void; submitLabel: string }) => (
+const ModalFooter = ({
+  onClose,
+  submitLabel,
+}: {
+  onClose: () => void;
+  submitLabel: string;
+}) => (
   <div className="mt-6 flex justify-end gap-3">
     <button
       type="button"
@@ -49,25 +69,92 @@ const ModalFooter = ({ onClose, submitLabel }: { onClose: () => void; submitLabe
 
 // ─── Option helpers ───────────────────────────────────────────────────────────
 const toOpts = (arr: string[]) => arr.map((v) => ({ value: v, label: v }));
+const toOpt = (v: string | null | undefined) =>
+  v ? { value: v, label: v } : null;
 
-const DEPT_OPTS    = toOpts(["CS - Computer Science", "EC - Electronics", "AI - Artificial Intelligence", "ME - Mechanical", "CE - Civil"]);
-const STATUS_OPTS  = toOpts(["Active", "Inactive"]);
-const PROG_OPTS    = toOpts(["BTECH-CSE", "BTECH-ECE", "MTECH-AI", "MBA"]);
-const TYPE_OPTS    = toOpts(["UG", "PG"]);
+const DEPT_OPTS = toOpts([
+  "CS - Computer Science",
+  "EC - Electronics",
+  "AI - Artificial Intelligence",
+  "ME - Mechanical",
+  "CE - Civil",
+]);
+const STATUS_OPTS = toOpts(["Active", "Inactive"]);
+const PROG_OPTS = toOpts(["BTECH-CSE", "BTECH-ECE", "MTECH-AI", "MBA"]);
+const TYPE_OPTS = toOpts(["UG", "PG"]);
 
-// ─── CREATE COURSE MODAL ──────────────────────────────────────────────────────
-export const CreateCourseModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+// ─── CREATE / EDIT COURSE MODAL ───────────────────────────────────────────────
+interface CourseModalProps {
+  open: boolean;
+  onClose: () => void;
+  initialData?: any;
+}
+
+export const CreateCourseModal = ({
+  open,
+  onClose,
+  initialData,
+}: CourseModalProps) => {
+  const isEdit = !!initialData;
+
   const [form, setForm] = useState({
-    code: "", title: "", department: null as any, status: null as any,
-    lecture: "3", tutorial: "0", practical: "0", credits: "4",
-    theoryHours: "", labHours: "",
+    code: "",
+    title: "",
+    department: null as any,
+    status: null as any,
+    lecture: "3",
+    tutorial: "0",
+    practical: "0",
+    credits: "4",
+    theoryHours: "",
+    labHours: "",
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        code: initialData.code ?? "",
+        title: initialData.title ?? "",
+        department: toOpt(initialData.department),
+        status: toOpt(initialData.status),
+        lecture: String(initialData.l ?? "3"),
+        tutorial: String(initialData.t ?? "0"),
+        practical: String(initialData.p ?? "0"),
+        credits: String(initialData.c ?? "4"),
+        theoryHours: initialData.theory?.replace(" hrs", "") ?? "",
+        labHours: initialData.lab?.replace(" hrs", "") ?? "",
+      });
+    } else {
+      setForm({
+        code: "",
+        title: "",
+        department: null,
+        status: null,
+        lecture: "3",
+        tutorial: "0",
+        practical: "0",
+        credits: "4",
+        theoryHours: "",
+        labHours: "",
+      });
+    }
+  }, [initialData, open]);
 
   const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
 
   return (
-    <ModalShell title="Create New Course" open={open} onClose={onClose}>
-      <form onSubmit={(e) => { e.preventDefault(); onClose(); }}>
+    <ModalShell
+      title={isEdit ? "Edit Course" : "Create New Course"}
+      icon = {isEdit ? <Edit className="w-3.5 h-3.5"/> : <PlusIcon className="w-3.5 h-3.5"/>}
+      open={open}
+      onClose={onClose}
+    >
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onClose();
+        }}
+      >
         <div className="grid grid-cols-2 gap-4">
           <TextInput
             title="Course Code"
@@ -100,16 +187,35 @@ export const CreateCourseModal = ({ open, onClose }: { open: boolean; onClose: (
           />
         </div>
 
-        {/* L-T-P-C */}
-        <div className="mt-4">
+        <div className="mt-4 ">
+          <div className="flex justify-between">
           <p className="mb-2 text-xs font-semibold text-[#000] dark:text-gray-400">
             L-T-P-C Breakdown (Weekly Hours &amp; Credits)
-            <span className="ml-2 cursor-pointer text-[#7c3aed] underline">Calculated Credits ▾</span>
+            
           </p>
+          <span className="ml-2 cursor-pointer text-color2 text-xs font-bold ">
+              Calculated Credits : 4
+            </span>
+          </div>
           <div className="grid grid-cols-4 gap-3">
-            <TextInput title="Lecture"  type="number" value={form.lecture}   onChange={(e) => set("lecture",   e.target.value)} />
-            <TextInput title="Tutorial" type="number" value={form.tutorial}  onChange={(e) => set("tutorial",  e.target.value)} />
-            <TextInput title="Practical"type="number" value={form.practical} onChange={(e) => set("practical", e.target.value)} />
+            <TextInput
+              title="Lecture"
+              type="number"
+              value={form.lecture}
+              onChange={(e) => set("lecture", e.target.value)}
+            />
+            <TextInput
+              title="Tutorial"
+              type="number"
+              value={form.tutorial}
+              onChange={(e) => set("tutorial", e.target.value)}
+            />
+            <TextInput
+              title="Practical"
+              type="number"
+              value={form.practical}
+              onChange={(e) => set("practical", e.target.value)}
+            />
             <TextInput
               title="Credits"
               type="number"
@@ -120,7 +226,6 @@ export const CreateCourseModal = ({ open, onClose }: { open: boolean; onClose: (
           </div>
         </div>
 
-        {/* Hours */}
         <div className="mt-4 grid grid-cols-2 gap-4">
           <TextInput
             title="Total Theory Hours"
@@ -138,102 +243,437 @@ export const CreateCourseModal = ({ open, onClose }: { open: boolean; onClose: (
           />
         </div>
 
-        <ModalFooter onClose={onClose} submitLabel="Create Entry" />
+        <ModalFooter
+          onClose={onClose}
+          submitLabel={isEdit ? "Update Entry" : "Create Entry"}
+        />
       </form>
     </ModalShell>
   );
 };
 
-// ─── CREATE DEPARTMENT MODAL ──────────────────────────────────────────────────
-export const CreateDepartmentModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
-  const [form, setForm] = useState({ code: "", name: "", hod: "", status: null as any });
+// ─── CREATE / EDIT DEPARTMENT MODAL ──────────────────────────────────────────
+interface DeptModalProps {
+  open: boolean;
+  onClose: () => void;
+  initialData?: any;
+}
+
+export const CreateDepartmentModal = ({
+  open,
+  onClose,
+  initialData,
+}: DeptModalProps) => {
+  const isEdit = !!initialData;
+  const [form, setForm] = useState({
+    code: "",
+    name: "",
+    hod: "",
+    status: null as any,
+  });
+
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        code: initialData.code ?? "",
+        name: initialData.name ?? "",
+        hod: initialData.hod ?? "",
+        status: toOpt(initialData.status),
+      });
+    } else {
+      setForm({ code: "", name: "", hod: "", status: null });
+    }
+  }, [initialData, open]);
+
   const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
 
   return (
-    <ModalShell title="Create New Department" open={open} onClose={onClose}>
-      <form onSubmit={(e) => { e.preventDefault(); onClose(); }}>
-        <div className="grid grid-cols-2 gap-4">
-          <TextInput title="Department Code" required placeholder="e.g. CSE" value={form.code} onChange={(e) => set("code", e.target.value)} />
-          <TextInput title="Department Name" required placeholder="e.g. Computer Science & Engineering" value={form.name} onChange={(e) => set("name", e.target.value)} />
-          <TextInput title="Head of Department" placeholder="e.g. Dr. A. Kumar" value={form.hod} onChange={(e) => set("hod", e.target.value)} />
-          <CustomSelect title="Status" options={STATUS_OPTS} value={form.status} onChange={(v) => set("status", v)} placeholder="Active" />
+    <ModalShell
+      title={isEdit ? "Edit Department" : "Create New Department"}
+      icon = {isEdit ? <Edit className="w-3.5 h-3.5"/> : <PlusIcon className="w-3.5 h-3.5"/>}
+      open={open}
+      onClose={onClose}
+    >
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onClose();
+        }}
+      >
+        <div className="grid grid-cols-1 gap-4">
+          <div>
+          <TextInput
+            title="Department Name"
+            required
+            placeholder="e.g. Computer Science & Engineering"
+            value={form.name}
+            onChange={(e) => set("name", e.target.value)}
+            
+          />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+          <TextInput
+            title="Department Code"
+            required
+            placeholder="e.g. CSE"
+            value={form.code}
+            onChange={(e) => set("code", e.target.value)}
+          />
+          
+          {/* <TextInput
+            title="Head of Department"
+            placeholder="e.g. Dr. A. Kumar"
+            value={form.hod}
+            onChange={(e) => set("hod", e.target.value)}
+          /> */}
+          <CustomSelect
+            title="Status"
+            options={STATUS_OPTS}
+            value={form.status}
+            onChange={(v) => set("status", v)}
+            placeholder="Active"
+          />
+          </div>
         </div>
-        <ModalFooter onClose={onClose} submitLabel="Create Department" />
+        <ModalFooter
+          onClose={onClose}
+          submitLabel={isEdit ? "Update Department" : "Create Department"}
+        />
       </form>
     </ModalShell>
   );
 };
 
-// ─── CREATE PROGRAMME MODAL ───────────────────────────────────────────────────
-export const CreateProgrammeModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
-  const [form, setForm] = useState({ code: "", name: "", department: null as any, type: null as any, duration: "", status: null as any });
+// ─── CREATE / EDIT PROGRAMME MODAL ───────────────────────────────────────────
+interface ProgModalProps {
+  open: boolean;
+  onClose: () => void;
+  initialData?: any;
+}
+
+export const CreateProgrammeModal = ({
+  open,
+  onClose,
+  initialData,
+}: ProgModalProps) => {
+  const isEdit = !!initialData;
+  const [form, setForm] = useState({
+    short_name: "",
+    name: "",
+    department: null as any,
+    type: null as any,
+    duration: "",
+    status: null as any,
+    
+  });
+
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        short_name: initialData.short_name ?? "",
+        name: initialData.name ?? "",
+        department: toOpt(initialData.department),
+        type: toOpt(initialData.type),
+        duration: initialData.duration ?? "",
+        status: toOpt(initialData.status),
+      });
+    } else {
+      setForm({
+        short_name: "",
+        name: "",
+        department: null,
+        type: null,
+        duration: "",
+        status: null,
+      });
+    }
+  }, [initialData, open]);
+
   const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
 
   return (
-    <ModalShell title="Create New Programme" open={open} onClose={onClose}>
-      <form onSubmit={(e) => { e.preventDefault(); onClose(); }}>
-        <div className="grid grid-cols-2 gap-4">
-          <TextInput title="Programme Code" required placeholder="e.g. BTECH-CSE" value={form.code} onChange={(e) => set("code", e.target.value)} />
-          <TextInput title="Programme Name" required placeholder="e.g. B.Tech Computer Science" value={form.name} onChange={(e) => set("name", e.target.value)} />
-          <CustomSelect title="Department" required options={DEPT_OPTS} value={form.department} onChange={(v) => set("department", v)} placeholder="Select Department" />
-          <CustomSelect title="Type" required options={TYPE_OPTS} value={form.type} onChange={(v) => set("type", v)} placeholder="UG / PG" />
-          <TextInput title="Duration" required placeholder="e.g. 4 Years" value={form.duration} onChange={(e) => set("duration", e.target.value)} />
-          <CustomSelect title="Status" options={STATUS_OPTS} value={form.status} onChange={(v) => set("status", v)} placeholder="Active" />
+    <ModalShell
+      title={isEdit ? "Edit Programme" : "Create New Programme"}
+      icon = {isEdit ? <Edit className="w-3.5 h-3.5"/> : <PlusIcon className="w-3.5 h-3.5"/>}
+      open={open}
+      onClose={onClose}
+    >
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onClose();
+        }}
+      >
+        <TextInput
+            title="Programme Name"
+            required
+            placeholder="e.g. B.Tech Computer Science"
+            value={form.name}
+            onChange={(e) => set("name", e.target.value)}
+          />
+        <div className="grid grid-cols-2 gap-4 mt-4">
+          <TextInput
+            title="Short Name"
+            required
+            placeholder="e.g. BTECH-CSE"
+            value={form.short_name}
+            onChange={(e) => set("short_name", e.target.value)}
+          />
+          
+          <CustomSelect
+            title="Associated Department"
+            required
+            options={DEPT_OPTS}
+            value={form.department}
+            onChange={(v) => set("department", v)}
+            placeholder="Select Department"
+          />
+          <CustomSelect
+            title="Degree Level"
+            required
+            options={TYPE_OPTS}
+            value={form.type}
+            onChange={(v) => set("type", v)}
+            placeholder="UG / PG"
+          />
+          {/* <TextInput
+            title="Duration"
+            required
+            placeholder="e.g. 4 Years"
+            value={form.duration}
+            onChange={(e) => set("duration", e.target.value)}
+          /> */}
+          <CustomSelect
+            title="Status"
+            options={STATUS_OPTS}
+            value={form.status}
+            onChange={(v) => set("status", v)}
+            placeholder="Active"
+          />
         </div>
-        <ModalFooter onClose={onClose} submitLabel="Create Programme" />
+        <ModalFooter
+          onClose={onClose}
+          submitLabel={isEdit ? "Update Programme" : "Create Programme"}
+        />
       </form>
     </ModalShell>
   );
 };
 
-// ─── CREATE BATCH MODAL ───────────────────────────────────────────────────────
-export const CreateBatchModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
-  const [form, setForm] = useState({ code: "", name: "", programme: null as any, startYear: "", endYear: "", status: null as any });
+// ─── CREATE / EDIT BATCH MODAL ────────────────────────────────────────────────
+interface BatchModalProps {
+  open: boolean;
+  onClose: () => void;
+  initialData?: any;
+}
+
+export const CreateBatchModal = ({
+  open,
+  onClose,
+  initialData,
+}: BatchModalProps) => {
+  const isEdit = !!initialData;
+  const [form, setForm] = useState({
+    batch: "",
+    name: "",
+    programme: null as any,
+    startYear: "",
+    endYear: "",
+    status: null as any,
+  });
+
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        batch: initialData.batch ?? "",
+        name: initialData.name ?? "",
+        programme: toOpt(initialData.programme),
+        startYear: String(initialData.startYear ?? ""),
+        endYear: String(initialData.endYear ?? ""),
+        status: toOpt(initialData.status),
+      });
+    } else {
+      setForm({
+        batch: "",
+        name: "",
+        programme: null,
+        startYear: "",
+        endYear: "",
+        status: null,
+      });
+    }
+  }, [initialData, open]);
+
   const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
 
   return (
-    <ModalShell title="Create New Batch" open={open} onClose={onClose}>
-      <form onSubmit={(e) => { e.preventDefault(); onClose(); }}>
+    <ModalShell
+      title={isEdit ? "Edit Batch" : "Create New Batch"}
+      icon = {isEdit ? <Edit className="w-3.5 h-3.5"/> : <PlusIcon className="w-3.5 h-3.5"/>}
+      open={open}
+      onClose={onClose}
+    >
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onClose();
+        }}
+      >
         <div className="grid grid-cols-2 gap-4">
-          <TextInput title="Batch Code" required placeholder="e.g. B2025" value={form.code} onChange={(e) => set("code", e.target.value)} />
-          <TextInput title="Batch Name" required placeholder="e.g. Batch 2025-29" value={form.name} onChange={(e) => set("name", e.target.value)} />
-          <CustomSelect title="Programme" required options={PROG_OPTS} value={form.programme} onChange={(v) => set("programme", v)} placeholder="Select Programme" />
-          <CustomSelect title="Status" options={STATUS_OPTS} value={form.status} onChange={(v) => set("status", v)} placeholder="Active" />
-          <TextInput title="Start Year" required type="number" placeholder="e.g. 2025" value={form.startYear} onChange={(e) => set("startYear", e.target.value)} />
-          <TextInput title="End Year"   required type="number" placeholder="e.g. 2029" value={form.endYear}   onChange={(e) => set("endYear",   e.target.value)} />
+          <TextInput
+            title="Batch Year"
+            required
+            placeholder="e.g. 2026 - 2030"
+            value={form.batch}
+            onChange={(e) => set("batch", e.target.value)}
+          />
+          {/* <TextInput
+            title="Batch Name"
+            required
+            placeholder="e.g. Batch 2025-29"
+            value={form.name}
+            onChange={(e) => set("name", e.target.value)}
+          /> */}
+          <CustomSelect
+            title="Programme"
+            required
+            options={PROG_OPTS}
+            value={form.programme}
+            onChange={(v) => set("programme", v)}
+            placeholder="Select Programme"
+          />
+          
+          {/* <TextInput
+            title="Start Year"
+            required
+            type="number"
+            placeholder="e.g. 2025"
+            value={form.startYear}
+            onChange={(e) => set("startYear", e.target.value)}
+          />
+          <TextInput
+            title="End Year"
+            required
+            type="number"
+            placeholder="e.g. 2029"
+            value={form.endYear}
+            onChange={(e) => set("endYear", e.target.value)}
+          /> */}
         </div>
-        <ModalFooter onClose={onClose} submitLabel="Create Batch" />
+        <CustomSelect
+            title="Status"
+            options={STATUS_OPTS}
+            value={form.status}
+            onChange={(v) => set("status", v)}
+            placeholder="Active"
+            className="mt-4"
+          />
+        <ModalFooter
+          onClose={onClose}
+          submitLabel={isEdit ? "Update Batch" : "Create Batch"}
+        />
       </form>
     </ModalShell>
   );
 };
 
-// ─── CREATE PSO MODAL ─────────────────────────────────────────────────────────
-export const CreatePSOModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
-  const [form, setForm] = useState({ code: "", programme: null as any, description: "", status: null as any });
+// ─── CREATE / EDIT PSO MODAL ──────────────────────────────────────────────────
+interface PSOModalProps {
+  open: boolean;
+  onClose: () => void;
+  initialData?: any;
+}
+
+export const CreatePSOModal = ({
+  open,
+  onClose,
+  initialData,
+}: PSOModalProps) => {
+  const isEdit = !!initialData;
+  const [form, setForm] = useState({
+    code: "",
+    programme: null as any,
+    description: "",
+    status: null as any,
+    version: ""
+  });
+
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        code: initialData.code ?? "",
+        programme: toOpt(initialData.programme),
+        description: initialData.description ?? "",
+        status: toOpt(initialData.status),
+        version: initialData.version ?? ""
+      });
+    } else {
+      setForm({ code: "", programme: null, description: "", status: null , version: ""});
+    }
+  }, [initialData, open]);
+
   const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
 
   return (
-    <ModalShell title="Create New PSO" open={open} onClose={onClose}>
-      <form onSubmit={(e) => { e.preventDefault(); onClose(); }}>
+    <ModalShell
+      title={isEdit ? "Edit PSO" : "Create New PSO"}
+      icon = {isEdit ? <Edit className="w-3.5 h-3.5"/> : <PlusIcon className="w-3.5 h-3.5"/>}
+      open={open}
+      onClose={onClose}
+    >
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onClose();
+        }}
+      >
         <div className="grid grid-cols-2 gap-4">
-          <TextInput title="PSO Code" required placeholder="e.g. PSO1" value={form.code} onChange={(e) => set("code", e.target.value)} />
-          <CustomSelect title="Programme" required options={PROG_OPTS} value={form.programme} onChange={(v) => set("programme", v)} placeholder="Select Programme" />
+          <TextInput
+            title="PSO Code"
+            required
+            placeholder="e.g. PSO1"
+            value={form.code}
+            onChange={(e) => set("code", e.target.value)}
+          />
+          <CustomSelect
+            title="Programme"
+            required
+            options={PROG_OPTS}
+            value={form.programme}
+            onChange={(v) => set("programme", v)}
+            placeholder="Select Programme"
+          />
         </div>
         <div className="mt-4">
           <TextArea
             title="Description"
             required
             rows={3}
-            placeholder="e.g. Apply knowledge of computing to solve real-world problems."
+            placeholder="e.g. Apply knowledge of computing..."
             value={form.description}
             onChange={(e) => set("description", e.target.value)}
           />
         </div>
-        <div className="mt-4">
-          <CustomSelect title="Status" options={STATUS_OPTS} value={form.status} onChange={(v) => set("status", v)} placeholder="Active" />
+        <div className="mt-3 grid grid-cols-2 gap-4">
+           <TextInput
+            title="Version"
+            required
+            placeholder="e.g. v1.04"
+            value={form.version}
+            onChange={(e) => set("version", e.target.value)}
+          />
+          <CustomSelect
+            title="Status"
+            options={STATUS_OPTS}
+            value={form.status}
+            onChange={(v) => set("status", v)}
+            placeholder="Active"
+          />
         </div>
-        <ModalFooter onClose={onClose} submitLabel="Create PSO" />
+        <ModalFooter
+          onClose={onClose}
+          submitLabel={isEdit ? "Update PSO" : "Create PSO"}
+        />
       </form>
     </ModalShell>
   );

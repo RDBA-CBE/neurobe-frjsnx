@@ -30,7 +30,7 @@ const ProgrammesTable = ({ search, statusFilter, loading }: Props) => {
       customLoader={<div className="flex items-center justify-center py-12"><IconLoader className="h-6 w-6 animate-spin text-[#7c3aed]" /></div>}
       columns={[
         { accessor: "code",       title: "CODE",       render: ({ code }) => <span className="font-medium text-[#7c3aed]">{code}</span> },
-        { accessor: "name",       title: "PROGRAMME NAME", render: ({ name }) => <span className="text-gray-800 dark:text-gray-200">{name}</span> },
+        { accessor: "name",       title: "PROGRAMME NAME", render: ({ name }) => <span className="text-[#000] dark:text-gray-200">{name}</span> },
         { accessor: "department", title: "DEPARTMENT", render: ({ department }) => <span className="text-[#000] dark:text-gray-400">{department}</span> },
         { accessor: "duration",   title: "DURATION",   render: ({ duration }) => <span className="text-[#000] dark:text-gray-400">{duration}</span> },
         { accessor: "type",       title: "TYPE",       render: ({ type }) => (

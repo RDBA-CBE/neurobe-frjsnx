@@ -31,7 +31,7 @@ const DownloadTemplate = ({ importType, onDownload }: DownloadTemplateProps) => 
         <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-color2 text-xs font-bold text-white">
           1
         </span>
-        <h3 className="text-sm font-semibold text-gray-800 dark:text-white">
+        <h3 className="text-sm font-semibold text-[#000] dark:text-white">
           Download Template
         </h3>
       </div>
@@ -44,11 +44,11 @@ const DownloadTemplate = ({ importType, onDownload }: DownloadTemplateProps) => 
       {/* Required / Optional fields card */}
       <div className="mb-5 flex-1 rounded-xl border  border-gray-300 bg-gray-50 px-5 py-4 dark:border-gray-600 dark:bg-gray-800/50">
         <p className="mb-2 text-sm text-[#000] dark:text-gray-300">
-          <span className="font-semibold text-gray-800 dark:text-white">Required: </span>
+          <span className="font-semibold text-[#000] dark:text-white">Required: </span>
           {meta.required.join(", ")}
         </p>
         <p className="text-sm text-[#000] dark:text-gray-300">
-          <span className="font-semibold text-gray-800 dark:text-white">Optional: </span>
+          <span className="font-semibold text-[#000] dark:text-white">Optional: </span>
           {meta.optional.join(", ")}
         </p>
       </div>

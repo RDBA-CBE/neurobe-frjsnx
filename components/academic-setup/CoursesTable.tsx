@@ -33,7 +33,7 @@ const CoursesTable = ({ search, statusFilter, deptFilter, loading }: Props) => {
       customLoader={<div className="flex items-center justify-center py-12"><IconLoader className="h-6 w-6 animate-spin text-[#7c3aed]" /></div>}
       columns={[
         { accessor: "code",   title: "COURSE CODE",  render: ({ code }) => <span className="font-medium text-[#7c3aed]">{code}</span> },
-        { accessor: "title",  title: "COURSE TITLE", render: ({ title }) => <span className="text-gray-800 dark:text-gray-200">{title}</span> },
+        { accessor: "title",  title: "COURSE TITLE", render: ({ title }) => <span className="text-[#000] dark:text-gray-200">{title}</span> },
         { accessor: "l",      title: "L",            render: ({ l }) => <span className="text-[#000] dark:text-gray-400">{l}</span> },
         { accessor: "t",      title: "T",            render: ({ t }) => <span className="text-[#000] dark:text-gray-400">{t}</span> },
         { accessor: "p",      title: "P",            render: ({ p }) => <span className="text-[#000] dark:text-gray-400">{p}</span> },

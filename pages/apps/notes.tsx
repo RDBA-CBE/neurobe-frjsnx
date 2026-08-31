@@ -682,7 +682,7 @@ const Notes = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => setAddContactModal(false)}
-                                                className="absolute top-4 text-gray-400 outline-none hover:text-gray-800 ltr:right-4 rtl:left-4 dark:hover:text-[#000]"
+                                                className="absolute top-4 text-gray-400 outline-none hover:text-[#000] ltr:right-4 rtl:left-4 dark:hover:text-[#000]"
                                             >
                                                 <IconX />
                                             </button>
@@ -785,7 +785,7 @@ const Notes = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => setIsDeleteNoteModal(false)}
-                                                className="absolute top-4 text-gray-400 outline-none hover:text-gray-800 ltr:right-4 rtl:left-4 dark:hover:text-[#000]"
+                                                className="absolute top-4 text-gray-400 outline-none hover:text-[#000] ltr:right-4 rtl:left-4 dark:hover:text-[#000]"
                                             >
                                                 <IconX />
                                             </button>
@@ -841,7 +841,7 @@ const Notes = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => setIsViewNoteModal(false)}
-                                                className="absolute top-4 text-gray-400 outline-none hover:text-gray-800 ltr:right-4 rtl:left-4 dark:hover:text-[#000]"
+                                                className="absolute top-4 text-gray-400 outline-none hover:text-[#000] ltr:right-4 rtl:left-4 dark:hover:text-[#000]"
                                             >
                                                 <IconX />
                                             </button>

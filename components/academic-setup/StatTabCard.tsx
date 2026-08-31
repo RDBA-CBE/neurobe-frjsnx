@@ -21,7 +21,7 @@ const StatTabCard = ({
       className={`flex flex-col cursor-pointer  justify-between rounded-2xl border p-5 transition-all duration-200 ${
         active
           ? "border-transparent bg-[#7c3aed] text-white shadow-lg"
-          : "border-gray-200 bg-white text-gray-800 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+          : "border-gray-200 bg-white text-[#000] hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:text-white"
       }`}
     >
       <div className="flex flex-row justify-between gap-1">
@@ -30,7 +30,7 @@ const StatTabCard = ({
         </div>
         <span
           className={`text-3xl font-bold ${
-            active ? "text-white" : "text-gray-800 dark:text-white"
+            active ? "text-white" : "text-[#000] dark:text-white"
           }`}
         >
           {count}
@@ -39,7 +39,7 @@ const StatTabCard = ({
 
       <p
         className={`mt-2 text-lg font-bold ${
-          active ? "text-white" : "text-gray-800 dark:text-white"
+          active ? "text-white" : "text-[#000] dark:text-white"
         }`}
       >
         {label}

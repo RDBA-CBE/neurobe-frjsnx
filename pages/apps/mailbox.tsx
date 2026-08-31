@@ -1772,7 +1772,7 @@ const Mailbox = () => {
                                                         </td>
                                                         <td>
                                                             <div className="line-clamp-1 min-w-[300px] overflow-hidden font-medium text-white-dark">
-                                                                <span className={`${mail.isUnread ? 'font-semibold text-gray-800 dark:text-gray-300' : ''}`}>
+                                                                <span className={`${mail.isUnread ? 'font-semibold text-[#000] dark:text-gray-300' : ''}`}>
                                                                     <span>{mail.title}</span> &minus;
                                                                     <span> {mail.displayDescription}</span>
                                                                 </span>
