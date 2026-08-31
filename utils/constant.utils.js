@@ -584,7 +584,7 @@ export const OwnmenuConfig = {
       type: "link",
       icon: "IconMenuUsers",
       label: "User Management",
-      href: "/",
+      href: "/neurobe/user-list",
     },
 
     {
