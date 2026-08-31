@@ -1,9 +1,12 @@
 import instance from '@/utils/axios.utils';
 
 const test = {
-    list: () => {
+    list: (body) => {
         let promise = new Promise((resolve, reject) => {
             let url = 'filter/leads';
+            if (body?.search) {
+                url += `&search=${encodeURIComponent(body.search)}`;
+              }
             instance()
                 .get(url)
                 .then((res) => {
