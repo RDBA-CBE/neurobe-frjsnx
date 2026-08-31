@@ -12,6 +12,7 @@ export default function Modal(props: any) {
     addHeader,
     updateHeader,
     subTitle,
+    modalIcon,
     isFullWidth,
     maxWidth = "max-w-xl",
     padding,
@@ -60,7 +61,12 @@ export default function Modal(props: any) {
                 {/* SUBTITLE */}
                 {subTitle || closeIcon ? (
                   <div className="flex items-center justify-between border-b border-gray-200 bg-[#fbfbfb] px-5 py-3 dark:border-gray-700 dark:bg-[#121c2c]">
-                    <div className="flex-1">
+                    <div className="flex-1 flex items-center gap-3">
+                      {modalIcon && (
+                        <div className="flex-shrink-0">
+                          {modalIcon}
+                        </div>
+                      )}
                       {subTitle && (
                         <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                           {subTitle}

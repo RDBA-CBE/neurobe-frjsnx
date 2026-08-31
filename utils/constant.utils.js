@@ -578,13 +578,13 @@ export const OwnmenuConfig = {
       type: "link",
       icon: "IconMenuForms",
       label: "Course Offerings",
-      href: "/",
+      href: "/neurobe/course-offerings",
     },
     {
       type: "link",
       icon: "IconMenuUsers",
       label: "User Management",
-      href: "/",
+      href: "/neurobe/user-list",
     },
 
     {

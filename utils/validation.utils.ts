@@ -380,3 +380,106 @@ export const update_hr = Yup.object().shape({
   gender: Yup.string().required("Gender is required"),
   profile_institution: Yup.string().required("Institution is required"),
 });
+
+// Course Offering Validations
+export const CreateCourseOfferingForm = Yup.object().shape({
+  academic_programme: Yup.string().required("Academic programme is required"),
+  batch: Yup.string().required("Batch is required"),
+  academic_year: Yup.string().required("Academic year is required"),
+  academic_term: Yup.string().required("Academic term / semester is required"),
+  course: Yup.string().required("Course is required"),
+  course_coordinator: Yup.string().required("Course coordinator is required"),
+  additional_instructors: Yup.array().min(0, "Select at least one additional instructor"),
+});
+
+// Academic Setup Validations
+export const CreateDepartmentForm = Yup.object().shape({
+  department_name: Yup.string()
+    .required("Department name is required")
+    .min(3, "Department name must be at least 3 characters"),
+  short_name: Yup.string()
+    .required("Short name / Code is required")
+    .min(1, "Short name must be at least 1 character")
+    .max(10, "Short name must not exceed 10 characters"),
+  status: Yup.string().required("Status is required"),
+});
+
+export const CreateProgrammeForm = Yup.object().shape({
+  programme_name: Yup.string()
+    .required("Programme name is required")
+    .min(3, "Programme name must be at least 3 characters"),
+  short_name: Yup.string()
+    .required("Short name is required")
+    .min(1, "Short name must be at least 1 character")
+    .max(10, "Short name must not exceed 10 characters"),
+  associated_department: Yup.string().required("Associated department is required"),
+  degree_level: Yup.string().required("Degree level is required"),
+  status: Yup.string().required("Status is required"),
+});
+
+export const CreateBatchForm = Yup.object().shape({
+  batch_year: Yup.string().required("Batch year is required"),
+  associated_programme: Yup.string().required("Associated programme is required"),
+  status: Yup.string().required("Status is required"),
+});
+
+export const CreateCourseForm = Yup.object().shape({
+  course_code: Yup.string()
+    .required("Course code is required")
+    .min(1, "Course code must be at least 1 character"),
+  course_title: Yup.string()
+    .required("Course title is required")
+    .min(3, "Course title must be at least 3 characters"),
+  department: Yup.string().required("Department is required"),
+  status: Yup.string().required("Status is required"),
+  lecture_hours: Yup.number()
+    .required("Lecture hours is required")
+    .min(0, "Lecture hours must be non-negative"),
+  tutorial_hours: Yup.number()
+    .required("Tutorial hours is required")
+    .min(0, "Tutorial hours must be non-negative"),
+  practical_hours: Yup.number()
+    .required("Practical hours is required")
+    .min(0, "Practical hours must be non-negative"),
+  credits: Yup.number()
+    .required("Credits is required")
+    .min(0, "Credits must be non-negative"),
+  total_theory_hours: Yup.number()
+    .required("Total theory hours is required")
+    .min(0, "Total theory hours must be non-negative"),
+  total_lab_hours: Yup.number()
+    .required("Total lab hours is required")
+    .min(0, "Total lab hours must be non-negative"),
+});
+
+export const CreatePSOForm = Yup.object().shape({
+  pso_code: Yup.string()
+    .required("PSO code is required")
+    .min(1, "PSO code must be at least 1 character"),
+  programme: Yup.string().required("Programme is required"),
+  pso_statement: Yup.string()
+    .required("PSO statement description is required")
+    .min(10, "PSO statement must be at least 10 characters"),
+  version: Yup.string().required("Version is required"),
+  status: Yup.string().required("Status is required"),
+});
+
+// User Management Validations
+export const CreateUserForm = Yup.object().shape({
+  first_name: Yup.string()
+    .required("First name is required")
+    .min(2, "First name must be at least 2 characters"),
+  last_name: Yup.string()
+    .required("Last name is required")
+    .min(2, "Last name must be at least 2 characters"),
+  email: Yup.string()
+    .email("Please enter a valid email address")
+    .required("Email is required"),
+  register_number: Yup.string()
+    .required("Register / Employee number is required")
+    .min(3, "Register number must be at least 3 characters"),
+  role: Yup.string().required("Role is required"),
+  department: Yup.string().required("Department is required"),
+  programme: Yup.string().required("Programme is required"),
+  batch: Yup.string().required("Batch is required"),
+});

@@ -282,7 +282,7 @@ const LoginBoxed = () => {
                 <PrimaryButton
                   type="submit"
                   text="Submit"
-                  className="btn bg-dblue !mt-6 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]"
+                  className="btn bg-color2 !mt-6 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]"
                   loading={state.btnLoading}
                 />
               </form>
