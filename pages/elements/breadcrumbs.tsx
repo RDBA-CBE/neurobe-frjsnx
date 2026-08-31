@@ -43,7 +43,7 @@ const Breadcrumbs = () => {
                             onClick={() => {
                                 toggleCode('code1');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -52,9 +52,9 @@ const Breadcrumbs = () => {
                         </button>
                     </div>
                     <div className="mb-5">
-                        <ol className="flex font-semibold text-gray-500 dark:text-white-dark">
+                        <ol className="flex font-semibold text-[#000] dark:text-white-dark">
                             <li>
-                                <button className="hover:text-gray-500/70 dark:hover:text-white-dark/70">
+                                <button className="hover:text-[#000]/70 dark:hover:text-white-dark/70">
                                     <IconHome className="w-4 h-4" />
                                 </button>
                             </li>
@@ -69,9 +69,9 @@ const Breadcrumbs = () => {
                     {codeArr.includes('code1') && (
                         <CodeHighlight>
                             <pre className="language-xml">
-                                {`<ol className="flex text-gray-500 font-semibold dark:text-white-dark">
+                                {`<ol className="flex text-[#000] font-semibold dark:text-white-dark">
     <li>
-        <button className="hover:text-gray-500/70 dark:hover:text-white-dark/70">
+        <button className="hover:text-[#000]/70 dark:hover:text-white-dark/70">
         <svg>...</svg>
         </button>
     </li>
@@ -94,7 +94,7 @@ const Breadcrumbs = () => {
                             onClick={() => {
                                 toggleCode('code2');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -103,7 +103,7 @@ const Breadcrumbs = () => {
                         </button>
                     </div>
                     <div className="mb-5">
-                        <ol className="flex font-semibold text-gray-500 dark:text-white-dark">
+                        <ol className="flex font-semibold text-[#000] dark:text-white-dark">
                             <li>
                                 <button type="button">Components</button>
                             </li>
@@ -115,7 +115,7 @@ const Breadcrumbs = () => {
                     {codeArr.includes('code2') && (
                         <CodeHighlight>
                             <pre className="language-xml">
-                                {`<ol className="flex text-gray-500 font-semibold dark:text-white-dark">
+                                {`<ol className="flex text-[#000] font-semibold dark:text-white-dark">
     <li>
         <button type="button">Components</button>
     </li>
@@ -135,7 +135,7 @@ const Breadcrumbs = () => {
                             onClick={() => {
                                 toggleCode('code3');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -194,7 +194,7 @@ const Breadcrumbs = () => {
                             onClick={() => {
                                 toggleCode('code4');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -203,30 +203,30 @@ const Breadcrumbs = () => {
                         </button>
                     </div>
                     <div className="mb-5">
-                        <ol className="flex font-semibold text-gray-500 dark:text-white-dark">
+                        <ol className="flex font-semibold text-[#000] dark:text-white-dark">
                             <li>
-                                <button className="hover:text-gray-500/70 dark:hover:text-white-dark/70">Home</button>
+                                <button className="hover:text-[#000]/70 dark:hover:text-white-dark/70">Home</button>
                             </li>
                             <li className="before:relative before:-top-0.5 before:mx-4 before:inline-block before:h-1 before:w-1 before:rounded-full before:bg-primary">
                                 <button className="text-primary">Components</button>
                             </li>
                             <li className="before:relative before:-top-0.5 before:mx-4 before:inline-block before:h-1 before:w-1 before:rounded-full before:bg-primary">
-                                <button className="hover:text-gray-500/70 dark:hover:text-white-dark/70">UI Kit</button>
+                                <button className="hover:text-[#000]/70 dark:hover:text-white-dark/70">UI Kit</button>
                             </li>
                         </ol>
                     </div>
                     {codeArr.includes('code4') && (
                         <CodeHighlight>
                             <pre className="language-xml">
-                                {`<ol className="flex text-gray-500 font-semibold dark:text-white-dark">
+                                {`<ol className="flex text-[#000] font-semibold dark:text-white-dark">
     <li>
-        <button className="hover:text-gray-500/70 dark:hover:text-white-dark/70">Home</button>
+        <button className="hover:text-[#000]/70 dark:hover:text-white-dark/70">Home</button>
     </li>
     <li className="before:w-1 before:h-1 before:rounded-full before:bg-primary before:inline-block before:relative before:-top-0.5 before:mx-4">
         <button className="text-primary">Components</button>
     </li>
     <li className="before:w-1 before:h-1 before:rounded-full before:bg-primary before:inline-block before:relative before:-top-0.5 before:mx-4">
-        <button className="hover:text-gray-500/70 dark:hover:text-white-dark/70">UI Kit</button>
+        <button className="hover:text-[#000]/70 dark:hover:text-white-dark/70">UI Kit</button>
     </li>
 </ol>`}
                             </pre>
@@ -241,7 +241,7 @@ const Breadcrumbs = () => {
                             onClick={() => {
                                 toggleCode('code5');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -250,9 +250,9 @@ const Breadcrumbs = () => {
                         </button>
                     </div>
                     <div className="mb-5">
-                        <ol className="flex flex-wrap items-center gap-y-4 font-semibold text-gray-500 dark:text-white-dark">
+                        <ol className="flex flex-wrap items-center gap-y-4 font-semibold text-[#000] dark:text-white-dark">
                             <li>
-                                <button className="flex items-center justify-center rounded-md border border-gray-500/20 p-2.5 shadow hover:text-gray-500/70 dark:border-0 dark:bg-[#191e3a] dark:hover:text-white-dark/70">
+                                <button className="flex items-center justify-center rounded-md border border-gray-500/20 p-2.5 shadow hover:text-[#000]/70 dark:border-0 dark:bg-[#191e3a] dark:hover:text-white-dark/70">
                                     <IconHome />
                                 </button>
                             </li>
@@ -263,7 +263,7 @@ const Breadcrumbs = () => {
                                 </button>
                             </li>
                             <li className="flex items-center before:relative before:-top-0.5 before:mx-4 before:inline-block before:h-1 before:w-1 before:rounded-full before:bg-primary">
-                                <button className="flex items-center justify-center rounded-md border border-gray-500/20 p-2.5 shadow hover:text-gray-500/70 dark:border-0 dark:bg-[#191e3a] dark:hover:text-white-dark/70">
+                                <button className="flex items-center justify-center rounded-md border border-gray-500/20 p-2.5 shadow hover:text-[#000]/70 dark:border-0 dark:bg-[#191e3a] dark:hover:text-white-dark/70">
                                     <IconCpuBolt className="ltr:mr-2 rtl:ml-2" />
                                     UI Kit
                                 </button>
@@ -273,9 +273,9 @@ const Breadcrumbs = () => {
                     {codeArr.includes('code5') && (
                         <CodeHighlight>
                             <pre className="language-xml">
-                                {`<ol className="flex items-center flex-wrap text-gray-500 font-semibold dark:text-white-dark gap-y-4">
+                                {`<ol className="flex items-center flex-wrap text-[#000] font-semibold dark:text-white-dark gap-y-4">
     <li>
-        <button className="p-2.5 border border-gray-500/20 rounded-md shadow flex items-center justify-center dark:border-0 dark:bg-[#191e3a] hover:text-gray-500/70 dark:hover:text-white-dark/70">
+        <button className="p-2.5 border border-gray-500/20 rounded-md shadow flex items-center justify-center dark:border-0 dark:bg-[#191e3a] hover:text-[#000]/70 dark:hover:text-white-dark/70">
         <svg>...</svg>
         </button>
     </li>
@@ -286,7 +286,7 @@ const Breadcrumbs = () => {
         </button>
     </li>
     <li className="flex items-center before:w-1 before:h-1 before:rounded-full before:bg-primary before:inline-block before:relative before:-top-0.5 before:mx-4">
-        <button className="p-2.5 border border-gray-500/20 rounded-md shadow flex items-center justify-center dark:border-0 dark:bg-[#191e3a] hover:text-gray-500/70 dark:hover:text-white-dark/70">
+        <button className="p-2.5 border border-gray-500/20 rounded-md shadow flex items-center justify-center dark:border-0 dark:bg-[#191e3a] hover:text-[#000]/70 dark:hover:text-white-dark/70">
             <svg>...</svg>
             UI Kit
         </button>

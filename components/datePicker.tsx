@@ -60,7 +60,7 @@ const CustomeDatePicker: React.FC<CustomeDatePickerProps> = (props) => {
   return (
     <div className="w-full">
       {title && (
-        <label className="mb-1 block text-sm font-bold text-gray-700">
+        <label className="mb-1 block text-sm font-bold text-[#000]">
           {title} {required && <span className="text-red-500">*</span>}
         </label>
       )}

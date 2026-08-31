@@ -189,12 +189,12 @@ const UpdatePropertyImagePreview: React.FC<ImageUploadProps> = ({
         <Upload className="mx-auto mb-4  w-12 text-blue-500" />
 
         <div className="space-y-2">
-          <p className="text-lg font-semibold text-gray-700">{title}</p>
+          <p className="text-lg font-semibold text-[#000]">{title}</p>
           {description ? (
-            <p className="text-sm text-gray-500">{description}</p>
+            <p className="text-sm text-[#000]">{description}</p>
           ) : (
             validateDimensions && (
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-[#000]">
                 Photos must be JPEG or PNG format and at least {minWidth}x
                 {minHeight}
               </p>
@@ -230,7 +230,7 @@ const UpdatePropertyImagePreview: React.FC<ImageUploadProps> = ({
               }}
               className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-2 shadow-lg hover:bg-gray-100"
             >
-              <ChevronLeft className="h-5 w-5 text-gray-600" />
+              <ChevronLeft className="h-5 w-5 text-[#000]" />
             </button>
           )}
 
@@ -277,7 +277,7 @@ const UpdatePropertyImagePreview: React.FC<ImageUploadProps> = ({
               }}
               className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-2 shadow-lg hover:bg-gray-100"
             >
-              <ChevronRight className="h-5 w-5 text-gray-600" />
+              <ChevronRight className="h-5 w-5 text-[#000]" />
             </button>
           )}
         </div>

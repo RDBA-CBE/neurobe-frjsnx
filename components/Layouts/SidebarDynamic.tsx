@@ -236,7 +236,7 @@ const SidebarDynamic = () => {
               duration={300}
               height={currentMenu === item.key ? "auto" : 0}
             >
-              <ul className="sub-menu text-gray-500">
+              <ul className="sub-menu text-[#000]">
                 {item.children.map((item, index) => (
                   <li key={index}>
                     <Link href={item.href}>{t(item.label)}</Link>
@@ -270,7 +270,7 @@ const SidebarDynamic = () => {
     className={`sidebar fixed bottom-0 top-0 z-50 h-full w-[270px] 
       transition-all duration-300 lg:top-[72px] 
       lg:max-h-[calc(100vh-72px)]
-      bg-[#020F3F]
+      bg-color1
       ${semidark ? "text-white-dark" : ""}`}
   >
     <div className="h-full dark:bg-black">

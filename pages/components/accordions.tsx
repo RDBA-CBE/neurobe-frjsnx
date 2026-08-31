@@ -76,7 +76,7 @@ const Accordians = () => {
                     <div className="panel" id="basic">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Basic</h5>
-                            <button onClick={() => toggleCode('code1')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                            <button onClick={() => toggleCode('code1')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -286,7 +286,7 @@ const [active, setActive] = useState<string>('1');
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Without Spacing</h5>
-                            <button className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code2')}>
+                            <button className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code2')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -500,7 +500,7 @@ const [active1, setActive1] = useState<string>('1');
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Icons</h5>
-                            <button onClick={() => toggleCode('code3')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                            <button onClick={() => toggleCode('code3')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -723,7 +723,7 @@ const [active2, setActive2] = useState<string>('1');
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">No Icons</h5>
-                            <button onClick={() => toggleCode('code4')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                            <button onClick={() => toggleCode('code4')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code

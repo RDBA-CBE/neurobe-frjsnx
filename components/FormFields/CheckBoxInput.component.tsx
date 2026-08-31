@@ -37,7 +37,7 @@ const CheckboxInput: React.FC<InputProps> = ({
                     disabled={disabled}
                     className={`form-${type} ${error ? 'border-red-500' : ''}`}
                 />
-                <span className={`ml-1 text-gray-700 ${labelStyle || "text-sm font-medium"}`}>{label}</span>
+                <span className={`ml-1 text-[#000] ${labelStyle || "text-sm font-medium"}`}>{label}</span>
             </label>
             {error && (
                 <p className="mt-2 text-sm text-red-600" id={`${name}-error`}>

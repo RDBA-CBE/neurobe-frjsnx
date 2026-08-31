@@ -67,7 +67,7 @@ const Treeview = () => {
                             onClick={() => {
                                 toggleCode('code1');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -285,7 +285,7 @@ const toggleTreeview1 = (name: any) => {
                             onClick={() => {
                                 toggleCode('code2');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />

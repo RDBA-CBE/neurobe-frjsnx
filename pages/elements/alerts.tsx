@@ -41,7 +41,7 @@ const Alerts = () => {
                 <div className="panel" id="default">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Default Alerts</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code1')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code1')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
                                 Code
@@ -168,7 +168,7 @@ const Alerts = () => {
                             onClick={() => {
                                 toggleCode('code2');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -227,7 +227,7 @@ const Alerts = () => {
                             onClick={() => {
                                 toggleCode('code3');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -286,7 +286,7 @@ const Alerts = () => {
                             onClick={() => {
                                 toggleCode('code4');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -357,7 +357,7 @@ const Alerts = () => {
                             onClick={() => {
                                 toggleCode('code5');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -428,7 +428,7 @@ const Alerts = () => {
                             onClick={() => {
                                 toggleCode('code6');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />

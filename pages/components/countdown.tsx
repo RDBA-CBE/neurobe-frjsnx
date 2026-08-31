@@ -102,7 +102,7 @@ const Countdown = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Simple Countdown</h5>
-                        <button onClick={() => toggleCode('code1')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                        <button onClick={() => toggleCode('code1')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -212,7 +212,7 @@ const Countdown = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Circle Countdown</h5>
-                        <button onClick={() => toggleCode('code2')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                        <button onClick={() => toggleCode('code2')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code

@@ -814,6 +814,10 @@ pre.hljs {
   background-color: #ECE3FC;
 }
 
+.bg-sec{
+  background-color: #F1F5F9;
+}
+
 .text-color1 {
   color: #000E3B;
 }
@@ -829,6 +833,8 @@ pre.hljs {
 .text-pri{
   color: #757576;
 }
+
+
 
 .border-color1 {
   border-color: #000E3B;

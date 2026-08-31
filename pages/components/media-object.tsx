@@ -50,7 +50,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Simple</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code1')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code1')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -97,7 +97,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Order</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code2')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code2')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -145,7 +145,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Top-aligned media</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code3')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code3')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -193,7 +193,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Center-aligned media</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code4')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code4')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -240,7 +240,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Bottom-aligned media</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code5')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code5')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -287,7 +287,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Right Aligned</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code6')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code6')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -336,7 +336,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Media list</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code7')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code7')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -431,7 +431,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Nesting</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code8')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code8')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -502,7 +502,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Notation Text</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code9')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code9')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -583,7 +583,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Notation Icon</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code10')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code10')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -670,7 +670,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Badge</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code11')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code11')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -723,7 +723,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Dropdown List</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code12')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code12')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -836,7 +836,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Labels</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code13')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code13')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -907,7 +907,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Checkbox</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code14')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code14')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -978,7 +978,7 @@ const MediaObject = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Radio</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" onClick={() => toggleCode('code15')}>
+                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code15')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code

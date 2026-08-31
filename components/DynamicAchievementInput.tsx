@@ -41,7 +41,7 @@ export default function DynamicAchievementInput({
   return (
     <div>
       {title && (
-        <label className="mb-2 block text-sm font-bold text-gray-700">
+        <label className="mb-2 block text-sm font-bold text-[#000]">
           {title} {required && <span className="text-red-500">*</span>}
         </label>
       )}

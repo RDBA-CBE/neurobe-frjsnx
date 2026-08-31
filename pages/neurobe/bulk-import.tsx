@@ -47,7 +47,7 @@ const BulkImport = () => {
   return (
     <div className="min-h-screen">
       {/* Breadcrumb */}
-      <ul className="mb-1 flex space-x-2 text-xs font-medium text-gray-500 dark:text-gray-400">
+      <ul className="mb-1 flex space-x-2 text-xs font-medium text-[#000] dark:text-gray-400">
         <li>Karpagam Institutions</li>
         <li className="before:content-['>'] before:mx-1.5 text-color2 uppercase">
           Bulk Import

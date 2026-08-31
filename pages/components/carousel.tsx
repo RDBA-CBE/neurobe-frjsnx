@@ -58,7 +58,7 @@ const Carousel = () => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Basic</h5>
-                            <button onClick={() => toggleCode('code1')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                            <button onClick={() => toggleCode('code1')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -138,7 +138,7 @@ import { Navigation, Pagination, Autoplay } from 'swiper';
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Autopaly</h5>
-                            <button onClick={() => toggleCode('code2')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                            <button onClick={() => toggleCode('code2')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -239,7 +239,7 @@ import { Navigation, Pagination, Autoplay } from 'swiper';
                     <div className="panel relative">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Vertical</h5>
-                            <button onClick={() => toggleCode('code3')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                            <button onClick={() => toggleCode('code3')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -294,7 +294,7 @@ import { Navigation, Pagination, Autoplay } from 'swiper';
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Loop</h5>
-                            <button onClick={() => toggleCode('code4')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                            <button onClick={() => toggleCode('code4')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -416,7 +416,7 @@ import { Navigation, Pagination, Autoplay } from 'swiper';
                     <div className="panel lg:col-span-2">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Multiple Slides</h5>
-                            <button onClick={() => toggleCode('code5')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                            <button onClick={() => toggleCode('code5')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code

@@ -38,7 +38,7 @@ export const MOCK_DEPARTMENTS = [
 export const DEPARTMENT_COLUMNS = [
   { accessor: "code",       title: "CODE",             render: ({ code }: any)       => <PurpleCode code={code} /> },
   { accessor: "name",       title: "DEPARTMENT NAME",  render: ({ name }: any)       => <span className="text-gray-800 dark:text-gray-200">{name}</span> },
-  { accessor: "hod",        title: "HEAD OF DEPT",     render: ({ hod }: any)        => <span className="text-gray-600 dark:text-gray-400">{hod}</span> },
+  { accessor: "hod",        title: "HEAD OF DEPT",     render: ({ hod }: any)        => <span className="text-[#000] dark:text-gray-400">{hod}</span> },
   { accessor: "programmes", title: "PROGRAMMES",       render: ({ programmes }: any) => <PurpleBadge value={programmes} /> },
   { accessor: "status",     title: "STATUS",           render: ({ status }: any)     => <StatusCell status={status} /> },
   { accessor: "actions",    title: "ACTIONS",          render: ()                    => <ActionCell /> },
@@ -55,8 +55,8 @@ export const MOCK_PROGRAMMES = [
 export const PROGRAMME_COLUMNS = [
   { accessor: "code",       title: "CODE",           render: ({ code }: any)       => <PurpleCode code={code} /> },
   { accessor: "name",       title: "PROGRAMME NAME", render: ({ name }: any)       => <span className="text-gray-800 dark:text-gray-200">{name}</span> },
-  { accessor: "department", title: "DEPARTMENT",     render: ({ department }: any) => <span className="text-gray-600 dark:text-gray-400">{department}</span> },
-  { accessor: "duration",   title: "DURATION",       render: ({ duration }: any)   => <span className="text-gray-600 dark:text-gray-400">{duration}</span> },
+  { accessor: "department", title: "DEPARTMENT",     render: ({ department }: any) => <span className="text-[#000] dark:text-gray-400">{department}</span> },
+  { accessor: "duration",   title: "DURATION",       render: ({ duration }: any)   => <span className="text-[#000] dark:text-gray-400">{duration}</span> },
   { accessor: "type",       title: "TYPE",           render: ({ type }: any)       => (
     <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">{type}</span>
   )},
@@ -77,9 +77,9 @@ export const MOCK_BATCHES = [
 export const BATCH_COLUMNS = [
   { accessor: "code",      title: "BATCH CODE", render: ({ code }: any)      => <PurpleCode code={code} /> },
   { accessor: "name",      title: "BATCH NAME", render: ({ name }: any)      => <span className="text-gray-800 dark:text-gray-200">{name}</span> },
-  { accessor: "programme", title: "PROGRAMME",  render: ({ programme }: any) => <span className="text-gray-600 dark:text-gray-400">{programme}</span> },
-  { accessor: "startYear", title: "START YEAR", render: ({ startYear }: any) => <span className="text-gray-600 dark:text-gray-400">{startYear}</span> },
-  { accessor: "endYear",   title: "END YEAR",   render: ({ endYear }: any)   => <span className="text-gray-600 dark:text-gray-400">{endYear}</span> },
+  { accessor: "programme", title: "PROGRAMME",  render: ({ programme }: any) => <span className="text-[#000] dark:text-gray-400">{programme}</span> },
+  { accessor: "startYear", title: "START YEAR", render: ({ startYear }: any) => <span className="text-[#000] dark:text-gray-400">{startYear}</span> },
+  { accessor: "endYear",   title: "END YEAR",   render: ({ endYear }: any)   => <span className="text-[#000] dark:text-gray-400">{endYear}</span> },
   { accessor: "students",  title: "STUDENTS",   render: ({ students }: any)  => <PurpleBadge value={students} /> },
   { accessor: "status",    title: "STATUS",     render: ({ status }: any)    => <StatusCell status={status} /> },
   { accessor: "actions",   title: "ACTIONS",    render: ()                   => <ActionCell /> },
@@ -98,12 +98,12 @@ export const MOCK_COURSES = [
 export const COURSE_COLUMNS = [
   { accessor: "code",   title: "COURSE CODE",  render: ({ code }: any)   => <PurpleCode code={code} /> },
   { accessor: "title",  title: "COURSE TITLE", render: ({ title }: any)  => <span className="text-gray-800 dark:text-gray-200">{title}</span> },
-  { accessor: "l",      title: "L",            render: ({ l }: any)      => <span className="text-gray-600 dark:text-gray-400">{l}</span> },
-  { accessor: "t",      title: "T",            render: ({ t }: any)      => <span className="text-gray-600 dark:text-gray-400">{t}</span> },
-  { accessor: "p",      title: "P",            render: ({ p }: any)      => <span className="text-gray-600 dark:text-gray-400">{p}</span> },
+  { accessor: "l",      title: "L",            render: ({ l }: any)      => <span className="text-[#000] dark:text-gray-400">{l}</span> },
+  { accessor: "t",      title: "T",            render: ({ t }: any)      => <span className="text-[#000] dark:text-gray-400">{t}</span> },
+  { accessor: "p",      title: "P",            render: ({ p }: any)      => <span className="text-[#000] dark:text-gray-400">{p}</span> },
   { accessor: "c",      title: "C",            render: ({ c }: any)      => <PurpleBadge value={c} /> },
-  { accessor: "theory", title: "THEORY HOURS", render: ({ theory }: any) => <span className="text-gray-600 dark:text-gray-400">{theory}</span> },
-  { accessor: "lab",    title: "LAB HOURS",    render: ({ lab }: any)    => <span className="text-gray-600 dark:text-gray-400">{lab}</span> },
+  { accessor: "theory", title: "THEORY HOURS", render: ({ theory }: any) => <span className="text-[#000] dark:text-gray-400">{theory}</span> },
+  { accessor: "lab",    title: "LAB HOURS",    render: ({ lab }: any)    => <span className="text-[#000] dark:text-gray-400">{lab}</span> },
   { accessor: "status", title: "STATUS",       render: ({ status }: any) => <StatusCell status={status} /> },
   { accessor: "actions",title: "ACTIONS",      render: ()                => <ActionCell /> },
 ];
@@ -120,7 +120,7 @@ export const MOCK_PSOS = [
 
 export const PSO_COLUMNS = [
   { accessor: "code",        title: "PSO CODE",   render: ({ code }: any)        => <PurpleCode code={code} /> },
-  { accessor: "programme",   title: "PROGRAMME",  render: ({ programme }: any)   => <span className="text-gray-600 dark:text-gray-400">{programme}</span> },
+  { accessor: "programme",   title: "PROGRAMME",  render: ({ programme }: any)   => <span className="text-[#000] dark:text-gray-400">{programme}</span> },
   { accessor: "description", title: "DESCRIPTION",render: ({ description }: any) => <span className="max-w-md whitespace-normal text-gray-800 dark:text-gray-200">{description}</span> },
   { accessor: "status",      title: "STATUS",     render: ({ status }: any)      => <StatusCell status={status} /> },
   { accessor: "actions",     title: "ACTIONS",    render: ()                     => <ActionCell /> },

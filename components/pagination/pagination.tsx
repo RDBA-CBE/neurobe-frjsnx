@@ -68,7 +68,7 @@ const Pagination = (props) => {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       {/* Records Info */}
-      <div className="text-sm text-gray-600 dark:text-gray-400">
+      <div className="text-sm text-[#000] dark:text-gray-400">
         Showing <span className="font-medium text-gray-900 dark:text-white">{startRecord}</span> to{" "}
         <span className="font-medium text-gray-900 dark:text-white">{endRecord}</span> of{" "}
         <span className="font-medium text-gray-900 dark:text-white">{totalPage}</span> results
@@ -82,8 +82,8 @@ const Pagination = (props) => {
           disabled={currentPage === 1}
           className={`group flex items-center gap-2 rounded-xl px-3 py-1 text-sm font-medium transition-all duration-200 ${
             currentPage === 1
-              ? "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-600"
-              : "bg-white text-gray-700 shadow-sm ring-1 ring-gray-300 hover:bg-gray-50 hover:shadow-md dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-600 dark:hover:bg-gray-700"
+              ? "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-[#000]"
+              : "bg-white text-[#000] shadow-sm ring-1 ring-gray-300 hover:bg-gray-50 hover:shadow-md dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-600 dark:hover:bg-gray-700"
           }`}
         >
           <IconArrowBackward className="h-4 w-4" />
@@ -97,7 +97,7 @@ const Pagination = (props) => {
               return (
                 <div
                   key={index}
-                  className="flex h-10 w-10 items-center justify-center text-gray-400 dark:text-gray-500"
+                  className="flex h-10 w-10 items-center justify-center text-gray-400 dark:text-[#000]"
                 >
                   <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                     <circle cx="3" cy="10" r="1.5" />
@@ -116,7 +116,7 @@ const Pagination = (props) => {
                 className={`relative flex h-7 w-7 items-center justify-center rounded-full text-sm font-semibold transition-all duration-200 ${
                   isActive
                     ? "bg-dblue text-white shadow-lg "
-                    : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
+                    : "text-[#000] hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
                 }`}
               >
                 {isActive && (
@@ -134,8 +134,8 @@ const Pagination = (props) => {
           disabled={currentPage === totalPages}
           className={`group flex items-center gap-2 rounded-xl px-3 py-1 text-sm font-medium transition-all duration-200 ${
             currentPage === totalPages
-              ? "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-600"
-              : "bg-white text-gray-700 shadow-sm ring-1 ring-gray-300 hover:bg-gray-50 hover:shadow-md dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-600 dark:hover:bg-gray-700"
+              ? "cursor-not-allowed bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-[#000]"
+              : "bg-white text-[#000] shadow-sm ring-1 ring-gray-300 hover:bg-gray-50 hover:shadow-md dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-600 dark:hover:bg-gray-700"
           }`}
         >
           <span className="hidden sm:inline">Next</span>

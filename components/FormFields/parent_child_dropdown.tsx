@@ -130,7 +130,7 @@ export default function ParentChildCat(props: any) {
     <div>
       <div className="flex items-center justify-between">
         {title && (
-          <label className="text-gray-700">
+          <label className="text-[#000]">
             {title}
             {required && <span className="text-red-500 ml-1">*</span>}
           </label>

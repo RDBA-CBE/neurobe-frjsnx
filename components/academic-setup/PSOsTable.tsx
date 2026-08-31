@@ -32,7 +32,7 @@ const PSOsTable = ({ search, statusFilter, loading }: Props) => {
       customLoader={<div className="flex items-center justify-center py-12"><IconLoader className="h-6 w-6 animate-spin text-[#7c3aed]" /></div>}
       columns={[
         { accessor: "code",        title: "PSO CODE",   render: ({ code }) => <span className="font-medium text-[#7c3aed]">{code}</span> },
-        { accessor: "programme",   title: "PROGRAMME",  render: ({ programme }) => <span className="text-gray-600 dark:text-gray-400">{programme}</span> },
+        { accessor: "programme",   title: "PROGRAMME",  render: ({ programme }) => <span className="text-[#000] dark:text-gray-400">{programme}</span> },
         { accessor: "description", title: "DESCRIPTION", render: ({ description }) => (
           <span className="max-w-md whitespace-normal text-gray-800 dark:text-gray-200">{description}</span>
         )},

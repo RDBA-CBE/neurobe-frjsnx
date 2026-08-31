@@ -86,7 +86,7 @@ const Tables = () => {
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Simple Table</h5>
-                    <button type="button" onClick={() => toggleCode('code1')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                    <button type="button" onClick={() => toggleCode('code1')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                         <span className="flex items-center">
                             <IconCode className="me-2" />
                             Code
@@ -259,7 +259,7 @@ const tableData = [
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Hover Table</h5>
-                    <button type="button" onClick={() => toggleCode('code2')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                    <button type="button" onClick={() => toggleCode('code2')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                         <span className="flex items-center">
                             <IconCode className="me-2" />
                             Code
@@ -432,7 +432,7 @@ const tableData = [
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Striped Table</h5>
-                    <button type="button" onClick={() => toggleCode('code3')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                    <button type="button" onClick={() => toggleCode('code3')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                         <span className="flex items-center">
                             <IconCode className="me-2" />
                             Code
@@ -569,7 +569,7 @@ const tableData = [
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Table Light</h5>
-                    <button type="button" onClick={() => toggleCode('code4')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                    <button type="button" onClick={() => toggleCode('code4')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                         <span className="flex items-center">
                             <IconCode className="me-2" />
                             Code
@@ -710,7 +710,7 @@ const tableData = [
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Captions</h5>
-                    <button type="button" onClick={() => toggleCode('code5')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                    <button type="button" onClick={() => toggleCode('code5')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                         <span className="flex items-center">
                             <IconCode className="me-2" />
                             Code
@@ -868,7 +868,7 @@ const tableData = [
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Progress Table</h5>
-                    <button type="button" onClick={() => toggleCode('code6')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                    <button type="button" onClick={() => toggleCode('code6')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                         <span className="flex items-center">
                             <IconCode className="me-2" />
                             Code
@@ -1085,7 +1085,7 @@ const tableData = [
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Contextual</h5>
-                    <button type="button" onClick={() => toggleCode('code7')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                    <button type="button" onClick={() => toggleCode('code7')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                         <span className="flex items-center">
                             <IconCode className="me-2" />
                             Code
@@ -1279,7 +1279,7 @@ const tableData = [
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Dropdown</h5>
-                    <button type="button" onClick={() => toggleCode('code8')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                    <button type="button" onClick={() => toggleCode('code8')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                         <span className="flex items-center">
                             <IconCode className="me-2" />
                             Code
@@ -1491,7 +1491,7 @@ const tableData = [
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Table with Footer</h5>
-                    <button type="button" onClick={() => toggleCode('code9')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                    <button type="button" onClick={() => toggleCode('code9')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                         <span className="flex items-center">
                             <IconCode className="me-2" />
                             Code
@@ -1666,7 +1666,7 @@ const tableData = [
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Checkboxes</h5>
-                    <button type="button" onClick={() => toggleCode('code10')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600">
+                    <button type="button" onClick={() => toggleCode('code10')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
                         <span className="flex items-center">
                             <IconCode className="me-2" />
                             Code

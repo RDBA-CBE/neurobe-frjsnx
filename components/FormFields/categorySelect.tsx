@@ -72,7 +72,7 @@ function ChildNode({
             className="h-4 w-4 rounded border-gray-300 text-blue-600"
           />
           <span
-            className={`text-sm ${hasChildren ? "font-semibold text-gray-700" : "text-gray-600"}`}
+            className={`text-sm ${hasChildren ? "font-semibold text-[#000]" : "text-[#000]"}`}
             onClick={(e) => { if (hasChildren) { e.preventDefault(); setOpen((p) => !p); } }}
           >
             {capitalizeFLetter(node.name)}
@@ -307,7 +307,7 @@ export default function CategorySelector({
                   )}
                   <ChevronDown
                     onClick={() => toggleParent(parent.id)}
-                    className={`h-4 w-4 cursor-pointer text-gray-500 transition-transform ${isParentOpen ? "rotate-180" : ""}`}
+                    className={`h-4 w-4 cursor-pointer text-[#000] transition-transform ${isParentOpen ? "rotate-180" : ""}`}
                   />
                 </div>
               </div>
