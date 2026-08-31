@@ -38,9 +38,9 @@ const CourseOffering = () => {
 
   const [state, setState] = useSetState({
     search:          "",
-    programmeFilter: "All Programmes",
-    batchFilter:     "All Batches",
-    statusFilter:    "All Statuses",
+    programmeFilter: "all",
+    batchFilter:     "all",
+    statusFilter:    "all",
     loading:         false,
   });
 
@@ -55,9 +55,9 @@ const CourseOffering = () => {
       r.code.toLowerCase().includes(s) ||
       r.coordinator.toLowerCase().includes(s) ||
       r.instructors.some((i) => i.toLowerCase().includes(s));
-    const matchProg   = state.programmeFilter === "All Programmes" || r.programme === state.programmeFilter;
-    const matchBatch  = state.batchFilter     === "All Batches"    || r.batch     === state.batchFilter;
-    const matchStatus = state.statusFilter    === "All Statuses"   || r.status    === state.statusFilter;
+    const matchProg   = !state.programmeFilter || state.programmeFilter === "all" || r.programme === PROGRAMME_OPTIONS.find((o) => o.value === state.programmeFilter)?.label;
+    const matchBatch  = !state.batchFilter     || state.batchFilter     === "all" || r.batch     === state.batchFilter;
+    const matchStatus = !state.statusFilter    || state.statusFilter    === "all" || r.status    === STATUS_OPTIONS.find((o) => o.value === state.statusFilter)?.label;
     return matchSearch && matchProg && matchBatch && matchStatus;
   });
 
@@ -127,35 +127,34 @@ const CourseOffering = () => {
           />
         </div>
 
-        <div className="flex gap-3 ">
-
-        <CustomSelect
+        <div className="flex gap-3">
+          <CustomSelect
             options={PROGRAMME_OPTIONS}
-            value={state.programmeFilter}
-            onChange={(e) => setState({ statusFilter: e?.value})}
-            placeholder="All Programms"
+            value={PROGRAMME_OPTIONS.find((o) => o.value === state.programmeFilter) ?? null}
+            onChange={(e) => setState({ programmeFilter: e?.value ?? "all" })}
+            placeholder="All Programmes"
             className="filter-input"
             isClearable
           />
 
           <CustomSelect
             options={BATCH_OPTIONS}
-            value={state.batchFilter}
-            onChange={(e) => setState({ batchFilter: e?.value})}
-            placeholder="Select Batch"
+            value={BATCH_OPTIONS.find((o) => o.value === state.batchFilter) ?? null}
+            onChange={(e) => setState({ batchFilter: e?.value ?? "all" })}
+            placeholder="All Batches"
             className="filter-input"
             isClearable
           />
 
-        <CustomSelect
+          <CustomSelect
             options={STATUS_OPTIONS}
-            value={state.statusFilter}
-            onChange={(e) => setState({ statusFilter: e?.value})}
-            placeholder="Select Status"
+            value={STATUS_OPTIONS.find((o) => o.value === state.statusFilter) ?? null}
+            onChange={(e) => setState({ statusFilter: e?.value ?? "all" })}
+            placeholder="All Statuses"
             className="filter-input"
             isClearable
           />
-          </div>
+        </div>
         
 
 

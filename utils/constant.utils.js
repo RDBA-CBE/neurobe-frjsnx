@@ -388,184 +388,9 @@ export const menuConfig = {
 };
 
 export const OwnmenuConfig = {
-  super_admin: [
-    {
-      type: "link",
-      icon: "IconMenuDashboard",
-      label: "dashboard",
-      href: "/",
-    },
-    {
-      type: "link",
-      icon: "IconMenuForms",
-      label: "Job Postings",
-      href: "/faculty/admin_job",
-    },
+ 
 
-    {
-      type: "link",
-      icon: "IconMenuTables",
-      label: "Applications",
-      href: "/faculty/admin_application",
-      // notifyKey: "new_application_count",
-    },
-
-    {
-      type: "link",
-      icon: "IconMenuApps",
-      label: "Institutions",
-      href: "/faculty/admin_institution",
-    },
-    {
-      type: "link",
-      icon: "IconMenuNotes",
-      label: "Colleges & Departments",
-      href: "/faculty/admin_college_and_department",
-    },
-
-    {
-      type: "link",
-      icon: "IconMenuUsers",
-      label: "Users",
-      href: "/faculty/admin_users",
-    },
-
-    // {
-    //   type: "link",
-    //   icon: "IconMenuScrumboard",
-    //   label: "HOD Management",
-    //   href: "/faculty/hod_management",
-    // },
-
-    {
-      type: "submenu",
-      icon: "IconMenuCharts",
-      label: "Master",
-      key: "master",
-      children: [
-        {
-          label: "Departments",
-          href: "/faculty/master/master_department",
-        },
-        {
-          label: "Additional Acedemic Responsibilities",
-          href: "/faculty/master/additional_academic_responsibilities",
-        },
-        {
-          label: "Panel Members",
-          href: "/faculty/master/panel",
-        },
-        {
-          label: "Experience",
-          href: "/faculty/master/experience",
-        },
-        {
-          label: "Job Validation",
-          href: "/faculty/master/job_validation",
-        },
-
-        {
-          label: "Category",
-          href: "/faculty/master/category",
-        },
-
-        {
-          label: "Location",
-          href: "/faculty/master/location",
-        },
-        {
-          label: "Salary Range",
-          href: "/faculty/master/salary_range",
-        },
-       
-        // {
-        //   label: "Skill",
-        //   href: "/faculty/master/skill",
-        // },
-        // {
-        //   label: "Tags",
-        //   href: "/faculty/master/tags",
-        // },
-        {
-          label: "Application Status",
-          href: "/faculty/master/application_status",
-        },
-
-        {
-          label: "Job Roles",
-          href: "/faculty/master/job_role",
-        },
-
-        {
-          label: "College Type",
-          href: "/faculty/master/college_type",
-        },
-        {
-          label: "NAAC Accreditation",
-          href: "/faculty/master/naac_accreditation",
-        },
-        {
-          label: "NIRF Band",
-          href: "/faculty/master/nirf_band",
-        },
-        {
-          label: "NIRF Category",
-          href: "/faculty/master/nirf_category",
-        },
-      ],
-    },
-  ],
-
-  institution_admin: [
-    {
-      type: "link",
-      icon: "IconMenuDashboard",
-      label: "dashboard",
-      href: "/",
-    },
-    {
-      type: "link",
-      icon: "IconMenuForms",
-      label: "Job Postings",
-      href: "/faculty/institution_job",
-    },
-    {
-      type: "link",
-      icon: "IconMenuTables",
-      label: "Applications",
-      href: "/faculty/ins_application",
-      // notifyKey: "new_application_count",
-    },
-    {
-      type: "link",
-      icon: "IconMenuNotes",
-      label: "Colleges & Departments",
-      href: "/faculty/institute_college_and_department",
-    },
-    {
-      type: "link",
-      icon: "IconMenuUsers",
-      label: "Users",
-      href: "/faculty/hr_user",
-    },
-
-    {
-      type: "submenu",
-      icon: "IconMenuCharts",
-      label: "Master",
-      key: "master",
-      children: [
-        {
-          label: "Additional Acedemic Responsibilities",
-          href: "/faculty/master/additional_academic_responsibilities",
-        },
-        {
-          label: "Panel Members",
-          href: "/faculty/master/ins_panel",
-        },
-      ],
-    },
-  ],
+ 
 
   hr: [
     {
@@ -608,46 +433,33 @@ export const OwnmenuConfig = {
       href: "/neurobe/audit-trial",
     },
 
-    // {
-    //   type: "submenu",
-    //   icon: "IconMenuCharts",
-    //   label: "Masters",
-    //   key: "master",
-    //   children: [
-    //     {
-    //       label: "Panel Members",
-    //       href: "/faculty/master/hr_panel",
-    //     },
-    //     {
-    //       label: "Additional Acedemic Responsibilities",
-    //       href: "/faculty/master/additional_academic_responsibilities",
-    //     },
-    //   ],
-    // },
-  ],
-
-  hod: [
     {
-      type: "link",
-      icon: "IconMenuUsers",
-      label: "Users",
-      href: "/faculty/my_users",
-    },
-
-    {
-      type: "link",
-      icon: "IconMenuForms",
-      label: "Job Postings",
-      href: "/faculty/my_job",
-    },
-
-    {
-      type: "link",
-      icon: "IconMenuTables",
-      label: "Applications",
-      href: "/faculty/my_application",
+      type: "submenu",
+      icon: "IconMenuCharts",
+      label: "Masters",
+      key: "master",
+      children: [
+        {
+          label: "Degree Level",
+          href: "/faculty/master/hr_panel",
+        },
+        {
+          label: "Batch",
+          href: "/faculty/master/additional_academic_responsibilities",
+        },
+        {
+          label: "Academic Term / Semester",
+          href: "/faculty/master/additional_academic_responsibilities",
+        },
+        {
+          label: "Entity",
+          href: "/faculty/master/additional_academic_responsibilities",
+        },
+      ],
     },
   ],
+
+ 
 };
 
 export const propertyType = [

@@ -57,7 +57,7 @@ const UserList = () => {
         <div>
           <div className="flex items-center gap-2">
             <Users className="h-5 w-5 text-gray-700 dark:text-white" />
-            <h1 className="text-xl font-bold text-gray-800 dark:text-white">Users</h1>
+            <h1 className="text-xl font-bold text-gray-800 dark:text-white">Audit Trials</h1>
             <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-[#000] dark:bg-gray-700 dark:text-gray-300">
               {MOCK_USERS.length} Total Registered
             </span>

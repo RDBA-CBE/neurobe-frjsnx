@@ -86,18 +86,18 @@ const SidebarDynamic = () => {
       setNotifications((prev) => ({ ...prev, new_applications: 0 }));
     } else {
       dispatch(resetApplicationCount());
-      getNotification();
+      // getNotification();
     }
   }, [router.pathname]);
 
   useEffect(() => {
     role();
-    profile()
+    // profile()
   }, []);
 
   useEffect(()=> {
     
-    getNotification()
+    // getNotification()
   },[state?.college_id, state?.institution_id])
 
   const role = () => {
@@ -105,51 +105,51 @@ const SidebarDynamic = () => {
     setGroup(group);
   };
 
-  const profile = async () => {
-      try {
-        const res: any = await Models.auth.profile();
+  // const profile = async () => {
+  //     try {
+  //       // const res: any = await Models.auth.profile();
 
-        if (res?.role == ROLES.INSTITUTION_ADMIN) {
-          setState({
+  //       if (res?.role == ROLES.INSTITUTION_ADMIN) {
+  //         setState({
             
-            institution_id : res?.institution?.id
-          })
-        } else if (res?.role == ROLES.HR) {
+  //           institution_id : res?.institution?.id
+  //         })
+  //       } else if (res?.role == ROLES.HR) {
           
-            setState({
-            college_id : res?.college?.map((item) => item?.college_id),
+  //           setState({
+  //           college_id : res?.college?.map((item) => item?.college_id),
            
-          })
+  //         })
             
-        } 
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      }
-    };
+  //       } 
+  //     } catch (error) {
+  //       console.error("Error fetching profile:", error);
+  //     }
+  //   };
 
-  const getNotification = async () => {
-    try {
-      if (APPLICATION_PAGES.includes(pathnameRef.current)) return;
-      const body ={
-        college_id : state?.college_id,
-        institution_id : state?.institution_id
-      }
-      const res: any = await Models.notification.list(body);
-      const counts: Record<string, number> = {};
-      if (res && typeof res === "object") {
-        Object.entries(res).forEach(([key, val]: any) => {
-          if (val && typeof val === "object") {
-            Object.entries(val).forEach(([subKey, count]) => {
-              counts[subKey] = Number(count) || 0;
-            });
-          } else {
-            counts[key] = Number(val) || 0;
-          }
-        });
-      }
-      setNotifications(counts);
-    } catch {}
-  };
+  // const getNotification = async () => {
+  //   try {
+  //     if (APPLICATION_PAGES.includes(pathnameRef.current)) return;
+  //     const body ={
+  //       college_id : state?.college_id,
+  //       institution_id : state?.institution_id
+  //     }
+  //     const res: any = await Models.notification.list(body);
+  //     const counts: Record<string, number> = {};
+  //     if (res && typeof res === "object") {
+  //       Object.entries(res).forEach(([key, val]: any) => {
+  //         if (val && typeof val === "object") {
+  //           Object.entries(val).forEach(([subKey, count]) => {
+  //             counts[subKey] = Number(count) || 0;
+  //           });
+  //         } else {
+  //           counts[key] = Number(val) || 0;
+  //         }
+  //       });
+  //     }
+  //     setNotifications(counts);
+  //   } catch {}
+  // };
 
   // Recursive render function
   const renderMenu = (menu) =>
@@ -236,7 +236,7 @@ const SidebarDynamic = () => {
               duration={300}
               height={currentMenu === item.key ? "auto" : 0}
             >
-              <ul className="sub-menu text-[#000]">
+              <ul className="sub-menu text-[#000] text-white">
                 {item.children.map((item, index) => (
                   <li key={index}>
                     <Link href={item.href}>{t(item.label)}</Link>
