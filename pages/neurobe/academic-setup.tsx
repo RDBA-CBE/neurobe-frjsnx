@@ -5,7 +5,7 @@ import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
 import IconPlus from "@/components/Icon/IconPlus";
-import PageBanner from "@/components/academic-setup/PageBanner";
+import PageBanner from "@/components/common-components/PageBanner";
 import StatTabCard from "@/components/academic-setup/StatTabCard";
 import {
   MOCK_DEPARTMENTS,
@@ -27,8 +27,9 @@ import {
   CreatePSOModal,
 } from "@/components/academic-setup/AddModals";
 import PrivateRouter from "@/hook/privateRouter";
-import TableComponent from "@/components/academic-setup/TableComponent";
+import TableComponent from "@/components/common-components/TableComponent";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
+import TextInput from "@/components/FormFields/TextInput.component";
 
 const TABS = [
   {
@@ -165,7 +166,7 @@ const AcademicSetup = () => {
       <div className="mb-5 flex justify-end">
         <button
           onClick={openCreate}
-          className="bg-color2 hover:bg-color2 flex items-center gap-2 rounded-full px-8 py-2 text-sm text-white shadow"
+          className="create-btn"
         >
           <IconPlus className="h-4 w-4" />
           {ADD_LABELS[state.activeTab]}
@@ -224,15 +225,14 @@ const AcademicSetup = () => {
       {/* Filters */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 dark:border-gray-700">
         <div className="relative max-w-[300px] flex-1">
-          <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
-            <IconSearch className="h-4 w-4" />
-          </span>
-          <input
-            placeholder={`Search ${state.activeTab}...`}
-            value={state.search}
-            onChange={(e) => setState({ search: e.target.value })}
-            className="border-input w-full rounded-lg border bg-[#fff] py-2 pl-9 pr-4 text-sm outline-none focus:border-[#7c3aed] dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          />
+          
+           <TextInput
+              placeholder={`Search ${state.activeTab}...`}
+              type="text"
+              value={state.search}
+              onChange={(e) => setState({ search: e.target.value })}
+              icon={<IconSearch className="h-4 w-4" />}
+            />
         </div>
 
         <div className="flex gap-3">

@@ -40,7 +40,7 @@ const PricingTable = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Basic</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code1')}>
+                        <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code1')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -241,7 +241,7 @@ const PricingTable = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Toggle</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code2')}>
+                        <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code2')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code
@@ -416,7 +416,7 @@ const PricingTable = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Animated</h5>
-                        <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code3')}>
+                        <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code3')}>
                             <span className="flex items-center">
                                 <IconCode className="me-2" />{' '}
                                 Code

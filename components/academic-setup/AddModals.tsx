@@ -4,35 +4,86 @@ import TextInput from "@/components/FormFields/TextInput.component";
 import TextArea from "@/components/FormFields/TextArea.component";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 
+// ─── Body scroll lock ─────────────────────────────────────────────────────────
+const useLockBodyScroll = (active: boolean) => {
+  useEffect(() => {
+    if (active) document.body.style.overflow = "hidden";
+    else        document.body.style.overflow = "";
+    return () => { document.body.style.overflow = ""; };
+  }, [active]);
+};
+
+// ─── Animated visibility hook (delays unmount for closing animation) ────────
+const useAnimatedVisibility = (open: boolean, duration = 220) => {
+  const [visible, setVisible] = useState(open);
+  const [closing, setClosing] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      setClosing(false);
+      setVisible(true);
+    } else if (visible) {
+      setClosing(true);
+      const t = setTimeout(() => { setVisible(false); setClosing(false); }, duration);
+      return () => clearTimeout(t);
+    }
+  }, [open]);
+
+  return { visible, closing };
+};
+
 // ─── Shared modal shell ───────────────────────────────────────────────────────
 interface ModalShellProps {
   title: string;
+  subtitle?: string;
   open: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  icon: any
+  icon?: any;
 }
 
 export const ModalShell = ({
   title,
+  subtitle,
   open,
   onClose,
   children,
-  icon
+  icon,
 }: ModalShellProps) => {
-  if (!open) return null;
+  const { visible, closing } = useAnimatedVisibility(open);
+  useLockBodyScroll(visible);
+
+  if (!visible) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl dark:bg-gray-900">
-        <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4 dark:border-gray-700">
-          
-          <h3 className="text-base font-semibold text-[#000] dark:text-white flex items-center gap-2">
-            {icon && <div className="text-color2 bg-gray-200 p-1.5 rounded-md w-fit">{icon}</div>}
-            {title}
-          </h3>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center px-4"
+      style={{ animation: closing ? "fadeOut 0.22s ease forwards" : "fadeIn 0.22s ease" }}
+    >
+      {/* backdrop */}
+      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+      <div
+        className="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl dark:bg-gray-900"
+        style={{ animation: closing ? "slideDown 0.22s ease forwards" : "slideUp 0.22s ease" }}
+      >
+        <div className="flex items-start justify-between border-b border-gray-100 px-6 py-4 dark:border-gray-700">
+          <div className='flex items-center gap-2'>
+            {icon && (
+              <div className="text-color2 w-fit rounded-md bg-gray-200 p-2">
+                {icon}
+              </div>
+            )}
+            <div>
+              <h3 className=" text-base font-semibold text-[#000] dark:text-white">
+                {title}
+              </h3>
+              {subtitle && (
+                <p className="mt-0.5 text-xs text-[#000]">{subtitle}</p>
+              )}
+            </div>
+          </div>
           <button
             onClick={onClose}
-            className="text-pri border border-gray-500 rounded-full p-0.5 hover:text-[#000] dark:hover:text-gray-200"
+            className="text-pri mt-0.5 rounded-full border border-gray-500 p-0.5 hover:text-[#000] dark:hover:text-gray-200"
           >
             <X className="h-3 w-3" />
           </button>
@@ -145,7 +196,13 @@ export const CreateCourseModal = ({
   return (
     <ModalShell
       title={isEdit ? "Edit Course" : "Create New Course"}
-      icon = {isEdit ? <Edit className="w-3.5 h-3.5"/> : <PlusIcon className="w-3.5 h-3.5"/>}
+      icon={
+        isEdit ? (
+          <Edit className="h-3.5 w-3.5" />
+        ) : (
+          <PlusIcon className="h-3.5 w-3.5" />
+        )
+      }
       open={open}
       onClose={onClose}
     >
@@ -189,11 +246,10 @@ export const CreateCourseModal = ({
 
         <div className="mt-4 ">
           <div className="flex justify-between">
-          <p className="mb-2 text-xs font-semibold text-[#000] dark:text-gray-400">
-            L-T-P-C Breakdown (Weekly Hours &amp; Credits)
-            
-          </p>
-          <span className="ml-2 cursor-pointer text-color2 text-xs font-bold ">
+            <p className="mb-2 text-xs font-semibold text-[#000] dark:text-[#000]">
+              L-T-P-C Breakdown (Weekly Hours &amp; Credits)
+            </p>
+            <span className="text-color2 ml-2 cursor-pointer text-xs font-bold ">
               Calculated Credits : 4
             </span>
           </div>
@@ -290,7 +346,13 @@ export const CreateDepartmentModal = ({
   return (
     <ModalShell
       title={isEdit ? "Edit Department" : "Create New Department"}
-      icon = {isEdit ? <Edit className="w-3.5 h-3.5"/> : <PlusIcon className="w-3.5 h-3.5"/>}
+      icon={
+        isEdit ? (
+          <Edit className="h-3.5 w-3.5" />
+        ) : (
+          <PlusIcon className="h-3.5 w-3.5" />
+        )
+      }
       open={open}
       onClose={onClose}
     >
@@ -302,37 +364,36 @@ export const CreateDepartmentModal = ({
       >
         <div className="grid grid-cols-1 gap-4">
           <div>
-          <TextInput
-            title="Department Name"
-            required
-            placeholder="e.g. Computer Science & Engineering"
-            value={form.name}
-            onChange={(e) => set("name", e.target.value)}
-            
-          />
+            <TextInput
+              title="Department Name"
+              required
+              placeholder="e.g. Computer Science & Engineering"
+              value={form.name}
+              onChange={(e) => set("name", e.target.value)}
+            />
           </div>
           <div className="grid grid-cols-2 gap-4">
-          <TextInput
-            title="Department Code"
-            required
-            placeholder="e.g. CSE"
-            value={form.code}
-            onChange={(e) => set("code", e.target.value)}
-          />
-          
-          {/* <TextInput
+            <TextInput
+              title="Department Code"
+              required
+              placeholder="e.g. CSE"
+              value={form.code}
+              onChange={(e) => set("code", e.target.value)}
+            />
+
+            {/* <TextInput
             title="Head of Department"
             placeholder="e.g. Dr. A. Kumar"
             value={form.hod}
             onChange={(e) => set("hod", e.target.value)}
           /> */}
-          <CustomSelect
-            title="Status"
-            options={STATUS_OPTS}
-            value={form.status}
-            onChange={(v) => set("status", v)}
-            placeholder="Active"
-          />
+            <CustomSelect
+              title="Status"
+              options={STATUS_OPTS}
+              value={form.status}
+              onChange={(v) => set("status", v)}
+              placeholder="Active"
+            />
           </div>
         </div>
         <ModalFooter
@@ -364,7 +425,6 @@ export const CreateProgrammeModal = ({
     type: null as any,
     duration: "",
     status: null as any,
-    
   });
 
   useEffect(() => {
@@ -394,7 +454,13 @@ export const CreateProgrammeModal = ({
   return (
     <ModalShell
       title={isEdit ? "Edit Programme" : "Create New Programme"}
-      icon = {isEdit ? <Edit className="w-3.5 h-3.5"/> : <PlusIcon className="w-3.5 h-3.5"/>}
+      icon={
+        isEdit ? (
+          <Edit className="h-3.5 w-3.5" />
+        ) : (
+          <PlusIcon className="h-3.5 w-3.5" />
+        )
+      }
       open={open}
       onClose={onClose}
     >
@@ -405,13 +471,13 @@ export const CreateProgrammeModal = ({
         }}
       >
         <TextInput
-            title="Programme Name"
-            required
-            placeholder="e.g. B.Tech Computer Science"
-            value={form.name}
-            onChange={(e) => set("name", e.target.value)}
-          />
-        <div className="grid grid-cols-2 gap-4 mt-4">
+          title="Programme Name"
+          required
+          placeholder="e.g. B.Tech Computer Science"
+          value={form.name}
+          onChange={(e) => set("name", e.target.value)}
+        />
+        <div className="mt-4 grid grid-cols-2 gap-4">
           <TextInput
             title="Short Name"
             required
@@ -419,7 +485,7 @@ export const CreateProgrammeModal = ({
             value={form.short_name}
             onChange={(e) => set("short_name", e.target.value)}
           />
-          
+
           <CustomSelect
             title="Associated Department"
             required
@@ -509,7 +575,13 @@ export const CreateBatchModal = ({
   return (
     <ModalShell
       title={isEdit ? "Edit Batch" : "Create New Batch"}
-      icon = {isEdit ? <Edit className="w-3.5 h-3.5"/> : <PlusIcon className="w-3.5 h-3.5"/>}
+      icon={
+        isEdit ? (
+          <Edit className="h-3.5 w-3.5" />
+        ) : (
+          <PlusIcon className="h-3.5 w-3.5" />
+        )
+      }
       open={open}
       onClose={onClose}
     >
@@ -542,7 +614,7 @@ export const CreateBatchModal = ({
             onChange={(v) => set("programme", v)}
             placeholder="Select Programme"
           />
-          
+
           {/* <TextInput
             title="Start Year"
             required
@@ -561,13 +633,13 @@ export const CreateBatchModal = ({
           /> */}
         </div>
         <CustomSelect
-            title="Status"
-            options={STATUS_OPTS}
-            value={form.status}
-            onChange={(v) => set("status", v)}
-            placeholder="Active"
-            className="mt-4"
-          />
+          title="Status"
+          options={STATUS_OPTS}
+          value={form.status}
+          onChange={(v) => set("status", v)}
+          placeholder="Active"
+          className="mt-4"
+        />
         <ModalFooter
           onClose={onClose}
           submitLabel={isEdit ? "Update Batch" : "Create Batch"}
@@ -595,7 +667,7 @@ export const CreatePSOModal = ({
     programme: null as any,
     description: "",
     status: null as any,
-    version: ""
+    version: "",
   });
 
   useEffect(() => {
@@ -605,10 +677,16 @@ export const CreatePSOModal = ({
         programme: toOpt(initialData.programme),
         description: initialData.description ?? "",
         status: toOpt(initialData.status),
-        version: initialData.version ?? ""
+        version: initialData.version ?? "",
       });
     } else {
-      setForm({ code: "", programme: null, description: "", status: null , version: ""});
+      setForm({
+        code: "",
+        programme: null,
+        description: "",
+        status: null,
+        version: "",
+      });
     }
   }, [initialData, open]);
 
@@ -617,7 +695,13 @@ export const CreatePSOModal = ({
   return (
     <ModalShell
       title={isEdit ? "Edit PSO" : "Create New PSO"}
-      icon = {isEdit ? <Edit className="w-3.5 h-3.5"/> : <PlusIcon className="w-3.5 h-3.5"/>}
+      icon={
+        isEdit ? (
+          <Edit className="h-3.5 w-3.5" />
+        ) : (
+          <PlusIcon className="h-3.5 w-3.5" />
+        )
+      }
       open={open}
       onClose={onClose}
     >
@@ -655,7 +739,7 @@ export const CreatePSOModal = ({
           />
         </div>
         <div className="mt-3 grid grid-cols-2 gap-4">
-           <TextInput
+          <TextInput
             title="Version"
             required
             placeholder="e.g. v1.04"

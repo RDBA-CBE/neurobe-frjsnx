@@ -8,7 +8,7 @@ import BulkImportBanner from "@/components/bulk-import/BulkImportBanner";
 import ImportProgressStepper from "@/components/bulk-import/ImportProgressStepper";
 import DownloadTemplate from "@/components/bulk-import/DownloadTemplate";
 import FileUploadDropzone from "@/components/bulk-import/FileUploadDropzone";
-import TableComponent from "@/components/academic-setup/TableComponent";
+import TableComponent from "@/components/common-components/TableComponent";
 import IconEdit from "@/components/Icon/IconEdit";
 import IconTrash from "@/components/Icon/IconTrash";
 
@@ -68,7 +68,7 @@ const BulkImport = () => {
       accessor: "hod",
       title: "HEAD OF DEPT",
       render: ({ hod }: any) => (
-        <span className="text-[#000] dark:text-gray-400">{hod}</span>
+        <span className="text-[#000] dark:text-[#000]">{hod}</span>
       ),
     },
     {
@@ -105,10 +105,10 @@ const BulkImport = () => {
       title: "ACTIONS",
       render: () => (
         <div className="flex items-center gap-3">
-          <button className="text-gray-400 hover:text-[#7c3aed]">
+          <button className="text-[#000] hover:text-[#7c3aed]">
             <IconEdit className="h-4 w-4" />
           </button>
-          <button className="text-gray-400 hover:text-red-500">
+          <button className="text-[#000] hover:text-red-500">
             <IconTrash className="h-4 w-4" />
           </button>
         </div>
@@ -119,17 +119,17 @@ const BulkImport = () => {
   return (
     <div className="min-h-screen">
       {/* Breadcrumb */}
-      <ul className="mb-1 flex space-x-2 text-xs font-medium text-[#000] dark:text-gray-400">
+      {/* <ul className="mb-1 flex space-x-2 text-xs font-medium text-[#000] dark:text-[#000]">
         <li>Karpagam Institutions</li>
         <li className="text-color2 uppercase before:mx-1.5 before:content-['>']">
           Bulk Import
         </li>
-      </ul>
+      </ul> */}
 
       {/* Page title */}
-      <h1 className="mb-5 text-2xl font-bold text-gray-900 dark:text-white">
+      {/* <h1 className="mb-5 text-2xl font-bold text-gray-900 dark:text-white">
         Bulk Import
-      </h1>
+      </h1> */}
 
       {/* Banner — import type toggle */}
       <BulkImportBanner

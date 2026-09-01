@@ -55,7 +55,7 @@ const StepCircle = ({ step, status }: { step: Step; status: StepStatus }) => {
 
   // pending
   return (
-    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-gray-300 text-sm font-semibold text-gray-400 dark:border-gray-600 dark:text-[#000]">
+    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-gray-300 text-sm font-semibold text-[#000] dark:border-gray-600 dark:text-[#000]">
       {step.number}
     </div>
   );
@@ -81,7 +81,7 @@ const ImportProgressStepper = ({
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
           </svg>
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#000] dark:text-gray-400">
+          <span className="text-xs font-semibold uppercase tracking-widest text-[#000] dark:text-[#000]">
             Import Progress
           </span>
         </div>
@@ -104,7 +104,7 @@ const ImportProgressStepper = ({
                 <span
                   className={`text-sm font-medium whitespace-nowrap ${
                     status === "pending"
-                      ? "text-gray-400 dark:text-[#000]"
+                      ? "text-[#000] dark:text-[#000]"
                       : "text-[#000] dark:text-white"
                   }`}
                 >
@@ -118,7 +118,7 @@ const ImportProgressStepper = ({
                   {/* <div className="h-px flex-1 border-t border-dashed border-gray-300 dark:border-gray-600" /> */}
                   {/* <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 shrink-0 text-gray-400"
+                    className="h-4 w-4 shrink-0 text-[#000]"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"

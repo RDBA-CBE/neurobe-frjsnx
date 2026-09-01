@@ -261,7 +261,7 @@ const LoginBoxed = () => {
                   />
                   {!captchaLoaded && (
                     <div className="absolute inset-0 flex items-center justify-center rounded border border-gray-300 bg-gray-50">
-                      <svg className="h-6 w-6 animate-spin text-gray-400" fill="none" viewBox="0 0 24 24">
+                      <svg className="h-6 w-6 animate-spin text-[#000]" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                       </svg>
@@ -375,7 +375,7 @@ const LoginBoxed = () => {
             <br />
             <button
               onClick={() => setShowApplicantModal(false)}
-              className="mt-3 text-sm text-gray-400 underline"
+              className="mt-3 text-sm text-[#000] underline"
             >
               Close
             </button>

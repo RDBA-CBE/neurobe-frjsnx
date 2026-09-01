@@ -284,7 +284,7 @@ const SweetAlert = () => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Basic message</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code1')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code1')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -329,7 +329,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Success message</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code2')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code2')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -376,7 +376,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Dynamic queue</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code3')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code3')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -440,7 +440,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">A title with a text under</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code4')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code4')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -487,7 +487,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Chaining modals (queue)</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code5')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code5')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -567,7 +567,7 @@ if (type === 5) {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Custom animation</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code6')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code6')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -634,7 +634,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Message with auto close timer</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code7')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code7')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -695,7 +695,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Message with custom image</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code8')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code8')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -745,7 +745,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Custom HTML description and buttons</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code9')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code9')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -799,7 +799,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">{`Warning message, with "Confirm" button`}</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code10')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code10')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -852,7 +852,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">{`Execute something else for "Cancel".`}</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code11')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code11')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -918,7 +918,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">A message with custom width, padding and background</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code12')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code12')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -965,7 +965,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">With Footer</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code13')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code13')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -1013,7 +1013,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">RTL support</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code14')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code14')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -1062,7 +1062,7 @@ const showAlert = async (type: number) => {
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Mixin</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code15')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code15')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code

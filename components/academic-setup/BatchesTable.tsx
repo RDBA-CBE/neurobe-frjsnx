@@ -33,9 +33,9 @@ const BatchesTable = ({ search, statusFilter, loading }: Props) => {
       columns={[
         { accessor: "code",      title: "BATCH CODE", render: ({ code }) => <span className="font-medium text-[#7c3aed]">{code}</span> },
         { accessor: "name",      title: "BATCH NAME",  render: ({ name }) => <span className="text-[#000] dark:text-gray-200">{name}</span> },
-        { accessor: "programme", title: "PROGRAMME",   render: ({ programme }) => <span className="text-[#000] dark:text-gray-400">{programme}</span> },
-        { accessor: "startYear", title: "START YEAR",  render: ({ startYear }) => <span className="text-[#000] dark:text-gray-400">{startYear}</span> },
-        { accessor: "endYear",   title: "END YEAR",    render: ({ endYear }) => <span className="text-[#000] dark:text-gray-400">{endYear}</span> },
+        { accessor: "programme", title: "PROGRAMME",   render: ({ programme }) => <span className="text-[#000] dark:text-[#000]">{programme}</span> },
+        { accessor: "startYear", title: "START YEAR",  render: ({ startYear }) => <span className="text-[#000] dark:text-[#000]">{startYear}</span> },
+        { accessor: "endYear",   title: "END YEAR",    render: ({ endYear }) => <span className="text-[#000] dark:text-[#000]">{endYear}</span> },
         { accessor: "students",  title: "STUDENTS",    render: ({ students }) => (
           <span className="inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[#ede9fe] px-2 text-xs font-bold text-[#7c3aed]">{students}</span>
         )},
@@ -46,8 +46,8 @@ const BatchesTable = ({ search, statusFilter, loading }: Props) => {
         )},
         { accessor: "actions", title: "ACTIONS", render: () => (
           <div className="flex items-center gap-3">
-            <button className="text-gray-400 hover:text-[#7c3aed]"><IconEdit className="h-4 w-4" /></button>
-            <button className="text-gray-400 hover:text-red-500"><IconTrash className="h-4 w-4" /></button>
+            <button className="text-[#000] hover:text-[#7c3aed]"><IconEdit className="h-4 w-4" /></button>
+            <button className="text-[#000] hover:text-red-500"><IconTrash className="h-4 w-4" /></button>
           </div>
         )},
       ]}

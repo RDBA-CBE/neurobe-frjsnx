@@ -82,7 +82,7 @@ function ChildNode({
           {onEdit && (
             <span
               onClick={(e) => { e.stopPropagation(); onEdit({ id: node.id, name: node.name, slug: node.slug, description: node.description, title: node.title, category_id: node.category_id, depth, ancestors }); }}
-              className="cursor-pointer p-1 text-gray-400 hover:text-blue-500"
+              className="cursor-pointer p-1 text-[#000] hover:text-blue-500"
             >
               <Pencil className="h-3.5 w-3.5" />
             </span>
@@ -90,7 +90,7 @@ function ChildNode({
           {onDelete && (
             <span
               onClick={(e) => { e.stopPropagation(); onDelete({ id: node.id, name: node.name, depth, ancestors }); }}
-              className="cursor-pointer p-1 text-gray-400 hover:text-red-500"
+              className="cursor-pointer p-1 text-[#000] hover:text-red-500"
             >
               <Trash2 className="h-3.5 w-3.5" />
             </span>
@@ -98,7 +98,7 @@ function ChildNode({
           {hasChildren && (
             <ChevronDown
               onClick={() => setOpen((p) => !p)}
-              className={`h-3 w-3 cursor-pointer text-gray-400 transition-transform ${open ? "rotate-180" : ""}`}
+              className={`h-3 w-3 cursor-pointer text-[#000] transition-transform ${open ? "rotate-180" : ""}`}
             />
           )}
         </div>
@@ -280,7 +280,7 @@ export default function CategorySelector({
                     {capitalizeFLetter(parent.name)}
                   </span>
                   {parent.children?.length > 0 && (
-                    <span className="text-xs text-gray-400 font-normal">{parent.children.length} categories</span>
+                    <span className="text-xs text-[#000] font-normal">{parent.children.length} categories</span>
                   )}
                   {selectedCount > 0 && (
                     <span className="text-xs bg-blue-600 text-white rounded-full px-2 py-0.5">
@@ -292,7 +292,7 @@ export default function CategorySelector({
                   {onEdit && (
                     <span
                       onClick={(e) => { e.stopPropagation(); onEdit({ id: parent.id, name: parent.name, slug: parent.slug, description: parent.description, title: parent.title, depth: 0 }); }}
-                      className="cursor-pointer p-1 text-gray-400 hover:text-blue-500"
+                      className="cursor-pointer p-1 text-[#000] hover:text-blue-500"
                     >
                       <Pencil className="h-3.5 w-3.5" />
                     </span>
@@ -300,7 +300,7 @@ export default function CategorySelector({
                   {onDelete && (
                     <span
                       onClick={(e) => { e.stopPropagation(); onDelete({ id: parent.id, name: parent.name, depth: 0 }); }}
-                      className="cursor-pointer p-1 text-gray-400 hover:text-red-500"
+                      className="cursor-pointer p-1 text-[#000] hover:text-red-500"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </span>

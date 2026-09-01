@@ -67,7 +67,7 @@ const CustomSelect = (props: SelectProps) => {
   }, [onSearch]);
 
   const isFilterInput = className?.includes("filter-input");
-  const focusColor = isFilterInput ? "#7c3aed" : "#3b82f6";
+  const focusColor = isFilterInput ? "#7c3aed" : "#7c3aed";
 
   const customStyles = {
     control: (provided: any, state: any) => ({
@@ -94,12 +94,22 @@ const CustomSelect = (props: SelectProps) => {
       paddingTop: 0,
       paddingBottom: 0,
     }),
-    option: (base: any) => ({
+    option: (base: any, state: any) => ({
       ...base,
       fontSize: "14px",
       padding: "8px 12px",
       minHeight: "36px",
       cursor: "pointer",
+      backgroundColor: state.isSelected
+        ? "#d8c7fc"
+        : state.isFocused
+        ? "#f5f3ff"
+        : "transparent",
+      color: state.isSelected ? "#000" : "#000",
+      fontWeight: state.isSelected ? "600" : "400",
+      "&:active": {
+        backgroundColor: "#ECE3FC",
+      },
     }),
     dropdownIndicator: (base: any) => ({
       ...base,
@@ -126,7 +136,7 @@ const CustomSelect = (props: SelectProps) => {
   const CustomDropdownIndicator = (props: any) => {
     return (
       <div {...props.innerProps} className="px-2">
-        <ChevronDown className="h-4 w-4 text-gray-400" />
+        <ChevronDown className="h-4 w-4 text-[#000]" />
       </div>
     );
   };

@@ -86,12 +86,12 @@ function TreeNodeRow({
         </div>
         <div className="flex items-center gap-1">
           {onEdit && (
-            <button onClick={(e) => { e.stopPropagation(); onEdit({ id: node.id, name: node.name, type: `level${depth}` }); }} className="p-1 text-gray-400 hover:text-blue-500">
+            <button onClick={(e) => { e.stopPropagation(); onEdit({ id: node.id, name: node.name, type: `level${depth}` }); }} className="p-1 text-[#000] hover:text-blue-500">
               <Pencil className="h-3.5 w-3.5" />
             </button>
           )}
           {node.children?.length > 0 && (
-            <button onClick={(e) => { e.stopPropagation(); setExpanded((p) => !p); }} className="text-gray-400 hover:text-[#000]">
+            <button onClick={(e) => { e.stopPropagation(); setExpanded((p) => !p); }} className="text-[#000] hover:text-[#000]">
               <ChevronRight className={`h-4 w-4 transition-transform ${expanded ? "rotate-90" : ""}`} />
             </button>
           )}
@@ -141,10 +141,10 @@ export default function AccordionSelect({ title, placeholder = "Select", apiData
         onClick={() => setOpen(!open)}
         className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm hover:border-blue-400"
       >
-        <span className={value ? "text-[#000]" : "text-gray-400"}>
+        <span className={value ? "text-[#000]" : "text-[#000]"}>
           {value ? capitalizeFLetter(value.label) : placeholder}
         </span>
-        <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`h-4 w-4 text-[#000] transition-transform ${open ? "rotate-180" : ""}`} />
       </div>
       {open && (
         <div className="absolute z-50 mt-1 max-h-72 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">

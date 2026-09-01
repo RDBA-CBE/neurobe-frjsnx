@@ -31,8 +31,8 @@ const ProgrammesTable = ({ search, statusFilter, loading }: Props) => {
       columns={[
         { accessor: "code",       title: "CODE",       render: ({ code }) => <span className="font-medium text-[#7c3aed]">{code}</span> },
         { accessor: "name",       title: "PROGRAMME NAME", render: ({ name }) => <span className="text-[#000] dark:text-gray-200">{name}</span> },
-        { accessor: "department", title: "DEPARTMENT", render: ({ department }) => <span className="text-[#000] dark:text-gray-400">{department}</span> },
-        { accessor: "duration",   title: "DURATION",   render: ({ duration }) => <span className="text-[#000] dark:text-gray-400">{duration}</span> },
+        { accessor: "department", title: "DEPARTMENT", render: ({ department }) => <span className="text-[#000] dark:text-[#000]">{department}</span> },
+        { accessor: "duration",   title: "DURATION",   render: ({ duration }) => <span className="text-[#000] dark:text-[#000]">{duration}</span> },
         { accessor: "type",       title: "TYPE",       render: ({ type }) => (
           <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">{type}</span>
         )},
@@ -43,8 +43,8 @@ const ProgrammesTable = ({ search, statusFilter, loading }: Props) => {
         )},
         { accessor: "actions", title: "ACTIONS", render: () => (
           <div className="flex items-center gap-3">
-            <button className="text-gray-400 hover:text-[#7c3aed]"><IconEdit className="h-4 w-4" /></button>
-            <button className="text-gray-400 hover:text-red-500"><IconTrash className="h-4 w-4" /></button>
+            <button className="text-[#000] hover:text-[#7c3aed]"><IconEdit className="h-4 w-4" /></button>
+            <button className="text-[#000] hover:text-red-500"><IconTrash className="h-4 w-4" /></button>
           </div>
         )},
       ]}

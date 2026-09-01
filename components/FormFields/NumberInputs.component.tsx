@@ -40,7 +40,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
 
       <div className="relative">
         {icon && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#000] pointer-events-none">
             {icon}
           </span>
         )}
@@ -63,7 +63,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
 
         {rightIcon && (
           <span
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#000] cursor-pointer"
             onClick={() => rightIconOnclick?.()}
           >
             {rightIcon}

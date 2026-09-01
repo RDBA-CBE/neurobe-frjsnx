@@ -1,4 +1,5 @@
 import { Users } from "lucide-react";
+import IconEdit from "@/components/Icon/IconEdit";
 
 // ─── Shared cells ─────────────────────────────────────────────────────────────
 export const StatusCell = ({ status }: { status: string }) => (
@@ -105,8 +106,8 @@ export const MOCK_OFFERINGS = [
   },
 ];
 
-// ─── Column definitions — defined outside <DataTable> ─────────────────────────
-export const COURSE_OFFERING_COLUMNS = [
+// ─── Column factory — accepts onEdit callback ─────────────────────────────────
+export const makeCourseOfferingColumns = (onEdit: (row: any) => void) => [
   {
     accessor: "course",
     title: "COURSE",
@@ -117,7 +118,7 @@ export const COURSE_OFFERING_COLUMNS = [
         </span>
         <div>
           <p className="text-sm font-medium text-[#000] dark:text-gray-100">{course}</p>
-          <p className="text-xs text-gray-400">{subtitle}</p>
+          <p className="text-xs text-pri">{subtitle}</p>
         </div>
       </div>
     ),
@@ -130,9 +131,7 @@ export const COURSE_OFFERING_COLUMNS = [
   {
     accessor: "batch",
     title: "BATCH",
-    render: ({ batch }: any) => (
-      <span className="text-sm text-[#000] dark:text-gray-400">{batch}</span>
-    ),
+    render: ({ batch }: any) => <span className="text-sm text-[#000] dark:text-[#000]">{batch}</span>,
   },
   {
     accessor: "term",
@@ -140,7 +139,7 @@ export const COURSE_OFFERING_COLUMNS = [
     render: ({ term, ay }: any) => (
       <div>
         <p className="text-sm font-medium text-[#000] dark:text-gray-100">{term}</p>
-        <p className="text-xs text-gray-400">{ay}</p>
+        <p className="text-xs text-pri">{ay}</p>
       </div>
     ),
   },
@@ -149,12 +148,12 @@ export const COURSE_OFFERING_COLUMNS = [
     title: "COORDINATOR",
     render: ({ coordinator, coordinatorInfo }: any) => (
       <div className="flex items-center gap-2">
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100 text-xs font-bold text-orange-600">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-color2-l text-xs font-bold text-color2">
           {coordinator.charAt(0)}
         </div>
         <div>
           <p className="text-sm font-medium text-[#000] dark:text-gray-100">{coordinator}</p>
-          <p className="text-xs text-gray-400">{coordinatorInfo}</p>
+          <p className="text-xs text-pri">{coordinatorInfo}</p>
         </div>
       </div>
     ),
@@ -165,8 +164,8 @@ export const COURSE_OFFERING_COLUMNS = [
     render: ({ instructors }: any) => (
       <div className="flex flex-col gap-1">
         {instructors.map((name: string, i: number) => (
-          <div key={i} className="flex items-center gap-1.5 text-xs text-[#000] dark:text-gray-400">
-            <Users className="h-3 w-3 shrink-0 text-gray-400" />
+          <div key={i} className="flex items-center gap-1.5 text-xs text-[#000] dark:text-[#000]">
+            <Users className="h-3 w-3 shrink-0 text-[#000]" />
             {name}
           </div>
         ))}
@@ -176,9 +175,7 @@ export const COURSE_OFFERING_COLUMNS = [
   {
     accessor: "students",
     title: "STUDENTS",
-    render: ({ students }: any) => (
-      <span className="text-sm font-semibold text-[#000] dark:text-gray-300">{students}</span>
-    ),
+    render: ({ students }: any) => <span className="text-sm font-semibold text-[#000] dark:text-gray-300">{students}</span>,
   },
   {
     accessor: "status",
@@ -186,8 +183,18 @@ export const COURSE_OFFERING_COLUMNS = [
     render: ({ status }: any) => <StatusCell status={status} />,
   },
   {
-    accessor: "type",
-    title: "",
-    render: ({ type }: any) => <FacultyBadge label={type} />,
+    accessor: "actions",
+    title: "ACTIONS",
+    render: (row: any) => (
+      <div className="flex items-center gap-2">
+        {/* <FacultyBadge label={row.type} /> */}
+        <button onClick={() => onEdit(row)} className="text-[#000] hover:text-[#7c3aed]" title="Edit">
+          <IconEdit className="h-4 w-4" />
+        </button>
+      </div>
+    ),
   },
 ];
+
+// keep static export for backward compat
+export const COURSE_OFFERING_COLUMNS = makeCourseOfferingColumns(() => {});

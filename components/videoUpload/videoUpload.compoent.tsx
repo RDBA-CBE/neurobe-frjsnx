@@ -182,21 +182,21 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
 
           <Upload
             className={`mx-auto mb-4 h-12 w-12 ${
-              isLoading ? "text-gray-300" : "text-gray-400"
+              isLoading ? "text-gray-300" : "text-[#000]"
             }`}
           />
 
           <div className="space-y-2">
             <p
               className={`text-lg font-semibold ${
-                isLoading ? "text-gray-400" : "text-[#000]"
+                isLoading ? "text-[#000]" : "text-[#000]"
               }`}
             >
               {isLoading ? "Uploading..." : "Upload/Drag your video"}
             </p>
             <p
               className={`text-sm ${
-                isLoading ? "text-gray-400" : "text-[#000]"
+                isLoading ? "text-[#000]" : "text-[#000]"
               }`}
             >
               Supported formats: {acceptedFormats.join(", ")} <br />

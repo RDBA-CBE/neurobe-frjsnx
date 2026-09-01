@@ -1506,7 +1506,7 @@ const Application = () => {
             <h1 className="page-ti  text-transparent">
               Application Management
             </h1>
-            <p className="text-[#000] dark:text-gray-400">
+            <p className="text-[#000] dark:text-[#000]">
               Manage and review job applications
             </p>
           </div>
@@ -1548,7 +1548,7 @@ const Application = () => {
               <p className="text-2xl  leading-none text-gray-900 dark:text-white">
                 {state.applicationCount?.count || 0}
               </p>
-              <p className="text-sm text-[#000] dark:text-gray-400">
+              <p className="text-sm text-[#000] dark:text-[#000]">
                 Applications
               </p>
             </div>
@@ -1572,7 +1572,7 @@ const Application = () => {
                   state.applicationCount?.applications_by_status?.Applied ||
                   0}
               </p>
-              <p className="text-sm text-[#000] dark:text-gray-400">
+              <p className="text-sm text-[#000] dark:text-[#000]">
                 Applied
               </p>
             </div>
@@ -1594,7 +1594,7 @@ const Application = () => {
               <p className="text-2xl  leading-none text-gray-900 dark:text-white">
                 {state.applicationCount?.applications_by_status?.Selected || 0}
               </p>
-              <p className="text-sm text-[#000] dark:text-gray-400">
+              <p className="text-sm text-[#000] dark:text-[#000]">
                 Selected
               </p>
             </div>
@@ -1624,7 +1624,7 @@ const Application = () => {
                   ] ||
                   0}
               </p>
-              <p className="text-sm text-[#000] dark:text-gray-400">
+              <p className="text-sm text-[#000] dark:text-[#000]">
                 Interview Scheduled
               </p>
             </div>
@@ -1850,7 +1850,7 @@ const Application = () => {
               <div className="flex items-center justify-center py-12">
                 <div className="flex items-center gap-3">
                   <IconLoader className="h-6 w-6 animate-spin text-blue-600" />
-                  <span className="text-[#000] dark:text-gray-400">
+                  <span className="text-[#000] dark:text-[#000]">
                     Loading applications...
                   </span>
                 </div>
@@ -1867,7 +1867,7 @@ const Application = () => {
                   <Link
                     href={`/faculty/application_detail?id=${row?.id}`}
                     title={row?.applicant_name}
-                    className={`inline-flex items-center gap-2 ${!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-gray-400'}`}
+                    className={`inline-flex items-center gap-2 ${!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-[#000]'}`}
                   >
                     {row?.applicant_name}
                   </Link>
@@ -1881,7 +1881,7 @@ const Application = () => {
                   <Link
                     href={`/faculty/job_details?id=${row?.job_id}`}
                     title={row?.job_title}
-                    className={!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-gray-400'}
+                    className={!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-[#000]'}
                   >
                     {row?.job_short_title}
                   </Link>
@@ -1895,7 +1895,7 @@ const Application = () => {
                 render: (row) => (
                   <div
                     title={row?.college_name}
-                    className={!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-gray-400'}
+                    className={!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-[#000]'}
                   >
                     {row?.college_name}
                   </div>
@@ -1907,7 +1907,7 @@ const Application = () => {
                 render: (row) => {
                   const { department_name } = row;
                   if (!department_name || department_name?.length === 0) {
-                    return <span className="text-gray-400">-</span>;
+                    return <span className="text-[#000]">-</span>;
                   }
 
                   const firstDept = department_name?.[0];
@@ -1980,7 +1980,7 @@ const Application = () => {
               //   accessor: "applicant_phone",
               //   title: "Phone",
               //   render: ({ applicant_phone }) => (
-              //     <div className="text-[#000] dark:text-gray-400">
+              //     <div className="text-[#000] dark:text-[#000]">
               //       {applicant_phone}
               //     </div>
               //   ),
@@ -1989,7 +1989,7 @@ const Application = () => {
               //   accessor: "experience",
               //   title: "Experience",
               //   render: ({ experience }) => (
-              //     <div className="text-[#000] dark:text-gray-400">
+              //     <div className="text-[#000] dark:text-[#000]">
               //       {experience}
               //     </div>
               //   ),
@@ -2504,7 +2504,7 @@ const Application = () => {
                 <div className="mt-3 flex flex-wrap items-center gap-6 text-sm text-[#000]">
                   {/* Email */}
                   <div className="flex min-w-[200px] items-center gap-2">
-                    <Mail className="h-4 w-4 text-gray-400" />
+                    <Mail className="h-4 w-4 text-[#000]" />
                     <span className="truncate">
                       {state.application?.email || "N/A"}
                     </span>
@@ -2512,7 +2512,7 @@ const Application = () => {
 
                   {/* Phone */}
                   <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-gray-400" />
+                    <Phone className="h-4 w-4 text-[#000]" />
                     <span>{state.application?.phone || "N/A"}</span>
                   </div>
                 </div>
@@ -2612,7 +2612,7 @@ const Application = () => {
                                   </p>
                                   {feedback && (
                                     <svg
-                                      className={`h-4 w-4 text-gray-400 transition-transform ${
+                                      className={`h-4 w-4 text-[#000] transition-transform ${
                                         isPanelOpen ? "rotate-180" : ""
                                       }`}
                                       fill="none"

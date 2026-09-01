@@ -1963,7 +1963,7 @@ const Mailbox = () => {
 
                                                         <div className="ltr:ml-3 rtl:mr-3">
                                                             <p className="text-xs font-semibold text-primary">{attachment.name}</p>
-                                                            <p className="text-[11px] text-gray-400 dark:text-[#000]">{attachment.size}</p>
+                                                            <p className="text-[11px] text-[#000] dark:text-[#000]">{attachment.size}</p>
                                                         </div>
                                                         <div className="absolute top-0 z-[5] hidden h-full w-full rounded-md bg-dark-light/40 group-hover:block ltr:left-0 rtl:right-0"></div>
                                                         <div className="btn btn-primary absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 rounded-full p-1 group-hover:block">
@@ -1985,7 +1985,7 @@ const Mailbox = () => {
                                 <button type="button" className="block hover:text-primary ltr:mr-3 rtl:ml-3 xl:hidden" onClick={() => setIsShowMailMenu(!isShowMailMenu)}>
                                     <IconMenu />
                                 </button>
-                                <h4 className="text-lg font-medium text-[#000] dark:text-gray-400">Message</h4>
+                                <h4 className="text-lg font-medium text-[#000] dark:text-[#000]">Message</h4>
                             </div>
                             <div className="h-px bg-gradient-to-l from-indigo-900/20 via-black to-indigo-900/20 opacity-[0.1] dark:via-white"></div>
                             <form className="grid gap-6 p-6">
