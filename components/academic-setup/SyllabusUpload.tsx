@@ -34,13 +34,13 @@ const SyllabusUpload = ({ onFileSelect }: SyllabusUploadProps) => {
   };
 
   return (
-    <div className="panel mb-5 px-6 py-6">
+    <div className=" mb-5 border-[0.5px]  border-gray-300 px-6 py-6 dark:border-gray-600 rounded-xl">
       {/* Drop Zone */}
       <div
         onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
         onDragLeave={() => setDragging(false)}
         onDrop={handleDrop}
-        className={`flex flex-col items-center justify-center rounded-xl border-2 border-dashed py-10 transition-all ${
+        className={`flex flex-col items-center border-dashed justify-center rounded-xl border-2 border-dashed py-10 transition-all ${
           dragging
             ? "border-primary bg-purple-50 dark:bg-purple-900/10"
             : "border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-800"

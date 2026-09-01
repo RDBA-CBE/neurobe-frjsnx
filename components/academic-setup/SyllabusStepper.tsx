@@ -49,6 +49,7 @@ interface SyllabusStepperProps {
   title?: string;
   description?: string;
   statusLabel?: string;
+  statusClassName?: string;
 }
 
 const SyllabusStepper = ({
@@ -56,9 +57,10 @@ const SyllabusStepper = ({
   title = "Syllabus",
   description = "Course structure, learning outcomes, unit breakdown, and prescribed readings.",
   statusLabel = "Not Started",
+  statusClassName = "",
 }: SyllabusStepperProps) => {
   return (
-    <div className=" mb-5 px-6 py-4">
+    <div className=" px-6 py-4">
       {/* Header */}
       <div className="mb-4 flex items-start justify-between">
         <div>
@@ -67,7 +69,7 @@ const SyllabusStepper = ({
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-500">
           <span>Status:</span>
-          <span className="rounded-full border border-gray-300 px-3 py-0.5 text-xs font-semibold text-gray-700 dark:border-gray-600 dark:text-gray-300">
+          <span className={`rounded-full border px-3 py-0.5 text-xs font-semibold dark:border-gray-600 dark:text-gray-300 ${statusClassName || "border-gray-300 text-gray-700"}`}>
             {statusLabel}
           </span>
         </div>
