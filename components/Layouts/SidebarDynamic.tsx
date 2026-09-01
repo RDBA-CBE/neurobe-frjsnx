@@ -156,6 +156,14 @@ const SidebarDynamic = () => {
     menu.map((item, idx) => {
       const Icon = Icons[item.icon];
 
+      if (item.type === "heading") {
+        return (
+           <p key={idx} className={`mt-4  mb-4 text-[14px] font-medium tracking-[0.5px] text-color-white1 ${item?.className}`}>
+          {item.label}
+         </p>
+        );
+      }
+
       if (item.type === "section") {
         return (
           <div key={idx}>
@@ -172,7 +180,7 @@ const SidebarDynamic = () => {
 
       if (item.type === "link") {
         return (
-          <li key={idx} className=" nav-item">
+          <li key={idx} className={` nav-item ${item?.className}`}>
             <Link
               href={item.href || "#"}
               target={item.external ? "_blank" : "_self"}
@@ -305,7 +313,7 @@ const SidebarDynamic = () => {
           <div className="mb-7">
 
             <p className="mb-4 text-[14px] font-medium tracking-[0.5px] text-color-white1">
-              ACTIVE PERSONA ROLE
+              ACTIVE PERSONAL ROLE
             </p>
 
             <div
@@ -351,9 +359,7 @@ const SidebarDynamic = () => {
           ========================== */}
           <div>
 
-            <p className="mb-4 text-[14px] font-medium tracking-[0.5px] text-color-white1">
-              CORE WORKSPACES
-            </p>
+          
 
             <AnimateHeight duration={300} height={showOwn ? "auto" : 0}>
               <ul className="relative space-y-1 p-0 font-semibold">

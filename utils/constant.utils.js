@@ -7,11 +7,10 @@ export const CLIENT_ID =
 export const BACKEND_URL = "https://user-service.88.222.213.249.nip.io/api/";
 export const FRONTEND_URL = "https://www.facultypro.in/";
 
-export const CALENDAR_CLIENT_ID = "130334216230-5ur5a79k0k203lu20eri4crgkic25j9q.apps.googleusercontent.com"
+export const CALENDAR_CLIENT_ID =
+  "130334216230-5ur5a79k0k203lu20eri4crgkic25j9q.apps.googleusercontent.com";
 
-
-export const  CAPTCHA_SITE_KEY = "6LeEe9gsAAAAAKddSPmwNUF4J-v7zaz8CgeKZ7n3"
-
+export const CAPTCHA_SITE_KEY = "6LeEe9gsAAAAAKddSPmwNUF4J-v7zaz8CgeKZ7n3";
 
 export const ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -384,15 +383,14 @@ export const menuConfig = {
       ],
     },
   ],
-  
 };
 
 export const OwnmenuConfig = {
- 
-
- 
-
-  hr: [
+  course_coordinator: [
+    {
+      type: "heading",
+      label: "CORE WORKSPACES",
+    },
     {
       type: "link",
       icon: "IconMenuDashboard",
@@ -459,7 +457,110 @@ export const OwnmenuConfig = {
     },
   ],
 
- 
+  hr: [
+    {
+      type: "link",
+      icon: "IconMenuDashboard",
+      label: "My Assigned Courses",
+      href: "/",
+      className:"pb-2"
+    },
+    {
+      type: "heading",
+      label: "COURSE PREPARATION",
+      className:"pb-2"
+
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuForms",
+      label: "Syllabus",
+      href: "/neurobe/course-offering",
+    },
+    {
+      type: "link",
+      icon: "IconMenuUsers",
+      label: "CO-PO Mapping",
+      href: "/neurobe/user-list",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuTables",
+      label: "Topics",
+      href: "/",
+      notifyKey: "new_application_count",
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Pedagogy",
+      href: "/neurobe/bulk-import",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Lesson Plan",
+      href: "/neurobe/audit-trial",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Learning Materials",
+      href: "/neurobe/audit-trial",
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Question Bank",
+      href: "/neurobe/audit-trial",
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "CIA Question Paper",
+      href: "/neurobe/audit-trial",
+    },
+    {
+      type: "heading",
+      label: "INSTRUCTOR FUNCTIONS",
+      className:"pb-2 pt-2"
+
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Student Enrollment",
+      href: "/neurobe/audit-trial",
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "MCQ Tests",
+      href: "/neurobe/audit-trial",
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Results & Analysis",
+      href: "/neurobe/audit-trial",
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Marks Extraction",
+      href: "/neurobe/audit-trial",
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "CO-PO Attainment",
+      href: "/neurobe/audit-trial",
+    },
+  ],
 };
 
 export const propertyType = [
@@ -704,7 +805,6 @@ export const PREFERENCES = [
     label: "SLET Cleared",
   },
 ];
-
 
 export const RECORDS_FOR_ADMIN = [
   {
