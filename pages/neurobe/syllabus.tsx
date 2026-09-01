@@ -11,9 +11,9 @@ import SyllabusUpload from "@/components/academic-setup/SyllabusUpload";
 import ImportProgressStepper from "@/components/bulk-import/ImportProgressStepper";
 import DownloadTemplate from "@/components/bulk-import/DownloadTemplate";
 import FileUploadDropzone from "@/components/bulk-import/FileUploadDropzone";
-import TableComponent from "@/components/academic-setup/TableComponent";
 import IconEdit from "@/components/Icon/IconEdit";
 import IconTrash from "@/components/Icon/IconTrash";
+import TableComponent from "@/components/common-components/TableComponent";
 
 type ImportType = "user" | "course";
 
