@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { GitFork, Target, CheckCircle2, ShieldCheck } from "lucide-react";
+import { GitFork, Target, CheckCircle2, ShieldCheck, Home } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
@@ -8,41 +8,113 @@ import IconPlus from "@/components/Icon/IconPlus";
 import PageBanner from "@/components/common-components/PageBanner";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import PrivateRouter from "@/hook/privateRouter";
+import CourseBanner from "@/components/academic-setup/CourseBanner";
+import StatTabCard from "@/components/academic-setup/StatTabCard";
 
 const MOCK_MAPPINGS = [
   {
     coCode: "CO1",
-    description: "Understand the fundamentals of linear and non-linear data structures.",
+    description:
+      "Understand the fundamentals of linear and non-linear data structures.",
     bloomLevel: "K2 - Understand",
-    poMap: { PO1: 3, PO2: 2, PO3: 1, PO4: 0, PO5: 1, PO6: 0, PO7: 0, PO8: 0, PO9: 1, PO10: 1, PO11: 0, PO12: 2 },
+    poMap: {
+      PO1: 3,
+      PO2: 2,
+      PO3: 1,
+      PO4: 0,
+      PO5: 1,
+      PO6: 0,
+      PO7: 0,
+      PO8: 0,
+      PO9: 1,
+      PO10: 1,
+      PO11: 0,
+      PO12: 2,
+    },
     psoMap: { PSO1: 3, PSO2: 2 },
   },
   {
     coCode: "CO2",
-    description: "Apply appropriate data structures for problem solving and algorithm design.",
+    description:
+      "Apply appropriate data structures for problem solving and algorithm design.",
     bloomLevel: "K3 - Apply",
-    poMap: { PO1: 3, PO2: 3, PO3: 2, PO4: 2, PO5: 2, PO6: 0, PO7: 0, PO8: 0, PO9: 2, PO10: 1, PO11: 1, PO12: 2 },
+    poMap: {
+      PO1: 3,
+      PO2: 3,
+      PO3: 2,
+      PO4: 2,
+      PO5: 2,
+      PO6: 0,
+      PO7: 0,
+      PO8: 0,
+      PO9: 2,
+      PO10: 1,
+      PO11: 1,
+      PO12: 2,
+    },
     psoMap: { PSO1: 3, PSO2: 3 },
   },
   {
     coCode: "CO3",
-    description: "Analyze the time and space complexity of fundamental algorithms.",
+    description:
+      "Analyze the time and space complexity of fundamental algorithms.",
     bloomLevel: "K4 - Analyze",
-    poMap: { PO1: 3, PO2: 3, PO3: 3, PO4: 3, PO5: 2, PO6: 0, PO7: 0, PO8: 0, PO9: 2, PO10: 1, PO11: 1, PO12: 3 },
+    poMap: {
+      PO1: 3,
+      PO2: 3,
+      PO3: 3,
+      PO4: 3,
+      PO5: 2,
+      PO6: 0,
+      PO7: 0,
+      PO8: 0,
+      PO9: 2,
+      PO10: 1,
+      PO11: 1,
+      PO12: 3,
+    },
     psoMap: { PSO1: 3, PSO2: 2 },
   },
   {
     coCode: "CO4",
-    description: "Design efficient searching, sorting, and graph traversal solutions.",
+    description:
+      "Design efficient searching, sorting, and graph traversal solutions.",
     bloomLevel: "K5 - Evaluate",
-    poMap: { PO1: 3, PO2: 3, PO3: 3, PO4: 2, PO5: 3, PO6: 1, PO7: 0, PO8: 1, PO9: 2, PO10: 2, PO11: 2, PO12: 3 },
+    poMap: {
+      PO1: 3,
+      PO2: 3,
+      PO3: 3,
+      PO4: 2,
+      PO5: 3,
+      PO6: 1,
+      PO7: 0,
+      PO8: 1,
+      PO9: 2,
+      PO10: 2,
+      PO11: 2,
+      PO12: 3,
+    },
     psoMap: { PSO1: 3, PSO2: 3 },
   },
   {
     coCode: "CO5",
-    description: "Formulate algorithmic strategies to address complex computing problems.",
+    description:
+      "Formulate algorithmic strategies to address complex computing problems.",
     bloomLevel: "K6 - Create",
-    poMap: { PO1: 3, PO2: 3, PO3: 3, PO4: 3, PO5: 3, PO6: 1, PO7: 1, PO8: 1, PO9: 3, PO10: 2, PO11: 2, PO12: 3 },
+    poMap: {
+      PO1: 3,
+      PO2: 3,
+      PO3: 3,
+      PO4: 3,
+      PO5: 3,
+      PO6: 1,
+      PO7: 1,
+      PO8: 1,
+      PO9: 3,
+      PO10: 2,
+      PO11: 2,
+      PO12: 3,
+    },
     psoMap: { PSO1: 3, PSO2: 3 },
   },
 ];
@@ -76,27 +148,42 @@ const COPOMapping = () => {
     );
   });
 
-  const poHeaders = ["PO1", "PO2", "PO3", "PO4", "PO5", "PO6", "PO7", "PO8", "PO9", "PO10", "PO11", "PO12"];
+  const poHeaders = [
+    "PO1",
+    "PO2",
+    "PO3",
+    "PO4",
+    "PO5",
+    "PO6",
+    "PO7",
+    "PO8",
+    "PO9",
+    "PO10",
+    "PO11",
+    "PO12",
+  ];
   const psoHeaders = ["PSO1", "PSO2"];
+
+  
 
   const getScoreBadge = (score: number) => {
     if (score === 3) {
       return (
-        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-purple-100 font-bold text-[#7c3aed] text-xs">
+        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-purple-100 text-xs font-bold text-[#7c3aed]">
           3
         </span>
       );
     }
     if (score === 2) {
       return (
-        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 font-bold text-blue-700 text-xs">
+        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 text-xs font-bold text-blue-700">
           2
         </span>
       );
     }
     if (score === 1) {
       return (
-        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-amber-100 font-bold text-amber-700 text-xs">
+        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-amber-100 text-xs font-bold text-amber-700">
           1
         </span>
       );
@@ -104,63 +191,117 @@ const COPOMapping = () => {
     return <span className="text-gray-300">-</span>;
   };
 
+  const TABS = [
+  {
+    key: "course_outcome",
+    label: "Course Outcome",
+    // subLabel: "Academic Divisions",
+    count: 5,
+  },
+  {
+    key: "program_outcome",
+    label: "Program Outcome",
+    // subLabel: "Degrees & Majors",
+    count: 4,
+  },
+  { key: "ai_suggestions", label: "AI Suggestions", subLabel: "AI-generated mapping suggestions", count: 6 },
+  
+  {
+    key: "mapping_status",
+    label: "Mapping Status",
+    subLabel: "AI-generated mappings must be reviewed by the Coordinator",
+    count: 6,
+  },
+];
+
   return (
     <div className="min-h-screen">
-      <PageBanner
-        title="CO-PO & PSO Mapping"
-        description="Establish correlation matrices mapping Course Outcomes (COs) to Programme Outcomes (POs) and Programme Specific Outcomes (PSOs) with correlation levels."
-        icon={<GitFork className="h-7 w-7 text-color2" />}
-        imageUrl="/assets/images/neurobe/Rectangle.png"
+      <CourseBanner
+        courseCode="CS301"
+        courseTitle="Computer Networks"
+        description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
+        programme="B.Tech CSE"
+        batch="2025–2029"
+        academicYear="2026–2027 / Semester 3"
+        students="40 Students"
+        selectedCourse="CS309"
+        courseOptions={[
+          { value: "CS309", label: "Course: CS309" },
+          { value: "CS301", label: "Course: CS301" },
+        ]}
+        onCourseChange={(val) => console.log("course", val)}
+        activeView={state.activeTab}
+        onBack={() => console.log("back")}
+        onViewChange={(view) => setState({ activeTab: view })}
       />
 
-      {/* Action Header */}
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-semibold text-gray-700 dark:text-white">Selected Course:</span>
-          <div className="w-80">
-            <CustomSelect
-              options={COURSE_OPTIONS}
-              value={COURSE_OPTIONS.find((o) => o.value === state.selectedCourse) ?? null}
-              onChange={(e) => setState({ selectedCourse: e?.value ?? "CS301" })}
-              placeholder="Select Course"
-            />
-          </div>
-        </div>
-
-        <button className="bg-color2 hover:bg-color2 flex items-center gap-2 rounded-full px-6 py-2 text-sm font-medium text-white shadow">
-          <IconPlus className="h-4 w-4" />
-          Edit CO-PO Matrix
-        </button>
+      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+        {TABS.map((tab) => (
+          <StatTabCard
+            key={tab.key}
+            icon={<Home className="h-5 w-5" />}
+            label={tab.label}
+            subLabel={tab.subLabel}
+            count={tab.count}
+            active={state.activeTab === tab.key}
+            onClick={() =>
+              setState({
+                activeTab: tab.key,
+                search: "",
+                statusFilter: "All Statuses",
+                deptFilter: "All Departments",
+              })
+            }
+          />
+        ))}
       </div>
+
+      
 
       {/* Legend Cards */}
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-purple-100 font-bold text-[#7c3aed] text-sm">3</span>
+          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-purple-100 text-sm font-bold text-[#7c3aed]">
+            3
+          </span>
           <div>
-            <p className="text-xs font-semibold text-gray-800 dark:text-white">Level 3 (High)</p>
+            <p className="text-xs font-semibold text-gray-800 dark:text-white">
+              Level 3 (High)
+            </p>
             <p className="text-[11px] text-gray-400">Substantial Correlation</p>
           </div>
         </div>
         <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-blue-100 font-bold text-blue-700 text-sm">2</span>
+          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-blue-100 text-sm font-bold text-blue-700">
+            2
+          </span>
           <div>
-            <p className="text-xs font-semibold text-gray-800 dark:text-white">Level 2 (Medium)</p>
+            <p className="text-xs font-semibold text-gray-800 dark:text-white">
+              Level 2 (Medium)
+            </p>
             <p className="text-[11px] text-gray-400">Moderate Correlation</p>
           </div>
         </div>
         <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-amber-100 font-bold text-amber-700 text-sm">1</span>
+          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-amber-100 text-sm font-bold text-amber-700">
+            1
+          </span>
           <div>
-            <p className="text-xs font-semibold text-gray-800 dark:text-white">Level 1 (Low)</p>
+            <p className="text-xs font-semibold text-gray-800 dark:text-white">
+              Level 1 (Low)
+            </p>
             <p className="text-[11px] text-gray-400">Slight Correlation</p>
           </div>
         </div>
         <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
           <ShieldCheck className="h-6 w-6 text-green-600" />
           <div>
-            <p className="text-xs font-semibold text-gray-800 dark:text-white">NBA Compliance</p>
-            <p className="text-[11px] text-green-600">Aligned with Criteria 3</p>
+            <p className="text-xs font-semibold text-gray-800 dark:text-white">
+              NBA Compliance
+            </p>
+            <p className="text-[11px] text-green-600">
+              Aligned with Criteria 3
+            </p>
           </div>
         </div>
       </div>
@@ -176,7 +317,7 @@ const COPOMapping = () => {
             placeholder="Search CO statements..."
             value={state.search}
             onChange={(e) => setState({ search: e.target.value })}
-            className="w-full rounded-lg border border-input bg-white py-2 pl-9 pr-4 text-sm outline-none focus:border-[#7c3aed] dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            className="border-input w-full rounded-lg border bg-white py-2 pl-9 pr-4 text-sm outline-none focus:border-[#7c3aed] dark:border-gray-600 dark:bg-gray-700 dark:text-white"
           />
         </div>
       </div>
@@ -187,15 +328,23 @@ const COPOMapping = () => {
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50 text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
               <th className="px-4 py-3 font-semibold">CO</th>
-              <th className="px-4 py-3 font-semibold min-w-[220px]">COURSE OUTCOME STATEMENT</th>
+              <th className="min-w-[220px] px-4 py-3 font-semibold">
+                COURSE OUTCOME STATEMENT
+              </th>
               <th className="px-4 py-3 font-semibold">BLOOM LEVEL</th>
               {poHeaders.map((po) => (
-                <th key={po} className="px-2 py-3 text-center font-bold text-gray-800 dark:text-gray-200">
+                <th
+                  key={po}
+                  className="px-2 py-3 text-center font-bold text-gray-800 dark:text-gray-200"
+                >
                   {po}
                 </th>
               ))}
               {psoHeaders.map((pso) => (
-                <th key={pso} className="px-2 py-3 text-center font-bold text-[#7c3aed]">
+                <th
+                  key={pso}
+                  className="px-2 py-3 text-center font-bold text-[#7c3aed]"
+                >
                   {pso}
                 </th>
               ))}
@@ -203,9 +352,16 @@ const COPOMapping = () => {
           </thead>
           <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
             {filteredRecords.map((row) => (
-              <tr key={row.coCode} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
-                <td className="px-4 py-3 font-bold text-[#7c3aed]">{row.coCode}</td>
-                <td className="px-4 py-3 text-gray-800 dark:text-gray-200">{row.description}</td>
+              <tr
+                key={row.coCode}
+                className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50"
+              >
+                <td className="px-4 py-3 font-bold text-[#7c3aed]">
+                  {row.coCode}
+                </td>
+                <td className="px-4 py-3 text-gray-800 dark:text-gray-200">
+                  {row.description}
+                </td>
                 <td className="px-4 py-3">
                   <span className="inline-flex rounded bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-300">
                     {row.bloomLevel}
@@ -231,4 +387,3 @@ const COPOMapping = () => {
 };
 
 export default PrivateRouter(COPOMapping);
-

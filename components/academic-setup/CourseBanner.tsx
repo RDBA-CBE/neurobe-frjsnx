@@ -38,7 +38,7 @@ export default function CourseBanner({
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 rounded-full border border-white/20 px-4 py-1 text-sm text-white/80 hover:bg-white/10 transition-all"
+          className="flex items-center gap-2 rounded-xl border border-white/20 px-4 py-1 text-sm text-white hover:bg-white/10 transition-all"
         >
           <ChevronLeft className="h-4 w-4" />
           Back to My Courses
@@ -51,7 +51,7 @@ export default function CourseBanner({
           placeholder={`Course: ${selectedCourse || courseCode}`}
           isSearchable={false}
           isClearable={false}
-          className="course-banner-select w-48"
+          className="course-banner-select w-30"
           menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
         />
       </div>
@@ -68,23 +68,23 @@ export default function CourseBanner({
         </div>
 
         {/* View Toggle */}
-        <div className="flex shrink-0 items-center border-[0.5px] border-white rounded-md  p-1">
+        <div className="flex shrink-0 items-center border-[0.5px] border-[#fff]/20 rounded-xl  p-1">
           <button
             onClick={() => onViewChange?.("coordinator")}
-            className={`rounded-md px-4 py-1.5 text-sm font-medium transition-all ${
+            className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all ${
               activeView === "coordinator"
                 ? "bg-primary-custom text-white"
-                : "text-white/70 hover:text-white"
+                : "text-white hover:text-white"
             }`}
           >
             Coordinator View
           </button>
           <button
             onClick={() => onViewChange?.("instructor")}
-            className={`rounded-md px-4 py-1.5 text-sm font-medium transition-all ${
+            className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all ${
               activeView === "instructor"
                 ? "bg-primary-custom text-white"
-                : "text-white/70 hover:text-white"
+                : "text-white hover:text-white"
             }`}
           >
             Instructor View

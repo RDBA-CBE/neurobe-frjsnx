@@ -91,7 +91,7 @@
   }
   .sidebar .nav-item > button.active,
   .sidebar .nav-item > a.active {
-    @apply bg-[#6C2FED] text-white rounded-full dark:bg-[#181f32] dark:text-white-dark;
+    @apply bg-[#5C28CA] text-white rounded-full dark:bg-[#181f32] dark:text-white-dark;
   }
 
   .sidebar .nav-item > button.active > div > span,
@@ -1010,7 +1010,7 @@ body > div[style*="z-index:2000000000"] > div:not(:has(iframe)) {
 }
 
 .text-primary-custom{
-  color: #6C2FED;
+  color: #5C28CA;
 }
 /* ── Modal animations ── */
 @keyframes fadeIn {
@@ -1062,10 +1062,10 @@ body > div[style*="z-index:2000000000"] > div:not(:has(iframe)) {
 
 
 .bg-primary-custom{
-  background-color: #6C2FED;
+  background-color: #5C28CA;
 }
 .border-primary-custom{
-  border-color: #6C2FED;
+  border-color: #5C28CA;
   border-radius: 8px;
   min-height: 36px;
   cursor: pointer;
@@ -1075,14 +1075,14 @@ body > div[style*="z-index:2000000000"] > div:not(:has(iframe)) {
 }
 
 .course-banner-select .react-select__control {
-  background-color: #6C2FED;
-  border-color: #6C2FED;
+  background-color: #5b28ca52;
+  border-color: #5C28CA;
   border-radius: 8px;
   min-height: 36px;
   cursor: pointer;
 }
 .course-banner-select .react-select__control:hover {
-  border-color: #6C2FED;
+  border-color: #5C28CA;
 }
 .course-banner-select .react-select__single-value,
 .course-banner-select .react-select__placeholder {
@@ -1090,8 +1090,8 @@ body > div[style*="z-index:2000000000"] > div:not(:has(iframe)) {
   font-weight: 600;
   font-size: 13px;
 }
-.course-banner-select .react-select__dropdown-indicator svg {
-  color: #ffffff;
+.course-banner-select .react-select__indicators svg {
+  color: #ffffff !important;
 }
 .course-banner-select .react-select__indicator-separator {
   display: none;
