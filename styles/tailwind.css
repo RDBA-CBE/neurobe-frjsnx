@@ -817,6 +817,9 @@ pre.hljs {
 .bg-sec{
   background-color: #F1F5F9;
 }
+.bg-sec-dark{
+  background-color: #E2E8F0;
+}
 
 .text-color1 {
   color: #000E3B;
@@ -1003,5 +1006,42 @@ body > div[style*="z-index:2000000000"] > div:not(:has(iframe)) {
   width: 250px;
 }
 
+.text-primary-custom{
+  color: #6C2FED;
+}
 
+.bg-primary-custom{
+  background-color: #6C2FED;
+}
+.border-primary-custom{
+  border-color: #6C2FED;
+  border-radius: 8px;
+  min-height: 36px;
+  cursor: pointer;
+}
+
+
+}
+
+.course-banner-select .react-select__control {
+  background-color: #6C2FED;
+  border-color: #6C2FED;
+  border-radius: 8px;
+  min-height: 36px;
+  cursor: pointer;
+}
+.course-banner-select .react-select__control:hover {
+  border-color: #6C2FED;
+}
+.course-banner-select .react-select__single-value,
+.course-banner-select .react-select__placeholder {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 13px;
+}
+.course-banner-select .react-select__dropdown-indicator svg {
+  color: #ffffff;
+}
+.course-banner-select .react-select__indicator-separator {
+  display: none;
 }
