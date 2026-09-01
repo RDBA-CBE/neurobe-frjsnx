@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { BookOpen, Users, Clock, Award } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
@@ -8,6 +7,8 @@ import PageBanner from "@/components/common-components/PageBanner";
 import TableComponent from "@/components/common-components/TableComponent";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import PrivateRouter from "@/hook/privateRouter";
+import { BookOpen, User2Icon } from "lucide-react";
+import CourseCard from "@/components/academic-setup/CourseCard";
 
 const MOCK_ASSIGNED_COURSES = [
   {
@@ -72,6 +73,63 @@ const PROGRAMME_OPTIONS = [
   { value: "B.Tech AI & DS", label: "B.Tech AI & DS" },
 ];
 
+const MOCK_CARDS = [
+  {
+    isNew: true,
+    code: "CS301",
+    credits: "4 Credits • L-3 : T-0 : P-2",
+    role: "Coordinator + Instructor",
+    title: "Computer Networks",
+    programme: "B.Tech CSE",
+    batch: "2025-2029",
+    term: "Semester 3",
+    students: "43 Students",
+    prepItems: [
+      { label: "SYLLABUS", status: "not_started" as const },
+      { label: "CO-PO MAPPING", status: "not_started" as const },
+      { label: "TOPICS", status: "not_started" as const },
+      { label: "PEDAGOGY", status: "not_started" as const },
+      { label: "LESSON PLAN", status: "not_started" as const },
+      { label: "LEARNING MATERIALS", status: "not_started" as const },
+      { label: "QUESTION BANK", status: "not_started" as const },
+      { label: "CIA QUESTION PAPER", status: "not_started" as const },
+    ],
+    nextAction: "Upload Syllabus",
+    instructors:
+      "Instructors: Arun Kumar (Coordinator), Priya Selvam (Instructor)",
+    actionLabel: "Start Course Preparation",
+  },
+  {
+    code: "CS201",
+    credits: "4 Credits • L-3 : T-0 : P-2",
+    role: "Coordinator + Instructor",
+    title: "Data Structures",
+    readiness: "78%",
+    programme: "B.Tech CSE",
+    batch: "2025-2029 Batch",
+    term: "Semester 3",
+    students: "41 Students",
+    prepItems: [
+      { label: "SYLLABUS", status: "approved" as const },
+      { label: "CO-PO MAPPING", status: "review" as const },
+      { label: "TOPICS", status: "approved" as const },
+      { label: "PEDAGOGY", status: "approved" as const },
+      { label: "LESSON PLAN", status: "draft" as const },
+      {
+        label: "QUESTION BANK",
+        status: "approved" as const,
+        extra: "68 Questions",
+      },
+      { label: "LEARNING MATERIALS", status: "draft" as const },
+      { label: "CIA", status: "draft" as const },
+    ],
+    nextAction: "Review CO-PO mapping",
+    instructors:
+      "Instructors: Arun Kumar (Coordinator), Priya Selvam (Instructor)",
+    actionLabel: "Enter Course Workspace",
+  },
+];
+
 const MyAssignedCourses = () => {
   const dispatch = useDispatch();
 
@@ -80,6 +138,7 @@ const MyAssignedCourses = () => {
     statusFilter: "all",
     programmeFilter: "all",
     loading: false,
+    type: "all_semester",
   });
 
   useEffect(() => {
@@ -96,7 +155,8 @@ const MyAssignedCourses = () => {
     const matchStatus =
       state.statusFilter === "all" || row.status === state.statusFilter;
     const matchProg =
-      state.programmeFilter === "all" || row.programme === state.programmeFilter;
+      state.programmeFilter === "all" ||
+      row.programme === state.programmeFilter;
     return matchSearch && matchStatus && matchProg;
   });
 
@@ -177,50 +237,53 @@ const MyAssignedCourses = () => {
     },
   ];
 
+  const semester = [
+    {
+      label: "All Semsters",
+      value: "all_semester",
+    },
+    {
+      label: "Semester 3",
+      value: "semester_3",
+    },
+    {
+      label: "Semester 4",
+      value: "semester_4",
+    },
+  ];
+
+  const onAction=(data)=>{
+    console.log("onAction", data)
+    
+  }
+
   return (
     <div className="min-h-screen">
       <PageBanner
+        badges={[
+          {
+            label: "Course Coordinator",
+            className: "bg-[#1244cc] text-white px-3.5 py-1 font-medium",
+          },
+          {
+            label: "Instructor access included",
+            dot: true,
+            className:
+              "bg-[#043e2e] text-[#10b981] border border-[#065f46] px-3.5 py-1 font-medium",
+          },
+        ]}
         title="My Assigned Courses"
-        description="View and manage academic courses assigned to you as Course Coordinator or Instructor for current and previous academic terms."
-        icon={<BookOpen className="h-7 w-7 text-color2" />}
-        imageUrl="/assets/images/neurobe/Rectangle.png"
+        description="Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and classroom execution."
+        stats={[
+          { label: "COURSES", value: 2 },
+          {
+            label: "AVG READINESS",
+            value: "80.5%",
+            valueColor: "text-[#10b981]",
+          },
+          { label: "ENROLLED STUDENTS", value: 84 },
+        ]}
       />
-
-      {/* Stats Cards */}
-      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-gray-500">Active Courses</span>
-            <BookOpen className="h-4 w-4 text-purple-600" />
-          </div>
-          <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">3</p>
-          <span className="text-xs text-green-600">Current Semester</span>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-gray-500">Total Students</span>
-            <Users className="h-4 w-4 text-blue-600" />
-          </div>
-          <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">184</p>
-          <span className="text-xs text-gray-400">Across 3 Batches</span>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-gray-500">Credit Load</span>
-            <Clock className="h-4 w-4 text-amber-600" />
-          </div>
-          <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">11</p>
-          <span className="text-xs text-gray-400">Credits / Week</span>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-gray-500">Coordinator Roles</span>
-            <Award className="h-4 w-4 text-emerald-600" />
-          </div>
-          <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">2</p>
-          <span className="text-xs text-emerald-600">Courses Lead</span>
-        </div>
-      </div>
 
       {/* Filters */}
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -233,47 +296,40 @@ const MyAssignedCourses = () => {
             placeholder="Search by code, title..."
             value={state.search}
             onChange={(e) => setState({ search: e.target.value })}
-            className="w-full rounded-lg border border-input bg-white py-2 pl-9 pr-4 text-sm outline-none focus:border-[#7c3aed] dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            className="border-input w-full rounded-lg border bg-white py-2 pl-9 pr-4 text-sm outline-none focus:border-[#7c3aed] dark:border-gray-600 dark:bg-gray-700 dark:text-white"
           />
         </div>
+        <div className="flex items-center gap-2">
+          <p>Semester : </p>
 
-        <div className="flex flex-wrap gap-3">
-          <CustomSelect
-            options={PROGRAMME_OPTIONS}
-            value={
-              PROGRAMME_OPTIONS.find((o) => o.value === state.programmeFilter) ??
-              null
-            }
-            onChange={(e) =>
-              setState({ programmeFilter: e?.value ?? "all" })
-            }
-            placeholder="All Programmes"
-            className="filter-input"
-          />
-          <CustomSelect
-            options={STATUS_OPTIONS}
-            value={
-              STATUS_OPTIONS.find((o) => o.value === state.statusFilter) ?? null
-            }
-            onChange={(e) => setState({ statusFilter: e?.value ?? "all" })}
-            placeholder="All Statuses"
-            className="filter-input"
-          />
+          <div className="bg-sec-dark flex shrink-0 items-center gap-2 rounded-lg px-1 py-1">
+            {semester.map((sem) => (
+              <button
+                key={sem.value}
+                onClick={() => setState({ type: sem.value })}
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                  state.type === sem.value
+                    ? "text-color2 rounded-lg bg-[#fff] shadow-sm"
+                    : "hover:text-pri text-[#000] dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
+                }`}
+              >
+                {sem.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Table */}
+      {/* Cards */}
       <div className="panel">
-        <TableComponent
-          records={filteredRecords}
-          columns={columns}
-          loading={state.loading}
-          noRecordsText="No assigned courses found"
-        />
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          {MOCK_CARDS.map((card) => (
+            <CourseCard key={card.code} {...card} onAction={()=>onAction(card)} />
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
 export default PrivateRouter(MyAssignedCourses);
-
