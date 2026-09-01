@@ -462,103 +462,97 @@ export const OwnmenuConfig = {
       type: "link",
       icon: "IconMenuDashboard",
       label: "My Assigned Courses",
-      href: "/",
-      className:"pb-2"
+      href: "/neurobe/my-assigned-courses",
+      className: "pb-2",
     },
     {
       type: "heading",
       label: "COURSE PREPARATION",
-      className:"pb-2"
-
+      className: "pb-2",
     },
-
     {
       type: "link",
       icon: "IconMenuForms",
       label: "Syllabus",
-      href: "/neurobe/course-offering",
+      href: "/neurobe/syllabus",
     },
     {
       type: "link",
       icon: "IconMenuUsers",
       label: "CO-PO Mapping",
-      href: "/neurobe/user-list",
+      href: "/neurobe/co-po-mapping",
     },
-
     {
       type: "link",
       icon: "IconMenuTables",
       label: "Topics",
-      href: "/",
+      href: "/neurobe/topics",
       notifyKey: "new_application_count",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
       label: "Pedagogy",
-      href: "/neurobe/bulk-import",
+      href: "/neurobe/pedagogy",
     },
-
     {
       type: "link",
       icon: "IconMenuNotes",
       label: "Lesson Plan",
-      href: "/neurobe/audit-trial",
+      href: "/neurobe/lesson-plan",
     },
-
     {
       type: "link",
       icon: "IconMenuNotes",
       label: "Learning Materials",
-      href: "/neurobe/audit-trial",
+      href: "/neurobe/learning-materials",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
       label: "Question Bank",
-      href: "/neurobe/audit-trial",
+      href: "/neurobe/question-bank",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
       label: "CIA Question Paper",
-      href: "/neurobe/audit-trial",
+      href: "/neurobe/cia-question-paper",
     },
     {
       type: "heading",
       label: "INSTRUCTOR FUNCTIONS",
-      className:"pb-2 pt-2"
-
+      className: "pb-2 pt-2",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
       label: "Student Enrollment",
-      href: "/neurobe/audit-trial",
+      href: "/neurobe/student-enrollment",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
       label: "MCQ Tests",
-      href: "/neurobe/audit-trial",
+      href: "/neurobe/mcq-tests",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
       label: "Results & Analysis",
-      href: "/neurobe/audit-trial",
+      href: "/neurobe/results-analysis",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
       label: "Marks Extraction",
-      href: "/neurobe/audit-trial",
+      href: "/neurobe/marks-extraction",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
       label: "CO-PO Attainment",
-      href: "/neurobe/audit-trial",
+      href: "/neurobe/co-po-attainment",
     },
   ],
 };
