@@ -38,7 +38,7 @@ const TextArea: React.FC<TextAreaProps> = ({
 
       <div className="relative">
         {icon && (
-          <span className="absolute left-3 top-3 text-gray-400 pointer-events-none">
+          <span className="absolute left-3 top-3 text-[#000] pointer-events-none">
             {icon}
           </span>
         )}
@@ -59,7 +59,7 @@ const TextArea: React.FC<TextAreaProps> = ({
 
         {rightIcon && (
           <span
-            className="absolute right-3 top-3 text-gray-400 cursor-pointer"
+            className="absolute right-3 top-3 text-[#000] cursor-pointer"
             onClick={() => rightIconOnclick?.()}
           >
             {rightIcon}

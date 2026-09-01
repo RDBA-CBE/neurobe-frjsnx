@@ -14,9 +14,26 @@ import PrivateRouter from "@/hook/privateRouter";
 
 type ModalType = "add_user" | "bulk_import" | null;
 
-const ROLE_OPTIONS = ["All Roles", "Faculty", "Student", "Admin", "Course Instructor", "Course Coordinator"];
-const DEPARTMENT_OPTIONS = ["All Departments", "Computer Science & Engg.", "Electronics & Communication", "Artificial Intelligence & Data"];
-const PROGRAMME_OPTIONS = ["All Programmes", "B.E. Computer Science", "B.Tech Artificial Intelligence", "B.Tech Information Technology"];
+const ROLE_OPTIONS = [
+  "All Roles",
+  "Faculty",
+  "Student",
+  "Admin",
+  "Course Instructor",
+  "Course Coordinator",
+];
+const DEPARTMENT_OPTIONS = [
+  "All Departments",
+  "Computer Science & Engg.",
+  "Electronics & Communication",
+  "Artificial Intelligence & Data",
+];
+const PROGRAMME_OPTIONS = [
+  "All Programmes",
+  "B.E. Computer Science",
+  "B.Tech Artificial Intelligence",
+  "B.Tech Information Technology",
+];
 const BATCH_OPTIONS = ["All Batches", "2024-2028", "2025-2029", "2023-2027"];
 const STATUS_OPTIONS = ["All Status", "Active", "Inactive", "Locked"];
 
@@ -201,9 +218,15 @@ const UserList = () => {
     const s = state.search.toLowerCase();
     return (
       !s ||
-      String(row.name || "").toLowerCase().includes(s) ||
-      String(row.email || "").toLowerCase().includes(s) ||
-      String(row.register_no || "").toLowerCase().includes(s)
+      String(row.name || "")
+        .toLowerCase()
+        .includes(s) ||
+      String(row.email || "")
+        .toLowerCase()
+        .includes(s) ||
+      String(row.register_no || "")
+        .toLowerCase()
+        .includes(s)
     );
   };
 
@@ -211,11 +234,12 @@ const UserList = () => {
     state.roleFilter === "All Roles" || row.role === state.roleFilter;
 
   const byDepartment = (row: any) =>
-    state.departmentFilter === "All Departments" || row.department === state.departmentFilter;
+    state.departmentFilter === "All Departments" ||
+    row.department === state.departmentFilter;
 
   // Filtered records
   const filteredRecords = MOCK_USERS.filter(
-    (r) => bySearch(r) && byRole(r) && byDepartment(r)
+    (r) => bySearch(r) && byRole(r) && byDepartment(r),
   );
 
   // Handle modal submit
@@ -225,12 +249,25 @@ const UserList = () => {
   };
 
   const getStatusBadge = (status: string) => {
-    const statusMap: Record<string, { bg: string; text: string; dot: string }> = {
-      Active: { bg: "bg-green-50", text: "text-green-700", dot: "bg-green-600" },
-      Inactive: { bg: "bg-gray-50", text: "text-gray-700", dot: "bg-gray-600" },
-      Locked: { bg: "bg-red-50", text: "text-red-700", dot: "bg-red-600" },
-      Invited: { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-600" },
-    };
+    const statusMap: Record<string, { bg: string; text: string; dot: string }> =
+      {
+        Active: {
+          bg: "bg-green-50",
+          text: "text-green-700",
+          dot: "bg-green-600",
+        },
+        Inactive: {
+          bg: "bg-gray-50",
+          text: "text-gray-700",
+          dot: "bg-gray-600",
+        },
+        Locked: { bg: "bg-red-50", text: "text-red-700", dot: "bg-red-600" },
+        Invited: {
+          bg: "bg-blue-50",
+          text: "text-blue-700",
+          dot: "bg-blue-600",
+        },
+      };
     const config = statusMap[status] || statusMap.Active;
     return config;
   };
@@ -246,25 +283,36 @@ const UserList = () => {
                 <Users className="h-6 w-6 text-purple-600 dark:text-purple-400" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Users</h1>
-                <p className="text-sm text-[#000] dark:text-gray-400">9 Total Registered</p>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Users
+                </h1>
+                <p className="text-sm text-[#000] dark:text-[#000]">
+                  9 Total Registered
+                </p>
               </div>
             </div>
-            <p className="mt-2 text-sm text-[#000] dark:text-gray-400">
-              Institution: <span className="font-semibold">Karpagam Institutions, Coimbatore</span> • Admin:{" "}
-              <span className="font-semibold">Meena Subramanian</span>
+            <p className="mt-2 text-sm text-[#000] dark:text-[#000]">
+              Institution:{" "}
+              <span className="font-semibold">
+                Karpagam Institutions, Coimbatore
+              </span>{" "}
+              • Admin: <span className="font-semibold">Meena Subramanian</span>
             </p>
           </div>
           <div className="flex gap-3">
             <button
-              onClick={() => setState({ modalOpen: true, modalType: "bulk_import" })}
+              onClick={() =>
+                setState({ modalOpen: true, modalType: "bulk_import" })
+              }
               className="rounded-xl border border-gray-300 px-4 py-1 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               ⬇️ Bulk Import
             </button>
             <button
-              onClick={() => setState({ modalOpen: true, modalType: "add_user" })}
-              className="flex items-center gap-2 rounded-xl bg-color2 hover:bg-color2 px-4 py-1 text-sm font-semibold text-white transition hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600"
+              onClick={() =>
+                setState({ modalOpen: true, modalType: "add_user" })
+              }
+              className="bg-color2 hover:bg-color2 flex items-center gap-2 rounded-xl px-4 py-1 text-sm font-semibold text-white transition hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600"
             >
               + Add User
             </button>
@@ -272,11 +320,11 @@ const UserList = () => {
         </div>
       </div>
 
-      <div className="px-6 py-6 space-y-6">
+      <div className="space-y-6 px-6 py-6">
         {/* Filters */}
         <div className="flex flex-wrap items-center gap-3">
           <div className="relative flex-1">
-            <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+            <span className="absolute inset-y-0 left-3 flex items-center text-[#000]">
               <IconSearch className="h-4 w-4" />
             </span>
             <input
@@ -291,7 +339,7 @@ const UserList = () => {
           <select
             value={state.roleFilter}
             onChange={(e) => setState({ roleFilter: e.target.value })}
-            className="rounded-lg border border-gray-300 bg-white py-2 px-4 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
           >
             {ROLE_OPTIONS.map((o) => (
               <option key={o}>{o}</option>
@@ -301,7 +349,7 @@ const UserList = () => {
           <select
             value={state.departmentFilter}
             onChange={(e) => setState({ departmentFilter: e.target.value })}
-            className="rounded-lg border border-gray-300 bg-white py-2 px-4 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
           >
             {DEPARTMENT_OPTIONS.map((o) => (
               <option key={o}>{o}</option>
@@ -311,7 +359,7 @@ const UserList = () => {
           <select
             value={state.programmeFilter}
             onChange={(e) => setState({ programmeFilter: e.target.value })}
-            className="rounded-lg border border-gray-300 bg-white py-2 px-4 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
           >
             {PROGRAMME_OPTIONS.map((o) => (
               <option key={o}>{o}</option>
@@ -321,7 +369,7 @@ const UserList = () => {
           <select
             value={state.batchFilter}
             onChange={(e) => setState({ batchFilter: e.target.value })}
-            className="rounded-lg border border-gray-300 bg-white py-2 px-4 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
           >
             {BATCH_OPTIONS.map((o) => (
               <option key={o}>{o}</option>
@@ -331,7 +379,7 @@ const UserList = () => {
           <select
             value={state.statusFilter}
             onChange={(e) => setState({ statusFilter: e.target.value })}
-            className="rounded-lg border border-gray-300 bg-white py-2 px-4 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
           >
             {STATUS_OPTIONS.map((o) => (
               <option key={o}>{o}</option>
@@ -342,10 +390,11 @@ const UserList = () => {
         {/* User Directory */}
         <div>
           <h3 className="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-300">
-            User Directory ({filteredRecords.length} shown of {MOCK_USERS.length})
+            User Directory ({filteredRecords.length} shown of{" "}
+            {MOCK_USERS.length})
           </h3>
 
-          <div className="rounded-lg border border-gray-200 overflow-x-auto dark:border-gray-700">
+          <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
@@ -382,37 +431,60 @@ const UserList = () => {
                 {filteredRecords.map((user) => {
                   const statusConfig = getStatusBadge(user.status);
                   return (
-                    <tr key={user.id} className="border-b border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
+                    <tr
+                      key={user.id}
+                      className="border-b border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
+                    >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${user.color} text-sm font-semibold text-white`}>
+                          <div
+                            className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${user.color} text-sm font-semibold text-white`}
+                          >
                             {user.initials}
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-gray-900 dark:text-white">{user.name}</p>
-                            <p className="text-xs text-gray-500">{user.joined}</p>
+                            <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                              {user.name}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {user.joined}
+                            </p>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="flex items-center gap-2 text-sm text-[#000] dark:text-gray-400">
+                        <div className="flex items-center gap-2 text-sm text-[#000] dark:text-[#000]">
                           <span>📧</span>
                           {user.email}
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-[#000] dark:text-gray-400">{user.register_no}</td>
+                      <td className="px-6 py-4 text-sm text-[#000] dark:text-[#000]">
+                        {user.register_no}
+                      </td>
                       <td className="px-6 py-4">
                         <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-900 dark:text-blue-300">
                           {user.role}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-[#000] dark:text-gray-400">{user.department}</td>
-                      <td className="px-6 py-4 text-sm text-[#000] dark:text-gray-400">{user.programme}</td>
-                      <td className="px-6 py-4 text-sm text-[#000] dark:text-gray-400">{user.batch}</td>
+                      <td className="px-6 py-4 text-sm text-[#000] dark:text-[#000]">
+                        {user.department}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-[#000] dark:text-[#000]">
+                        {user.programme}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-[#000] dark:text-[#000]">
+                        {user.batch}
+                      </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <span className={`inline-block h-2 w-2 rounded-full ${statusConfig.dot}`} />
-                          <span className={`text-sm font-semibold ${statusConfig.text}`}>{user.status}</span>
+                          <span
+                            className={`inline-block h-2 w-2 rounded-full ${statusConfig.dot}`}
+                          />
+                          <span
+                            className={`text-sm font-semibold ${statusConfig.text}`}
+                          >
+                            {user.status}
+                          </span>
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -463,7 +535,11 @@ interface AddUserModalProps {
   onSubmit: (data: any) => void;
 }
 
-const AddUserModal: React.FC<AddUserModalProps> = ({ open, close, onSubmit }) => {
+const AddUserModal: React.FC<AddUserModalProps> = ({
+  open,
+  close,
+  onSubmit,
+}) => {
   const formik = useFormik({
     initialValues: {
       first_name: "",
@@ -499,12 +575,13 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ open, close, onSubmit }) =>
         <form onSubmit={formik.handleSubmit}>
           <div className="space-y-5">
             {/* Description */}
-            <p className="text-sm text-[#000] dark:text-gray-400">
-              Add a user and assign their role, department, programme, and batch.
+            <p className="text-sm text-[#000] dark:text-[#000]">
+              Add a user and assign their role, department, programme, and
+              batch.
             </p>
 
             {/* First Name & Last Name */}
-            <div className="grid gap-4 grid-cols-2">
+            <div className="grid grid-cols-2 gap-4">
               <TextInput
                 name="first_name"
                 title="First Name"
@@ -548,19 +625,25 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ open, close, onSubmit }) =>
               value={formik.values.register_number}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.register_number && formik.errors.register_number}
+              error={
+                formik.touched.register_number && formik.errors.register_number
+              }
               required
             />
 
             {/* Role & Department */}
-            <div className="grid gap-4 grid-cols-2">
+            <div className="grid grid-cols-2 gap-4">
               <CustomSelect
                 title="Role"
                 options={DEFAULT_OPTIONS.roles}
                 value={
-                  DEFAULT_OPTIONS.roles.find((opt) => opt.value === formik.values.role) || null
+                  DEFAULT_OPTIONS.roles.find(
+                    (opt) => opt.value === formik.values.role,
+                  ) || null
                 }
-                onChange={(selected) => formik.setFieldValue("role", selected?.value || "")}
+                onChange={(selected) =>
+                  formik.setFieldValue("role", selected?.value || "")
+                }
                 error={formik.touched.role && formik.errors.role}
                 required
               />
@@ -568,23 +651,31 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ open, close, onSubmit }) =>
                 title="Department"
                 options={DEFAULT_OPTIONS.departments}
                 value={
-                  DEFAULT_OPTIONS.departments.find((opt) => opt.value === formik.values.department) || null
+                  DEFAULT_OPTIONS.departments.find(
+                    (opt) => opt.value === formik.values.department,
+                  ) || null
                 }
-                onChange={(selected) => formik.setFieldValue("department", selected?.value || "")}
+                onChange={(selected) =>
+                  formik.setFieldValue("department", selected?.value || "")
+                }
                 error={formik.touched.department && formik.errors.department}
                 required
               />
             </div>
 
             {/* Programme & Batch */}
-            <div className="grid gap-4 grid-cols-2">
+            <div className="grid grid-cols-2 gap-4">
               <CustomSelect
                 title="Programme"
                 options={DEFAULT_OPTIONS.programmes}
                 value={
-                  DEFAULT_OPTIONS.programmes.find((opt) => opt.value === formik.values.programme) || null
+                  DEFAULT_OPTIONS.programmes.find(
+                    (opt) => opt.value === formik.values.programme,
+                  ) || null
                 }
-                onChange={(selected) => formik.setFieldValue("programme", selected?.value || "")}
+                onChange={(selected) =>
+                  formik.setFieldValue("programme", selected?.value || "")
+                }
                 error={formik.touched.programme && formik.errors.programme}
                 required
               />
@@ -592,9 +683,13 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ open, close, onSubmit }) =>
                 title="Batch"
                 options={DEFAULT_OPTIONS.batches}
                 value={
-                  DEFAULT_OPTIONS.batches.find((opt) => opt.value === formik.values.batch) || null
+                  DEFAULT_OPTIONS.batches.find(
+                    (opt) => opt.value === formik.values.batch,
+                  ) || null
                 }
-                onChange={(selected) => formik.setFieldValue("batch", selected?.value || "")}
+                onChange={(selected) =>
+                  formik.setFieldValue("batch", selected?.value || "")
+                }
                 error={formik.touched.batch && formik.errors.batch}
                 required
               />
@@ -607,7 +702,10 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ open, close, onSubmit }) =>
               </div>
               <div>
                 <p className="text-sm text-blue-700 dark:text-blue-300">
-                  <span className="font-semibold">Upon saving,</span> an automated welcome email with initial temporary access credentials and OBE orientation will be queued for immediate delivery.
+                  <span className="font-semibold">Upon saving,</span> an
+                  automated welcome email with initial temporary access
+                  credentials and OBE orientation will be queued for immediate
+                  delivery.
                 </p>
               </div>
             </div>
@@ -667,7 +765,11 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0];
-      if (file.type === "text/csv" || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+      if (
+        file.type === "text/csv" ||
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ) {
         setSelectedFile(file);
       }
     }
@@ -676,7 +778,11 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      if (file.type === "text/csv" || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+      if (
+        file.type === "text/csv" ||
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ) {
         setSelectedFile(file);
       }
     }
@@ -698,11 +804,37 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
 
   const handleDownloadTemplate = () => {
     const csvContent = [
-      ["Email", "Register Number", "First Name", "Last Name", "Programme", "Department", "Batch"],
-      ["arun.kumar@karpagam.edu.in", "FAC-CSE-018", "Arun", "Kumar", "B.E. Computer Science", "Computer Science & Engg.", "Faculty/Staff"],
-      ["kevin.raj@student.karpagam.edu.in", "24CS1042", "Kevin", "Raj", "B.E. Computer Science", "Computer Science & Engg.", "2024-2028"],
+      [
+        "Email",
+        "Register Number",
+        "First Name",
+        "Last Name",
+        "Programme",
+        "Department",
+        "Batch",
+      ],
+      [
+        "arun.kumar@karpagam.edu.in",
+        "FAC-CSE-018",
+        "Arun",
+        "Kumar",
+        "B.E. Computer Science",
+        "Computer Science & Engg.",
+        "Faculty/Staff",
+      ],
+      [
+        "kevin.raj@student.karpagam.edu.in",
+        "24CS1042",
+        "Kevin",
+        "Raj",
+        "B.E. Computer Science",
+        "Computer Science & Engg.",
+        "2024-2028",
+      ],
     ];
-    const csv = csvContent.map((row) => row.map((cell) => `"${cell}"`).join(",")).join("\n");
+    const csv = csvContent
+      .map((row) => row.map((cell) => `"${cell}"`).join(","))
+      .join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -721,30 +853,43 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
         closeIcon
         maxWidth="max-w-2xl"
         renderComponent={() => (
-          <div className="rounded-3xl bg-gradient-to-b from-green-50 to-green-100/50 p-16 dark:from-green-950/40 dark:to-green-900/30 border-2 border-green-300 dark:border-green-700">
+          <div className="rounded-3xl border-2 border-green-300 bg-gradient-to-b from-green-50 to-green-100/50 p-16 dark:border-green-700 dark:from-green-950/40 dark:to-green-900/30">
             <div className="flex flex-col items-center justify-center gap-8">
               {/* Checkmark Circle */}
               <div className="flex h-28 w-28 items-center justify-center">
                 <div className="relative flex h-full w-full items-center justify-center">
                   <div className="absolute inset-0 rounded-full border-4 border-green-500 dark:border-green-400" />
-                  <svg className="h-16 w-16 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  <svg
+                    className="h-16 w-16 text-green-600 dark:text-green-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                 </div>
               </div>
 
               {/* Text Content */}
               <div className="text-center">
-                <h3 className="text-3xl font-bold text-gray-900 dark:text-white">Bulk Ingestion Completed</h3>
+                <h3 className="text-3xl font-bold text-gray-900 dark:text-white">
+                  Bulk Ingestion Completed
+                </h3>
                 <p className="mt-4 text-lg font-medium text-green-700 dark:text-green-300">
-                  {uploadedCount} user account{uploadedCount !== 1 ? 's' : ''} successfully added and queued for email delivery.
+                  {uploadedCount} user account{uploadedCount !== 1 ? "s" : ""}{" "}
+                  successfully added and queued for email delivery.
                 </p>
               </div>
 
               {/* Button */}
               <button
                 onClick={handleCloseSuccess}
-                className="mt-2 rounded-full bg-green-600 px-12 py-4 text-base font-semibold text-white transition hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 shadow-md hover:shadow-lg"
+                className="mt-2 rounded-full bg-green-600 px-12 py-4 text-base font-semibold text-white shadow-md transition hover:bg-green-700 hover:shadow-lg dark:bg-green-600 dark:hover:bg-green-700"
               >
                 Close & View Directory
               </button>
@@ -765,11 +910,11 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
       maxWidth="max-w-2xl"
       renderComponent={() => (
         <div className="space-y-5">
-          <p className="text-sm text-[#000] dark:text-gray-400">
+          <p className="text-sm text-[#000] dark:text-[#000]">
             Import multiple users from CSV or Excel.
           </p>
 
-          <div className="grid gap-4 grid-cols-2">
+          <div className="grid grid-cols-2 gap-4">
             <CustomSelect
               title="User Role"
               options={[
@@ -784,7 +929,9 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
                   { label: "Admin", value: "admin" },
                 ].find((opt) => opt.value === selectedRole) || null
               }
-              onChange={(selected) => setSelectedRole(selected?.value as string || "student")}
+              onChange={(selected) =>
+                setSelectedRole((selected?.value as string) || "student")
+              }
               required
             />
 
@@ -804,7 +951,9 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
                   { label: "Faculty/Staff", value: "faculty" },
                 ].find((opt) => opt.value === selectedBatch) || null
               }
-              onChange={(selected) => setSelectedBatch(selected?.value as string || "2024-2028")}
+              onChange={(selected) =>
+                setSelectedBatch((selected?.value as string) || "2024-2028")
+              }
               required
             />
           </div>
@@ -823,7 +972,9 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
                 { label: "Artificial Intelligence & Data", value: "ai" },
               ].find((opt) => opt.value === selectedDepartment) || null
             }
-            onChange={(selected) => setSelectedDepartment(selected?.value as string || "cse")}
+            onChange={(selected) =>
+              setSelectedDepartment((selected?.value as string) || "cse")
+            }
             required
           />
 
@@ -847,16 +998,19 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
             />
             <label
               htmlFor="file-input"
-              className="flex flex-col items-center justify-center gap-3 cursor-pointer px-6 py-12"
+              className="flex cursor-pointer flex-col items-center justify-center gap-3 px-6 py-12"
             >
               <div className="text-3xl">📋</div>
               <div className="text-center">
                 <p className="text-sm font-semibold text-gray-900 dark:text-white">
                   Drop CSV or Excel (.xlsx) file here, or{" "}
-                  <span className="text-blue-600 dark:text-blue-400">browse</span>
+                  <span className="text-blue-600 dark:text-blue-400">
+                    browse
+                  </span>
                 </p>
-                <p className="mt-2 text-xs text-[#000] dark:text-gray-400">
-                  Expected columns: Email, Register Number, First Name, Last Name (Optional), Programme, Department, Batch
+                <p className="mt-2 text-xs text-[#000] dark:text-[#000]">
+                  Expected columns: Email, Register Number, First Name, Last
+                  Name (Optional), Programme, Department, Batch
                 </p>
               </div>
             </label>
@@ -868,20 +1022,24 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
                 <span>✅</span>
               </div>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-green-700 dark:text-green-300">{selectedFile.name}</p>
-                <p className="text-xs text-green-600 dark:text-green-400">File selected and ready to validate</p>
+                <p className="text-sm font-semibold text-green-700 dark:text-green-300">
+                  {selectedFile.name}
+                </p>
+                <p className="text-xs text-green-600 dark:text-green-400">
+                  File selected and ready to validate
+                </p>
               </div>
             </div>
           )}
 
           <div className="flex items-center justify-between">
-            <p className="text-sm text-[#000] dark:text-gray-400">
+            <p className="text-sm text-[#000] dark:text-[#000]">
               Need the standard CSV structure?
             </p>
             <button
               type="button"
               onClick={handleDownloadTemplate}
-              className="text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1"
+              className="flex items-center gap-1 text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
             >
               ⬇️ Download Template
             </button>
@@ -899,7 +1057,7 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
               type="button"
               onClick={handleValidateFile}
               disabled={!selectedFile}
-              className="rounded-lg bg-blue-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-blue-700 dark:hover:bg-blue-600"
+              className="rounded-lg bg-blue-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-blue-700 dark:hover:bg-blue-600"
             >
               ▶️ Validate File
             </button>

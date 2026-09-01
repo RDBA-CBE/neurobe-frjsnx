@@ -91,7 +91,7 @@ const LoginCover = () => {
             {/* OR Separator */}
             <div className="my-6 flex items-center">
               <div className="flex-grow border-t border-gray-300"></div>
-              <span className="mx-4 flex-shrink text-xs font-medium text-gray-400">
+              <span className="mx-4 flex-shrink text-xs font-medium text-[#000]">
                 OR
               </span>
               <div className="flex-grow border-t border-gray-300"></div>
@@ -133,7 +133,7 @@ const LoginCover = () => {
                     className="flex items-center text-xs font-semibold text-[#000] hover:text-[#000]"
                   >
                     <span className="mr-1">Hide</span>
-                    <EyeIcon className="h-4 w-4 text-gray-400" />
+                    <EyeIcon className="h-4 w-4 text-[#000]" />
                   </button>
                 </div>
                 <div className="relative">

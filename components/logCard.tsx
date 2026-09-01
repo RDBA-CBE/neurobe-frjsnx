@@ -44,7 +44,7 @@ const LogCard = (props: any) => {
           {onClose && (
             <button
               onClick={onClose}
-              className="text-[#000] hover:text-[#000] dark:text-gray-400 dark:hover:text-gray-200"
+              className="text-[#000] hover:text-[#000] dark:text-[#000] dark:hover:text-gray-200"
             >
               <svg
                 className="h-6 w-6"
@@ -68,7 +68,7 @@ const LogCard = (props: any) => {
           <div className="flex h-full items-center justify-center">
             <div className="text-center">
               <svg
-                className="mx-auto h-16 w-16 text-gray-400"
+                className="mx-auto h-16 w-16 text-[#000]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -83,7 +83,7 @@ const LogCard = (props: any) => {
               <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
                 No logs found
               </h3>
-              <p className="mt-2 text-sm text-[#000] dark:text-gray-400">
+              <p className="mt-2 text-sm text-[#000] dark:text-[#000]">
                 There are no activity logs to display yet.
               </p>
             </div>

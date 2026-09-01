@@ -36,7 +36,7 @@ const DownloadTemplate = ({ importType, onDownload }: DownloadTemplateProps) => 
         </h3>
       </div>
 
-      <p className="mb-4 text-sm text-[#000] dark:text-gray-400">
+      <p className="mb-4 text-sm text-[#000] dark:text-[#000]">
         Download the standardized template file before uploading{" "}
         {importType === "user" ? "user" : "course"} data.
       </p>

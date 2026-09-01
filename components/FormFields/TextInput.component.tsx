@@ -39,7 +39,7 @@ const TextInput: React.FC<TextInputProps> = ({
 
       <div className="relative">
         {icon && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#000] pointer-events-none">
             {icon}
           </span>
         )}
@@ -52,7 +52,7 @@ const TextInput: React.FC<TextInputProps> = ({
           placeholder={placeholder}
           autoComplete="off"
           name={name}
-          className={`form-input w-full rounded-md border px-3 py-2 outline-none focus:ring-2 focus:ring-primary ${
+          className={`form-input w-full rounded-md border px-3 py-2 outline-none focus:ring-[0.2px] focus:ring-[#7c3aed] ${
             error ? "border-red-500" : "border-gray-300"
           } ${icon ? "pl-10" : ""} ${rightIcon ? "pr-10" : ""} ${
             rest.disabled ? "bg-gray-100 text-[#000] cursor-not-allowed" : ""
@@ -61,7 +61,7 @@ const TextInput: React.FC<TextInputProps> = ({
         />
 
         {rightIcon && (
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer" onClick={()=>rightIconOnlick()}>
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#000] cursor-pointer" onClick={()=>rightIconOnlick()}>
             {rightIcon}
           </span>
         )}

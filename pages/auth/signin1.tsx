@@ -192,7 +192,7 @@ const LoginBoxed = () => {
                     className={`flex-1 py-4 text-center text-lg font-semibold transition-all ${
                       state.activeTab === 'login'
                         ? 'border-b-2 border-primary text-primary'
-                        : 'text-[#000] hover:text-[#000] dark:text-gray-400 dark:hover:text-gray-300'
+                        : 'text-[#000] hover:text-[#000] dark:text-[#000] dark:hover:text-gray-300'
                     }`}
                     onClick={() => {
                       setState({ activeTab: 'login' });
@@ -206,7 +206,7 @@ const LoginBoxed = () => {
                     className={`flex-1 py-4 text-center text-lg font-semibold transition-all ${
                       state.activeTab === 'signup'
                         ? 'border-b-2 border-primary text-primary'
-                        : 'text-[#000] hover:text-[#000] dark:text-gray-400 dark:hover:text-gray-300'
+                        : 'text-[#000] hover:text-[#000] dark:text-[#000] dark:hover:text-gray-300'
                     }`}
                     onClick={() => {
                       setState({ activeTab: 'signup' });
@@ -353,7 +353,7 @@ const LoginBoxed = () => {
               </div>
 
               <div className='text-center dark:text-white'>
-                <span className='text-[#000] dark:text-gray-400'>
+                <span className='text-[#000] dark:text-[#000]'>
                   {state.activeTab === 'login'
                     ? "Don't have an account? "
                     : 'Already have an account? '}

@@ -71,7 +71,7 @@ const Clipboard = () => {
                     <div className="panel" id="copy_from_input">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Copy from input</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code1')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code1')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -159,7 +159,7 @@ const [message1, setMessage1] = useState<any>('http://www.admin-dashboard.com');
                     <div className="panel" id="copy_from_textarea">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Copy form Textarea</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code2')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code2')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -246,7 +246,7 @@ const [message2, setMessage2] = useState<any>('Lorem ipsum dolor sit amet, conse
                     <div className="panel" id="copy_from_paragraph">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Copy Text from Paragraph</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code3')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code3')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code
@@ -321,7 +321,7 @@ const message3 = '22991';
                     <div className="panel" id="advanced">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Copy Hidden Text (Advanced)</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code4')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code4')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />{' '}
                                     Code

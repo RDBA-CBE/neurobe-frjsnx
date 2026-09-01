@@ -22,7 +22,7 @@ const CustomInput = forwardRef<HTMLInputElement, any>(
   ({ value, onClick, placeholder, error, className }, ref) => (
     <div className="relative w-full">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
-        <Calendar className="h-4 w-4 text-gray-400" />
+        <Calendar className="h-4 w-4 text-[#000]" />
       </div>
       <input
         ref={ref}

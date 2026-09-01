@@ -58,7 +58,7 @@ const Tabs = () => {
                     <div className="panel" id="simple">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Simple Tabs</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code1')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code1')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -246,7 +246,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="pills">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Simple Pills</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code2')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code2')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -433,7 +433,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="icon">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Icon Tabs</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code3')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code3')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -627,7 +627,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="icon_pills">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Icon Pills</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code4')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code4')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -821,7 +821,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="vertical_border">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Vertical Bordered</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code5')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code5')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -1043,7 +1043,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="vertical_border">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Border Tabs</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code6')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code6')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -1223,7 +1223,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="border">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Border Top</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code7')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code7')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -1447,7 +1447,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="border_top">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Line</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code8')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code8')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -1632,7 +1632,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="line">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Animated Line</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code9')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code9')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -1817,7 +1817,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="animated_line">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Vertical Line Tab</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code10')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code10')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -2034,7 +2034,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="vertical_line">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Justify Tabs</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code11')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code11')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -2228,7 +2228,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="justify">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Justify Pills</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code12')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code12')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -2418,7 +2418,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="justify_pills">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Justify Center Tabs</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code13')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code13')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -2606,7 +2606,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="justify_center_pills">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Justify Center Pills</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code14')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code14')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -2791,7 +2791,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="justify_right">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Justify Right Tabs</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code15')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code15')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -2976,7 +2976,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="justify_right_pills">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Justify Right Pills</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code16')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code16')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -3161,7 +3161,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="pills_with_icon">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Pills with Icon</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code17')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code17')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -3388,7 +3388,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="rounded_pills_icon">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Rounded Pills with Icon</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code18')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code18')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -3599,7 +3599,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="vertical_rounded_with_icon">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Vertical Rounded With Icon</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code19')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code19')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -3794,7 +3794,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="vertical_circle_with_icon">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Vertical Circle With Icon</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code20')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code20')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -3983,7 +3983,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="vertical_pills">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Vertical Pills</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code21')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code21')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code
@@ -4197,7 +4197,7 @@ import { Fragment } from 'react';
                     <div className="panel" id="justify_vertical_pills_right">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">Justify Vertical Pills Right</h5>
-                            <button type="button" className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]" onClick={() => toggleCode('code22')}>
+                            <button type="button" className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]" onClick={() => toggleCode('code22')}>
                                 <span className="flex items-center">
                                     <IconCode className="me-2" />
                                     Code

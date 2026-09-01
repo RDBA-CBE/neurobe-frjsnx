@@ -395,7 +395,7 @@ const Scrumboard = () => {
                                     <button
                                         type="button"
                                         onClick={() => setIsAddProjectModal(false)}
-                                        className="absolute top-4 text-gray-400 outline-none hover:text-[#000] ltr:right-4 rtl:left-4 dark:hover:text-[#000]"
+                                        className="absolute top-4 text-[#000] outline-none hover:text-[#000] ltr:right-4 rtl:left-4 dark:hover:text-[#000]"
                                     >
                                         <IconX />
                                     </button>

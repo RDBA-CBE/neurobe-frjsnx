@@ -363,7 +363,7 @@ hover:text-primary hover:before:!bg-primary dark:before:bg-gray-500 dark:hover:b
   .form-textarea,
   .form-select,
   .form-multiselect {
-    @apply w-full rounded-md border border-white-light bg-white px-4 py-2 text-sm font-semibold text-black !outline-none focus:border-primary focus:ring-transparent dark:border-[#17263c] dark:bg-[#121e32] dark:text-white-dark dark:focus:border-primary;
+    @apply w-full rounded-md border border-white-light bg-white px-4 py-2 text-sm font-semibold text-black !outline-none focus:border-[#7c3aed] focus:ring-transparent dark:border-[#7c3aed] dark:bg-[#121e32] dark:text-white-dark dark:focus:border-primary;
   }
 
   .form-input-lg,
@@ -1001,6 +1001,54 @@ body > div[style*="z-index:2000000000"] > div:not(:has(iframe)) {
 
 .filter-input {
   width: 250px;
+}
+
+/* ── Modal animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes slideDown {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(24px) scale(0.97); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(100%); }
+}
+
+/* ── Modal animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+
+.create-btn {
+  @apply bg-color2 text-white px-5 py-2 text-sm rounded-full shadow hover:opacity-90 flex shrink-0 items-center gap-2;
+}
+
+.create-btn-sec {
+  @apply rounded-full bg-gray-200 px-4 py-2 text-sm font-medium text-[#000] hover:bg-gray-100 flex items-center gap-2 ;
 }
 
 

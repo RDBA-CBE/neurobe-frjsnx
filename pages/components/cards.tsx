@@ -40,7 +40,7 @@ const Cards = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Card 1</h5>
-                        <button type="button" onClick={() => toggleCode('code1')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
+                        <button type="button" onClick={() => toggleCode('code1')} className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]">
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
                                 Code
@@ -82,7 +82,7 @@ const Cards = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Card 2</h5>
-                        <button type="button" onClick={() => toggleCode('code2')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
+                        <button type="button" onClick={() => toggleCode('code2')} className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]">
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
                                 Code
@@ -130,7 +130,7 @@ const Cards = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Card 3</h5>
-                        <button type="button" onClick={() => toggleCode('code3')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
+                        <button type="button" onClick={() => toggleCode('code3')} className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]">
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
                                 Code
@@ -188,7 +188,7 @@ const Cards = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Card 4</h5>
-                        <button type="button" onClick={() => toggleCode('code4')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
+                        <button type="button" onClick={() => toggleCode('code4')} className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]">
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
                                 Code
@@ -242,7 +242,7 @@ const Cards = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Card 5</h5>
-                        <button type="button" onClick={() => toggleCode('code5')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
+                        <button type="button" onClick={() => toggleCode('code5')} className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]">
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
                                 Code
@@ -294,7 +294,7 @@ const Cards = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Card 6</h5>
-                        <button type="button" onClick={() => toggleCode('code6')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
+                        <button type="button" onClick={() => toggleCode('code6')} className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]">
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
                                 Code
@@ -358,7 +358,7 @@ const Cards = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Card 7</h5>
-                        <button type="button" onClick={() => toggleCode('code7')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
+                        <button type="button" onClick={() => toggleCode('code7')} className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]">
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
                                 Code
@@ -410,7 +410,7 @@ const Cards = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Card 8</h5>
-                        <button type="button" onClick={() => toggleCode('code8')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
+                        <button type="button" onClick={() => toggleCode('code8')} className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]">
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
                                 Code
@@ -494,7 +494,7 @@ const Cards = () => {
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
                         <h5 className="text-lg font-semibold dark:text-white-light">Card 9</h5>
-                        <button type="button" onClick={() => toggleCode('code9')} className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]">
+                        <button type="button" onClick={() => toggleCode('code9')} className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]">
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
                                 Code

@@ -5,13 +5,16 @@ import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
 import IconPlus from "@/components/Icon/IconPlus";
-import AcademicTable from "@/components/academic-setup/TableComponent";
+import AcademicTable from "@/components/common-components/TableComponent";
 import {
   MOCK_OFFERINGS,
-  COURSE_OFFERING_COLUMNS,
+  makeCourseOfferingColumns,
 } from "@/components/course-offering/courseOfferingColumns";
+import CourseOfferingModal from "@/components/course-offering/CourseOfferingModal";
 import PrivateRouter from "@/hook/privateRouter";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
+import PageHeader from "@/components/common-components/PageHeader";
+import TextInput from "@/components/FormFields/TextInput.component";
 
 const PROGRAMME_OPTIONS = [
   { value: "all", label: "All Programmes" },
@@ -37,14 +40,22 @@ const CourseOffering = () => {
   const dispatch = useDispatch();
 
   const [state, setState] = useSetState({
-    search:          "",
+    search: "",
     programmeFilter: "all",
-    batchFilter:     "all",
-    statusFilter:    "all",
-    loading:         false,
+    batchFilter: "all",
+    statusFilter: "all",
+    loading: false,
+    showModal: false,
+    editRow: null as any,
   });
 
-  useEffect(() => { dispatch(setPageTitle("Course Offerings")); }, []);
+  const openCreate = () => setState({ showModal: true, editRow: null });
+  const openEdit = (row: any) => setState({ showModal: true, editRow: row });
+  const closeModal = () => setState({ showModal: false, editRow: null });
+
+  useEffect(() => {
+    dispatch(setPageTitle("Course Offerings"));
+  }, []);
 
   // ── filtered records ───────────────────────────────────────────────────────
   const records = MOCK_OFFERINGS.filter((r) => {
@@ -55,82 +66,98 @@ const CourseOffering = () => {
       r.code.toLowerCase().includes(s) ||
       r.coordinator.toLowerCase().includes(s) ||
       r.instructors.some((i) => i.toLowerCase().includes(s));
-    const matchProg   = !state.programmeFilter || state.programmeFilter === "all" || r.programme === PROGRAMME_OPTIONS.find((o) => o.value === state.programmeFilter)?.label;
-    const matchBatch  = !state.batchFilter     || state.batchFilter     === "all" || r.batch     === state.batchFilter;
-    const matchStatus = !state.statusFilter    || state.statusFilter    === "all" || r.status    === STATUS_OPTIONS.find((o) => o.value === state.statusFilter)?.label;
+    const matchProg =
+      !state.programmeFilter ||
+      state.programmeFilter === "all" ||
+      r.programme ===
+        PROGRAMME_OPTIONS.find((o) => o.value === state.programmeFilter)?.label;
+    const matchBatch =
+      !state.batchFilter ||
+      state.batchFilter === "all" ||
+      r.batch === state.batchFilter;
+    const matchStatus =
+      !state.statusFilter ||
+      state.statusFilter === "all" ||
+      r.status ===
+        STATUS_OPTIONS.find((o) => o.value === state.statusFilter)?.label;
     return matchSearch && matchProg && matchBatch && matchStatus;
   });
 
   return (
     <div className="min-h-screen">
-
       {/* Breadcrumb */}
-      {/* <p className="mb-2 text-xs text-gray-400">
+      {/* <p className="mb-2 text-xs text-[#000]">
         ADMIN INSTITUTION &nbsp;›&nbsp; COURSE OFFERINGS
       </p> */}
 
-      <h1 className="mb-5 page-ti">
-        Course Offerings
-      </h1>
+      {/* <h1 className="page-ti mb-5">Course Offerings</h1> */}
 
       {/* Info banner */}
-      <div className="panel mb-4 flex items-start justify-between gap-4 rounded-xl border border-gray-100 px-5 py-5">
-        <div className="flex items-start gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#ede9fe]">
-            <BookOpen className="h-5 w-5 text-[#7c3aed]" />
-          </div>
-          <div>
-            <p className="section-ti">
-              Course Offerings &amp; Faculty Assignment
-            </p>
-            <p className="mt-0.5 text-xs text-[#000]">
-              Manage course offerings across programmes, batches, and terms with automated Coordinator-to-Instructor access maintenance.
-            </p>
-          </div>
-        </div>
-        <button className="bg-color2 flex shrink-0 items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold text-white shadow hover:opacity-90">
-          <IconPlus className="h-4 w-4" />
-          Create Course Offering
-        </button>
-      </div>
+      <PageHeader
+        title="Course Offerings & Faculty Assignment"
+        subtitle="Manage course offerings across programmes, batches, and terms with automated Coordinator-to-Instructor access maintenance."
+        icon={<BookOpen className="h-5 w-5 text-[#7c3aed]" />}
+        actionBtn1={{
+          label: "Create Course Offering",
+          icon: <IconPlus className="h-4 w-4" />,
+          onClick: openCreate,
+        }}
+        records={`${records.length} Records`}
+      />
 
       {/* Auto-instructor notice */}
       <div className="panel mb-5 flex items-center gap-3 rounded-xl  bg-[#ede9fe]/60 px-5 py-4 dark:border-yellow-800 dark:bg-yellow-900/20">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-color2-l">
-            <UserCheck className="h-5 w-5 text-color2" />
-          </div>
-        <p className="text-sm text-color2 font-bold dark:text-yellow-300">
-          <span className="font-bold">Course Coordinators automatically have Instructor access for the same course.{" "}</span>
+        <div className="bg-color2-l flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
+          <UserCheck className="text-color2 h-5 w-5" />
+        </div>
+        <p className="text-color2 text-sm font-bold dark:text-yellow-300">
+          <span className="font-bold">
+            Course Coordinators automatically have Instructor access for the
+            same course.{" "}
+          </span>
           <span className="font-semibold text-green-600">Now Active</span>
           <br />
-          <span >When a faculty member e.g.{" "}Arjun Kumar is assigned as Course Coordinator, they automatically possess full Course Instructor access for the same course delivery.</span>
+          <span>
+            When a faculty member e.g. Arjun Kumar is assigned as Course
+            Coordinator, they automatically possess full Course Instructor
+            access for the same course delivery.
+          </span>
         </p>
-        <button className="ml-auto flex shrink-0 items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-1 text-xs font-bold text-color2 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300">
+        <button className="text-color2 ml-auto flex shrink-0 items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-1 text-xs font-bold hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300">
           <UserCheck className="h-3 w-3" />
-          Coordinator <ArrowRight className="w-3 h-3"/> Auto-Instructor
+          Coordinator <ArrowRight className="h-3 w-3" /> Auto-Instructor
         </button>
       </div>
 
+      {/* Modal */}
+      <CourseOfferingModal
+        open={state.showModal}
+        onClose={closeModal}
+        initialData={state.editRow}
+      />
+
       {/* Filters */}
-      <div className=" mb-4 flex flex-wrap justify-between items-center gap-3  py-4">
+      <div className=" mb-4 flex flex-wrap items-center justify-between gap-3  py-4">
         {/* Search */}
         <div className="relative max-w-[300px] flex-1">
-          <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
-            <IconSearch className="h-4 w-4" />
-          </span>
-          <input
-            type="text"
-            placeholder="Search by code, title, faculty..."
-            value={state.search}
-            onChange={(e) => setState({ search: e.target.value })}
-            className="w-full rounded-lg border border-input bg-[#fff] py-2 pl-9 pr-4 text-sm outline-none focus:border-[#7c3aed] dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          />
+         
+          <TextInput
+             placeholder="Search by code, title, faculty..."
+              type="text"
+              value={state.search}
+              onChange={(e) => setState({ search: e.target.value })}
+              icon={<IconSearch className="h-4 w-4" />}
+            />
         </div>
 
         <div className="flex gap-3">
           <CustomSelect
             options={PROGRAMME_OPTIONS}
-            value={PROGRAMME_OPTIONS.find((o) => o.value === state.programmeFilter) ?? null}
+            value={
+              PROGRAMME_OPTIONS.find(
+                (o) => o.value === state.programmeFilter,
+              ) ?? null
+            }
             onChange={(e) => setState({ programmeFilter: e?.value ?? "all" })}
             placeholder="All Programmes"
             className="filter-input"
@@ -139,7 +166,9 @@ const CourseOffering = () => {
 
           <CustomSelect
             options={BATCH_OPTIONS}
-            value={BATCH_OPTIONS.find((o) => o.value === state.batchFilter) ?? null}
+            value={
+              BATCH_OPTIONS.find((o) => o.value === state.batchFilter) ?? null
+            }
             onChange={(e) => setState({ batchFilter: e?.value ?? "all" })}
             placeholder="All Batches"
             className="filter-input"
@@ -148,24 +177,22 @@ const CourseOffering = () => {
 
           <CustomSelect
             options={STATUS_OPTIONS}
-            value={STATUS_OPTIONS.find((o) => o.value === state.statusFilter) ?? null}
+            value={
+              STATUS_OPTIONS.find((o) => o.value === state.statusFilter) ?? null
+            }
             onChange={(e) => setState({ statusFilter: e?.value ?? "all" })}
             placeholder="All Statuses"
             className="filter-input"
             isClearable
           />
         </div>
-        
-
-
-        
       </div>
 
-      {/* Table — columns passed as prop, defined in courseOfferingColumns.tsx */}
+      {/* Table */}
       <div className="panel">
         <AcademicTable
           records={records}
-          columns={COURSE_OFFERING_COLUMNS}
+          columns={makeCourseOfferingColumns(openEdit)}
           loading={state.loading}
           noRecordsText="No course offerings found"
         />

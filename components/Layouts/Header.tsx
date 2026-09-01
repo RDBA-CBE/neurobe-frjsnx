@@ -44,6 +44,7 @@ import IconCaretsDown from "../Icon/IconCaretsDown";
 import { TOUR_KEY } from "@/components/DashboardTour";
 import { STEPS_BY_ROUTE } from "@/components/DashboardTour";
 import { FaWalking } from "react-icons/fa";
+import IconHandWave from "../Icon/IconHandWave";
 
 const Header = () => {
   const router = useRouter();
@@ -127,7 +128,7 @@ const Header = () => {
     try {
       const userString = localStorage.getItem("userId");
       if (userString) {
-        const res: any = await Models.auth.profile();
+        const res: any = {};
         console.log("getUserRole --->", res);
         setState({
           name:
@@ -168,11 +169,11 @@ const Header = () => {
       const body = {
         refresh: reFreshToken,
       };
-      const res: any = await Models.auth.logout(body).then(() => {
-        localStorage.clear();
-        sessionStorage.clear();
-        router.replace("/auth/signin");
-      });
+      // const res: any = await Models.auth.logout(body).then(() => {
+      //   localStorage.clear();
+      //   sessionStorage.clear();
+      //   router.replace("/auth/signin");
+      // });
     } catch (error) {
       localStorage.clear();
       sessionStorage.clear();
@@ -305,8 +306,8 @@ const Header = () => {
 
           {/* greeting */}
           <div className="ltr:ml-6 rtl:mr-6 flex-1">
-            <p className="text-xl font-bold text-[#000] dark:text-white">
-              {getGreeting()}, {state.name} 👋
+            <p className="text-xl font-bold text-[#000] dark:text-white flex gap-4 items-center">
+              {getGreeting()}, {state.name} <IconHandWave />
             </p>
           </div>
 
@@ -324,7 +325,8 @@ const Header = () => {
             {/* user info + avatar */}
             <div className="flex items-center gap-3  border-l px-5">
               <div className="tour-profile bg-color1 text-lg flex h-12 w-12 items-center justify-center rounded-full font-bold text-white shadow-lg">
-                {state.name?.charAt(0)?.toUpperCase()} 
+                {/* {state.name?.charAt(0)?.toUpperCase()}  */}
+                K
                 
               </div>
               <div className=" text-left sm:block">

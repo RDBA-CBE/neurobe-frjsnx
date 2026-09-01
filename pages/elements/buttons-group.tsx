@@ -45,7 +45,7 @@ const Buttongroups = () => {
                             onClick={() => {
                                 toggleCode('code1');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
+                            className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -92,7 +92,7 @@ const Buttongroups = () => {
                             onClick={() => {
                                 toggleCode('code2');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
+                            className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
@@ -168,7 +168,7 @@ const Buttongroups = () => {
                             onClick={() => {
                                 toggleCode('code3');
                             }}
-                            className="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-[#000]"
+                            className="font-semibold hover:text-[#000] dark:text-[#000] dark:hover:text-[#000]"
                         >
                             <span className="flex items-center">
                                 <IconCode className="me-2" />
