@@ -8,11 +8,16 @@ import IconPlus from "@/components/Icon/IconPlus";
 import PageBanner from "@/components/common-components/PageBanner";
 import StatTabCard from "@/components/academic-setup/StatTabCard";
 import {
-  MOCK_DEPARTMENTS, makeDepartmentColumns,
-  MOCK_PROGRAMMES,  makeProgrammeColumns,
-  MOCK_BATCHES,     makeBatchColumns,
-  MOCK_COURSES,     makeCourseColumns,
-  MOCK_PSOS,        makePSOColumns,
+  MOCK_DEPARTMENTS,
+  makeDepartmentColumns,
+  MOCK_PROGRAMMES,
+  makeProgrammeColumns,
+  MOCK_BATCHES,
+  makeBatchColumns,
+  MOCK_COURSES,
+  makeCourseColumns,
+  MOCK_PSOS,
+  makePSOColumns,
 } from "@/components/academic-setup/tableColumns";
 import {
   CreateCourseModal,
@@ -27,82 +32,120 @@ import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import TextInput from "@/components/FormFields/TextInput.component";
 
 const TABS = [
-  { key: "departments", label: "Departments", subLabel: "Academic Divisions",          count: 5 },
-  { key: "programmes",  label: "Programmes",  subLabel: "Degrees & Majors",            count: 4 },
-  { key: "batches",     label: "Batches",     subLabel: "Academic Batches",            count: 6 },
-  { key: "courses",     label: "Courses",     subLabel: "Course Catalog",              count: 6 },
-  { key: "psos",        label: "PSOs",        subLabel: "Programme Specific Outcomes", count: 6 },
+  {
+    key: "departments",
+    label: "Departments",
+    subLabel: "Academic Divisions",
+    count: 5,
+  },
+  {
+    key: "programmes",
+    label: "Programmes",
+    subLabel: "Degrees & Majors",
+    count: 4,
+  },
+  { key: "batches", label: "Batches", subLabel: "Academic Batches", count: 6 },
+  { key: "courses", label: "Courses", subLabel: "Course Catalog", count: 6 },
+  {
+    key: "psos",
+    label: "PSOs",
+    subLabel: "Programme Specific Outcomes",
+    count: 6,
+  },
 ];
 
 const STATUS_OPTIONS = [
   { value: "all_status", label: "All Statuses" },
-  { value: "active",     label: "Active"       },
-  { value: "inactive",   label: "Inactive"     },
+  { value: "active", label: "Active" },
+  { value: "inactive", label: "Inactive" },
 ];
 
 const ADD_LABELS: Record<string, string> = {
   departments: "Add Department",
-  programmes:  "Add Programme",
-  batches:     "Add Batch",
-  courses:     "Add Courses",
-  psos:        "Add PSO",
+  programmes: "Add Programme",
+  batches: "Add Batch",
+  courses: "Add Courses",
+  psos: "Add PSO",
 };
 
 const AcademicSetup = () => {
   const dispatch = useDispatch();
 
   const [state, setState] = useSetState({
-    activeTab:    "courses",
-    search:       "",
+    activeTab: "courses",
+    search: "",
     statusFilter: "All Statuses",
-    deptFilter:   "All Departments",
-    loading:      false,
-    showModal:    false,
-    editRow:      null as any,
+    deptFilter: "All Departments",
+    loading: false,
+    showModal: false,
+    editRow: null as any,
   });
 
-  useEffect(() => { dispatch(setPageTitle("Academic Setup")); }, []);
+  useEffect(() => {
+    dispatch(setPageTitle("Academic Setup"));
+  }, []);
 
   // ── filter helpers ─────────────────────────────────────────────────────────
   const bySearch = (row: any, keys: string[]) => {
     const s = state.search.toLowerCase();
-    return !s || keys.some((k) => String(row[k] ?? "").toLowerCase().includes(s));
+    return (
+      !s ||
+      keys.some((k) =>
+        String(row[k] ?? "")
+          .toLowerCase()
+          .includes(s)
+      )
+    );
   };
   const byStatus = (row: any) =>
     state.statusFilter === "All Statuses" || row.status === state.statusFilter;
   const byDept = (row: any) =>
-    state.deptFilter === "All Departments" || row.department === state.deptFilter;
+    state.deptFilter === "All Departments" ||
+    row.department === state.deptFilter;
 
   // ── modal helpers ──────────────────────────────────────────────────────────
-  const openCreate = ()        => setState({ showModal: true,  editRow: null });
-  const openEdit   = (row: any) => setState({ showModal: true,  editRow: row  });
-  const closeModal = ()        => setState({ showModal: false, editRow: null });
+  const openCreate = () => setState({ showModal: true, editRow: null });
+  const openEdit = (row: any) => setState({ showModal: true, editRow: row });
+  const closeModal = () => setState({ showModal: false, editRow: null });
 
   // ── per-tab config ─────────────────────────────────────────────────────────
-  const TAB_CONFIG: Record<string, { records: any[]; columns: any[]; noRecordsText: string }> = {
+  const TAB_CONFIG: Record<
+    string,
+    { records: any[]; columns: any[]; noRecordsText: string }
+  > = {
     departments: {
-      records:       MOCK_DEPARTMENTS.filter((r) => bySearch(r, ["code", "name"]) && byStatus(r)),
-      columns:       makeDepartmentColumns(openEdit, () => {}),
+      records: MOCK_DEPARTMENTS.filter(
+        (r) => bySearch(r, ["code", "name"]) && byStatus(r)
+      ),
+      columns: makeDepartmentColumns(openEdit, () => {}),
       noRecordsText: "No departments found",
     },
     programmes: {
-      records:       MOCK_PROGRAMMES.filter((r) => bySearch(r, ["code", "name"]) && byStatus(r)),
-      columns:       makeProgrammeColumns(openEdit, () => {}),
+      records: MOCK_PROGRAMMES.filter(
+        (r) => bySearch(r, ["code", "name"]) && byStatus(r)
+      ),
+      columns: makeProgrammeColumns(openEdit, () => {}),
       noRecordsText: "No programmes found",
     },
     batches: {
-      records:       MOCK_BATCHES.filter((r) => bySearch(r, ["code", "name"]) && byStatus(r)),
-      columns:       makeBatchColumns(openEdit, () => {}),
+      records: MOCK_BATCHES.filter(
+        (r) => bySearch(r, ["code", "name"]) && byStatus(r)
+      ),
+      columns: makeBatchColumns(openEdit, () => {}),
       noRecordsText: "No batches found",
     },
     courses: {
-      records:       MOCK_COURSES.filter((r) => bySearch(r, ["code", "title"]) && byStatus(r) && byDept(r)),
-      columns:       makeCourseColumns(openEdit, () => {}),
+      records: MOCK_COURSES.filter(
+        (r) => bySearch(r, ["code", "title"]) && byStatus(r) && byDept(r)
+      ),
+      columns: makeCourseColumns(openEdit, () => {}),
       noRecordsText: "No courses found",
     },
     psos: {
-      records:       MOCK_PSOS.filter((r) => bySearch(r, ["code", "programme", "description"]) && byStatus(r)),
-      columns:       makePSOColumns(openEdit, () => {}),
+      records: MOCK_PSOS.filter(
+        (r) => bySearch(r, ["code", "programme", "description"]) && byStatus(r)
+      ),
+      columns: makePSOColumns(openEdit, () => {}),
       noRecordsText: "No PSOs found",
     },
   };
@@ -167,7 +210,14 @@ const AcademicSetup = () => {
             subLabel={tab.subLabel}
             count={tab.count}
             active={state.activeTab === tab.key}
-            onClick={() => setState({ activeTab: tab.key, search: "", statusFilter: "All Statuses", deptFilter: "All Departments" })}
+            onClick={() =>
+              setState({
+                activeTab: tab.key,
+                search: "",
+                statusFilter: "All Statuses",
+                deptFilter: "All Departments",
+              })
+            }
           />
         ))}
       </div>
@@ -188,8 +238,12 @@ const AcademicSetup = () => {
         <div className="flex gap-3">
           <CustomSelect
             options={STATUS_OPTIONS}
-            value={STATUS_OPTIONS.find((o) => o.label === state.statusFilter) ?? null}
-            onChange={(e) => setState({ statusFilter: e?.label ?? "All Statuses" })}
+            value={
+              STATUS_OPTIONS.find((o) => o.label === state.statusFilter) ?? null
+            }
+            onChange={(e) =>
+              setState({ statusFilter: e?.label ?? "All Statuses" })
+            }
             placeholder="All Status"
             className="filter-input"
           />
@@ -200,10 +254,12 @@ const AcademicSetup = () => {
                 { value: "All Departments", label: "All Departments" },
                 { value: "CSE", label: "CSE" },
                 { value: "ECE", label: "ECE" },
-                { value: "AI",  label: "AI"  },
+                { value: "AI", label: "AI" },
               ]}
               value={{ value: state.deptFilter, label: state.deptFilter }}
-              onChange={(e) => setState({ deptFilter: e?.value ?? "All Departments" })}
+              onChange={(e) =>
+                setState({ deptFilter: e?.value ?? "All Departments" })
+              }
               placeholder="All Departments"
               className="filter-input"
             />
