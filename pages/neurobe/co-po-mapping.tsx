@@ -5,7 +5,7 @@ import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
 import IconPlus from "@/components/Icon/IconPlus";
-import PageBanner from "@/components/academic-setup/PageBanner";
+import PageBanner from "@/components/common-components/PageBanner";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import PrivateRouter from "@/hook/privateRouter";
 

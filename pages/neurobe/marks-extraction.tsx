@@ -4,8 +4,8 @@ import { Upload, FileSpreadsheet, CheckCircle2, AlertTriangle } from "lucide-rea
 import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
-import PageBanner from "@/components/academic-setup/PageBanner";
-import TableComponent from "@/components/academic-setup/TableComponent";
+import PageBanner from "@/components/common-components/PageBanner";
+import TableComponent from "@/components/common-components/TableComponent";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import PrivateRouter from "@/hook/privateRouter";
 
