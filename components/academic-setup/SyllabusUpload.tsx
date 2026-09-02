@@ -34,7 +34,7 @@ const SyllabusUpload = ({ onFileSelect }: SyllabusUploadProps) => {
   };
 
   return (
-    <div className=" mb-5 border-[0.5px]  border-gray-300 px-6 py-6 dark:border-gray-600 rounded-xl">
+    <div className=" mb-5  border-gray-300  dark:border-gray-600 rounded-xl">
       {/* Drop Zone */}
       <div
         onDragOver={(e) => { e.preventDefault(); setDragging(true); }}

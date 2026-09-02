@@ -60,7 +60,7 @@ const SyllabusStepper = ({
   statusClassName = "",
 }: SyllabusStepperProps) => {
   return (
-    <div className=" px-6 py-4">
+    <div className="panel px-6 py-4">
       {/* Header */}
       <div className="mb-4 flex items-start justify-between">
         <div>

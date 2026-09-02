@@ -28,7 +28,7 @@ const ExtractionComplete = ({
     return () => clearTimeout(timer);
   }, [progressProp]);
   return (
-    <div className="mt-2 mb-5 border border-gray-200 px-6 py-6 dark:border-gray-700 rounded-xl">
+    <div className="panel mt-2 mb-5 px-6 py-6 dark:border-gray-700 ">
       {/* Top badge row */}
       <div className="mb-4 flex items-center gap-3">
         <span className="flex items-center gap-1.5 rounded-full border border-green-300 bg-green-50 px-3 py-1 text-xs font-semibold text-green-600">

@@ -7,7 +7,7 @@ interface ReviewModeBarProps {
 
 const ReviewModeBar = ({ onSaveDraft, onContinue }: ReviewModeBarProps) => {
   return (
-    <div className="mb-5 flex items-center justify-between rounded-xl border border-yellow-200 bg-[#FEF3C7] px-5 py-4 dark:border-yellow-800 dark:bg-yellow-900/20">
+    <div className="mb-5 mt-2 flex items-center justify-between rounded-xl border border-yellow-200 bg-[#FEF3C7] px-5 py-4 dark:border-yellow-800 dark:bg-yellow-900/20">
       <div className="flex items-center gap-3"> 
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-white">
           <TriangleAlert className="h-5 w-5 text-yellow-500" />
