@@ -44,7 +44,7 @@ const PDFViewer = ({ file, fileName = "Document", fileSize = "" }: PDFViewerProp
   // per-page rendered heights so placeholders match
   const [pageHeights, setPageHeights] = useState<Record<number, number>>({});
   // set of page indexes currently visible in viewport
-  const [visiblePages, setVisiblePages] = useState<Set<any>>(new Set([0]));
+  const [visiblePages, setVisiblePages] = useState<Set<number>>(new Set([0]));
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
