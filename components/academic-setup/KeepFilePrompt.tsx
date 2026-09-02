@@ -1,33 +1,61 @@
 interface KeepFilePromptProps {
   onKeep?: () => void;
   onDiscard?: () => void;
+  title?: string;
+  subTitle?: string;
+  icon?: React.ReactNode;
+  actionBtn1?: {
+    label?: string;
+    icon?: React.ReactNode;
+    onClick: () => void;
+    disabled?: boolean;
+  };
+  actionBtn2?: {
+    label?: string;
+    icon?: React.ReactNode;
+    onClick: () => void;
+    disabled?: boolean;
+  };
 }
 
-const KeepFilePrompt = ({ onKeep, onDiscard }: KeepFilePromptProps) => {
+const KeepFilePrompt = ({
+  onKeep,
+  onDiscard,
+  title,
+  subTitle,
+  icon,
+  actionBtn1,
+  actionBtn2,
+}: KeepFilePromptProps) => {
   return (
-    <div className=" mb-5 flex items-center bg-primary2 justify-between border-[1px] rounded-xl border-color2 px-6 py-4 dark:border-gray-700">
+    <div className=" bg-color2-l mb-5 flex items-center justify-between rounded-xl border-[1px] border-gray-300 px-6 py-4 dark:border-gray-700">
       <div>
-        <p className="text-sm font-bold text-gray-900 dark:text-white">
-          Keep the source syllabus file permanently?
-        </p>
-        <p className="mt-0.5 text-sm text-gray-500">
-          Choose whether the uploaded source syllabus should be retained permanently.
-        </p>
+        <div className="flex items-center gap-2">
+          {icon && <>{icon}</>}
+          <p className="text-color2 text-sm font-bold dark:text-white">
+            {title}
+          </p>
+        </div>
+
+        <p className="mt-0.5 text-sm text-[#000]">{subTitle}</p>
       </div>
-      <div className="flex shrink-0 items-center gap-3">
-        <button
-          onClick={onKeep}
-          className="rounded-lg bg-primary-custom px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition-all"
-        >
-          Yes, keep file
-        </button>
-        <button
-          onClick={onDiscard}
-          className="text-sm font-semibold text-gray-700 hover:text-gray-900 bg-gray-200 rounded-md transition-all p-2"
-        >
-          No, do not keep file
-        </button>
-      </div>
+      {(actionBtn1 || actionBtn2) && (
+        <div className="flex shrink-0 items-center gap-3">
+          {actionBtn1 && (
+            <button
+              onClick={actionBtn1.onClick}
+              className="create-btn-sec border border-gray-300 !bg-white"
+            >
+              {actionBtn1.label}
+            </button>
+          )}
+          {actionBtn2 && (
+            <button onClick={actionBtn2.onClick} className="create-btn">
+              {actionBtn2.label}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

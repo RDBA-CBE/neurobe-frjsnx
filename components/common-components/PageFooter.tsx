@@ -9,12 +9,14 @@ interface PageBannerProps {
     icon?: React.ReactNode;
     onClick: () => void;
     disabled?: boolean;
+    className?: string;
   };
   actionBtn2?: {
     label?: string;
     icon?: React.ReactNode;
     onClick: () => void;
     disabled?: boolean;
+    className?: string;
   };
   records?: string;
   content1?: string;
@@ -78,13 +80,21 @@ const PageFooter = ({
       {(actionBtn1 || actionBtn2) && (
         <div className="flex items-center gap-2">
           {actionBtn2 && (
-            <button onClick={actionBtn2?.onClick} className={actionBtn2?.disabled ? "disabled-create-btn-sec" :"create-btn-sec"} disabled={actionBtn2?.disabled}>
+            <button
+              onClick={actionBtn2?.onClick}
+              className={actionBtn2?.className ?? (actionBtn2?.disabled ? "disabled-create-btn-sec" : "create-btn-sec")}
+              disabled={actionBtn2?.disabled}
+            >
               {actionBtn2?.icon}
               {actionBtn2?.label}
             </button>
           )}
           {actionBtn1 && (
-            <button onClick={actionBtn1?.onClick} className={actionBtn1?.disabled ? `disabled-create-btn`: `create-btn` }disabled={actionBtn1?.disabled}>
+            <button
+              onClick={actionBtn1?.onClick}
+              className={actionBtn1?.className ?? (actionBtn1?.disabled ? "disabled-create-btn" : "create-btn")}
+              disabled={actionBtn1?.disabled}
+            >
               {actionBtn1?.icon}
               {actionBtn1?.label}
             </button>
