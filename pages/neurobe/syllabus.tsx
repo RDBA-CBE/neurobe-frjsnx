@@ -17,6 +17,8 @@ import ExtractionComplete from "@/components/academic-setup/ExtractionComplete";
 import ReviewModeBar from "@/components/academic-setup/ReviewModeBar";
 import PDFViewer from "@/components/academic-setup/PDFViewer";
 import ExtractedDataPanel from "@/components/academic-setup/ExtractedDataPanel";
+import SyllabusApprovedBanner from "@/components/academic-setup/SyllabusApprovedBanner";
+import SyllabusApprovedSummary from "@/components/academic-setup/SyllabusApprovedSummary";
 import ImportProgressStepper from "@/components/bulk-import/ImportProgressStepper";
 import DownloadTemplate from "@/components/bulk-import/DownloadTemplate";
 import FileUploadDropzone from "@/components/bulk-import/FileUploadDropzone";
@@ -25,9 +27,9 @@ import IconTrash from "@/components/Icon/IconTrash";
 import TableComponent from "@/components/common-components/TableComponent";
 import PrimaryButton from "@/components/FormFields/PrimaryButton.component";
 import { Sparkles } from "lucide-react";
+import CourseOutcomes from "@/components/academic-setup/CourseOutcomes";
 
 type ImportType = "user" | "course";
-
 
 const Syllabus = () => {
   const dispatch = useDispatch();
@@ -43,7 +45,6 @@ const Syllabus = () => {
   useEffect(() => {
     dispatch(setPageTitle("Syllabus"));
   }, []);
-
 
   return (
     <div className="min-h-screen">
@@ -65,43 +66,53 @@ const Syllabus = () => {
         onBack={() => console.log("back")}
         onViewChange={(view) => setState({ activeTab: view })}
       />
-      <div className="panel">
+      <div className="">
         <SyllabusStepper
           currentStep={state.currentStep}
-          statusLabel={state.currentStep === 3 ? "Review Required" : "Awaiting Upload"}
-          statusClassName={state.currentStep === 3 ? "border-orange-200 bg-orange-50 text-orange-600 font-bold" : ""}
+          statusLabel={
+            state.currentStep === 4
+              ? "Approved"
+              : state.currentStep === 3
+              ? "Review Required"
+              : "Awaiting Upload"
+          }
+          statusClassName={
+            state.currentStep === 4
+              ? "border-green-300 bg-green-50 text-green-600 font-bold"
+              : state.currentStep === 3
+              ? "border-orange-200 bg-orange-50 text-orange-600 font-bold"
+              : ""
+          }
         />
         <div className=" mx-6 border-t border-gray-200 dark:border-gray-700" />
         {state.currentStep === 1 && (
-
-        <div className="px-6 py-3 pt-2">
-          <StepHeader
-            title="Upload Syllabus"
-            description="Upload the syllabus document for CS301— Computer Networks."
-          />
-          <SyllabusUpload
-            onFileSelect={(file) => setState({ selectedFile: file })}
-          />
-          <KeepFilePrompt
-            onKeep={() => console.log("keep")}
-            onDiscard={() => console.log("discard")}
-          />
-          <NeuroAIInfo />
-          <div className="mt-4 flex justify-end">
-            <PrimaryButton
-              type="button"
-              text="Start AI Extraction"
-              className="bg-color2 hover:bg-color2"
-              icon={<Sparkles className="h-4 w-4" />}
-              onClick={() => setState({ currentStep: 3 })}
+          <div className=" py-3 pt-2">
+            <StepHeader
+              title="Upload Syllabus"
+              description="Upload the syllabus document for CS301— Computer Networks."
             />
+            <SyllabusUpload
+              onFileSelect={(file) => setState({ selectedFile: file })}
+            />
+            <KeepFilePrompt
+              onKeep={() => console.log("keep")}
+              onDiscard={() => console.log("discard")}
+            />
+            <NeuroAIInfo />
+            <div className="mt-4 flex justify-end">
+              <PrimaryButton
+                type="button"
+                text="Start AI Extraction"
+                className="bg-color2 hover:bg-color2"
+                icon={<Sparkles className="h-4 w-4" />}
+                onClick={() => setState({ currentStep: 3 })}
+              />
+            </div>
           </div>
-          
-        </div>
-          )}
+        )}
 
         {state.currentStep === 3 && (
-          <div className="px-6 py-3 pt-2">
+          <div className=" py-3 pt-2">
             {!state.showReview ? (
               <ExtractionComplete
                 fileName={state.selectedFile?.name}
@@ -112,18 +123,55 @@ const Syllabus = () => {
               <>
                 <ReviewModeBar
                   onSaveDraft={() => console.log("save draft")}
-                  onContinue={() => console.log("continue")}
+                  onContinue={() => setState({ currentStep: 4 })}
                 />
-                <div className="grid grid-cols-2 gap-5" style={{ height: "80vh" }}>
-                  <PDFViewer
-                    file={state.selectedFile}
-                    fileName={state.selectedFile?.name}
-                    fileSize={state.selectedFile ? `${(state.selectedFile.size / (1024 * 1024)).toFixed(1)} MB` : ""}
-                  />
-                  <ExtractedDataPanel />
+                <div
+                  className="grid gap-5"
+                  style={{
+                    height: "80vh",
+                    overflow: "hidden",
+                    gridTemplateColumns: "2fr 3fr",
+                  }}
+                >
+                  <div className="min-h-0 overflow-hidden">
+                    <PDFViewer
+                      file={state.selectedFile}
+                      fileName={state.selectedFile?.name}
+                      fileSize={
+                        state.selectedFile
+                          ? `${(
+                              state.selectedFile.size /
+                              (1024 * 1024)
+                            ).toFixed(1)} MB`
+                          : ""
+                      }
+                    />
+                  </div>
+                  <div className="min-h-0 overflow-hidden">
+                    <ExtractedDataPanel />
+                  </div>
                 </div>
               </>
             )}
+          </div>
+        )}
+
+        {state.currentStep === 4 && (
+          <div className=" py-3 pt-4">
+            <SyllabusApprovedBanner
+              courseCode="CS309"
+              onProceed={() => console.log("proceed to CO-PO")}
+            />
+            <SyllabusApprovedSummary
+              courseCode="CS309"
+              courseTitle="Computer Networks"
+              theoryHours={45}
+              labHours={30}
+              credits={4}
+              ltpc="3 — 0 — 2 — 4"
+              onRevise={() => setState({ currentStep: 3, showReview: true })}
+              onProceed={() => console.log("proceed to CO-PO")}
+            />
           </div>
         )}
       </div>

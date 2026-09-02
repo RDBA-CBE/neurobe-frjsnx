@@ -820,6 +820,31 @@ pre.hljs {
 .bg-sec-dark{
   background-color: #E2E8F0;
 }
+.btn-green{
+  background-color: #10B981;
+}
+.bg-primary2{
+  background-color: #F9F5FF;
+}
+.bg-primary3 {
+  background-color: #F7F9FE;
+}
+
+.bg-lyellow {
+  background-color: #ffedc6;
+}
+
+.bg-light-yellow {
+  background-color: #FFFBEB;
+}
+
+.bg-grey {
+  background-color: #F8FAFC;
+}
+
+.text-green{
+  color: #10B981;
+}
 
 .text-color1 {
   color: #000E3B;
@@ -836,11 +861,19 @@ pre.hljs {
 .text-pri{
   color: #757576;
 }
-.bg-primary2{
-  background-color: #F9F5FF;
+
+.text-dyellow{
+  color: #ffb400 ;
 }
 
 
+.text-orange{
+  color: #D97706 ;
+}
+
+.border-yellow{
+  border-color: #FDE68A ;
+}
 
 .border-color1 {
   border-color: #000E3B;
@@ -858,13 +891,14 @@ pre.hljs {
   border-color: #d1d5db;
 }
 
-.bg-lyellow {
-  background-color: #ffedc6;
+.border-primary2 {
+  border-color: #E9D5FF;
 }
 
-.text-dyellow{
-  color: #ffb400 ;
-}
+
+
+
+
 
 .page-ti {
   font-size: 24px;
