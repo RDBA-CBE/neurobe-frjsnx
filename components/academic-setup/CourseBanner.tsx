@@ -59,11 +59,11 @@ export default function CourseBanner({
       {/* Title Row */}
       <div className="mt-4 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="page-ti text-white pb-3">
             {courseCode} — {courseTitle}
           </h1>
           {description && (
-            <p className="mt-1 text-sm text-white/60">{description}</p>
+            <p className=" text-sm text-white/60">{description}</p>
           )}
         </div>
 

@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
+import { Document, Page, pdfjs,  } from "react-pdf";
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, FileText } from "lucide-react";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";

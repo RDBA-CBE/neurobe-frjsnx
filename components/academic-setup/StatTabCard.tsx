@@ -18,16 +18,14 @@ const StatTabCard = ({
   return (
     <div
       onClick={onClick}
-      className={`flex flex-col cursor-pointer  justify-between rounded-2xl border p-5 transition-all duration-200 ${
+      className={`flex flex-col   justify-between rounded-2xl border p-5 transition-all duration-200 ${onClick && 'cursor-pointer'} ${
         active
           ? "border-transparent bg-[#7c3aed] text-white shadow-lg"
           : "border-gray-200 bg-white text-[#000] hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:text-white"
       }`}
     >
       <div className="flex flex-row justify-between gap-1">
-        <div className={`${active ? "text-[#fff] font-bold p-2 h-fit rounded-md" : "text-[#7c3aed] bg-color2-l p-2 h-fit rounded-md "}`}>
-          {icon}
-        </div>
+       
         <span
           className={`text-3xl font-bold ${
             active ? "text-white" : "text-[#000] dark:text-white"
@@ -35,6 +33,9 @@ const StatTabCard = ({
         >
           {count}
         </span>
+         {icon && <div className={`${active ? "text-[#fff] font-bold p-2 h-fit rounded-md" : "text-[#7c3aed] bg-color2-l p-2 h-fit rounded-md "}`}>
+          {icon}
+        </div>}
       </div>
 
       <p
@@ -44,7 +45,7 @@ const StatTabCard = ({
       >
         {label}
       </p>
-      <p className={`text-xs ${active ? "text-white/80" : "text-pri"}`}>
+      <p className={`text-[12px] ${active ? "text-white/80" : "text-pri"}`}>
         {subLabel}
       </p>
     </div>

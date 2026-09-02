@@ -834,7 +834,7 @@ pre.hljs {
 }
 
 .text-pri{
-  color: #757576;
+  color: #565657;
 }
 .bg-primary2{
   background-color: #F9F5FF;
@@ -1058,6 +1058,10 @@ body > div[style*="z-index:2000000000"] > div:not(:has(iframe)) {
 
 .create-btn-sec {
   @apply rounded-full bg-gray-200 px-4 py-2 text-sm font-medium text-[#000] hover:bg-gray-100 flex items-center gap-2 ;
+}
+
+.disabled-create-btn{
+  @apply bg-color2-l text-[#a884f7] px-5 py-2 text-sm rounded-full shadow hover:opacity-90 flex shrink-0 items-center gap-2 disabled:cursor-not-allowed ;
 }
 
 

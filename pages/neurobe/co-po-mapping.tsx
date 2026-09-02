@@ -1,6 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { GitFork, Target, CheckCircle2, ShieldCheck, Home } from "lucide-react";
+import {
+  GitFork,
+  Target,
+  CheckCircle2,
+  ShieldCheck,
+  Home,
+  GraduationCap,
+  Lightbulb,
+  GitBranch,
+  Check,
+  GitCompare,
+  Save,
+} from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
@@ -10,6 +22,10 @@ import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import PrivateRouter from "@/hook/privateRouter";
 import CourseBanner from "@/components/academic-setup/CourseBanner";
 import StatTabCard from "@/components/academic-setup/StatTabCard";
+import StepHeader from "@/components/academic-setup/StepHeader";
+import MappingMatrixHeader from "@/components/co-po-mapping/MappingMatrixHeader";
+import TableComponent from "@/components/common-components/TableComponent";
+import PageFooter from "@/components/common-components/PageFooter";
 
 const MOCK_MAPPINGS = [
   {
@@ -148,6 +164,8 @@ const COPOMapping = () => {
     );
   });
 
+  const approve = () => {};
+
   const poHeaders = [
     "PO1",
     "PO2",
@@ -164,55 +182,66 @@ const COPOMapping = () => {
   ];
   const psoHeaders = ["PSO1", "PSO2"];
 
-  
-
   const getScoreBadge = (score: number) => {
     if (score === 3) {
       return (
-        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-purple-100 text-xs font-bold text-[#7c3aed]">
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-green-800 text-xs font-bold text-white ">
           3
         </span>
       );
     }
     if (score === 2) {
       return (
-        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 text-xs font-bold text-blue-700">
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-700 text-xs font-bold text-white ">
           2
         </span>
       );
     }
     if (score === 1) {
       return (
-        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-amber-100 text-xs font-bold text-amber-700">
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-amber-600 text-xs font-bold text-white ">
           1
         </span>
       );
     }
-    return <span className="text-gray-300">-</span>;
+    return (
+      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-xs font-bold text-[#000]">
+        -
+      </span>
+    );
   };
 
   const TABS = [
-  {
-    key: "course_outcome",
-    label: "Course Outcome",
-    // subLabel: "Academic Divisions",
-    count: 5,
-  },
-  {
-    key: "program_outcome",
-    label: "Program Outcome",
-    // subLabel: "Degrees & Majors",
-    count: 4,
-  },
-  { key: "ai_suggestions", label: "AI Suggestions", subLabel: "AI-generated mapping suggestions", count: 6 },
-  
-  {
-    key: "mapping_status",
-    label: "Mapping Status",
-    subLabel: "AI-generated mappings must be reviewed by the Coordinator",
-    count: 6,
-  },
-];
+    {
+      key: "course_outcome",
+      label: "Course Outcome",
+      // subLabel: "Academic Divisions",
+      count: 5,
+      icon: <Lightbulb className="h-5 w-5" />,
+    },
+    {
+      key: "program_outcome",
+      label: "Program Outcome",
+      // subLabel: "Degrees & Majors",
+      count: 4,
+      icon: <GraduationCap className="h-5 w-5" />,
+    },
+    {
+      key: "ai_suggestions",
+      label: "AI Generated Mapping Suggestions",
+      subLabel: "Mappig Needs Review",
+      count: 6,
+      icon: <GitCompare className="h-5 w-5" />,
+    },
+
+    {
+      key: "mapping_verified",
+      label: "Mapping Verified",
+      subLabel: "AI-generated mappings verified by the Coordinator",
+      count: 0,
+      icon: <Check className="h-5 w-5" />,
+    },
+  ];
 
   return (
     <div className="min-h-screen">
@@ -235,152 +264,82 @@ const COPOMapping = () => {
         onViewChange={(view) => setState({ activeTab: view })}
       />
 
+      <StepHeader
+        title="CO–PO Mapping"
+        description="AI-assisted mapping between approved Course Outcomes and the selected Program Outcome version. Review each suggested mapping and rationale before approval."
+      />
+
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
         {TABS.map((tab) => (
           <StatTabCard
             key={tab.key}
-            icon={<Home className="h-5 w-5" />}
+            icon={tab.icon}
             label={tab.label}
             subLabel={tab.subLabel}
             count={tab.count}
             active={state.activeTab === tab.key}
-            onClick={() =>
-              setState({
-                activeTab: tab.key,
-                search: "",
-                statusFilter: "All Statuses",
-                deptFilter: "All Departments",
-              })
-            }
           />
         ))}
       </div>
 
-      
+      {/* CO-PO Mapping Matrix */}
+      <div className="panel">
+        <MappingMatrixHeader
+          title="CO1–CO6 × PO1–PO12 Mapping Matrix"
+          version="PO 2025 v1"
+        />
 
-      {/* Legend Cards */}
-      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-purple-100 text-sm font-bold text-[#7c3aed]">
-            3
-          </span>
-          <div>
-            <p className="text-xs font-semibold text-gray-800 dark:text-white">
-              Level 3 (High)
-            </p>
-            <p className="text-[11px] text-gray-400">Substantial Correlation</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-blue-100 text-sm font-bold text-blue-700">
-            2
-          </span>
-          <div>
-            <p className="text-xs font-semibold text-gray-800 dark:text-white">
-              Level 2 (Medium)
-            </p>
-            <p className="text-[11px] text-gray-400">Moderate Correlation</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-amber-100 text-sm font-bold text-amber-700">
-            1
-          </span>
-          <div>
-            <p className="text-xs font-semibold text-gray-800 dark:text-white">
-              Level 1 (Low)
-            </p>
-            <p className="text-[11px] text-gray-400">Slight Correlation</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <ShieldCheck className="h-6 w-6 text-green-600" />
-          <div>
-            <p className="text-xs font-semibold text-gray-800 dark:text-white">
-              NBA Compliance
-            </p>
-            <p className="text-[11px] text-green-600">
-              Aligned with Criteria 3
-            </p>
-          </div>
-        </div>
+        {/* TableComponent with dynamic columns */}
+        <TableComponent
+          records={filteredRecords}
+          loading={state.loading}
+          noRecordsText="No CO-PO mappings found"
+          columns={[
+            {
+              accessor: "coCode",
+              title: "COURSE OUTCOME",
+              render: ({ coCode, description, bloomLevel }: any) => (
+                <div className="min-w-[200px]">
+                  <p className="bg-color2-l text-color2 w-fit rounded-md px-2 py-1 text-xs font-bold">
+                    {coCode}
+                  </p>
+                  <p className="mt-1 line-clamp-2 text-sm text-[#000] dark:text-gray-400">
+                    {description}
+                  </p>
+                </div>
+              ),
+            },
+            ...poHeaders.map((po) => ({
+              accessor: po,
+              title: po,
+              render: (row: any) => (
+                <div className="relative flex justify-center">
+                  {getScoreBadge(row.poMap?.[po] ?? 0)}
+                  <div className="bg-color2 absolute right-1.5  top-0 inline-flex h-1.5 w-1.5 rounded-full"></div>
+                </div>
+              ),
+            })),
+          ]}
+        />
       </div>
 
-      {/* Filter / Search */}
-      <div className="mb-4 flex max-w-[300px] items-center">
-        <div className="relative w-full">
-          <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
-            <IconSearch className="h-4 w-4" />
-          </span>
-          <input
-            type="text"
-            placeholder="Search CO statements..."
-            value={state.search}
-            onChange={(e) => setState({ search: e.target.value })}
-            className="border-input w-full rounded-lg border bg-white py-2 pl-9 pr-4 text-sm outline-none focus:border-[#7c3aed] dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-          />
-        </div>
-      </div>
-
-      {/* Matrix Table */}
-      <div className="panel overflow-x-auto">
-        <table className="w-full text-left text-xs">
-          <thead>
-            <tr className="border-b border-gray-200 bg-gray-50 text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-              <th className="px-4 py-3 font-semibold">CO</th>
-              <th className="min-w-[220px] px-4 py-3 font-semibold">
-                COURSE OUTCOME STATEMENT
-              </th>
-              <th className="px-4 py-3 font-semibold">BLOOM LEVEL</th>
-              {poHeaders.map((po) => (
-                <th
-                  key={po}
-                  className="px-2 py-3 text-center font-bold text-gray-800 dark:text-gray-200"
-                >
-                  {po}
-                </th>
-              ))}
-              {psoHeaders.map((pso) => (
-                <th
-                  key={pso}
-                  className="px-2 py-3 text-center font-bold text-[#7c3aed]"
-                >
-                  {pso}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-            {filteredRecords.map((row) => (
-              <tr
-                key={row.coCode}
-                className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50"
-              >
-                <td className="px-4 py-3 font-bold text-[#7c3aed]">
-                  {row.coCode}
-                </td>
-                <td className="px-4 py-3 text-gray-800 dark:text-gray-200">
-                  {row.description}
-                </td>
-                <td className="px-4 py-3">
-                  <span className="inline-flex rounded bg-gray-100 px-2 py-0.5 text-[11px] font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-300">
-                    {row.bloomLevel}
-                  </span>
-                </td>
-                {poHeaders.map((po) => (
-                  <td key={po} className="px-2 py-3 text-center">
-                    {getScoreBadge((row.poMap as any)[po] ?? 0)}
-                  </td>
-                ))}
-                {psoHeaders.map((pso) => (
-                  <td key={pso} className="px-2 py-3 text-center">
-                    {getScoreBadge((row.psoMap as any)[pso] ?? 0)}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="mt-4">
+        <PageFooter
+        batch = {true}  
+          content1={`Course: CS309 – Computer Networks `}
+          content2 = {'PO Version: PO 2025 v1'}
+          actionBtn1={{
+            label: "Approve Mapping",
+            icon: <Check className="h-4 w-4" />,
+            onClick: approve,
+            disabled: true,
+          }}
+           actionBtn2={{
+          label: "Save Draft",
+          icon: <Save className="h-4 w-4" />,
+          onClick: () => setState({ showBulkModal: true }),
+        }}
+        />
       </div>
     </div>
   );
