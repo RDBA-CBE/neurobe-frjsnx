@@ -1,9 +1,12 @@
-import React from 'react'
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
-const index = () => {
-  return (
-    <div>dashboard</div>
-  )
-}
+const Index = () => {
+  const router = useRouter();
+  useEffect(() => {
+    router.replace("/neurobe/academic-setup");
+  }, []);
+  return null;
+};
 
-export default index
+export default Index;

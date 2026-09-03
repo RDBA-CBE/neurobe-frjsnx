@@ -38,8 +38,8 @@ const PageFooter = ({
   status,
 }: PageBannerProps) => {
 
-    console.log("actionBtn1?.disabled", actionBtn1?.disabled);
-    
+  console.log("actionBtn1?.disabled", actionBtn1?.disabled);
+
   return (
     <div className="panel mb-4 flex items-center gap-4 rounded-xl border border-gray-100 px-5 py-4 lg:justify-between">
       <div className="flex items-start gap-3">
@@ -85,13 +85,21 @@ const PageFooter = ({
       {(actionBtn1 || actionBtn2) && (
         <div className="flex items-center gap-2">
           {actionBtn2 && (
-            <button onClick={actionBtn2?.onClick} className={actionBtn2?.className ?? (actionBtn2?.disabled ? "disabled-create-btn-sec" : "create-btn-sec")} disabled={actionBtn2?.disabled}>
+            <button
+              onClick={actionBtn2?.onClick}
+              className={actionBtn2?.className ?? (actionBtn2?.disabled ? "disabled-create-btn-sec" : "create-btn-sec")}
+              disabled={actionBtn2?.disabled}
+            >
               {actionBtn2?.icon}
               {actionBtn2?.label}
             </button>
           )}
           {actionBtn1 && (
-            <button onClick={actionBtn1?.onClick} className={actionBtn1?.className ?? (actionBtn1?.disabled ? "disabled-create-btn" : "create-btn")} disabled={actionBtn1?.disabled}>
+            <button
+              onClick={actionBtn1?.onClick}
+              className={actionBtn1?.className ?? (actionBtn1?.disabled ? "disabled-create-btn" : "create-btn")}
+              disabled={actionBtn1?.disabled}
+            >
               {actionBtn1?.icon}
               {actionBtn1?.label}
             </button>

@@ -26,13 +26,15 @@ import IconEdit from "@/components/Icon/IconEdit";
 import IconTrash from "@/components/Icon/IconTrash";
 import TableComponent from "@/components/common-components/TableComponent";
 import PrimaryButton from "@/components/FormFields/PrimaryButton.component";
-import { Sparkles } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 import CourseOutcomes from "@/components/academic-setup/CourseOutcomes";
+import { useRouter } from "next/navigation";
 
 type ImportType = "user" | "course";
 
 const Syllabus = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [state, setState] = useSetState({
     importType: "user" as ImportType,
@@ -45,6 +47,12 @@ const Syllabus = () => {
   useEffect(() => {
     dispatch(setPageTitle("Syllabus"));
   }, []);
+
+  const onKeep = () => {
+    console.log("Keep file");
+  };
+
+  const onDiscard = () => {};
 
   return (
     <div className="min-h-screen">
@@ -95,8 +103,16 @@ const Syllabus = () => {
               onFileSelect={(file) => setState({ selectedFile: file })}
             />
             <KeepFilePrompt
-              onKeep={() => console.log("keep")}
-              onDiscard={() => console.log("discard")}
+              title="Keep the source syllabus file permanently?"
+              subTitle=" Choose whether the uploaded source syllabus should be retained permanently."
+              actionBtn1={{
+                label: "Yes, keep file",
+                onClick: onKeep,
+              }}
+              actionBtn2={{
+                label: "No, do not keep file",
+                onClick: onDiscard,
+              }}
             />
             <NeuroAIInfo />
             <div className="mt-4 flex justify-end">
@@ -160,7 +176,7 @@ const Syllabus = () => {
           <div className=" py-3 pt-4">
             <SyllabusApprovedBanner
               courseCode="CS309"
-              onProceed={() => console.log("proceed to CO-PO")}
+              onProceed={() => router.push("/neurobe/co-po-mapping")}
             />
             <SyllabusApprovedSummary
               courseCode="CS309"
@@ -170,7 +186,7 @@ const Syllabus = () => {
               credits={4}
               ltpc="3 — 0 — 2 — 4"
               onRevise={() => setState({ currentStep: 3, showReview: true })}
-              onProceed={() => console.log("proceed to CO-PO")}
+              onProceed={() => router.push("/neurobe/co-po-mapping")}
             />
           </div>
         )}

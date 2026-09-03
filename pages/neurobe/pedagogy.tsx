@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Lightbulb, BookOpen, Layers, Laptop } from "lucide-react";
+import { Lightbulb, BookOpen, Layers, Laptop, Check, Pause, Hourglass } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
@@ -9,6 +9,15 @@ import PageBanner from "@/components/common-components/PageBanner";
 import TableComponent from "@/components/common-components/TableComponent";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import PrivateRouter from "@/hook/privateRouter";
+import CourseBanner from "@/components/academic-setup/CourseBanner";
+import StepHeader from "@/components/academic-setup/StepHeader";
+import StatTabCard from "@/components/academic-setup/StatTabCard";
+
+ const TABS = [
+    { key: "approved-topics", label: "Approved Topics", count: 5, icon: <Check className="h-5 w-5" /> },
+    
+    { key: "pedagogy-recommendations", label: "Pending Pedagogy Recommendations", subLabel: "Pending Pedagogy Recommendations", count: 4, icon: <Hourglass className="h-5 w-5" /> },
+  ];
 
 const MOCK_PEDAGOGY = [
   {
@@ -145,88 +154,47 @@ const Pedagogy = () => {
 
   return (
     <div className="min-h-screen">
-      <PageBanner
-        title="Pedagogy & Teaching Strategies"
-        description="Design and manage outcome-based teaching-learning pedagogical methods, collaborative techniques, active learning tools, and ICT-enabled delivery."
-        icon={<Lightbulb className="h-7 w-7 text-color2" />}
-        imageUrl="/assets/images/neurobe/Rectangle.png"
+      <CourseBanner
+        courseCode="CS301"
+        courseTitle="Computer Networks"
+        description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
+        programme="B.Tech CSE"
+        batch="2025–2029"
+        academicYear="2026–2027 / Semester 3"
+        students="40 Students"
+        selectedCourse="CS309"
+        courseOptions={[
+          { value: "CS309", label: "Course: CS309" },
+          { value: "CS301", label: "Course: CS301" },
+        ]}
+        onCourseChange={(val) => console.log("course", val)}
+        activeView={state.activeTab}
+        onBack={() => console.log("back")}
+        onViewChange={(view) => setState({ activeTab: view })}
       />
 
-      {/* Action Header */}
-      <div className="mb-5 flex justify-end">
-        <button className="bg-color2 hover:bg-color2 flex items-center gap-2 rounded-full px-6 py-2 text-sm font-medium text-white shadow">
-          <IconPlus className="h-4 w-4" />
-          Add Pedagogy Method
-        </button>
-      </div>
+      <StepHeader
+        title="Pedagogy"
+        description="Choose suitable teaching methods for the approved topics."
+        pill="CS309 — Computer Networks"
+      />
 
-      {/* Stats Cards */}
-      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Active Methods</span>
-          <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">4 Methods</p>
-          <span className="text-xs text-green-600">OBE Aligned</span>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Active Learning</span>
-          <p className="mt-2 text-2xl font-bold text-purple-600">65%</p>
-          <span className="text-xs text-purple-600">Of Course Delivery</span>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">ICT Integration</span>
-          <p className="mt-2 text-2xl font-bold text-blue-600">100%</p>
-          <span className="text-xs text-blue-600">Digital Tools Enabled</span>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Total Planned Sessions</span>
-          <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">42</p>
-          <span className="text-xs text-gray-400">Recorded Sessions</span>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="relative max-w-[300px] flex-1">
-          <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
-            <IconSearch className="h-4 w-4" />
-          </span>
-          <input
-            type="text"
-            placeholder="Search pedagogy methods..."
-            value={state.search}
-            onChange={(e) => setState({ search: e.target.value })}
-            className="w-full rounded-lg border border-input bg-white py-2 pl-9 pr-4 text-sm outline-none focus:border-[#7c3aed] dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+        {TABS.map((tab) => (
+          <StatTabCard
+            key={tab.key}
+            icon={tab.icon}
+            label={tab.label}
+            subLabel={tab.subLabel}
+            count={tab.count}
+            active={state.activeTab === tab.key}
           />
-        </div>
-
-        <div className="flex gap-3">
-          <CustomSelect
-            options={CATEGORY_OPTIONS}
-            value={
-              CATEGORY_OPTIONS.find((o) => o.value === state.categoryFilter) ??
-              null
-            }
-            onChange={(e) =>
-              setState({ categoryFilter: e?.value ?? "all" })
-            }
-            placeholder="All Categories"
-            className="filter-input"
-          />
-        </div>
+        ))}
       </div>
 
-      {/* Table */}
-      <div className="panel">
-        <TableComponent
-          records={filteredRecords}
-          columns={columns}
-          loading={state.loading}
-          noRecordsText="No pedagogical methods found"
-        />
-      </div>
+      
     </div>
   );
 };
 
 export default PrivateRouter(Pedagogy);
-

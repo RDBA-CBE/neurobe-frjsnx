@@ -265,9 +265,8 @@ const SidebarDynamic = () => {
   };
 
   const getOwnMenu = () => {
-    if (!group) return OwnmenuConfig.admin;
-
-    return OwnmenuConfig?.[group] || OwnmenuConfig.default;
+    if (!group) return OwnmenuConfig.hr;
+    return OwnmenuConfig?.[group] || OwnmenuConfig.hr;
   };
 
   
