@@ -813,6 +813,9 @@ pre.hljs {
 .bg-color2-l{
   background-color: #ECE3FC;
 }
+.bg-dark-blue{
+  background-color: #13112E;
+}
 
 .bg-sec{
   background-color: #F1F5F9;
@@ -841,6 +844,11 @@ pre.hljs {
 .bg-grey {
   background-color: #F8FAFC;
 }
+
+.bg-light-blue {
+  background-color: #EFF6FF;
+}
+
 
 .text-green{
   color: #10B981;
