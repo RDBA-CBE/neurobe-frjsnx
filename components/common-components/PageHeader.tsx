@@ -14,7 +14,7 @@ interface PageBannerProps {
     icon?: React.ReactNode;
     onClick: () => void;
   };
-  records: string;
+  records?: string;
 }
 
 const PageHeader = ({
@@ -24,7 +24,7 @@ const PageHeader = ({
   actionBtn1,
   records,
   actionBtn2,
-}: PageBannerProps & { records: string }) => {
+}: PageBannerProps & { records?: string }) => {
   return (
     <div className="panel mb-4 flex items-start lg:justify-between gap-4 rounded-xl border border-gray-100 px-5 py-5">
       <div className="flex items-start gap-3">

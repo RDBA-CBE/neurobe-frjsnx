@@ -22,6 +22,7 @@ interface PageBannerProps {
   content1?: string;
   content2?: string;
   batch?: boolean;
+  status?: { label: string; color?: string };
 }
 
 const PageFooter = ({
@@ -34,10 +35,11 @@ const PageFooter = ({
   content1,
   content2,
   batch,
+  status,
 }: PageBannerProps) => {
 
-    console.log("actionBtn1?.disabled", actionBtn1?.disabled);
-    
+  console.log("actionBtn1?.disabled", actionBtn1?.disabled);
+
   return (
     <div className="panel mb-4 flex items-center gap-4 rounded-xl border border-gray-100 px-5 py-4 lg:justify-between">
       <div className="flex items-start gap-3">
@@ -74,6 +76,21 @@ const PageFooter = ({
               {""}
             </span>}
             <span className="text-xs text-[#000]">{content2}</span>
+            {batch && <span className="inline-flex h-2 w-2 rounded-full bg-green-500" />}
+            {status && (
+              <>
+                <span className="text-sm font-semibold text-gray-700">Status:</span>
+                <span className="text-sm font-semibold" style={{ color: status.color ?? "#f97316" }}>{status.label}</span>
+                <span className="inline-flex h-1 w-1 rounded-full bg-gray-400" />
+              </>
+            )}
+            <span className="font-bold">{content1}</span>
+            {content2 && (
+              <>
+                <span className="inline-flex h-1 w-1 rounded-full bg-gray-600" />
+                <span className="text-xs text-[#000]">{content2}</span>
+              </>
+            )}
           </div>
         </div>
       </div>

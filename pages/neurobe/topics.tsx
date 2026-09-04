@@ -1,6 +1,16 @@
+import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { ListFilter, Clock, CheckCircle2, BookOpen } from "lucide-react";
+import {
+  ListFilter,
+  Clock,
+  CheckCircle2,
+  BookOpen,
+  Home,
+  Check,
+  Sparkles,
+} from "lucide-react";
+import AIGenerateModal from "@/components/common-components/AIGenerateModal";
 import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
@@ -9,6 +19,11 @@ import PageBanner from "@/components/common-components/PageBanner";
 import TableComponent from "@/components/common-components/TableComponent";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import PrivateRouter from "@/hook/privateRouter";
+import StatTabCard from "@/components/academic-setup/StatTabCard";
+import CourseBanner from "@/components/academic-setup/CourseBanner";
+import PageHeader from "@/components/common-components/PageHeader";
+import ApprovedSyllabusTopics from "@/components/academic-setup/ApprovedSyllabusTopics";
+import PageFooter from "@/components/common-components/PageFooter";
 
 const MOCK_TOPICS = [
   {
@@ -90,6 +105,7 @@ const Topics = () => {
     unitFilter: "all",
     statusFilter: "all",
     loading: false,
+    showGenerateModal: false,
   });
 
   useEffect(() => {
@@ -103,7 +119,8 @@ const Topics = () => {
       row.topicNumber.toLowerCase().includes(s) ||
       row.title.toLowerCase().includes(s) ||
       row.mode.toLowerCase().includes(s);
-    const matchUnit = state.unitFilter === "all" || row.unit === state.unitFilter;
+    const matchUnit =
+      state.unitFilter === "all" || row.unit === state.unitFilter;
     const matchStatus =
       state.statusFilter === "all" || row.status === state.statusFilter;
     return matchSearch && matchUnit && matchStatus;
@@ -163,7 +180,9 @@ const Topics = () => {
         if (status === "Pending") badgeStyle = "bg-amber-50 text-amber-700";
 
         return (
-          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${badgeStyle}`}>
+          <span
+            className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${badgeStyle}`}
+          >
             {status}
           </span>
         );
@@ -171,92 +190,178 @@ const Topics = () => {
     },
   ];
 
+  const TABS = [
+    {
+      key: "departments",
+      label: "Departments",
+      subLabel: "Academic Divisions",
+      count: 5,
+    },
+    {
+      key: "programmes",
+      label: "Programmes",
+      subLabel: "Degrees & Majors",
+      count: 4,
+    },
+    {
+      key: "batches",
+      label: "Batches",
+      subLabel: "Academic Batches",
+      count: 6,
+    },
+    { key: "courses", label: "Courses", subLabel: "Course Catalog", count: 6 },
+    {
+      key: "psos",
+      label: "PSOs",
+      subLabel: "Programme Specific Outcomes",
+      count: 6,
+    },
+  ];
+  const STEPS = [
+    {
+      title: "Analyzing Course Syllabus",
+      description:
+        "Deconstructing 5 syllabus units and 45 contact hours for CS309 — Computer Networks.",
+    },
+    {
+      title: "Topic & Subtopic Decomposition",
+      description: "Generating topics and granular subtopics for all 5 units.",
+    },
+    {
+      title: "Knowledge Level Calibration",
+      description:
+        "Assigning Knowledge Levels (K1–K6) per topic based on complexity mapping.",
+    },
+    {
+      title: "Contact Hour Allocation",
+      description:
+        "Balancing lecture hours across 45 total hours to fit university parameters.",
+    },
+  ];
+
+
   return (
     <div className="min-h-screen">
-      <PageBanner
-        title="Topics Management"
-        description="Organize modular topics and sub-topics per syllabus unit, planned instructional hours, delivery methodologies, and Course Outcomes."
-        icon={<ListFilter className="h-7 w-7 text-color2" />}
-        imageUrl="/assets/images/neurobe/Rectangle.png"
+      <CourseBanner
+        courseCode="CS301"
+        courseTitle="Computer Networks"
+        description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
+        programme="B.Tech CSE"
+        batch="2025–2029"
+        academicYear="2026–2027 / Semester 3"
+        students="40 Students"
+        selectedCourse="CS309"
+        courseOptions={[
+          { value: "CS309", label: "Course: CS309" },
+          { value: "CS301", label: "Course: CS301" },
+        ]}
+        onCourseChange={(val) => console.log("course", val)}
+        activeView={state.activeTab}
+        onBack={() => console.log("back")}
+        onViewChange={(view) => setState({ activeTab: view })}
+      />
+      <PageHeader
+        title="Topics"
+        subtitle="Create a detailed topic structure from the approved syllabus."
+        icon={<BookOpen className="h-5 w-5 text-[#7c3aed]" />}
+        records={`CS309 — Computer Networks`}
       />
 
-      {/* Action Header */}
-      <div className="mb-5 flex justify-end">
-        <button className="bg-color2 hover:bg-color2 flex items-center gap-2 rounded-full px-6 py-2 text-sm font-medium text-white shadow">
-          <IconPlus className="h-4 w-4" />
-          Add Topic
-        </button>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Total Topics</span>
-          <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">24 Topics</p>
-          <span className="text-xs text-gray-400">Across 5 Units</span>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Completed Topics</span>
-          <p className="mt-2 text-2xl font-bold text-green-600">14</p>
-          <span className="text-xs text-green-600">58% Delivered</span>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Remaining Topics</span>
-          <p className="mt-2 text-2xl font-bold text-amber-600">10</p>
-          <span className="text-xs text-amber-600">On Track</span>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Total Hours</span>
-          <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">45 Hrs</p>
-          <span className="text-xs text-purple-600">Full Coverage</span>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="relative max-w-[300px] flex-1">
-          <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
-            <IconSearch className="h-4 w-4" />
-          </span>
-          <input
-            type="text"
-            placeholder="Search topics..."
-            value={state.search}
-            onChange={(e) => setState({ search: e.target.value })}
-            className="w-full rounded-lg border border-input bg-white py-2 pl-9 pr-4 text-sm outline-none focus:border-[#7c3aed] dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+      <div className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5">
+        {TABS.map((tab) => (
+          <StatTabCard
+            key={tab.key}
+            icon={<Home className="h-5 w-5" />}
+            label={tab.label}
+            subLabel={tab.subLabel}
+            count={tab.count}
+            active={state.activeTab === tab.key}
+            onClick={() =>
+              setState({
+                activeTab: tab.key,
+                search: "",
+                statusFilter: "All Statuses",
+                deptFilter: "All Departments",
+              })
+            }
           />
-        </div>
-
-        <div className="flex flex-wrap gap-3">
-          <CustomSelect
-            options={UNIT_OPTIONS}
-            value={UNIT_OPTIONS.find((o) => o.value === state.unitFilter) ?? null}
-            onChange={(e) => setState({ unitFilter: e?.value ?? "all" })}
-            placeholder="All Units"
-            className="filter-input"
-          />
-          <CustomSelect
-            options={STATUS_OPTIONS}
-            value={STATUS_OPTIONS.find((o) => o.value === state.statusFilter) ?? null}
-            onChange={(e) => setState({ statusFilter: e?.value ?? "all" })}
-            placeholder="All Statuses"
-            className="filter-input"
-          />
-        </div>
+        ))}
       </div>
+      <ApprovedSyllabusTopics courseCode="CS309" />
 
-      {/* Table */}
-      <div className="panel">
-        <TableComponent
-          records={filteredRecords}
-          columns={columns}
-          loading={state.loading}
-          noRecordsText="No topics found"
-        />
-      </div>
+      <PageFooter
+        batch={true}
+        status={{ label: "Not Generated", color: "#f97316" }}
+        content1="Course: CS309 — Computer Networks"
+        actionBtn1={{
+          label: "Generate Topic Hierarchy",
+          icon: <Sparkles className="h-4 w-4" />,
+          onClick: () => setState({ showGenerateModal: true }),
+
+          className: "create-btn",
+        }}
+      />
+
+      <AIGenerateModal
+        open={state.showGenerateModal}
+        onClose={() => setState({ showGenerateModal: false })}
+        headerIcon={<Sparkles className="h-6 w-6 text-white" />}
+        title="Generate Topics with NEURO AI"
+        subtitle="CS309 — Computer Networks"
+        cancelLabel="Cancel"
+        actionLabel="Apply Topics"
+        actionBgColor={"bg-color2"}
+        onAction={() => setState({ showGenerateModal: false })}
+        render={() => (
+          <div className="bg-white px-6 py-5">
+            {/* Progress */}
+            <div className="mb-4">
+              <div className="mb-2 flex items-center justify-between">
+                <span className="text-sm font-bold text-[#7c3aed]">
+                  {"TOPICS GENERATED SUCCESSFULLY"}
+                </span>
+                <span className="text-sm font-bold text-[#7c3aed]">{50}%</span>
+              </div>
+              <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
+                <div
+                  className="h-2 rounded-full bg-[#7c3aed] transition-all"
+                  style={{ width: `${50}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Steps */}
+            <div className="space-y-4 py-2">
+              {STEPS.map((step, i) => (
+                <div key={i} className="flex items-start gap-4">
+                  <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-green-500 text-green-500">
+                    <svg
+                      className="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="font-bold text-gray-900">{step.title}</p>
+                    <p className="text-sm text-gray-500">{step.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+       
+      />
     </div>
   );
 };
 
 export default PrivateRouter(Topics);
-
