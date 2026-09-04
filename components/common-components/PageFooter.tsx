@@ -64,7 +64,7 @@ const PageFooter = ({
           />
 
           <div className="flex items-center gap-2">
-            {batch &&<span
+            {/* {batch &&<span
               className={`bg-green-500 inline-flex h-2 w-2 items-center justify-center rounded-full text-[10px] font-bold`}
             >
             </span>}
@@ -75,7 +75,7 @@ const PageFooter = ({
               {" "}
               {""}
             </span>}
-            <span className="text-xs text-[#000]">{content2}</span>
+            <span className="text-xs text-[#000]">{content2}</span> */}
             {batch && <span className="inline-flex h-2 w-2 rounded-full bg-green-500" />}
             {status && (
               <>
