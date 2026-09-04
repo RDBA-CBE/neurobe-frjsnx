@@ -163,6 +163,21 @@ const COPOMapping = () => {
         pill= "PO Version: PO 2025 v1"
       />
 
+      
+
+      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+        {TABS.map((tab) => (
+          <StatTabCard
+            key={tab.key}
+            icon={tab.icon}
+            label={tab.label}
+            subLabel={tab.subLabel}
+            count={tab.count}
+            active={state.activeTab === tab.key}
+          />
+        ))}
+      </div>
+
       <KeepFilePrompt
         icon={<Info className="text-color2 h-4 w-4" />}
         title="Select a mapping to review the suggested strength and NEURO AI rationale. Accept or edit the suggestion as needed."
@@ -183,19 +198,6 @@ const COPOMapping = () => {
           },
         }}
       />
-
-      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-        {TABS.map((tab) => (
-          <StatTabCard
-            key={tab.key}
-            icon={tab.icon}
-            label={tab.label}
-            subLabel={tab.subLabel}
-            count={tab.count}
-            active={state.activeTab === tab.key}
-          />
-        ))}
-      </div>
 
       {/* CO-PO Mapping Matrix */}
       <div className="panel">

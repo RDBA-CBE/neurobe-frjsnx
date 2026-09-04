@@ -62,7 +62,7 @@ export const ModalShell = ({
       {/* backdrop */}
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
       <div
-        className="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl dark:bg-gray-900"
+        className="relative w-full max-w-xl rounded-2xl bg-white shadow-2xl dark:bg-gray-900"
         style={{ animation: closing ? "slideDown 0.22s ease forwards" : "slideUp 0.22s ease" }}
       >
         <div className="flex items-start justify-between border-b border-gray-100 px-6 py-4 dark:border-gray-700">

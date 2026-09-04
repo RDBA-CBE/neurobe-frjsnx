@@ -386,7 +386,7 @@ export const menuConfig = {
 };
 
 export const OwnmenuConfig = {
-  hr: [
+  course_coordinatorr: [
     {
       type: "heading",
       label: "CORE WORKSPACES",
@@ -431,33 +431,33 @@ export const OwnmenuConfig = {
       href: "/neurobe/audit-trial",
     },
 
-    // {
-    //   type: "submenu",
-    //   icon: "IconMenuCharts",
-    //   label: "Masters",
-    //   key: "master",
-    //   children: [
-    //     {
-    //       label: "Degree Level",
-    //       href: "/faculty/master/hr_panel",
-    //     },
-    //     {
-    //       label: "Batch",
-    //       href: "/faculty/master/additional_academic_responsibilities",
-    //     },
-    //     {
-    //       label: "Academic Term / Semester",
-    //       href: "/faculty/master/additional_academic_responsibilities",
-    //     },
-    //     {
-    //       label: "Entity",
-    //       href: "/faculty/master/additional_academic_responsibilities",
-    //     },
-    //   ],
-    // },
+    {
+      type: "submenu",
+      icon: "IconMenuCharts",
+      label: "Masters",
+      key: "master",
+      children: [
+        {
+          label: "Degree Level",
+          href: "/faculty/master/hr_panel",
+        },
+        {
+          label: "Batch",
+          href: "/faculty/master/additional_academic_responsibilities",
+        },
+        {
+          label: "Academic Term / Semester",
+          href: "/faculty/master/additional_academic_responsibilities",
+        },
+        {
+          label: "Entity",
+          href: "/faculty/master/additional_academic_responsibilities",
+        },
+      ],
+    },
   ],
 
-  course_coordinator: [
+  hr: [
     {
       type: "link",
       icon: "IconMenuDashboard",
@@ -554,6 +554,30 @@ export const OwnmenuConfig = {
       label: "CO-PO Attainment",
       href: "/neurobe/co-po-attainment",
     },
+    // {
+    //   type: "submenu",
+    //   icon: "IconMenuCharts",
+    //   label: "Masters",
+    //   key: "master",
+    //   children: [
+    //     {
+    //       label: "Degree Level",
+    //       href: "/faculty/master/hr_panel",
+    //     },
+    //     {
+    //       label: "Batch",
+    //       href: "/faculty/master/additional_academic_responsibilities",
+    //     },
+    //     {
+    //       label: "Academic Term / Semester",
+    //       href: "/faculty/master/additional_academic_responsibilities",
+    //     },
+    //     {
+    //       label: "Entity",
+    //       href: "/faculty/master/additional_academic_responsibilities",
+    //     },
+    //   ],
+    // },
   ],
 };
 

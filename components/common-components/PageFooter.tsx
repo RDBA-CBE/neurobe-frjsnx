@@ -67,12 +67,12 @@ const PageFooter = ({
             >
             </span>}
              <span className = 'font-bold'>{content1}</span>
-            <span
+            {content2 && <span
               className={`bg-gray-600 inline-flex h-1 w-1 items-center justify-center rounded-full text-[10px] font-bold`}
             >
               {" "}
               {""}
-            </span>
+            </span>}
             <span className="text-xs text-[#000]">{content2}</span>
           </div>
         </div>

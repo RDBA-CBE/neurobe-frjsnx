@@ -103,12 +103,12 @@
 
   .sidebar ul.sub-menu li button,
   .sidebar ul.sub-menu li a {
-    @apply flex w-full items-center px-9 py-2.5 before:h-0.5 before:w-2 before:rounded before:bg-gray-300 hover:bg-gray-100
-hover:text-primary hover:before:!bg-primary dark:before:bg-gray-500 dark:hover:bg-gray-900 dark:hover:text-primary ltr:before:mr-2 rtl:before:ml-2;
+    @apply flex w-full items-center px-9 py-2.5 before:h-0.5 before:w-2 before:rounded before:bg-[#fff] hover:bg-[#d7d7d729]
+hover:text-[#fff] hover:before:!bg-[#fff] hover:rounded-full dark:before:bg-gray-500 dark:hover:bg-gray-900 dark:hover:text-primary ltr:before:mr-2 rtl:before:ml-2;
   }
   .sidebar ul.sub-menu li button.active,
   .sidebar ul.sub-menu li a.active {
-    @apply text-primary before:bg-primary;
+    @apply text-[#fff] before:bg-[#fff];
   }
 
   .sidebar .nav-item a div:first-child svg,
@@ -1026,7 +1026,8 @@ body > div[style*="z-index:2000000000"] > div:not(:has(iframe)) {
 }
 
 .sidebar .nav-item > button:hover, .sidebar .nav-item > a:hover {
-  background-color:#d7d7d729 !important;
+  background-color:#d7d7d729 !important; 
+  border-radius: 50px;
 }
 
 .mantine-9cumsf{
