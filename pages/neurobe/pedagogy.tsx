@@ -13,6 +13,7 @@ import AccordiansStyle from "@/components/common-components/AccordiansStyle";
 import { EditPedagogyModal, ReplacePedagogyModal } from "@/components/co-po-mapping/PedagogyModals";
 import { useRouter } from "next/navigation";
 import TableTitle from "@/components/common-components/TableTitle";
+import { UNIT_TABS } from "@/utils/constant.utils";
 
 // ─── Static config ────────────────────────────────────────────────────────────
 
@@ -21,13 +22,7 @@ const STAT_TABS = [
   { key: "pedagogy-recommendations", label: "Pending Pedagogy Recommendations", subLabel: "Pending Pedagogy Recommendations", count: 4, icon: <Hourglass className="h-5 w-5" /> },
 ];
 
-const UNIT_TABS = [
-  { key: "unit-1", label: "Unit 1", count: 4 },
-  { key: "unit-2", label: "Unit 2", count: 3 },
-  { key: "unit-3", label: "Unit 3", count: 4 },
-  { key: "unit-4", label: "Unit 4", count: 3 },
-  { key: "unit-5", label: "Unit 5", count: 3 },
-];
+
 
 // Raw source data — no AccordiansStyle types here
 const RAW_UNIT_DATA: Record<string, {

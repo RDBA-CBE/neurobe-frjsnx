@@ -24,6 +24,7 @@ interface AIGenerateModalProps {
   actionBgColor?: string;
   onAction: () => void;
   render: () => React.ReactNode;
+  actionIcon?: React.ReactNode;
 }
 
 const AIGenerateModal = ({
@@ -39,12 +40,15 @@ const AIGenerateModal = ({
   actionLabel,
   actionBgColor = "#7c3aed",
   onAction,
-  render
+  render,
+  actionIcon,
 }: AIGenerateModalProps) => {
   React.useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   if (!open) return null;
@@ -53,7 +57,7 @@ const AIGenerateModal = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="w-full max-w-xl overflow-hidden rounded-2xl shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between bg-dark-blue px-6 py-5 border border-white/5">
+        <div className="bg-dark-blue flex items-center justify-between border border-white/5 px-6 py-5">
           <div className="flex items-center gap-4">
             {headerIcon && (
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#7c3aed]">
@@ -78,16 +82,27 @@ const AIGenerateModal = ({
 
         {/* Footer */}
         <div className="flex items-center justify-between border-t border-gray-200 bg-white px-6 py-4">
-          <button onClick={onClose} className="text-sm font-medium text-pri hover:text-gray-700">
+          <button
+            onClick={onClose}
+            className="text-pri text-sm font-medium hover:text-gray-700"
+          >
             {cancelLabel}
           </button>
           <button
+            type="button"
+            onClick={(e) => onAction()}
+            className="create-btn cursor-pointer"
+          >
+            {actionIcon}
+            {actionLabel}
+          </button>
+          {/* <button
             onClick={onAction}
             className={` ${actionBgColor} flex items-center gap-2 rounded-xl px-6 py-3 text-md font-bold text-white transition-opacity hover:opacity-90`}
           >
             {actionLabel}
             <span>→</span>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

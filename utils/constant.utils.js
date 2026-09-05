@@ -385,7 +385,7 @@ export const menuConfig = {
   ],
 };
 
-export const OwnmenuConfig = {
+export  const OwnmenuConfig = {
   course_coordinatorr: [
     {
       type: "heading",
@@ -580,6 +580,78 @@ export const OwnmenuConfig = {
     // },
   ],
 };
+
+export const UNIT_TABS = [
+  { key: "unit-1", label: "Unit 1", count: 4 },
+  { key: "unit-2", label: "Unit 2", count: 3 },
+  { key: "unit-3", label: "Unit 3", count: 4 },
+  { key: "unit-4", label: "Unit 4", count: 3 },
+  { key: "unit-5", label: "Unit 5", count: 3 },
+];
+
+export const QUS_TABS = [
+  { key: "unit-1", label: "All", count: 18 },
+  { key: "unit-2", label: "Approved", count: 12 },
+  { key: "unit-3", label: "Reviewed", count: 3 },
+  { key: "unit-4", label: "Draft", count: 3 }
+];
+
+export const UNIT_LIST =[
+  {
+    label: "Unit 1",
+    title: "Physical Layer & Network Architecture",
+    count: 5,
+    topics: [
+      { name: "Network Models & Layered Architecture", count: 2, subtopics: [
+        { name: "OSI vs TCP/IP Model", count: 1 },
+        { name: "Protocol Layering Concepts", count: 1 },
+      ]},
+      { name: "Physical Layer & Transmission Media", count: 1, subtopics: [
+        { name: "Guided & Unguided Media", count: 1 },
+      ]},
+      { name: "Network Topologies & Switching Techniques", count: 1, subtopics: [
+        { name: "Circuit vs Packet Switching", count: 1 },
+      ]},
+      { name: "Network Performance Metrics", count: 1, subtopics: [
+        { name: "Propagation vs Transmission Delay", count: 1 },
+      ]},
+    ],
+  },
+  {
+    label: "Unit 2",
+    title: "Data Link Layer & MAC Protocols",
+    count: 4,
+    topics: [
+      { name: "Framing & Error Control Mechanisms", count: 1 },
+      { name: "Sliding Window Flow Control Protocols", count: 1 },
+      { name: "Medium Access Control (MAC) Sublayer", count: 1 },
+      { name: "Ethernet & Data Link Switching", count: 1 },
+    ],
+  },
+  {
+    label: "Unit 3",
+    title: "Network Layer & Routing Protocols",
+    count: 4,
+    topics: [
+      { name: "IPv4 Addressing & Subnet Design", count: 1 },
+      { name: "IPv6 & Network Helper Protocols", count: 1 },
+      { name: "Unicast Routing Algorithms", count: 1 },
+      { name: "Hierarchical & Inter-Domain Routing", count: 1 },
+    ],
+  },
+  {
+    label: "Unit 4",
+    title: "Transport Layer & Congestion Control",
+    count: 3,
+    topics: [
+      { name: "Transport Layer Services & Port Addressing", count: 1 },
+      { name: "TCP Connection Management & Handshake", count: 1 },
+      { name: "TCP Reliable Data Transfer & Sliding Window", count: 0 },
+      { name: "TCP Congestion Control Algorithms", count: 1 },
+    ],
+  },
+]
+
 
 export const propertyType = [
   { value: 1, label: "Sale" },

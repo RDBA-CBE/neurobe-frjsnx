@@ -2,7 +2,7 @@ interface StatTabCardProps {
   icon: React.ReactNode;
   label: string;
   subLabel: string;
-  count: number;
+  count: any;
   active?: boolean;
   onClick?: () => void;
 }

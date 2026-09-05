@@ -16,6 +16,10 @@ interface KeepFilePromptProps {
     onClick: () => void;
     disabled?: boolean;
   };
+  bg?:string;
+  border?:string;
+  text?:string;
+  label?:string;
 }
 
 const KeepFilePrompt = ({
@@ -26,13 +30,15 @@ const KeepFilePrompt = ({
   icon,
   actionBtn1,
   actionBtn2,
+  bg,border,text,
+  label
 }: KeepFilePromptProps) => {
   return (
-    <div className=" bg-color2-l mb-5 flex items-center justify-between rounded-xl border-[1px] border-gray-300 px-6 py-4 dark:border-gray-700">
+    <div className={`${bg??"bg-color-l"} ${border??"border-gray-300"} bg-color2-l mb-5 flex items-center justify-between rounded-xl border-[1px]  px-6 py-4 dark:border-gray-700`}>
       <div>
         <div className="flex items-center gap-2">
           {icon && <>{icon}</>}
-          <p className="text-color2 text-sm font-bold dark:text-white">
+          <p className={`${text??"text-color2 "}  text-sm font-bold dark:text-white `}>
             {title}
           </p>
         </div>
@@ -56,6 +62,11 @@ const KeepFilePrompt = ({
           )}
         </div>
       )}
+      {label&&
+        <p className={`${text??"text-color2 "}  text-sm font-bold dark:text-white text-dark-red`}>
+        {label}
+      </p>
+    }
     </div>
   );
 };

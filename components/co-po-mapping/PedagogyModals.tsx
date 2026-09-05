@@ -3,7 +3,6 @@ import { BookOpen, RefreshCw, Check } from "lucide-react";
 import { ModalShell } from "@/components/academic-setup/AddModals";
 import TextInput from "@/components/FormFields/TextInput.component";
 import TextArea from "@/components/FormFields/TextArea.component";
-import { AccordionRecommendation } from "@/components/common-components/AccordiansStyle";
 
 // ─── Edit Pedagogy Modal ──────────────────────────────────────────────────────
 interface EditPedagogyModalProps {
@@ -78,7 +77,7 @@ interface ReplacePedagogyModalProps {
   onClose: () => void;
   topicLabel?: string;
   currentTitle?: string;
-  options?: AccordionRecommendation[];
+  options?: any;
 }
 
 export const ReplacePedagogyModal = ({

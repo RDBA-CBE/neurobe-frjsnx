@@ -873,6 +873,10 @@ pre.hljs {
 .text-dyellow{
   color: #ffb400 ;
 }
+.text-dark-red{
+  color: #854D0E ;
+}
+
 
 
 .text-orange{
@@ -882,6 +886,12 @@ pre.hljs {
 .border-yellow{
   border-color: #FDE68A ;
 }
+
+
+.border-dark-yellow{
+  border-color: #F59E0B ;
+}
+
 
 .border-color1 {
   border-color: #000E3B;

@@ -24,6 +24,7 @@ import AccordiansStyle from "@/components/common-components/AccordiansStyle";
 import PageFooter from "@/components/common-components/PageFooter";
 import AddTopicModal from "@/components/academic-setup/AddTopicModal";
 import { useRouter } from "next/navigation";
+import { UNIT_TABS } from "@/utils/constant.utils";
 
 // ─── Raw unit data ─────────────────────────────────────────────────────────────
 
@@ -224,13 +225,7 @@ const STAT_TABS = [
   },
 ];
 
-const UNIT_TABS = [
-  { key: "unit-1", label: "Unit 1", count: 4 },
-  { key: "unit-2", label: "Unit 2", count: 3 },
-  { key: "unit-3", label: "Unit 3", count: 4 },
-  { key: "unit-4", label: "Unit 4", count: 3 },
-  { key: "unit-5", label: "Unit 5", count: 3 },
-];
+
 
 const GENERATE_STEPS = [
   {

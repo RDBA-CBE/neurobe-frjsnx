@@ -23,6 +23,7 @@ import GenerateLessonPlanModal from "@/components/lesson-plan/GenerateLessonPlan
 import EditLessonPlanModal, { LessonPlanEditData } from "@/components/lesson-plan/EditLessonPlanModal";
 import ReviewLessonItemModal, { ReviewLessonItemData } from "@/components/lesson-plan/ReviewLessonItemModal";
 import { useRouter } from "next/router";
+import { UNIT_TABS } from "@/utils/constant.utils";
 
 const MOCK_LESSON_PLANS = [
   {
@@ -322,13 +323,7 @@ const RAW_UNIT_DATA: Record<
   },
 };
 
-const UNIT_TABS = [
-  { key: "unit-1", label: "Unit 1", count: 4 },
-  { key: "unit-2", label: "Unit 2", count: 3 },
-  { key: "unit-3", label: "Unit 3", count: 4 },
-  { key: "unit-4", label: "Unit 4", count: 3 },
-  { key: "unit-5", label: "Unit 5", count: 3 },
-];
+
 
 const totalTopics = UNIT_TABS.reduce((a, b) => a + b.count, 0);
 const totalUnits = UNIT_TABS.length;
@@ -632,7 +627,7 @@ const LessonPlan = () => {
               ? {
                   label: "Next:Learning Material",
                   icon: <Check className="h-4 w-4" />,
-                  onClick: () => router.push("neurobe/learning-materials"),
+                  onClick: () => router.push("/neurobe/learning-materials"),
                   className: "create-btn",
                 }
               : {
@@ -642,7 +637,7 @@ const LessonPlan = () => {
                     Success("Lesson plan review completed successfully");
                     setState({ lessonApproved: true });
                   },
-                  disabled: !allReviewed,
+                  // disabled: !allReviewed,
                 }
           }
           actionBtn2={{
