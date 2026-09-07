@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface TabItem {
   key?: string | number;
   label?: string;
@@ -10,6 +12,7 @@ interface GenericTabsProps {
   onChange: (key: string | number) => void;
   rightContent?: React.ReactNode;
   className?: string;
+  noWrap?: boolean;
 }
 
 const GenericTabs = ({
@@ -18,12 +21,17 @@ const GenericTabs = ({
   onChange,
   rightContent,
   className = "",
+  noWrap = false,
 }: GenericTabsProps) => {
   return (
     <div
-      className={`flex flex-wrap items-center justify-between  px-1 pb-0 ${className}`}
+      className={`flex ${noWrap ? "flex-nowrap overflow-x-auto" : "flex-wrap"} items-center justify-between px-1 pb-0 ${className}`}
+      style={noWrap ? { scrollbarWidth: "none" } : undefined}
     >
-      <div className="flex flex-wrap items-center gap-3">
+      <div
+        className={`flex ${noWrap ? "flex-nowrap overflow-x-auto" : "flex-wrap"} items-center gap-2 sm:gap-3`}
+        style={noWrap ? { scrollbarWidth: "none" } : undefined}
+      >
         {tabs.map((tab) => {
           const active = activeKey === tab.key;
           return (
@@ -31,7 +39,7 @@ const GenericTabs = ({
               key={tab.key}
               type="button"
               onClick={() => onChange(tab.key)}
-              className={`mb-4 flex items-center gap-3 rounded-full border px-4 py-1.5 text-sm font-semibold transition-all ${
+              className={`${noWrap ? "mb-1" : "mb-2"} flex items-center gap-2 sm:gap-3 rounded-full border px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-semibold transition-all shrink-0 whitespace-nowrap ${
                 active
                   ? " bg-color2 text-white"
                   : "border-gray-200 text-[#000] hover:text-gray-700 bg-[#fff]"

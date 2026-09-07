@@ -385,7 +385,7 @@ export const menuConfig = {
   ],
 };
 
-export  const OwnmenuConfig = {
+export const OwnmenuConfig = {
   course_coordinatorr: [
     {
       type: "heading",
@@ -516,9 +516,19 @@ export  const OwnmenuConfig = {
     {
       type: "link",
       icon: "IconMenuNotes",
+      label: "MCQ Test Preperation",
+      href: "/neurobe/mcq-test-preparation",
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
       label: "CIA Question Paper",
       href: "/neurobe/cia-question-paper",
     },
+
+
+
+
     {
       type: "heading",
       label: "INSTRUCTOR FUNCTIONS",
@@ -527,31 +537,31 @@ export  const OwnmenuConfig = {
     {
       type: "link",
       icon: "IconMenuNotes",
-      label: "Student Enrollment",
-      href: "/neurobe/student-enrollment",
+      label: "Course Artifacts",
+      href: "/neurobe/course-artifacts",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
-      label: "MCQ Tests",
+      label: "Student Enrollment",
       href: "/neurobe/mcq-tests",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
-      label: "Results & Analysis",
+      label: "MCQ Test Execution",
       href: "/neurobe/results-analysis",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
-      label: "Marks Extraction",
+      label: "Results & Analysis",
       href: "/neurobe/marks-extraction",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
-      label: "CO-PO Attainment",
+      label: "Marks Extraction & Verification",
       href: "/neurobe/co-po-attainment",
     },
     // {
@@ -596,25 +606,33 @@ export const QUS_TABS = [
   { key: "unit-4", label: "Draft", count: 3 }
 ];
 
-export const UNIT_LIST =[
+export const UNIT_LIST = [
   {
     label: "Unit 1",
     title: "Physical Layer & Network Architecture",
     count: 5,
     topics: [
-      { name: "Network Models & Layered Architecture", count: 2, subtopics: [
-        { name: "OSI vs TCP/IP Model", count: 1 },
-        { name: "Protocol Layering Concepts", count: 1 },
-      ]},
-      { name: "Physical Layer & Transmission Media", count: 1, subtopics: [
-        { name: "Guided & Unguided Media", count: 1 },
-      ]},
-      { name: "Network Topologies & Switching Techniques", count: 1, subtopics: [
-        { name: "Circuit vs Packet Switching", count: 1 },
-      ]},
-      { name: "Network Performance Metrics", count: 1, subtopics: [
-        { name: "Propagation vs Transmission Delay", count: 1 },
-      ]},
+      {
+        name: "Network Models & Layered Architecture", count: 2, subtopics: [
+          { name: "OSI vs TCP/IP Model", count: 1 },
+          { name: "Protocol Layering Concepts", count: 1 },
+        ]
+      },
+      {
+        name: "Physical Layer & Transmission Media", count: 1, subtopics: [
+          { name: "Guided & Unguided Media", count: 1 },
+        ]
+      },
+      {
+        name: "Network Topologies & Switching Techniques", count: 1, subtopics: [
+          { name: "Circuit vs Packet Switching", count: 1 },
+        ]
+      },
+      {
+        name: "Network Performance Metrics", count: 1, subtopics: [
+          { name: "Propagation vs Transmission Delay", count: 1 },
+        ]
+      },
     ],
   },
   {

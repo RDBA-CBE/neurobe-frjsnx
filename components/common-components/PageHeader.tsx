@@ -27,6 +27,8 @@ interface PageBannerProps {
   };
   editMode?: boolean;
   records?: string;
+  record2?: string;
+  record3?: string;
 }
 
 const PageHeader = ({
@@ -39,6 +41,8 @@ const PageHeader = ({
   actionBtn3,
   actionBtn4,
   editMode,
+  record2,
+  record3
 }: PageBannerProps & { records?: string }) => {
   return (
     <div className="panel mb-4 flex items-start gap-4 rounded-xl border border-gray-100 px-5 py-5 lg:justify-between">
@@ -52,37 +56,42 @@ const PageHeader = ({
             <span className="text-color2 bg-color2-l rounded-full px-2 py-0.5 text-xs font-semibold">
               {records}
             </span>
+            {record2 && <span className=" text-color2 bg-color2-l rounded-full px-2 py-0.5 text-xs font-semibold">
+              {record2}
+            </span>}
+            {record3 && <span className="text-green-dark btn-green-l rounded-full px-2 py-0.5 text-xs font-semibold">
+              {record3}
+            </span>}
           </div>
           {actionBtn3 ? (
             <div className="flex items-center gap-2 pt-2">
-            <span
-              className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${
-                //  topic?.verified_status === "Approved"
-                "border border-purple-400 bg-purple-50 text-purple-600"
-                //  : "border border-orange-200 bg-orange-50 text-orange-600"
-              }`}
-            >
-              {"AI Generated"}
-            </span>
-            <span
-            className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${
-              "border border-orange-200 bg-orange-50 text-orange-600"
-            }`}
-          >
-            {"Review Required"}
-          </span>
-          {editMode &&
-          <span
-              className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${
-                //  topic?.verified_status === "Approved"
-                "border border-purple-400 bg-purple-50 text-purple-600"
-                //  : "border border-orange-200 bg-orange-50 text-orange-600"
-              }`}
-            >
-              {"Edit Mode"}
-            </span>
-            }
-          </div>
+              <span
+                className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${
+                  //  topic?.verified_status === "Approved"
+                  "border border-purple-400 bg-purple-50 text-purple-600"
+                  //  : "border border-orange-200 bg-orange-50 text-orange-600"
+                  }`}
+              >
+                {"AI Generated"}
+              </span>
+              <span
+                className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${"border border-orange-200 bg-orange-50 text-orange-600"
+                  }`}
+              >
+                {"Review Required"}
+              </span>
+              {editMode &&
+                <span
+                  className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${
+                    //  topic?.verified_status === "Approved"
+                    "border border-purple-400 bg-purple-50 text-purple-600"
+                    //  : "border border-orange-200 bg-orange-50 text-orange-600"
+                    }`}
+                >
+                  {"Edit Mode"}
+                </span>
+              }
+            </div>
           ) : (
             <p
               className="mt-0.5 text-xs text-[#000]"
