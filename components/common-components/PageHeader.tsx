@@ -9,21 +9,25 @@ interface PageBannerProps {
     icon?: React.ReactNode;
     onClick: () => void;
     view?: boolean;
+    outline?: boolean;
   };
   actionBtn2?: {
     label: string;
     icon?: React.ReactNode;
     onClick: () => void;
+    outline?: boolean;
   };
   actionBtn3?: {
     label: string;
     icon?: React.ReactNode;
     onClick: () => void;
+    outline?: boolean;
   };
   actionBtn4?: {
     label: string;
     icon?: React.ReactNode;
     onClick: () => void;
+    outline?: boolean;
   };
   editMode?: boolean;
   records?: string;
@@ -32,11 +36,12 @@ interface PageBannerProps {
   record4?: string;
   subContent1?: string;
   subContent2?: string;
-   program?: {
+  program?: {
     title?: string;
     value?: string;
     color?: string;
   }[];
+  draft?: string
 }
 
 const PageHeader = ({
@@ -55,13 +60,16 @@ const PageHeader = ({
   subContent1,
   subContent2,
   program,
+  draft
 }: PageBannerProps & { records?: string }) => {
   return (
     <div className="panel mb-4 flex items-start gap-4 rounded-xl border border-gray-100 px-5 py-5 lg:justify-between">
       <div className="flex items-start gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#ede9fe]">
-          {icon}
-        </div>
+        {icon &&
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#ede9fe]">
+            {icon}
+          </div>
+        }
         <div>
           <div className="flex items-center gap-2">
             <p className="section-ti">{title}</p>
@@ -84,6 +92,12 @@ const PageHeader = ({
                 {record4}
               </span>
             )}
+            {draft && (
+
+              <span className="inline-flex items-center rounded-full border border-[#FED7AA] bg-[#FFF7ED] px-3 py-1 text-xs font-semibold text-[#C2410C] dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-300">
+                {draft}
+              </span>
+            )}
           </div>
          { subtitle && <p
             className="mt-1 text-xs text-[#000]"
@@ -97,7 +111,7 @@ const PageHeader = ({
                     //  topic?.verified_status === "Approved"
                     "border border-purple-400 bg-purple-50 text-purple-600"
                     //  : "border border-orange-200 bg-orange-50 text-orange-600"
-                  }`}
+                    }`}
                 >
                   {subContent1}
                 </span>
@@ -115,7 +129,7 @@ const PageHeader = ({
                     //  topic?.verified_status === "Approved"
                     "border border-purple-400 bg-purple-50 text-purple-600"
                     //  : "border border-orange-200 bg-orange-50 text-orange-600"
-                  }`}
+                    }`}
                 >
                   {"Edit Mode"}
                 </span>
@@ -145,13 +159,13 @@ const PageHeader = ({
       {(actionBtn3 || actionBtn4) && (
         <div className="flex items-center gap-2">
           {actionBtn4 && (
-            <button onClick={actionBtn4?.onClick} className="create-btn">
+            <button onClick={actionBtn4?.onClick} className={actionBtn4?.outline ? "create-btn-outline" : "create-btn"}>
               {actionBtn4?.icon}
               {actionBtn4?.label}
             </button>
           )}
           {actionBtn3 && (
-            <button onClick={actionBtn3?.onClick} className="create-btn-sec">
+            <button onClick={actionBtn3?.onClick} className={actionBtn3?.outline ? "create-btn-outline" : "create-btn-sec"}>
               {actionBtn3?.icon}
               {actionBtn3?.label}
             </button>
@@ -161,13 +175,13 @@ const PageHeader = ({
       {(actionBtn1 || actionBtn2) && (
         <div className="flex items-center gap-2">
           {actionBtn2 && (
-            <button onClick={actionBtn2?.onClick} className="create-btn-sec">
+            <button onClick={actionBtn2?.onClick} className={actionBtn2?.outline ? "create-btn-outline" : "create-btn-sec"}>
               {actionBtn2?.icon}
               {actionBtn2?.label}
             </button>
           )}
           {actionBtn1 && (
-            <button onClick={actionBtn1?.onClick} className="create-btn">
+            <button onClick={actionBtn1?.onClick} className={actionBtn1?.outline ? "create-btn-outline" : actionBtn1?.view ? "create-btn-sec" : "create-btn"}>
               {actionBtn1?.icon}
               {actionBtn1?.label}
             </button>
