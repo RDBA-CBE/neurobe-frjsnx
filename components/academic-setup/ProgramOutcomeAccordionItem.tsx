@@ -29,7 +29,7 @@ const ProgramOutcomeAccordionItem: React.FC<
         className="w-full flex items-center justify-between gap-3 p-4 text-left outline-none bg-dark_grey rounded-2xl"
       >
         <div className="flex items-center gap-3.5 flex-1 min-w-0">
-          <span className="rounded-lg bg-[#f5f3ff] px-2.5 py-1 text-xs font-bold text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300 shrink-0">
+          <span className="rounded-lg bg-[#f5f3ff] px-2.5 py-1 text-xs font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300 shrink-0">
             {poCode}
           </span>
           <h4 className="text-sm font-semibold text-pri dark:text-gray-200 leading-snug truncate sm:whitespace-normal">

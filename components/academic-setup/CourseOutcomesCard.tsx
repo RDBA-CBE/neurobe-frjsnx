@@ -69,7 +69,7 @@ const CourseOutcomesCard: React.FC<CourseOutcomesCardProps> = ({
           <span className="h-2 w-2 rounded-full bg-[#7c3aed]" />
           <span className="text-md font-bold">{title}</span>
         </div>
-        <span className="text-xs font-bold text-[#7c3aed] dark:text-purple-400">
+        <span className="text-xs font-bold text-color2 dark:text-purple-400">
           {approvedCountText}
         </span>
       </div>
@@ -94,7 +94,7 @@ const CourseOutcomesCard: React.FC<CourseOutcomesCardProps> = ({
             <span className="text-gray-300">•</span>
             <span>11 Program Outcomes</span>
             <span className="text-gray-300">•</span>
-            <span className="text-[#7c3aed] dark:text-purple-300 font-bold">
+            <span className="text-color2 dark:text-purple-300 font-bold">
               Approved v1.0
             </span>
           </div>

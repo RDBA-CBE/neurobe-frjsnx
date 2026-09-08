@@ -177,7 +177,7 @@ const SelectApprovedQuestionsModal: React.FC<
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 {modalTitle}
               </h2>
-              <span className="rounded-full border border-[#ddd6fe] bg-[#f5f3ff] px-3 py-0.5 text-xs font-semibold text-[#7c3aed] dark:bg-purple-950/40 dark:border-purple-800 dark:text-purple-300">
+              <span className="rounded-full border border-[#ddd6fe] bg-[#f5f3ff] px-3 py-0.5 text-xs font-semibold text-color2 dark:bg-purple-950/40 dark:border-purple-800 dark:text-purple-300">
                 {code}
               </span>
             </div>
@@ -207,7 +207,7 @@ const SelectApprovedQuestionsModal: React.FC<
 
               {/* Step 2 - Active */}
               <div className="flex items-center gap-2 rounded-full bg-[#7c3aed] px-4 py-2 text-white shadow-sm transition-all">
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-[11px] font-bold text-[#7c3aed]">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-[11px] font-bold text-color2">
                   2
                 </span>
                 <span>Step 2 — Select Approved Questions</span>
@@ -308,7 +308,7 @@ const SelectApprovedQuestionsModal: React.FC<
                             className="flex items-center gap-2 shrink-0"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <span className="rounded bg-purple-50 px-2 py-0.5 text-xs font-bold text-[#7c3aed] dark:bg-purple-900/40 dark:text-purple-300">
+                            <span className="rounded bg-purple-50 px-2 py-0.5 text-xs font-bold text-color2 dark:bg-purple-900/40 dark:text-purple-300">
                               {q.level}
                             </span>
                             <span className="rounded bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-700 dark:bg-gray-700 dark:text-gray-300">
@@ -353,7 +353,7 @@ const SelectApprovedQuestionsModal: React.FC<
                             e.stopPropagation();
                             setExpandedId(isExpanded ? null : q.id);
                           }}
-                          className="mt-2.5 flex items-center gap-1 text-xs font-semibold text-[#7c3aed] hover:underline dark:text-purple-400"
+                          className="mt-2.5 flex items-center gap-1 text-xs font-semibold text-color2 hover:underline dark:text-purple-400"
                         >
                           {isExpanded ? (
                             <>
@@ -374,7 +374,7 @@ const SelectApprovedQuestionsModal: React.FC<
                             className="mt-3 rounded-xl bg-purple-50/70 p-3.5 text-xs text-purple-900 dark:bg-purple-950/40 dark:text-purple-200 border border-purple-100 dark:border-purple-900"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <p className="font-bold mb-1 text-[#7c3aed] dark:text-purple-300">
+                            <p className="font-bold mb-1 text-color2 dark:text-purple-300">
                               Explanation:
                             </p>
                             <p className="leading-relaxed">{q.explanation}</p>

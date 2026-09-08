@@ -19,7 +19,7 @@ const CourseOutcomeItem: React.FC<CourseOutcomeItemProps> = ({
       className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-gray-100 bg-[#f8fafc] p-4 transition dark:border-gray-800 dark:bg-gray-800/40 hover:border-gray-200 dark:hover:border-gray-700 ${className}`}
     >
       <div className="flex items-center gap-3.5 flex-1">
-        <span className="rounded-lg bg-[#f5f3ff] px-2.5 py-1 text-xs font-bold text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300 shrink-0">
+        <span className="rounded-lg bg-[#f5f3ff] px-2.5 py-1 text-xs font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300 shrink-0">
           {coCode}
         </span>
         <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 leading-relaxed">

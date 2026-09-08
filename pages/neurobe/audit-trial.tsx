@@ -121,7 +121,7 @@ const AuditTrial = () => {
         title="Audit Trail"
         subtitle={`Institution: <span class="font-bold text-[#000]">Karpagam Institutions, Coimbatore</span>
             &nbsp;·&nbsp; Admin: <span class="font-bold text-[#000]">Meena Subramanian</span>`}
-        icon={<ClipboardList className="h-5 w-5 text-[#7c3aed]" />}
+        icon={<ClipboardList className="h-5 w-5 text-color2" />}
         records={`${MOCK_AUDIT.length} Records`}
       />
 

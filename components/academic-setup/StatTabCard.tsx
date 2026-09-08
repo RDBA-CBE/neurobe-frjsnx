@@ -33,7 +33,7 @@ const StatTabCard = ({
         >
           {count}
         </span>
-         {icon && <div className={`${active ? "text-[#fff] font-bold p-2 h-fit rounded-md" : "text-[#7c3aed] bg-color2-l p-2 h-fit rounded-md "}`}>
+         {icon && <div className={`${active ? "text-[#fff] font-bold p-2 h-fit rounded-md" : "text-color2 bg-color2-l p-2 h-fit rounded-md "}`}>
           {icon}
         </div>}
       </div>

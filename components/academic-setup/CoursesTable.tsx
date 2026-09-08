@@ -30,15 +30,15 @@ const CoursesTable = ({ search, statusFilter, deptFilter, loading }: Props) => {
       className="whitespace-nowrap"
       records={records}
       fetching={loading}
-      customLoader={<div className="flex items-center justify-center py-12"><IconLoader className="h-6 w-6 animate-spin text-[#7c3aed]" /></div>}
+      customLoader={<div className="flex items-center justify-center py-12"><IconLoader className="h-6 w-6 animate-spin text-color2" /></div>}
       columns={[
-        { accessor: "code",   title: "COURSE CODE",  render: ({ code }) => <span className="font-medium text-[#7c3aed]">{code}</span> },
+        { accessor: "code",   title: "COURSE CODE",  render: ({ code }) => <span className="font-medium text-color2">{code}</span> },
         { accessor: "title",  title: "COURSE TITLE", render: ({ title }) => <span className="text-[#000] dark:text-gray-200">{title}</span> },
         { accessor: "l",      title: "L",            render: ({ l }) => <span className="text-[#000] dark:text-[#000]">{l}</span> },
         { accessor: "t",      title: "T",            render: ({ t }) => <span className="text-[#000] dark:text-[#000]">{t}</span> },
         { accessor: "p",      title: "P",            render: ({ p }) => <span className="text-[#000] dark:text-[#000]">{p}</span> },
         { accessor: "c",      title: "C",            render: ({ c }) => (
-          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#ede9fe] text-xs font-bold text-[#7c3aed]">{c}</span>
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#ede9fe] text-xs font-bold text-color2">{c}</span>
         )},
         { accessor: "theory", title: "THEORY HOURS", render: ({ theory }) => <span className="text-[#000] dark:text-[#000]">{theory}</span> },
         { accessor: "lab",    title: "LAB HOURS",    render: ({ lab }) => <span className="text-[#000] dark:text-[#000]">{lab}</span> },
@@ -49,7 +49,7 @@ const CoursesTable = ({ search, statusFilter, deptFilter, loading }: Props) => {
         )},
         { accessor: "actions", title: "ACTIONS", render: () => (
           <div className="flex items-center gap-3">
-            <button className="text-[#000] hover:text-[#7c3aed]"><IconEdit className="h-4 w-4" /></button>
+            <button className="text-[#000] hover:text-color2"><IconEdit className="h-4 w-4" /></button>
             <button className="text-[#000] hover:text-red-500"><IconTrash className="h-4 w-4" /></button>
           </div>
         )},

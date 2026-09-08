@@ -286,7 +286,7 @@ export const CreateCourseModal = ({
               type="number"
               value={form.credits}
               onChange={(e) => set("credits", e.target.value)}
-              className="border-[#7c3aed] bg-[#ede9fe] text-center font-bold text-[#7c3aed]"
+              className="border-[#7c3aed] bg-[#ede9fe] text-center font-bold text-color2"
             />
           </div>
         </div>

@@ -318,7 +318,7 @@ const CourseTopicsCard: React.FC<CourseTopicsCardProps> = ({
             <button
               type="button"
               onClick={handleExpandAll}
-              className="text-pri hover:text-[#7c3aed] transition-colors"
+              className="text-pri hover:text-color2 transition-colors"
             >
               Expand All
             </button>
@@ -354,13 +354,13 @@ const CourseTopicsCard: React.FC<CourseTopicsCardProps> = ({
               >
                 <div className="flex items-center gap-3.5 min-w-0">
                   {isOpen ? (
-                    <ChevronDown className="h-4 w-4 text-[#7c3aed] shrink-0" />
+                    <ChevronDown className="h-4 w-4 text-color2 shrink-0" />
                   ) : (
                     <ChevronRight className="h-4 w-4 text-gray-400 shrink-0" />
                   )}
 
                   <div className="flex items-center gap-3 text-sm sm:text-base font-bold truncate">
-                    <span className="text-[#7c3aed] font-bold shrink-0">
+                    <span className="text-color2 font-bold shrink-0">
                       {unit.unitCodeText}
                     </span>
                     <span className="text-gray-200 dark:text-gray-700 shrink-0">
@@ -390,7 +390,7 @@ const CourseTopicsCard: React.FC<CourseTopicsCardProps> = ({
                       {/* Main Topic Header */}
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div className="flex items-start gap-3 flex-1 min-w-0">
-                          <span className="rounded-lg bg-[#f5f3ff] px-2.5 py-1 text-xs font-bold text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300 shrink-0">
+                          <span className="rounded-lg bg-[#f5f3ff] px-2.5 py-1 text-xs font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300 shrink-0">
                             {topic.code}
                           </span>
                           <div>
@@ -409,7 +409,7 @@ const CourseTopicsCard: React.FC<CourseTopicsCardProps> = ({
                           <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300">
                             {topic.hoursText}
                           </span>
-                          <span className="rounded-full bg-[#f5f3ff] px-3 py-1 text-xs font-bold text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300">
+                          <span className="rounded-full bg-[#f5f3ff] px-3 py-1 text-xs font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300">
                             {topic.levelText}
                           </span>
                         </div>

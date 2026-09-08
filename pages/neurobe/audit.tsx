@@ -703,7 +703,7 @@ const AuditTrail = () => {
                     <tr key={`${record.user}-${record.action}-${index}`} className="border-t border-[#eef0f5] text-sm text-[#111827] hover:bg-[#fafbff]">
                       <td className="px-4 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#f1ebff] text-[11px] font-bold text-[#7c3aed]">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#f1ebff] text-[11px] font-bold text-color2">
                             {record.initials}
                           </div>
                           <div>

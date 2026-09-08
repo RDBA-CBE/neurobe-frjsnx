@@ -41,7 +41,7 @@ const DEFAULT_CO_ITEMS: CoMappingItemData[] = [
         poTitle: "Engineering Knowledge",
         strengthText: "Strength: 3 (High)",
         strengthBadgeClass:
-          "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300",
+          "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300",
         rationale:
           "The outcome requires students to apply core engineering and computing knowledge to understand network architectures and protocol models.",
       },
@@ -80,7 +80,7 @@ const DEFAULT_CO_ITEMS: CoMappingItemData[] = [
         poTitle: "Engineering Knowledge",
         strengthText: "Strength: 3 (High)",
         strengthBadgeClass:
-          "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300",
+          "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300",
         rationale:
           "Outcome requires analytical evaluation of error detection and flow control algorithms at the data link layer.",
       },
@@ -90,7 +90,7 @@ const DEFAULT_CO_ITEMS: CoMappingItemData[] = [
         poTitle: "Problem Analysis",
         strengthText: "Strength: 3 (High)",
         strengthBadgeClass:
-          "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300",
+          "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300",
         rationale:
           "Students analyze framing methods and error correction techniques for efficient transmission.",
       },
@@ -108,7 +108,7 @@ const DEFAULT_CO_ITEMS: CoMappingItemData[] = [
         poTitle: "Engineering Knowledge",
         strengthText: "Strength: 3 (High)",
         strengthBadgeClass:
-          "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300",
+          "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300",
         rationale:
           "Application of IPv4 subnetting formulas and routing algorithm mechanics.",
       },

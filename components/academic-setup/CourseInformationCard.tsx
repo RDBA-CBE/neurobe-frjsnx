@@ -54,7 +54,7 @@ const CourseInformationCard: React.FC<CourseInformationCardProps> = ({
           <p className="text-xs font-bold uppercase tracking-wider text-pri dark:text-gray-500 mb-1">
             COURSE CODE
           </p>
-          <p className="text-lg font-extrabold text-[#7c3aed] dark:text-purple-400">
+          <p className="text-lg font-extrabold text-color2 dark:text-purple-400">
             {courseCode}
           </p>
         </div>
@@ -81,7 +81,7 @@ const CourseInformationCard: React.FC<CourseInformationCardProps> = ({
           >
             <p
               className={`text-xs font-bold mb-1 ${stat.isPurpleLabel
-                ? "text-[#7c3aed] dark:text-purple-300"
+                ? "text-color2 dark:text-purple-300"
                 : "text-gray-500 dark:text-gray-400"
                 }`}
             >
@@ -89,7 +89,7 @@ const CourseInformationCard: React.FC<CourseInformationCardProps> = ({
             </p>
             <p
               className={`text-lg font-extrabold ${stat.isHighlighted
-                ? "text-[#7c3aed] dark:text-purple-300"
+                ? "text-color2 dark:text-purple-300"
                 : "text-gray-900 dark:text-white"
                 }`}
             >

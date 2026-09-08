@@ -48,7 +48,7 @@ const TableComponent = ({
         fetching={loading}
         customLoader={
           <div className="flex items-center justify-center py-12">
-            <IconLoader className="h-6 w-6 animate-spin text-[#7c3aed]" />
+            <IconLoader className="h-6 w-6 animate-spin text-color2" />
           </div>
         }
         minHeight={200}

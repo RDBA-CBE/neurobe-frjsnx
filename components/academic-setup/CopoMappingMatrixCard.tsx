@@ -62,7 +62,7 @@ const CopoMappingMatrixCard: React.FC<CopoMappingMatrixCardProps> = ({
   const renderBadge = (score: number | undefined) => {
     if (score === 3) {
       return (
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-[#f5f3ff] text-xs font-bold text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300">
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-[#f5f3ff] text-xs font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300">
           3
         </span>
       );
@@ -97,7 +97,7 @@ const CopoMappingMatrixCard: React.FC<CopoMappingMatrixCardProps> = ({
         <div>
           <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
             <span className="h-2 w-2 rounded-full bg-[#7c3aed]" />
-            <span className="text-md font-bold text-[#7c3aed] dark:text-purple-400">
+            <span className="text-md font-bold text-color2 dark:text-purple-400">
               {title}
             </span>
           </div>
@@ -137,7 +137,7 @@ const CopoMappingMatrixCard: React.FC<CopoMappingMatrixCardProps> = ({
                 key={row.coCode}
                 className="hover:bg-gray-50/40 dark:hover:bg-gray-800/30 transition-colors"
               >
-                <td className="py-3.5 px-4 text-sm font-bold text-[#7c3aed] dark:text-purple-400">
+                <td className="py-3.5 px-4 text-sm font-bold text-color2 dark:text-purple-400">
                   {row.coCode}
                 </td>
                 {poHeaders.map((po) => (

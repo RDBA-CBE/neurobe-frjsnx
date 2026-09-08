@@ -4,7 +4,7 @@ import IconTrash from "@/components/Icon/IconTrash";
 // ─── Shared action cell ───────────────────────────────────────────────────────
 const ActionCell = ({ onEdit, onDelete }: { onEdit?: () => void; onDelete?: () => void }) => (
   <div className="flex items-center gap-3">
-    <button onClick={onEdit}   className="text-[#000] hover:text-[#7c3aed]"><IconEdit  className="h-4 w-4" /></button>
+    <button onClick={onEdit}   className="text-[#000] hover:text-color2"><IconEdit  className="h-4 w-4" /></button>
     <button onClick={onDelete} className="text-[#000] hover:text-red-500" ><IconTrash className="h-4 w-4" /></button>
   </div>
 );
@@ -17,11 +17,11 @@ const StatusCell = ({ status }: { status: string }) => (
 );
 
 const PurpleCode = ({ code }: { code: string }) => (
-  <span className="font-medium text-[#7c3aed]">{code}</span>
+  <span className="font-medium text-color2">{code}</span>
 );
 
 const PurpleBadge = ({ value }: { value: number }) => (
-  <span className="inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[#ede9fe] px-1.5 text-xs font-bold text-[#7c3aed]">
+  <span className="inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[#ede9fe] px-1.5 text-xs font-bold text-color2">
     {value}
   </span>
 );

@@ -582,7 +582,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
           <button
             type="button"
             onClick={handleExpandAll}
-            className="text-pri hover:text-[#7c3aed] transition-colors"
+            className="text-pri hover:text-color2 transition-colors"
           >
             Expand All
           </button>
@@ -617,13 +617,13 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
               >
                 <div className="flex items-center gap-3.5 min-w-0">
                   {isOpen ? (
-                    <ChevronDown className="h-4 w-4 text-[#7c3aed] shrink-0" />
+                    <ChevronDown className="h-4 w-4 text-color2 shrink-0" />
                   ) : (
                     <ChevronRight className="h-4 w-4 text-gray-400 shrink-0" />
                   )}
 
                   <div className="flex items-center gap-3 text-sm sm:text-base font-bold truncate">
-                    <span className="text-[#7c3aed] font-bold shrink-0">
+                    <span className="text-color2 font-bold shrink-0">
                       {unit.unitCodeText}
                     </span>
                     <span className="text-gray-900 dark:text-white font-bold truncate">
@@ -633,7 +633,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                 </div>
 
                 <div className="flex items-center gap-2 text-xs sm:text-sm font-bold shrink-0">
-                  <span className="text-[#7c3aed] font-bold">
+                  <span className="text-color2 font-bold">
                     {unit.materialsCountText}
                   </span>
                 </div>
@@ -655,7 +655,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                           {/* Expanded Top Header */}
                           <div className="flex flex-wrap items-start justify-between gap-4">
                             <div>
-                              <div className="flex items-center gap-2 text-xs font-bold text-[#7c3aed]">
+                              <div className="flex items-center gap-2 text-xs font-bold text-color2">
                                 <span className="font-bold text-color2 text-sm">{mat.topicCode}</span>
                                 <span>•</span>
                                 <span className="font-bold text-color2 text-sm">{mat.topicTitle}</span>
@@ -679,7 +679,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
 
                           {/* Purple Banner Box */}
                           <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-purple-100 bg-[#fbf9ff] p-3.5 text-xs font-medium dark:border-purple-950 dark:bg-purple-950/20">
-                            <div className="flex items-center gap-2 text-[#7c3aed] font-bold">
+                            <div className="flex items-center gap-2 text-color2 font-bold">
                               <CheckCircle className="h-4 w-4 shrink-0 font-bold" />
                               <span className="font-bold text-pri text-md">
                                 Topic: {mat.topicCode} {mat.topicTitle}
@@ -707,7 +707,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                           {/* OVERVIEW Section */}
                           {details.overview && (
                             <div className="space-y-2">
-                              <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#7c3aed]">
+                              <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-color2">
                                 <span className="h-1.5 w-1.5 rounded-full bg-[#7c3aed]" />
                                 <span className="text-color2 font-bold text-sm">OVERVIEW</span>
                               </div>
@@ -721,7 +721,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                           {details.learningContent &&
                             details.learningContent.length > 0 && (
                               <div className="space-y-3">
-                                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#7c3aed]">
+                                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-color2">
                                   <span className="h-1.5 w-1.5 rounded-full bg-[#7c3aed]" />
                                   <span className="text-color2 font-bold text-sm">LEARNING CONTENT</span>
                                 </div>
@@ -752,13 +752,13 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                           {/* EXAMPLE Section */}
                           {details.example && (
                             <div className="space-y-2">
-                              <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#7c3aed]">
+                              <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-color2">
                                 <span className="h-1.5 w-1.5 rounded-full bg-[#7c3aed]" />
                                 <span className="text-color2 font-bold text-sm">EXAMPLE</span>
                               </div>
 
                               <div className="rounded-2xl border border-purple-100/80 bg-[#fbfbfe] p-4.5 sm:p-5 dark:border-gray-800 dark:bg-gray-800/50 space-y-3">
-                                <h5 className="text-xs sm:text-sm font-bold text-[#7c3aed]">
+                                <h5 className="text-xs sm:text-sm font-bold text-color2">
                                   {details.example.title}
                                 </h5>
                                 <ol className="list-decimal pl-5 space-y-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -776,7 +776,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                           {details.exercises &&
                             details.exercises.length > 0 && (
                               <div className="space-y-2">
-                                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#7c3aed]">
+                                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-color2">
                                   <span className="h-1.5 w-1.5 rounded-full bg-[#7c3aed]" />
                                   <span className="text-color2 font-bold text-sm">EXERCISES</span>
                                 </div>
@@ -795,7 +795,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                           {details.references &&
                             details.references.length > 0 && (
                               <div className="space-y-2">
-                                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#7c3aed]">
+                                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-color2">
                                   <span className="h-1.5 w-1.5 rounded-full bg-[#7c3aed]" />
                                   <span className="text-color2 font-bold text-sm">REFERENCES</span>
                                 </div>
@@ -826,7 +826,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                         {/* Left side: Topic Code Badge + Topic Title + Material Title */}
                         <div className="space-y-1 min-w-0 flex-1">
                           <div className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400">
-                            <span className="rounded-md bg-[#f5f3ff] px-2 py-0.5 text-xs font-bold text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300">
+                            <span className="rounded-md bg-[#f5f3ff] px-2 py-0.5 text-xs font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300">
                               {mat.topicCode}
                             </span>
                             <span className="truncate">{mat.topicTitle}</span>
@@ -844,7 +844,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                           <button
                             type="button"
                             onClick={() => toggleMaterial(mat.id, mat)}
-                            className="flex items-center gap-1.5 rounded-xl border border-[#7c3aed] px-3.5 py-1.5 text-xs sm:text-sm font-bold text-[#7c3aed] hover:bg-purple-50 transition-colors dark:border-purple-500 dark:text-purple-400 dark:hover:bg-purple-950/40"
+                            className="flex items-center gap-1.5 rounded-xl border border-[#7c3aed] px-3.5 py-1.5 text-xs sm:text-sm font-bold text-color2 hover:bg-purple-50 transition-colors dark:border-purple-500 dark:text-purple-400 dark:hover:bg-purple-950/40"
                           >
                             <Eye className="h-4 w-4" />
                             <span>View Material</span>

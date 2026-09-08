@@ -26,7 +26,7 @@ const BookRowItem: React.FC<BookRowItemProps> = ({
     <div
       className={`rounded-2xl border border-gray-200/60 bg-gray-50/50 p-5 dark:border-gray-800 dark:bg-gray-800/40 flex items-start gap-3.5 ${className}`}
     >
-      <span className="font-bold text-[#7c3aed] dark:text-purple-400 font-mono text-sm shrink-0 mt-0.5">
+      <span className="font-bold text-color2 dark:text-purple-400 font-mono text-sm shrink-0 mt-0.5">
         {index}.
       </span>
       <div className="flex-1 min-w-0">

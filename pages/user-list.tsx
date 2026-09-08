@@ -568,7 +568,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
       open={open}
       close={handleClose}
       subTitle="Add New User"
-      modalIcon={<Users className="h-6 w-6 text-[#7c3aed]" />}
+      modalIcon={<Users className="h-6 w-6 text-color2" />}
       closeIcon
       maxWidth="max-w-2xl"
       renderComponent={() => (
@@ -849,7 +849,7 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
         open={open}
         close={handleCloseSuccess}
         subTitle="Bulk User Import"
-        modalIcon={<Cloud className="h-6 w-6 text-[#7c3aed]" />}
+        modalIcon={<Cloud className="h-6 w-6 text-color2" />}
         closeIcon
         maxWidth="max-w-2xl"
         renderComponent={() => (
@@ -905,7 +905,7 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
       open={open}
       close={close}
       subTitle="Bulk User Import"
-      modalIcon={<Cloud className="h-6 w-6 text-[#7c3aed]" />}
+      modalIcon={<Cloud className="h-6 w-6 text-color2" />}
       closeIcon
       maxWidth="max-w-2xl"
       renderComponent={() => (

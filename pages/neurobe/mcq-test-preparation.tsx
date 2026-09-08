@@ -492,7 +492,7 @@ const MCQTextPreperation = () => {
         title="MCQ Test Preparation"
         records="CS309 - Computer Networks"
         subtitle={`Create and configure an MCQ test using approved Question Bank questions.`}
-        icon={<Users className="h-5 w-5 text-[#7c3aed]" />}
+        icon={<Users className="h-5 w-5 text-color2" />}
         actionBtn1={
           state.isEditing
             ? undefined

@@ -284,7 +284,7 @@ const QuestionBank = () => {
         title="Question Bank"
         records="CS309 — Computer Networks"
         subtitle={`Create, review, approve, and reuse questions across the course.`}
-        icon={<Users className="h-5 w-5 text-[#7c3aed]" />}
+        icon={<Users className="h-5 w-5 text-color2" />}
         actionBtn4={
           state.isEditing
             ? undefined

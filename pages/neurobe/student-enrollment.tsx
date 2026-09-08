@@ -113,7 +113,7 @@ const StudentEnrollment = () => {
       accessor: "regNo",
       title: "REGISTER NUMBER",
       render: ({ regNo }: any) => (
-        <span className="font-bold text-[#7c3aed]">{regNo}</span>
+        <span className="font-bold text-color2">{regNo}</span>
       ),
     },
     {

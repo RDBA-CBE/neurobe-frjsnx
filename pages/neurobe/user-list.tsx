@@ -70,7 +70,7 @@ const UserList = () => {
         title="User List"
         subtitle={`Institution: <span class="font-bold text-[#000]">Karpagam Institutions, Coimbatore</span>
             &nbsp;·&nbsp; Admin: <span class="font-bold text-[#000]">Meena Subramanian`}
-        icon={<Users className="h-5 w-5 text-[#7c3aed]" />}
+        icon={<Users className="h-5 w-5 text-color2" />}
         actionBtn1={{
           label: "Add User",
           icon: <IconPlus className="h-4 w-4" />,

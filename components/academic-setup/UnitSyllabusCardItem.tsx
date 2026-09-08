@@ -35,7 +35,7 @@ const UnitSyllabusCardItem: React.FC<UnitSyllabusCardItemProps> = ({
       {/* Top Header Row */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-4 dark:border-gray-700/60">
         <div>
-          <span className="text-md font-bold uppercase tracking-wider text-[#7c3aed] dark:text-purple-400">
+          <span className="text-md font-bold uppercase tracking-wider text-color2 dark:text-purple-400">
             UNIT {unitNumber}
           </span>
           <h3 className="text-lg font-bold text-gray-900 dark:text-white leading-tight">
@@ -47,7 +47,7 @@ const UnitSyllabusCardItem: React.FC<UnitSyllabusCardItemProps> = ({
           <span className="rounded-xl border border-gray-200 bg-white px-3 py-1 text-sm font-bold text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
             {hoursText}
           </span>
-          <span className="rounded-xl border border-purple-100 bg-[#f5f3ff] px-3 py-1 text-sm font-bold text-[#7c3aed] dark:border-purple-900 dark:bg-purple-950/60 dark:text-purple-300">
+          <span className="rounded-xl border border-purple-100 bg-[#f5f3ff] px-3 py-1 text-sm font-bold text-color2 dark:border-purple-900 dark:bg-purple-950/60 dark:text-purple-300">
             {topicsCountText}
           </span>
         </div>
@@ -61,7 +61,7 @@ const UnitSyllabusCardItem: React.FC<UnitSyllabusCardItemProps> = ({
         <button
           type="button"
           onClick={onHierarchyClick}
-          className="flex items-center gap-1 text-sm font-semibold text-[#7c3aed] hover:underline dark:text-purple-400 transition"
+          className="flex items-center gap-1 text-sm font-semibold text-color2 hover:underline dark:text-purple-400 transition"
         >
           <span>{hierarchyLinkText}</span>
           <ArrowRight className="h-3.5 w-3.5" />
@@ -72,7 +72,7 @@ const UnitSyllabusCardItem: React.FC<UnitSyllabusCardItemProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3.5 gap-x-6">
         {topics.map((t, idx) => (
           <div key={idx} className="flex items-start gap-2 text-sm">
-            <span className="font-bold text-[#7c3aed] dark:text-purple-400 shrink-0">
+            <span className="font-bold text-color2 dark:text-purple-400 shrink-0">
               {t.code}
             </span>
             <span className="font-semibold text-gray-800 dark:text-gray-200 leading-snug">

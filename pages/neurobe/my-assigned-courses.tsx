@@ -165,7 +165,7 @@ const MyAssignedCourses = () => {
       accessor: "code",
       title: "COURSE CODE",
       render: ({ code }: any) => (
-        <span className="font-semibold text-[#7c3aed]">{code}</span>
+        <span className="font-semibold text-color2">{code}</span>
       ),
     },
     {

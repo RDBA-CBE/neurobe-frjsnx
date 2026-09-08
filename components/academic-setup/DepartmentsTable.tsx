@@ -28,13 +28,13 @@ const DepartmentsTable = ({ search, statusFilter, loading }: Props) => {
       className="whitespace-nowrap"
       records={records}
       fetching={loading}
-      customLoader={<div className="flex items-center justify-center py-12"><IconLoader className="h-6 w-6 animate-spin text-[#7c3aed]" /></div>}
+      customLoader={<div className="flex items-center justify-center py-12"><IconLoader className="h-6 w-6 animate-spin text-color2" /></div>}
       columns={[
-        { accessor: "code",  title: "CODE",  render: ({ code }) => <span className="font-medium text-[#7c3aed]">{code}</span> },
+        { accessor: "code",  title: "CODE",  render: ({ code }) => <span className="font-medium text-color2">{code}</span> },
         { accessor: "name",  title: "DEPARTMENT NAME", render: ({ name }) => <span className="text-[#000] dark:text-gray-200">{name}</span> },
         { accessor: "hod",   title: "HEAD OF DEPARTMENT", render: ({ hod }) => <span className="text-[#000] dark:text-[#000]">{hod}</span> },
         { accessor: "programmes", title: "PROGRAMMES", render: ({ programmes }) => (
-          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#ede9fe] text-xs font-bold text-[#7c3aed]">{programmes}</span>
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#ede9fe] text-xs font-bold text-color2">{programmes}</span>
         )},
         { accessor: "status", title: "STATUS", render: ({ status }) => (
           <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${status === "Active" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-600"}`}>
@@ -43,7 +43,7 @@ const DepartmentsTable = ({ search, statusFilter, loading }: Props) => {
         )},
         { accessor: "actions", title: "ACTIONS", render: () => (
           <div className="flex items-center gap-3">
-            <button className="text-[#000] hover:text-[#7c3aed]"><IconEdit className="h-4 w-4" /></button>
+            <button className="text-[#000] hover:text-color2"><IconEdit className="h-4 w-4" /></button>
             <button className="text-[#000] hover:text-red-500"><IconTrash className="h-4 w-4" /></button>
           </div>
         )},

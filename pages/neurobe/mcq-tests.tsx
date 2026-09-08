@@ -95,7 +95,7 @@ const MCQTests = () => {
       accessor: "questionsCount",
       title: "QUESTIONS & MARKS",
       render: ({ questionsCount, totalMarks }: any) => (
-        <span className="text-xs font-semibold text-[#7c3aed]">
+        <span className="text-xs font-semibold text-color2">
           {questionsCount} Qs ({totalMarks} Marks)
         </span>
       ),

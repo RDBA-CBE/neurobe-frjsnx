@@ -17,7 +17,7 @@ const FacultyBadge = ({ label }: { label: string }) => (
 );
 
 const ProgrammeBadge = ({ programme }: { programme: string }) => (
-  <span className="inline-flex items-center rounded-full bg-[#ede9fe] px-2.5 py-0.5 text-xs font-semibold text-[#7c3aed]">
+  <span className="inline-flex items-center rounded-full bg-[#ede9fe] px-2.5 py-0.5 text-xs font-semibold text-color2">
     {programme}
   </span>
 );
@@ -113,7 +113,7 @@ export const makeCourseOfferingColumns = (onEdit: (row: any) => void) => [
     title: "COURSE",
     render: ({ code, course, subtitle }: any) => (
       <div className="flex items-center gap-2">
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#ede9fe] text-xs font-bold text-[#7c3aed]">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#ede9fe] text-xs font-bold text-color2">
           {code}
         </span>
         <div>
@@ -188,7 +188,7 @@ export const makeCourseOfferingColumns = (onEdit: (row: any) => void) => [
     render: (row: any) => (
       <div className="flex items-center gap-2">
         {/* <FacultyBadge label={row.type} /> */}
-        <button onClick={() => onEdit(row)} className="text-[#000] hover:text-[#7c3aed]" title="Edit">
+        <button onClick={() => onEdit(row)} className="text-[#000] hover:text-color2" title="Edit">
           <IconEdit className="h-4 w-4" />
         </button>
       </div>

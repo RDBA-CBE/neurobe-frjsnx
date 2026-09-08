@@ -19,7 +19,7 @@ const LabExperimentRowItem: React.FC<LabExperimentRowItemProps> = ({
         !isLast ? "border-b border-gray-100 dark:border-gray-800" : ""
       } ${className}`}
     >
-      <span className="font-bold text-[#7c3aed] dark:text-purple-400 font-mono text-sm mr-3 shrink-0">
+      <span className="font-bold text-color2 dark:text-purple-400 font-mono text-sm mr-3 shrink-0">
         {index}.
       </span>
       <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 leading-snug">

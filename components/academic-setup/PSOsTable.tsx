@@ -29,9 +29,9 @@ const PSOsTable = ({ search, statusFilter, loading }: Props) => {
       className="whitespace-nowrap"
       records={records}
       fetching={loading}
-      customLoader={<div className="flex items-center justify-center py-12"><IconLoader className="h-6 w-6 animate-spin text-[#7c3aed]" /></div>}
+      customLoader={<div className="flex items-center justify-center py-12"><IconLoader className="h-6 w-6 animate-spin text-color2" /></div>}
       columns={[
-        { accessor: "code",        title: "PSO CODE",   render: ({ code }) => <span className="font-medium text-[#7c3aed]">{code}</span> },
+        { accessor: "code",        title: "PSO CODE",   render: ({ code }) => <span className="font-medium text-color2">{code}</span> },
         { accessor: "programme",   title: "PROGRAMME",  render: ({ programme }) => <span className="text-[#000] dark:text-[#000]">{programme}</span> },
         { accessor: "description", title: "DESCRIPTION", render: ({ description }) => (
           <span className="max-w-md whitespace-normal text-[#000] dark:text-gray-200">{description}</span>
@@ -43,7 +43,7 @@ const PSOsTable = ({ search, statusFilter, loading }: Props) => {
         )},
         { accessor: "actions", title: "ACTIONS", render: () => (
           <div className="flex items-center gap-3">
-            <button className="text-[#000] hover:text-[#7c3aed]"><IconEdit className="h-4 w-4" /></button>
+            <button className="text-[#000] hover:text-color2"><IconEdit className="h-4 w-4" /></button>
             <button className="text-[#000] hover:text-red-500"><IconTrash className="h-4 w-4" /></button>
           </div>
         )},

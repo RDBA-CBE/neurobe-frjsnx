@@ -54,7 +54,7 @@ const BulkImport = () => {
       accessor: "code",
       title: "CODE",
       render: ({ code }: any) => (
-        <span className="font-medium text-[#7c3aed]">{code}</span>
+        <span className="font-medium text-color2">{code}</span>
       ),
     },
     {
@@ -75,7 +75,7 @@ const BulkImport = () => {
       accessor: "programmes",
       title: "PROGRAMMES",
       render: ({ programmes }: any) => (
-        <span className="inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[#ede9fe] px-1.5 text-xs font-bold text-[#7c3aed]">
+        <span className="inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[#ede9fe] px-1.5 text-xs font-bold text-color2">
           {programmes}
         </span>
       ),
@@ -105,7 +105,7 @@ const BulkImport = () => {
       title: "ACTIONS",
       render: () => (
         <div className="flex items-center gap-3">
-          <button className="text-[#000] hover:text-[#7c3aed]">
+          <button className="text-[#000] hover:text-color2">
             <IconEdit className="h-4 w-4" />
           </button>
           <button className="text-[#000] hover:text-red-500">

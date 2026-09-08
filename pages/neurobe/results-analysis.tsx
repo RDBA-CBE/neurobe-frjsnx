@@ -110,7 +110,7 @@ const ResultsAnalysis = () => {
       accessor: "highestScore",
       title: "TOP SCORE",
       render: ({ highestScore }: any) => (
-        <span className="font-bold text-[#7c3aed]">{highestScore}</span>
+        <span className="font-bold text-color2">{highestScore}</span>
       ),
     },
     {

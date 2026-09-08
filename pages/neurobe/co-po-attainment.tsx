@@ -100,7 +100,7 @@ const COPOAttainment = () => {
       accessor: "coCode",
       title: "CO",
       render: ({ coCode }: any) => (
-        <span className="font-bold text-[#7c3aed]">{coCode}</span>
+        <span className="font-bold text-color2">{coCode}</span>
       ),
     },
     {
@@ -142,7 +142,7 @@ const COPOAttainment = () => {
       accessor: "level",
       title: "LEVEL (1-3)",
       render: ({ level }: any) => (
-        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-purple-100 font-bold text-[#7c3aed] text-xs">
+        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-purple-100 font-bold text-color2 text-xs">
           {level}
         </span>
       ),
@@ -217,8 +217,8 @@ const COPOAttainment = () => {
         </div>
         <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
           <span className="text-xs font-medium text-gray-500">Overall Course Level</span>
-          <p className="mt-2 text-2xl font-bold text-[#7c3aed]">2.8 / 3.0</p>
-          <span className="text-xs text-[#7c3aed]">High Attainment</span>
+          <p className="mt-2 text-2xl font-bold text-color2">2.8 / 3.0</p>
+          <span className="text-xs text-color2">High Attainment</span>
         </div>
       </div>
 

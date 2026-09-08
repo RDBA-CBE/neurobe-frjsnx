@@ -44,7 +44,7 @@ const MappingRationaleItem: React.FC<MappingRationaleItemProps> = ({
         className="w-full flex flex-col bg-dark_grey  sm:flex-row sm:items-center justify-between gap-3 p-4 text-left outline-none"
       >
         <div className="flex items-center gap-3.5 flex-1 min-w-0">
-          <span className="rounded-lg bg-[#f5f3ff] px-2.5 py-1 text-xs font-bold text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300 shrink-0">
+          <span className="rounded-lg bg-[#f5f3ff] px-2.5 py-1 text-xs font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300 shrink-0">
             {coCode}
           </span>
           <p className="text-sm font-semibold text-pri dark:text-gray-200 leading-snug truncate sm:whitespace-normal">
@@ -79,7 +79,7 @@ const MappingRationaleItem: React.FC<MappingRationaleItemProps> = ({
 
                 <span
                   className={`rounded-xl px-3 py-1 text-xs font-bold font-mono shrink-0 self-start sm:self-auto ${po.strengthBadgeClass ||
-                    "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300"
+                    "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300"
                     }`}
                 >
                   {po.strengthText}

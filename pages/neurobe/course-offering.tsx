@@ -96,7 +96,7 @@ const CourseOffering = () => {
       <PageHeader
         title="Course Offerings & Faculty Assignment"
         subtitle="Manage course offerings across programmes, batches, and terms with automated Coordinator-to-Instructor access maintenance."
-        icon={<BookOpen className="h-5 w-5 text-[#7c3aed]" />}
+        icon={<BookOpen className="h-5 w-5 text-color2" />}
         actionBtn1={{
           label: "Create Course Offering",
           icon: <IconPlus className="h-4 w-4" />,

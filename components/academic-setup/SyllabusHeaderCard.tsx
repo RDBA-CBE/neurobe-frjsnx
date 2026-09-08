@@ -61,7 +61,7 @@ const SyllabusHeaderCard: React.FC<SyllabusHeaderCardProps> = ({
           <span className="mx-2 text-gray-300">•</span>
           <span>Semester: <strong className="text-gray-700 dark:text-gray-200">{bannerSemester}</strong></span>
         </div>
-        <div className="text-sm font-bold text-[#7c3aed] dark:text-purple-400">
+        <div className="text-sm font-bold text-color2 dark:text-purple-400">
           {courseCode} — {courseTitle}
         </div>
       </div>
@@ -71,12 +71,12 @@ const SyllabusHeaderCard: React.FC<SyllabusHeaderCardProps> = ({
         <div>
           <div className="flex items-start gap-4">
             {/* Icon Box */}
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-purple-100 bg-[#f5f3ff] text-[#7c3aed] dark:border-purple-900 dark:bg-purple-950/50 dark:text-purple-300">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-purple-100 bg-[#f5f3ff] text-color2 dark:border-purple-900 dark:bg-purple-950/50 dark:text-purple-300">
               {icon}
             </div>
 
             <div>
-              <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">
+              <h2 className="page-ti mb-2 dark:text-white">
                 {title}
               </h2>
               <p className="mt-0.5 text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -95,7 +95,7 @@ const SyllabusHeaderCard: React.FC<SyllabusHeaderCardProps> = ({
               <strong>Approved on:</strong> {approvedDate}
             </span>
             <span>•</span>
-            <span className="font-bold text-[#7c3aed] dark:text-purple-300">
+            <span className="font-bold text-color2 dark:text-purple-300">
               {unitsCountText}
             </span>
           </div>

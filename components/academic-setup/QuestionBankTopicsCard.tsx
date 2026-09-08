@@ -333,7 +333,7 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
           <button
             type="button"
             onClick={handleExpandAll}
-            className="text-pri hover:text-[#7c3aed] transition-colors"
+            className="text-pri hover:text-color2 transition-colors"
           >
             Expand All
           </button>
@@ -368,13 +368,13 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
               >
                 <div className="flex items-center gap-3.5 min-w-0">
                   {isOpen ? (
-                    <ChevronDown className="h-4 w-4 text-[#7c3aed] shrink-0" />
+                    <ChevronDown className="h-4 w-4 text-color2 shrink-0" />
                   ) : (
                     <ChevronRight className="h-4 w-4 text-gray-400 shrink-0" />
                   )}
 
                   <div className="flex items-center gap-3 text-sm sm:text-base font-bold truncate">
-                    <span className="text-[#7c3aed] font-bold shrink-0">
+                    <span className="text-color2 font-bold shrink-0">
                       {unit.unitCodeText}
                     </span>
                     <span className="text-gray-900 dark:text-white font-bold truncate">
@@ -384,7 +384,7 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
                 </div>
 
                 <div className="flex items-center gap-2 text-xs sm:text-sm font-bold shrink-0">
-                  <span className="text-[#7c3aed] font-bold">
+                  <span className="text-color2 font-bold">
                     {unit.questionsCountText}
                   </span>
                 </div>
@@ -404,7 +404,7 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
                         {/* Top Line: Badge + Topic Title + View Question Button */}
                         <div className="flex flex-wrap items-center justify-between gap-3">
                           <div className="flex items-center gap-3 min-w-0">
-                            <span className="rounded-md bg-[#f5f3ff] px-2.5 py-1 text-xs sm:text-sm font-bold text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300 shrink-0">
+                            <span className="rounded-md bg-[#f5f3ff] px-2.5 py-1 text-xs sm:text-sm font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300 shrink-0">
                               {q.questionCode}
                             </span>
                             <span className="text-sm sm:text-base font-bold text-gray-900 dark:text-white truncate">
@@ -415,7 +415,7 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
                           <button
                             type="button"
                             onClick={() => toggleQuestion(q.id, q)}
-                            className="flex items-center gap-1.5 rounded-xl bg-[#f5f3ff] hover:bg-purple-100 text-[#7c3aed] px-3.5 py-1.5 text-xs sm:text-sm font-bold transition-colors dark:bg-purple-950/60 dark:text-purple-300 dark:hover:bg-purple-900/80 shrink-0"
+                            className="flex items-center gap-1.5 rounded-xl bg-[#f5f3ff] hover:bg-purple-100 text-color2 px-3.5 py-1.5 text-xs sm:text-sm font-bold transition-colors dark:bg-purple-950/60 dark:text-purple-300 dark:hover:bg-purple-900/80 shrink-0"
                           >
                             <Eye className="h-4 w-4 text-color2 font-bold" />
                             <span className="text-color2 font-bold ">{isQuestionOpen ? "Hide Question" : "View Question"}</span>
@@ -444,7 +444,7 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
                           <div className="mt-3 pt-3 border-t border-purple-100 dark:border-gray-800 space-y-3">
                             {q.options && q.options.length > 0 && (
                               <div className="space-y-2">
-                                <span className="text-xs font-bold uppercase tracking-wider text-[#7c3aed]">
+                                <span className="text-xs font-bold uppercase tracking-wider text-color2">
                                   Options:
                                 </span>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -480,7 +480,7 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
 
                             {q.explanation && (
                               <div className="rounded-xl border border-purple-100 bg-[#fbf9ff] p-3 text-xs text-gray-700 dark:border-purple-950 dark:bg-purple-950/20 dark:text-gray-300">
-                                <strong className="text-[#7c3aed] font-bold">Explanation: </strong>
+                                <strong className="text-color2 font-bold">Explanation: </strong>
                                 {q.explanation}
                               </div>
                             )}

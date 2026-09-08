@@ -166,7 +166,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 {testData?.title || "Network Models & Physical Layer Quiz"}
               </h2>
-              <span className="rounded-full border border-[#ddd6fe] bg-[#f5f3ff] px-3 py-0.5 text-xs font-semibold text-[#7c3aed] dark:bg-purple-950/40 dark:border-purple-800 dark:text-purple-300">
+              <span className="rounded-full border border-[#ddd6fe] bg-[#f5f3ff] px-3 py-0.5 text-xs font-semibold text-color2 dark:bg-purple-950/40 dark:border-purple-800 dark:text-purple-300">
                 {testData?.code || "MCQ-CN-2026-T1"}
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-0.5 text-xs font-semibold text-emerald-600 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-400">
@@ -200,7 +200,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
           <div>
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center gap-2 text-md font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
-                <FileText className="h-4 w-4 text-[#7c3aed]" />
+                <FileText className="h-4 w-4 text-color2" />
                 <span className="font-bold">SECTION 1 — TEST SUMMARY</span>
               </div>
               <span className="text-xs font-semibold text-pri dark:text-gray-400">
@@ -283,7 +283,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
-                  <HelpCircle className="h-4 w-4 text-[#7c3aed]" />
+                  <HelpCircle className="h-4 w-4 text-color2" />
                   <span className="font-bold">
                     SECTION 2 — SELECTED QUESTIONS ({questionsList.length})
                   </span>
@@ -296,7 +296,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
               <button
                 type="button"
                 onClick={handleToggleAll}
-                className="rounded-xl bg-[#f5f3ff] px-4 py-2 text-sm font-semibold text-[#7c3aed] hover:bg-[#ede9fe] dark:bg-purple-950/50 dark:text-purple-300 transition"
+                className="rounded-xl bg-[#f5f3ff] px-4 py-2 text-sm font-semibold text-color2 hover:bg-[#ede9fe] dark:bg-purple-950/50 dark:text-purple-300 transition"
               >
                 {allExpanded ? "Collapse All Answers" : "Expand All Answers"}
               </button>
@@ -332,7 +332,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
                       <button
                         type="button"
                         onClick={() => toggleExpand(q.id)}
-                        className="flex items-center gap-1 text-sm font-semibold text-[#7c3aed] hover:underline dark:text-purple-400"
+                        className="flex items-center gap-1 text-sm font-semibold text-color2 hover:underline dark:text-purple-400"
                       >
                         {isExpanded ? (
                           <>
@@ -390,7 +390,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
 
                         {q.explanation && (
                           <div className="rounded-xl bg-purple-50/70 p-3.5 text-xs text-purple-900 dark:bg-purple-950/40 dark:text-purple-200 border border-purple-100 dark:border-purple-900">
-                            <p className="font-bold mb-1 text-[#7c3aed] dark:text-purple-300">
+                            <p className="font-bold mb-1 text-color2 dark:text-purple-300">
                               Explanation:
                             </p>
                             <p className="leading-relaxed">{q.explanation}</p>

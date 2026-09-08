@@ -121,7 +121,7 @@ const CourseOfferingModal = ({ open, onClose, initialData }: Props) => {
                     onClick={() => toggleInstructor(name)}
                     className={`flex items-center gap-2 rounded-lg border px-3 py-2.5 text-left text-sm transition-colors ${
                       checked
-                        ? "border-[#7c3aed] bg-[#ede9fe] text-[#7c3aed]"
+                        ? "border-[#7c3aed] bg-[#ede9fe] text-color2"
                         : "border-gray-200 bg-white text-gray-700 hover:border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
                     }`}
                   >

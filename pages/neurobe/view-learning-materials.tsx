@@ -110,7 +110,7 @@ const ViewLearningMaterials = () => {
       <PageHeader
         title="Network Models & Layered Architecture"
         subtitle={`Institution: <span class="font-bold text-[#000]">Karpagam Institutions, Coimbatore</span>&nbsp;·&nbsp; Admin: <span class="font-bold text-[#000]">Meena Subramanian</span>`}
-        icon={<Users className="h-5 w-5 text-[#7c3aed]" />}
+        icon={<Users className="h-5 w-5 text-color2" />}
         actionBtn3={{
           label: "Regenerate",
           icon: <RefreshCcw className="h-4 w-4" />,

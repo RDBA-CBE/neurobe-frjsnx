@@ -511,7 +511,7 @@ const MAPPING_RATIONALE_DATA = {
           poTitle: "Engineering Knowledge",
           strengthText: "Strength: 3 (High)",
           strengthBadgeClass:
-            "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300",
+            "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300",
           rationale:
             "The outcome requires students to apply core engineering and computing knowledge to understand network architectures and protocol models.",
         },
@@ -550,7 +550,7 @@ const MAPPING_RATIONALE_DATA = {
           poTitle: "Engineering Knowledge",
           strengthText: "Strength: 3 (High)",
           strengthBadgeClass:
-            "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300",
+            "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300",
           rationale:
             "Outcome requires analytical evaluation of error detection and flow control algorithms at the data link layer.",
         },
@@ -560,7 +560,7 @@ const MAPPING_RATIONALE_DATA = {
           poTitle: "Problem Analysis",
           strengthText: "Strength: 3 (High)",
           strengthBadgeClass:
-            "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300",
+            "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300",
           rationale:
             "Students analyze framing methods and error correction techniques for efficient transmission.",
         },
@@ -578,7 +578,7 @@ const MAPPING_RATIONALE_DATA = {
           poTitle: "Engineering Knowledge",
           strengthText: "Strength: 3 (High)",
           strengthBadgeClass:
-            "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300",
+            "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300",
           rationale:
             "Application of IPv4 subnetting formulas and routing algorithm mechanics.",
         },
@@ -2052,7 +2052,7 @@ const QuestionBank = () => {
         title="Course Artifacts"
         records="CS309  —  Computer Networks"
         subtitle={`Access approved academic references prepared for this course.`}
-        icon={<Users className="h-5 w-5 text-[#7c3aed]" />}
+        icon={<Users className="h-5 w-5 text-color2" />}
         record2="Instructor View"
         record3="Read Only"
       />

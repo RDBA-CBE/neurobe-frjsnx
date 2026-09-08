@@ -102,7 +102,7 @@ const CIAQuestionPaper = () => {
       accessor: "totalMarks",
       title: "MAX MARKS",
       render: ({ totalMarks }: any) => (
-        <span className="font-bold text-[#7c3aed]">{totalMarks} Marks</span>
+        <span className="font-bold text-color2">{totalMarks} Marks</span>
       ),
     },
     {
@@ -135,7 +135,7 @@ const CIAQuestionPaper = () => {
       title: "ACTIONS",
       render: () => (
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-1 rounded bg-purple-50 px-2 py-1 text-xs font-semibold text-[#7c3aed] hover:bg-purple-100">
+          <button className="flex items-center gap-1 rounded bg-purple-50 px-2 py-1 text-xs font-semibold text-color2 hover:bg-purple-100">
             <Eye className="h-3.5 w-3.5" /> View
           </button>
           <button className="flex items-center gap-1 rounded bg-gray-100 px-2 py-1 text-xs font-semibold text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300">

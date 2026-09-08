@@ -118,14 +118,14 @@ const BulkImportModal = ({ open, onClose }: Props) => {
           {/* Template download */}
           <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
             <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-[#7c3aed]" />
+              <FileText className="h-4 w-4 text-color2" />
               <p className="text-xs font-medium text-gray-700">
                 Download import template
               </p>
             </div>
             <button
               type="button"
-              className="text-xs font-semibold text-[#7c3aed] hover:underline"
+              className="text-xs font-semibold text-color2 hover:underline"
             >
               Download CSV
             </button>

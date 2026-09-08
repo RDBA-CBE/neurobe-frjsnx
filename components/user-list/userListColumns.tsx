@@ -279,7 +279,7 @@ export const makeUserListColumns = (onEdit: (row: any) => void) => [
         <TypeBadge type={row.type} />
         <button
           onClick={() => onEdit(row)}
-          className="text-[#000] hover:text-[#7c3aed]"
+          className="text-[#000] hover:text-color2"
           title="Edit"
         >
           <IconEdit className="h-4 w-4" />

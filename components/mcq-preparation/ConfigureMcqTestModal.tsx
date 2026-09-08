@@ -122,7 +122,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
               {modalTitle}
             </h2>
-            <span className="rounded-full border border-[#ddd6fe] bg-[#f5f3ff] px-3 py-0.5 text-xs font-semibold text-[#7c3aed] dark:bg-purple-950/40 dark:border-purple-800 dark:text-purple-300">
+            <span className="rounded-full border border-[#ddd6fe] bg-[#f5f3ff] px-3 py-0.5 text-xs font-semibold text-color2 dark:bg-purple-950/40 dark:border-purple-800 dark:text-purple-300">
               {code}
             </span>
           </div>
@@ -146,7 +146,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
             >
               <span
                 className={`flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold ${activeStep === 1
-                  ? "bg-white text-[#7c3aed]"
+                  ? "bg-white text-color2"
                   : "border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300"
                   }`}
               >
@@ -216,7 +216,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
                 <label className="text-sm font-bold text-gray-900 dark:text-gray-100">
                   Number of Questions <span className="text-red-500">*</span>
                 </label>
-                <span className="text-sm font-semibold text-[#7c3aed] dark:text-purple-400">
+                <span className="text-sm font-semibold text-color2 dark:text-purple-400">
                   Available Approved Questions: {availableApproved}
                 </span>
               </div>
@@ -237,7 +237,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
               <label className="text-sm font-bold text-gray-900 dark:text-gray-100">
                 Topics <span className="text-red-500">*</span>
               </label>
-              <span className="text-sm font-semibold text-[#7c3aed] dark:text-purple-400">
+              <span className="text-sm font-semibold text-color2 dark:text-purple-400">
                 {selectedTopics.length} of {TOPICS_DATA.length} Selected (Multiple selection allowed)
               </span>
             </div>
@@ -252,7 +252,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
                       key={topic.id}
                       onClick={() => toggleTopic(topic.id)}
                       className={`flex cursor-pointer items-center gap-3.5 rounded-2xl border px-4 py-3.5 transition-all ${isChecked
-                        ? "border-[#ddd6fe] bg-[#f5f3ff] text-[#7c3aed] dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300"
+                        ? "border-[#ddd6fe] bg-[#f5f3ff] text-color2 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300"
                         : "border-gray-200 bg-white text-gray-800 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
                         }`}
                     >
