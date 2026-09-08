@@ -6,10 +6,13 @@ import PrivateRouter from "@/hook/privateRouter";
 import CourseBanner from "@/components/academic-setup/CourseBanner";
 import StepHeader from "@/components/academic-setup/StepHeader";
 import PaperSetupSection from "@/components/academic-setup/PaperSetupSection";
-import SectionsAndQuestionsSection, { CIASection } from "@/components/academic-setup/SectionsAndQuestionsSection";
+import SectionsAndQuestionsSection, {
+  CIASection,
+} from "@/components/academic-setup/SectionsAndQuestionsSection";
 import ReviewAndFinalizeSection from "@/components/academic-setup/ReviewAndFinalizeSection";
 import PageHeader from "@/components/common-components/PageHeader";
 import { Eye, Save, Users } from "lucide-react";
+import CIAPaperMarksAllocationBar from "@/components/academic-setup/CIAPaperMarksAllocationBar";
 
 const COURSE_OPTIONS = [
   { value: "CS309", label: "CS309 — Computer Networks" },
@@ -22,7 +25,7 @@ const DEFAULT_SECTIONS: CIASection[] = [
     id: "section-a",
     title: "Short Answer Questions",
     totalMarks: 20,
-    usedMarks: 0,
+    usedMarks: 80,
     questions: [],
   },
 ];
@@ -50,7 +53,7 @@ const CreateCIAPaper = () => {
     const newSection: CIASection = {
       id: `section-${Date.now()}`,
       title: `Section ${String.fromCharCode(65 + state.sections.length)}`,
-      totalMarks: 20,
+      totalMarks: 100,
       usedMarks: 0,
       questions: [],
     };
@@ -78,11 +81,11 @@ const CreateCIAPaper = () => {
         onViewChange={(view) => setState({ activeTab: view })}
       />
 
-       <PageHeader
+      <PageHeader
         title="Create CIA Question Paper"
-        subtitle ="Create CIA Question Paper"
-        icon={<Users className="h-5 w-5 text-color2" />}
-         actionBtn2={{
+        subtitle="Create CIA Question Paper"
+        icon={<Users className="text-color2 h-5 w-5" />}
+        actionBtn2={{
           label: "Save Draft",
           icon: <Save className="h-4 w-4" />,
           onClick: () => {},
@@ -92,10 +95,17 @@ const CreateCIAPaper = () => {
           icon: <Eye className="h-4 w-4" />,
           onClick: () => {},
         }}
-        
       />
 
-    
+      <CIAPaperMarksAllocationBar
+        totalPaperMarks="100"
+        allocatedSectionMarks={state.allocatedSectionMarks}
+        remainingToAllocate={state.remainingToAllocate}
+        badgeText="80 marks remaining to allocate"
+        badgeColor= "#78350F"
+        isBalanced={true}
+      />
+
       {/* 1. Paper Setup */}
       <PaperSetupSection
         paperName={state.paperName}
@@ -110,9 +120,8 @@ const CreateCIAPaper = () => {
       <SectionsAndQuestionsSection
         sections={state.sections}
         onAddSection={handleAddSection}
-        onGenerateQuestions={(id) => console.log("generate", id)}
-        onAddQuestion={(id) => console.log("add question", id)}
         onSectionSettings={(id) => console.log("settings", id)}
+        onSectionsChange={(updated) => setState({ sections: updated })}
       />
 
       {/* 3. Review & Finalize */}
