@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp, Plus, Settings2, Sparkles, Trash2, Settings } from "lucide-react";
 import IconPlus from "@/components/Icon/IconPlus";
 import { AddQuestionModal, GenerateQuestionsModal } from "@/components/academic-setup/CIAQuestionModals";
+import TextInput from "@/components/FormFields/TextInput.component";
 
 export interface CIAQuestion {
   id: string;
@@ -38,6 +39,37 @@ const SectionsAndQuestionsSection = ({
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(sections.map((s) => s.id))
   );
+  const [settingsOpenFor, setSettingsOpenFor] = useState<string | null>(null);
+  // draft values while settings panel is open
+  const [settingsDraft, setSettingsDraft] = useState<Record<string, { title: string; totalMarks: number }>>({});
+
+  const openSettings = (section: CIASection) => {
+    setSettingsDraft((prev) => ({
+      ...prev,
+      [section.id]: { title: section.title, totalMarks: section.totalMarks },
+    }));
+    setSettingsOpenFor(section.id);
+    // ensure section is expanded when settings open
+    setExpandedSections((prev) => new Set([...prev, section.id]));
+  };
+
+  const closeSettings = (sectionId: string) => {
+    const draft = settingsDraft[sectionId];
+    if (draft) {
+      const updated = sections.map((s) =>
+        s.id === sectionId ? { ...s, title: draft.title, totalMarks: draft.totalMarks } : s,
+      );
+      onSectionsChange?.(updated);
+    }
+    setSettingsOpenFor(null);
+  };
+
+  const updateDraft = (sectionId: string, field: "title" | "totalMarks", value: string | number) => {
+    setSettingsDraft((prev) => ({
+      ...prev,
+      [sectionId]: { ...prev[sectionId], [field]: value },
+    }));
+  };
   const [addModal, setAddModal] = useState<{ open: boolean; sectionId: string; sectionTitle: string; qNo: number }>({
     open: false, sectionId: "", sectionTitle: "", qNo: 1,
   });
@@ -96,9 +128,13 @@ const SectionsAndQuestionsSection = ({
 
       {/* Sections */}
       <div className="space-y-3">
-        {sections.map((section) => {
+        {sections.map((section, sIdx) => {
           const isExpanded = expandedSections.has(section.id);
+          const isSettingsOpen = settingsOpenFor === section.id;
+          const draft = settingsDraft[section.id];
           const isComplete = section.usedMarks >= section.totalMarks;
+          // derive label letter from index
+          const letter = String.fromCharCode(65 + sIdx);
           return (
             <div key={section.id} className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
               {/* Section Header */}
@@ -107,22 +143,29 @@ const SectionsAndQuestionsSection = ({
                   <button type="button" onClick={() => toggleSection(section.id)} className="text-pri hover:text-[#000]">
                     {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                   </button>
+                  {/* Section letter badge */}
+                  <span className="flex h-6 w-6 items-center justify-center rounded bg-color2 text-xs font-bold text-white">
+                    {letter}
+                  </span>
                   <span className="text-sm font-bold text-[#000] dark:text-white">{section.title}</span>
                   <span className="rounded-full bg-color2-l px-2 py-0.5 text-xs font-semibold text-color2">
                     {section.totalMarks} Marks
                   </span>
                   <button
                     type="button"
-                    onClick={() => onSectionSettings?.(section.id)}
-                    className="flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs font-semibold text-pri hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700"
+                    onClick={() =>
+                      isSettingsOpen ? closeSettings(section.id) : openSettings(section)
+                    }
+                    className={`flex items-center gap-1 rounded-lg border px-2 py-1 text-xs font-semibold transition-colors ${
+                      isSettingsOpen
+                        ? "border-color2 bg-color2-l text-color2"
+                        : "border-gray-200 bg-white text-pri hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700"
+                    }`}
                   >
                     <Settings2 className="h-3 w-3" /> Section Settings
                   </button>
                 </div>
                 <div className="flex items-center gap-3 text-xs">
-                  <span className="text-pri">
-                    Questions: <strong className="text-[#000] dark:text-white">{section.questions.length}</strong>
-                  </span>
                   <span className="text-pri">
                     Marks Used:{" "}
                     <strong className="text-[#000] dark:text-white">
@@ -134,12 +177,73 @@ const SectionsAndQuestionsSection = ({
                       ✓ Complete
                     </span>
                   ) : (
-                    <span className="text-amber-600">
-                      ({section.totalMarks - section.usedMarks} Remaining)
+                    <span className="font-semibold text-red-500">
+                      {section.totalMarks - section.usedMarks} Marks Remaining
                     </span>
                   )}
                 </div>
               </div>
+
+              {/* ── Inline Section Settings panel ── */}
+              {isSettingsOpen && draft && (
+                <div className="border-b border-gray-200 bg-white px-5 py-4 dark:border-gray-700 dark:bg-gray-900">
+                  {/* Settings label row */}
+                  <div className="mb-3 flex items-center justify-between">
+                    <span className="flex items-center gap-1.5 text-sm font-bold text-color2">
+                      <Settings2 className="h-3.5 w-3.5" />
+                      Section {letter} Settings
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => closeSettings(section.id)}
+                      className="text-sm font-semibold text-color2 hover:underline"
+                    >
+                      Done
+                    </button>
+                  </div>
+
+                  {/* Two fields */}
+                  <div className="flex items-end gap-4">
+                    {/* Section Title */}
+                    <div className="flex-1">
+                      <TextInput
+                        title="Section Title"
+                        value={draft.title}
+                        onChange={(e) => updateDraft(section.id, "title", e.target.value)}
+                      />
+                    </div>
+
+                    {/* Section Marks Allocation */}
+                    <div className="flex-1">
+                      <TextInput
+                        title="Section Marks Allocation"
+                        type="number"
+                        min={0}
+                        value={draft.totalMarks}
+                        onChange={(e) => updateDraft(section.id, "totalMarks", Number(e.target.value))}
+                        rightIcon={
+                          <div className="flex flex-col">
+                            <button
+                              type="button"
+                              onClick={() => updateDraft(section.id, "totalMarks", draft.totalMarks + 1)}
+                              className="flex h-5 items-center justify-center text-[10px] text-gray-400 hover:text-gray-700"
+                            >
+                              ▲
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => updateDraft(section.id, "totalMarks", Math.max(0, draft.totalMarks - 1))}
+                              className="flex h-5 items-center justify-center text-[10px] text-gray-400 hover:text-gray-700"
+                            >
+                              ▼
+                            </button>
+                          </div>
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Section Body */}
               {isExpanded && (
@@ -147,7 +251,7 @@ const SectionsAndQuestionsSection = ({
                   {section.questions.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-8 text-center">
                       <p className="text-sm font-semibold text-[#000] dark:text-white">No questions added yet.</p>
-                      <p className="mt-0.5 text-xs text-pri">Target for Section: {section.totalMarks} marks</p>
+                      <p className="mt-0.5 text-xs text-pri">Target for Section {letter} is {section.totalMarks} marks.</p>
                       <div className="mt-4 flex items-center gap-3">
                         <button type="button" onClick={() => openGenerate(section)} className="create-btn flex items-center gap-1.5">
                           <Sparkles className="h-3.5 w-3.5" /> Generate Questions
