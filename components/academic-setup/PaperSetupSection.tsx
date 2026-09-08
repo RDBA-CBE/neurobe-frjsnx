@@ -24,7 +24,7 @@ const PaperSetupSection = ({
       <div className="mb-4 flex items-start justify-between">
         <div>
           <h3 className="section-ti">1. Paper Setup</h3>
-          <p className="mt-0.5 text-xs text-pri">
+          <p className="mt-0.5 text-sm text-pri">
             General examination details and total marks configuration.
           </p>
         </div>

@@ -42,6 +42,7 @@ export interface CIAPaperReviewCardProps {
   onFinalInspection?: () => void;
   headerInfo?: ExamHeaderInfo;
   sections?: SectionPreviewItem[];
+  hideHeader?: boolean;
 }
 
 const DEFAULT_HEADER_INFO: ExamHeaderInfo = {
@@ -164,35 +165,14 @@ export const CIAPaperReviewCard: React.FC<CIAPaperReviewCardProps> = ({
   onFinalInspection,
   headerInfo = DEFAULT_HEADER_INFO,
   sections = DEFAULT_SECTIONS,
+  hideHeader = false,
 }) => {
   const info = { ...DEFAULT_HEADER_INFO, ...headerInfo };
 
-  return (
-    <div className="rounded-3xl border border-gray-100 bg-white p-5 md:p-6 shadow-xs dark:border-gray-800 dark:bg-gray-900 space-y-6">
-      {/* Outer Panel Top Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h2 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
-            {title}
-          </h2>
-          <p className="mt-0.5 text-xs md:text-sm font-semibold text-pri dark:text-gray-400">
-            {subtitle}
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={onFinalInspection || (() => console.log("Final Inspection"))}
-          className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs md:text-sm font-bold text-gray-800 shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-        >
-          <span>Final Inspection</span>
-        </button>
-      </div>
-
-      {/* Printable Sheet Container Box */}
-      <div className="rounded-2xl bg-[#F6F8FA] p-4 md:p-8 flex justify-center dark:bg-gray-950">
-        {/* Printable Paper Card */}
-        <div className="max-w-4xl w-full bg-white rounded-2xl shadow-lg border border-gray-200/80 p-6 md:p-10 space-y-6 text-gray-900 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-800">
+  const paperSheet = (
+    <div className="rounded-2xl bg-[#F6F8FA] p-4 md:p-8 flex justify-center dark:bg-gray-950">
+      {/* Printable Paper Card */}
+      <div className="max-w-4xl w-full bg-white rounded-2xl shadow-lg border border-gray-200/80 p-6 md:p-10 space-y-6 text-gray-900 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-800">
 
           {/* Header Section: Logo & Titles */}
           <div className="text-center space-y-2 border-b border-gray-200 pb-5 dark:border-gray-800">
@@ -354,9 +334,37 @@ export const CIAPaperReviewCard: React.FC<CIAPaperReviewCardProps> = ({
               </div>
             ))}
           </div>
-
         </div>
       </div>
+    );
+
+  if (hideHeader) {
+    return paperSheet;
+  }
+
+  return (
+    <div className="rounded-3xl border border-gray-100 bg-white p-5 md:p-6 shadow-xs dark:border-gray-800 dark:bg-gray-900 space-y-6">
+      {/* Outer Panel Top Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
+            {title}
+          </h2>
+          <p className="mt-0.5 text-xs md:text-sm font-semibold text-pri dark:text-gray-400">
+            {subtitle}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={onFinalInspection || (() => console.log("Final Inspection"))}
+          className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs md:text-sm font-bold text-gray-800 shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+        >
+          <span>Final Inspection</span>
+        </button>
+      </div>
+
+      {paperSheet}
     </div>
   );
 };

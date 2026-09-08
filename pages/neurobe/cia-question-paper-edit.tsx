@@ -11,6 +11,8 @@ import CIAPaperMarksAllocationBar from "@/components/academic-setup/CIAPaperMark
 import CIAPaperReviewCard, { SectionPreviewItem } from "@/components/academic-setup/CIAPaperReviewCard";
 import CIASectionsQuestionsCard, { SectionItem } from "@/components/academic-setup/CIASectionsQuestionsCard";
 import CIAPaperFinalizationActions from "@/components/academic-setup/CIAPaperFinalizationActions";
+import PaperSetupSection from "@/components/academic-setup/PaperSetupSection";
+import { CIASection } from "@/components/academic-setup/SectionsAndQuestionsSection";
 
 const INITIAL_SECTIONS: SectionItem[] = [
   {
@@ -217,6 +219,22 @@ const CIAQuestionPaperEdit = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const COURSE_OPTIONS = [
+    { value: "CS309", label: "CS309 — Computer Networks" },
+    { value: "CS301", label: "CS301 — Data Structures" },
+    { value: "CS402", label: "CS402 — Database Management" },
+  ];
+
+  const DEFAULT_SECTIONS: CIASection[] = [
+    {
+      id: "section-a",
+      title: "Short Answer Questions",
+      totalMarks: 20,
+      usedMarks: 0,
+      questions: [],
+    },
+  ];
+
   const [state, setState] = useSetState({
     search: "",
     statusFilter: "all",
@@ -227,6 +245,11 @@ const CIAQuestionPaperEdit = () => {
     remainingToAllocate: 0,
     sections: INITIAL_SECTIONS,
     reviewSections: INITIAL_REVIEW_SECTIONS,
+    activeTabs: "",
+    paperName: "CIA-3 Question Paper",
+    totalMarks: "100",
+    course: COURSE_OPTIONS[0],
+    sections_data: DEFAULT_SECTIONS as CIASection[],
   });
 
   useEffect(() => {
@@ -247,6 +270,10 @@ const CIAQuestionPaperEdit = () => {
       topic: q.topic,
     })),
   }));
+
+  const handlePaperChange = (field: string, value: any) => {
+    setState({ [field]: value });
+  };
 
   return (
     <div className="min-h-screen space-y-6">
@@ -281,7 +308,7 @@ const CIAQuestionPaperEdit = () => {
         actionBtn1={{
           label: "View Draft",
           icon: <Eye className="h-4 w-4" />,
-          onClick: () => console.log("View Draft"),
+          onClick: () => router.push("/neurobe/cia-question-paper-preview"),
           outline: true,
         }}
       />
@@ -292,6 +319,16 @@ const CIAQuestionPaperEdit = () => {
         remainingToAllocate={state.remainingToAllocate}
         badgeText="Section Marks Balanced (100%)"
         isBalanced={true}
+      />
+
+
+      <PaperSetupSection
+        paperName={state.paperName}
+        totalMarks={state.totalMarks}
+        course={state.course}
+        courseOptions={COURSE_OPTIONS}
+        step="Step 1 of 3"
+        onChange={handlePaperChange}
       />
 
       <CIASectionsQuestionsCard
