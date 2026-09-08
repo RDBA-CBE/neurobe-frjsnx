@@ -12,6 +12,8 @@ import CIAPaperMarksAllocationBar from "@/components/academic-setup/CIAPaperMark
 import CIAPaperReviewCard, { SectionPreviewItem } from "@/components/academic-setup/CIAPaperReviewCard";
 import CIASectionsQuestionsCard, { SectionItem } from "@/components/academic-setup/CIASectionsQuestionsCard";
 import CIAPaperFinalizationActions from "@/components/academic-setup/CIAPaperFinalizationActions";
+import PaperSetupSection from "@/components/academic-setup/PaperSetupSection";
+import { CIASection } from "@/components/academic-setup/SectionsAndQuestionsSection";
 
 const INITIAL_SECTIONS: SectionItem[] = [
   {
@@ -122,6 +124,9 @@ const CIAQuestionPaper = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+
+
+
   const [state, setState] = useSetState({
     search: "",
     statusFilter: "all",
@@ -132,6 +137,7 @@ const CIAQuestionPaper = () => {
     allocatedSectionMarks: 100,
     remainingToAllocate: 0,
     sections: INITIAL_SECTIONS,
+
   });
 
   useEffect(() => {
@@ -152,6 +158,10 @@ const CIAQuestionPaper = () => {
       topic: q.topic,
     })),
   }));
+
+
+
+
 
   return (
     <div className="min-h-screen space-y-6">
@@ -188,7 +198,7 @@ const CIAQuestionPaper = () => {
             actionBtn1={{
               label: "View Draft",
               icon: <Eye className="h-4 w-4" />,
-              onClick: () => console.log("View Draft"),
+              onClick: () => router.push("/neurobe/cia-question-paper-preview"),
               outline: true,
             }}
           />
@@ -200,6 +210,7 @@ const CIAQuestionPaper = () => {
             badgeText="Section Marks Balanced (100%)"
             isBalanced={true}
           />
+
 
           <CIASectionsQuestionsCard
             title="2. Sections & Questions"
@@ -254,7 +265,7 @@ const CIAQuestionPaper = () => {
                 marksFilled: "75 of 100 Marks Filled",
                 lastEdited: "Last Edited: 2026–09–02 11:30 AM",
               }}
-              onViewDraft={() => console.log("View Draft")}
+              onViewDraft={() => router.push("/neurobe/cia-question-paper-preview")}
               onResumeEditing={() => {
                 setState({ isEditing: true });
                 router.push("/neurobe/cia-question-paper-edit");

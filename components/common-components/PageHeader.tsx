@@ -63,8 +63,8 @@ const PageHeader = ({
   draft
 }: PageBannerProps & { records?: string }) => {
   return (
-    <div className="panel mb-4 flex items-start gap-4 rounded-xl border border-gray-100 px-5 py-5 lg:justify-between">
-      <div className="flex items-start gap-3">
+    <div className="panel mb-4 flex items-center gap-4 rounded-xl border border-gray-100 px-5 py-5 lg:justify-between">
+      <div className="flex items-center gap-3">
         {icon &&
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#ede9fe]">
             {icon}
