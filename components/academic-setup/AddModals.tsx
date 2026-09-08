@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Edit, PenIcon, PlusIcon, X } from "lucide-react";
+import { Check, Edit, PlusIcon, Search, Users, X } from "lucide-react";
 import TextInput from "@/components/FormFields/TextInput.component";
 import TextArea from "@/components/FormFields/TextArea.component";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
@@ -768,6 +768,172 @@ export const CreatePSOModal = ({
           submitLabel={isEdit ? "Update PSO" : "Create PSO"}
         />
       </form>
+    </ModalShell>
+  );
+};
+
+// ─── ENROLL STUDENTS MODAL ────────────────────────────────────────────────────
+
+export interface EnrollableStudent {
+  id: string | number;
+  regNo: string;
+  name: string;
+  programme: string;
+  batch: string;
+  email: string;
+}
+
+interface EnrollStudentsModalProps {
+  open: boolean;
+  onClose: () => void;
+  courseCode?: string;
+  courseTitle?: string;
+  availableStudents?: EnrollableStudent[];
+  onEnroll?: (selected: EnrollableStudent[]) => void;
+}
+
+export const EnrollStudentsModal = ({
+  open,
+  onClose,
+  courseCode = "CS309",
+  courseTitle = "Computer Networks",
+  availableStudents = [],
+  onEnroll,
+}: EnrollStudentsModalProps) => {
+  const [search, setSearch] = useState("");
+  const [selectedIds, setSelectedIds] = useState<Set<string | number>>(new Set());
+
+  useEffect(() => {
+    if (!open) { setSearch(""); setSelectedIds(new Set()); }
+  }, [open]);
+
+  const filtered = availableStudents.filter((s) => {
+    const q = search.toLowerCase();
+    return (
+      !q ||
+      s.regNo.toLowerCase().includes(q) ||
+      s.name.toLowerCase().includes(q) ||
+      s.email.toLowerCase().includes(q)
+    );
+  });
+
+  const toggle = (id: string | number) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const handleEnroll = () => {
+    const selected = availableStudents.filter((s) => selectedIds.has(s.id));
+    onEnroll?.(selected);
+    onClose();
+  };
+
+  const count = selectedIds.size;
+
+  return (
+    <ModalShell
+      title="Enroll Students"
+      subtitle={`Select existing students to add to ${courseCode} — ${courseTitle}.`}
+      icon={<Users className="h-3.5 w-3.5" />}
+      open={open}
+      onClose={onClose}
+    >
+      {/* Search */}
+      <div className="relative mb-4">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Search students..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full rounded-lg border border-gray-200 py-2 pl-9 pr-4 text-sm outline-none focus:border-color2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+        />
+      </div>
+
+      {/* List label */}
+      <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+        Available Students ({filtered.length})
+      </p>
+
+      {/* Student list */}
+      <div className="max-h-72 space-y-2 overflow-y-auto pr-1">
+        {filtered.length === 0 ? (
+          <p className="py-6 text-center text-sm text-gray-400">No students found.</p>
+        ) : (
+          filtered.map((student) => {
+            const isSelected = selectedIds.has(student.id);
+            return (
+              <button
+                key={student.id}
+                type="button"
+                onClick={() => toggle(student.id)}
+                className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all ${
+                  isSelected
+                    ? "border-color2 bg-color2-l"
+                    : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800"
+                }`}
+              >
+                {/* checkbox */}
+                <span
+                  className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border-2 transition-all ${
+                    isSelected ? "border-color2 bg-color2" : "border-gray-300"
+                  }`}
+                >
+                  {isSelected && <Check className="h-2.5 w-2.5 text-white" />}
+                </span>
+
+                {/* info */}
+                <div className="min-w-0 flex-1">
+                  <p className={`text-sm font-semibold ${isSelected ? "text-color2" : "text-gray-800 dark:text-white"}`}>
+                    {student.regNo} — {student.name}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    {student.programme} • Batch {student.batch}
+                  </p>
+                  <p className="text-xs text-gray-400">{student.email}</p>
+                </div>
+
+                {isSelected && (
+                  <span className="shrink-0 rounded-full bg-color2-l px-2.5 py-0.5 text-xs font-semibold text-color2">
+                    Selected
+                  </span>
+                )}
+              </button>
+            );
+          })
+        )}
+      </div>
+
+      {/* Footer */}
+      <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
+        <p className="text-sm font-semibold text-color2">
+          {count > 0 ? `${count} student${count > 1 ? "s" : ""} selected` : ""}
+        </p>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            disabled={count === 0}
+            onClick={handleEnroll}
+            className={`rounded-lg px-5 py-2 text-sm font-semibold text-white transition-all ${
+              count === 0
+                ? "cursor-not-allowed bg-color2/40"
+                : "bg-color2 hover:opacity-90"
+            }`}
+          >
+            Enroll {count > 0 ? `${count} Student${count > 1 ? "s" : ""}` : "Student"}
+          </button>
+        </div>
+      </div>
     </ModalShell>
   );
 };

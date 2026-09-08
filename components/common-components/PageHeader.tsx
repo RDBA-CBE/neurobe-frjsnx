@@ -29,6 +29,14 @@ interface PageBannerProps {
   records?: string;
   record2?: string;
   record3?: string;
+  record4?: string;
+  subContent1?: string;
+  subContent2?: string;
+   program?: {
+    title?: string;
+    value?: string;
+    color?: string;
+  }[];
 }
 
 const PageHeader = ({
@@ -42,7 +50,11 @@ const PageHeader = ({
   actionBtn4,
   editMode,
   record2,
-  record3
+  record3,
+  record4,
+  subContent1,
+  subContent2,
+  program,
 }: PageBannerProps & { records?: string }) => {
   return (
     <div className="panel mb-4 flex items-start gap-4 rounded-xl border border-gray-100 px-5 py-5 lg:justify-between">
@@ -56,47 +68,77 @@ const PageHeader = ({
             <span className="text-color2 bg-color2-l rounded-full px-2 py-0.5 text-xs font-semibold">
               {records}
             </span>
-            {record2 && <span className=" text-color2 bg-color2-l rounded-full px-2 py-0.5 text-xs font-semibold">
-              {record2}
-            </span>}
-            {record3 && <span className="text-green-dark btn-green-l rounded-full px-2 py-0.5 text-xs font-semibold">
-              {record3}
-            </span>}
+            {record2 && (
+              <span className=" text-color2 bg-color2-l rounded-full px-2 py-0.5 text-xs font-semibold">
+                {record2}
+              </span>
+            )}
+            {record3 && (
+              <span className="text-green-dark btn-green-l rounded-full px-2 py-0.5 text-xs font-semibold">
+                {record3}
+              </span>
+            )}
+            {/* gray record */}
+            {record4 && (
+              <span className="text-pri bg-sec-dark rounded-full px-2 py-0.5 text-xs font-semibold">
+                {record4}
+              </span>
+            )}
           </div>
-          {actionBtn3 ? (
+          <p
+            className="mt-1 text-xs text-[#000]"
+            dangerouslySetInnerHTML={{ __html: subtitle }}
+          />
+          {(subContent1 || subContent2 || editMode) && (
             <div className="flex items-center gap-2 pt-2">
-              <span
-                className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${
-                  //  topic?.verified_status === "Approved"
-                  "border border-purple-400 bg-purple-50 text-purple-600"
-                  //  : "border border-orange-200 bg-orange-50 text-orange-600"
-                  }`}
-              >
-                {"AI Generated"}
-              </span>
-              <span
-                className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${"border border-orange-200 bg-orange-50 text-orange-600"
-                  }`}
-              >
-                {"Review Required"}
-              </span>
-              {editMode &&
+              {subContent1 && (
                 <span
                   className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${
                     //  topic?.verified_status === "Approved"
                     "border border-purple-400 bg-purple-50 text-purple-600"
                     //  : "border border-orange-200 bg-orange-50 text-orange-600"
-                    }`}
+                  }`}
+                >
+                  {subContent1}
+                </span>
+              )}
+              {subContent2 && (
+                <span
+                  className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${"border border-orange-200 bg-orange-50 text-orange-600"}`}
+                >
+                  {subContent2}
+                </span>
+              )}
+              {editMode && (
+                <span
+                  className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${
+                    //  topic?.verified_status === "Approved"
+                    "border border-purple-400 bg-purple-50 text-purple-600"
+                    //  : "border border-orange-200 bg-orange-50 text-orange-600"
+                  }`}
                 >
                   {"Edit Mode"}
                 </span>
-              }
+              )}
             </div>
-          ) : (
-            <p
-              className="mt-0.5 text-xs text-[#000]"
-              dangerouslySetInnerHTML={{ __html: subtitle }}
-            />
+          )}
+
+          {program?.length > 0 && (
+            <div className="mt-2 flex gap-3">
+              {program.map((item) => (
+                <div key={item.title} className="flex gap-1">
+                  <span className="text-xs font-semibold text-gray-700">
+                    {item.title} :
+                  </span>
+                  <span
+                    className="text-xs font-semibold"
+                    style={{ color: item.color ?? "#000" }}
+                  >
+                    {item.value}
+                  </span>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </div>

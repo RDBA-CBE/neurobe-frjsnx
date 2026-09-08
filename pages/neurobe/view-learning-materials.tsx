@@ -127,6 +127,8 @@ const ViewLearningMaterials = () => {
         }
         editMode={state.isEditing}
         records="TOPIC 1.1"
+        subContent1 = "AI Generated"
+        subContent2 = "Review Required"
       />
 
       {state.showSavePrompt && (
