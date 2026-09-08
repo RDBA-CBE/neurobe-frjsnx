@@ -951,6 +951,9 @@ pre.hljs {
     background-color: #EFF6FF;
   }
 
+  .text-green-l {
+    color: #22C55E;
+  }
 
   .text-green {
     color: #10B981;
@@ -959,6 +962,8 @@ pre.hljs {
   .text-green-dark {
     color: #21845F;
   }
+
+
 
   .text-color1 {
     color: #000E3B;
@@ -1019,6 +1024,11 @@ pre.hljs {
   .border-primary2 {
     border-color: #E9D5FF;
   }
+
+  .border-green {
+    border-color: #107C4166;
+  }
+
 
 
 
@@ -1285,6 +1295,10 @@ pre.hljs {
 
   .create-btn-sec {
     @apply rounded-full bg-gray-200 px-4 py-2 text-sm font-medium text-[#000] hover:bg-gray-100 flex items-center gap-2;
+  }
+
+  .create-btn-outline {
+    @apply rounded-xl border border-gray-300 bg-white px-5 py-2.5 text-sm font-bold text-[#13112E] hover:bg-gray-50 flex items-center gap-2.5 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100;
   }
 
   .disabled-create-btn {
