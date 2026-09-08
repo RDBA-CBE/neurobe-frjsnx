@@ -7,32 +7,36 @@ export interface CIAPaperMarksAllocationBarProps {
   remainingToAllocate?: number | string;
   badgeText?: string;
   isBalanced?: boolean;
+  badgeColor?: string;
 }
 
-export const CIAPaperMarksAllocationBar: React.FC<CIAPaperMarksAllocationBarProps> = ({
+export const CIAPaperMarksAllocationBar: React.FC<
+  CIAPaperMarksAllocationBarProps
+> = ({
   totalPaperMarks = 100,
   allocatedSectionMarks = 100,
   remainingToAllocate = 0,
   badgeText = "Section Marks Balanced (100%)",
   isBalanced = true,
+  badgeColor,
 }) => {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-color1 px-6 py-4 text-white shadow-md border border-[#2D2A54]/60">
+    <div className="bg-color1 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-[#2D2A54]/60 px-6 py-4 text-white shadow-md">
       {/* Left side: Stats inline list with separators */}
-      <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm font-medium">
+      <div className="flex flex-wrap items-center gap-4 text-xs font-medium sm:text-sm">
         <div className="flex items-center gap-1.5">
           <span className="text-gray-300">Total Paper Marks:</span>
           <span className="font-bold text-white">{totalPaperMarks}</span>
         </div>
 
-        <span className="text-gray-500 font-light select-none">|</span>
+        <span className="select-none font-light text-gray-500">|</span>
 
         <div className="flex items-center gap-1.5">
           <span className="text-gray-300">Allocated Section Marks:</span>
           <span className="font-bold text-white">{allocatedSectionMarks}</span>
         </div>
 
-        <span className="text-gray-500 font-light select-none">|</span>
+        <span className="select-none font-light text-gray-500">|</span>
 
         <div className="flex items-center gap-1.5">
           <span className="text-gray-300">Remaining to Allocate:</span>
@@ -42,9 +46,25 @@ export const CIAPaperMarksAllocationBar: React.FC<CIAPaperMarksAllocationBarProp
 
       {/* Right side: Green checkmark badge */}
       {isBalanced && (
-        <div className="inline-flex items-center gap-2 rounded-xl border border-green  px-4 py-1.5 text-xs sm:text-sm font-bold text-green-l">
-          <Check className="h-4 w-4 text-emerald-400 stroke-[2.5]" />
-          <span className="font-bold text-green-l">{badgeText}</span>
+        <div
+          className={`inline-flex items-center gap-2 rounded-lg  px-4 py-1.5 text-xs font-bold sm:text-sm ${
+            badgeColor ? "" : "border border-green text-green-l"
+          }`}
+          style={
+            badgeColor
+              ? {
+                  background: badgeColor,
+                  color: "#fff",
+                }
+              : undefined
+          }
+        >
+          <Check
+            className="h-4 w-4 stroke-[2.5]"
+            style={badgeColor ? { color: badgeColor } : undefined}
+          />
+
+          <span className="font-bold">{badgeText}</span>
         </div>
       )}
     </div>
