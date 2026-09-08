@@ -2,7 +2,7 @@ import React from "react";
 
 interface PageBannerProps {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   icon?: React.ReactNode;
   actionBtn1?: {
     label: string;
@@ -65,9 +65,9 @@ const PageHeader = ({
         <div>
           <div className="flex items-center gap-2">
             <p className="section-ti">{title}</p>
-            <span className="text-color2 bg-color2-l rounded-full px-2 py-0.5 text-xs font-semibold">
+            {records && <span className="text-color2 bg-color2-l rounded-full px-2 py-0.5 text-xs font-semibold">
               {records}
-            </span>
+            </span>}
             {record2 && (
               <span className=" text-color2 bg-color2-l rounded-full px-2 py-0.5 text-xs font-semibold">
                 {record2}
@@ -85,10 +85,10 @@ const PageHeader = ({
               </span>
             )}
           </div>
-          <p
+         { subtitle && <p
             className="mt-1 text-xs text-[#000]"
             dangerouslySetInnerHTML={{ __html: subtitle }}
-          />
+          />}
           {(subContent1 || subContent2 || editMode) && (
             <div className="flex items-center gap-2 pt-2">
               {subContent1 && (
