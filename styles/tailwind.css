@@ -909,6 +909,11 @@ pre.hljs {
     background-color: #F1F5F9;
   }
 
+  .bg-sec1 {
+    background-color: #F5F6FA;
+  }
+
+
   .bg-sec-dark {
     background-color: #E2E8F0;
   }
@@ -1326,4 +1331,66 @@ pre.hljs {
 
 .course-banner-select .react-select__indicator-separator {
   display: none;
+}
+
+/* Print styles for Question Paper */
+@media print {
+  @page {
+    margin: 8mm 10mm;
+    size: auto;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  #printable-question-paper,
+  #printable-question-paper * {
+    visibility: visible !important;
+  }
+
+  #printable-question-paper {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  #printable-question-paper .print-row-1,
+  #printable-question-paper .print-row-2,
+  #printable-question-paper .print-row-3 {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+  }
+
+  #printable-question-paper .print-col-left {
+    width: 50% !important;
+  }
+
+  #printable-question-paper .print-col-right {
+    width: 45% !important;
+    text-align: left !important;
+  }
+
+  #printable-question-paper .print-date-right {
+    text-align: right !important;
+  }
+
+  #printable-question-paper .print-avoid-break {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }

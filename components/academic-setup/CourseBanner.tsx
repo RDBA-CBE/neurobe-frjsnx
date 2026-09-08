@@ -15,6 +15,7 @@ type CourseBannerProps = {
   activeView?: "coordinator" | "instructor";
   onBack?: () => void;
   onViewChange?: (view: "coordinator" | "instructor") => void;
+  toogle?: string
 };
 
 export default function CourseBanner({
@@ -31,6 +32,7 @@ export default function CourseBanner({
   activeView = "coordinator",
   onBack,
   onViewChange,
+  toogle
 }: CourseBannerProps) {
   return (
     <div className="mb-6 mt-2 rounded-2xl bg-color1 px-8 py-5">
@@ -68,28 +70,28 @@ export default function CourseBanner({
         </div>
 
         {/* View Toggle */}
-        <div className="flex shrink-0 items-center border-[0.5px] border-[#fff]/20 rounded-xl  p-1">
-          <button
-            onClick={() => onViewChange?.("coordinator")}
-            className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all ${
-              activeView === "coordinator"
-                ? "bg-primary-custom text-white"
-                : "text-white hover:text-white"
-            }`}
-          >
-            Coordinator View
-          </button>
-          <button
-            onClick={() => onViewChange?.("instructor")}
-            className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all ${
-              activeView === "instructor"
-                ? "bg-primary-custom text-white"
-                : "text-white hover:text-white"
-            }`}
-          >
-            Instructor View
-          </button>
-        </div>
+        {toogle != "instructor" &&
+          <div className="flex shrink-0 items-center border-[0.5px] border-[#fff]/20 rounded-xl  p-1">
+            <button
+              onClick={() => onViewChange?.("coordinator")}
+              className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all ${activeView === "coordinator"
+                  ? "bg-primary-custom text-white"
+                  : "text-white hover:text-white"
+                }`}
+            >
+              Coordinator View
+            </button>
+            <button
+              onClick={() => onViewChange?.("instructor")}
+              className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all ${activeView === "instructor"
+                  ? "bg-primary-custom text-white"
+                  : "text-white hover:text-white"
+                }`}
+            >
+              Instructor View
+            </button>
+          </div>
+        }
       </div>
 
       {/* Meta Row */}

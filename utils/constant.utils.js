@@ -321,6 +321,14 @@ export const UNIT_TABS = [
   { key: "unit-5", label: "Unit 5", count: 3 },
 ];
 
+export const MCQ_TABS = [
+  { key: "unit-1", label: "All Tests", count: 4 },
+  { key: "unit-2", label: "Needs Access Setup", count: 3 },
+  { key: "unit-3", label: "Upcoming", count: 4 },
+  { key: "unit-4", label: "Live", count: 3 },
+  { key: "unit-5", label: "Completed", count: 3 },
+];
+
 export const QUS_TABS = [
   { key: "unit-1", label: "All", count: 18 },
   { key: "unit-2", label: "Approved", count: 12 },
