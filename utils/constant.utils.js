@@ -386,7 +386,7 @@ export const menuConfig = {
 };
 
 export const OwnmenuConfig = {
-  course_coordinatorr: [
+  erp_admin: [
     {
       type: "heading",
       label: "CORE WORKSPACES",
@@ -457,7 +457,7 @@ export const OwnmenuConfig = {
     },
   ],
 
-  hr: [
+  course_coordinatorr: [
     {
       type: "link",
       icon: "IconMenuDashboard",
@@ -544,19 +544,19 @@ export const OwnmenuConfig = {
       type: "link",
       icon: "IconMenuNotes",
       label: "Student Enrollment",
-      href: "/neurobe/mcq-tests",
+      href: "/neurobe/student-entrollment",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
       label: "MCQ Test Execution",
-      href: "/neurobe/results-analysis",
+      href: "/neurobe/mcq-test-execution",
     },
     {
       type: "link",
       icon: "IconMenuNotes",
       label: "Results & Analysis",
-      href: "/neurobe/marks-extraction",
+      href: "/neurobe/result-analysis",
     },
     {
       type: "link",
@@ -588,6 +588,54 @@ export const OwnmenuConfig = {
     //     },
     //   ],
     // },
+  ],
+  hr: [
+    {
+      type: "heading",
+      label: "INSTRUCTOR FUNCTIONS",
+    },
+    {
+      type: "link",
+      icon: "IconMenuDashboard",
+      label: "My Assigned Courses",
+      href: "/neurobe/ins-my-assigned-courses",
+    },
+    {
+      type: "link",
+      icon: "IconMenuForms",
+      label: "Course Artifacts",
+      href: "/neurobe/ins-course-artifacts",
+    },
+    {
+      type: "link",
+      icon: "IconMenuUsers",
+      label: "Student Enrollment",
+      href: "/neurobe/ins-student-enrollment",
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuTables",
+      label: "MCQ Test Execution",
+      href: "/neurobe/ins-mcq-test-execution",
+      notifyKey: "new_application_count",
+    },
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Results & Analysis",
+      href: "/neurobe/ins-result-analysis",
+
+    },
+
+    {
+      type: "link",
+      icon: "IconMenuNotes",
+      label: "Marks Extraction & Verification",
+      href: "/neurobe/audit-trial",
+    },
+
+
   ],
 };
 
