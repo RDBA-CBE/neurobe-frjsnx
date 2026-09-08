@@ -8,7 +8,7 @@ import CustomSelect from "@/components/FormFields/CustomSelect.component";
 const useLockBodyScroll = (active: boolean) => {
   useEffect(() => {
     if (active) document.body.style.overflow = "hidden";
-    else        document.body.style.overflow = "";
+    else document.body.style.overflow = "";
     return () => { document.body.style.overflow = ""; };
   }, [active]);
 };
@@ -40,7 +40,7 @@ interface ModalShellProps {
   onClose: () => void;
   children: React.ReactNode;
   icon?: any;
-  code?:string
+  code?: string
 }
 
 export const ModalShell = ({
@@ -76,14 +76,14 @@ export const ModalShell = ({
             )}
             <div>
               <div className="flex items-center gap-2">
-              <h3 className=" text-base font-semibold text-[#000] dark:text-white">
-                {title}
-              </h3>
-              {code &&
-              <div className="text-color2 w-fit rounded-md  px-3 py-1 bg-color2-l text-xs font-semibold text-color2">
-                {code}
-              </div>
-              }
+                <h3 className=" text-base font-semibold text-[#000] dark:text-white">
+                  {title}
+                </h3>
+                {code &&
+                  <div className="text-color2 w-fit rounded-md  px-3 py-1 bg-color2-l text-xs font-semibold text-color2">
+                    {code}
+                  </div>
+                }
               </div>
               {subtitle && (
                 <p className="mt-0.5 text-xs text-[#000]">{subtitle}</p>

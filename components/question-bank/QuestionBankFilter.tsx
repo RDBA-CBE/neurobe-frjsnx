@@ -78,9 +78,10 @@ const EMPTY: FilterValues = {
 
 interface Props {
   onApply: (filters: FilterValues) => void;
+  question?: boolean
 }
 
-const QuestionBankFilter = ({ onApply }: Props) => {
+const QuestionBankFilter = ({ onApply, question }: Props) => {
   const [state, setState] = useSetState({ ...EMPTY, showFilters: false, appliedFilters: null as FilterValues | null });
 
   const handleApply = () => {
@@ -111,14 +112,14 @@ const QuestionBankFilter = ({ onApply }: Props) => {
 
   const activeChips = state.appliedFilters
     ? (Object.entries(state.appliedFilters) as [keyof FilterValues, any][]).filter(
-        ([k, v]) => k !== "search" && k !== "unit" && v && v.value !== "all"
-      )
+      ([k, v]) => k !== "search" && k !== "unit" && v && v.value !== "all"
+    )
     : [];
 
   return (
     <div className="mb-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
       {/* Search row */}
-      <div className="flex items-center gap-3">
+      <div className={`flex items-center ${question ? "gap-3" : "gap-20"}`}>
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
@@ -129,29 +130,33 @@ const QuestionBankFilter = ({ onApply }: Props) => {
             className="w-full rounded-xl border border-gray-200 py-2.5 pl-9 pr-4 text-sm outline-none focus:border-color2 focus:ring-1 focus:ring-color2"
           />
         </div>
+        {question ?
+          <>
+            <CustomSelect
+              options={UNIT_OPTIONS}
+              value={state.unit}
+              onChange={(v) => setState({ unit: v })}
+              placeholder="All Units"
+              isSearchable={false}
+              isClearable={false}
+              className="w-40"
+            />
 
-        <CustomSelect
-          options={UNIT_OPTIONS}
-          value={state.unit}
-          onChange={(v) => setState({ unit: v })}
-          placeholder="All Units"
-          isSearchable={false}
-          isClearable={false}
-          className="w-40"
-        />
-
-        <button
-          type="button"
-          onClick={() => setState({ showFilters: !state.showFilters })}
-          className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-colors ${
-            state.showFilters
-              ? "border-color2 bg-purple-50 text-color2"
-              : "border-gray-200 text-gray-600 hover:border-color2 hover:text-color2"
-          }`}
-        >
-          <SlidersHorizontal className="h-4 w-4" />
-          Filters
-        </button>
+            <button
+              type="button"
+              onClick={() => setState({ showFilters: !state.showFilters })}
+              className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-colors ${state.showFilters
+                ? "border-color2 bg-purple-50 text-color2"
+                : "border-gray-200 text-gray-600 hover:border-color2 hover:text-color2"
+                }`}
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+              Filters
+            </button>
+          </>
+          :
+          <span>Showing 4 test(s)</span>
+        }
       </div>
 
       {/* Filter panel */}

@@ -338,6 +338,7 @@ const QuestionBank = () => {
           <div className="mt-4">
             <QuestionBankFilter
               onApply={(filters) => setState({ appliedFilters: filters })}
+              question={true}
             />
           </div>
           <div className="space-y-3">

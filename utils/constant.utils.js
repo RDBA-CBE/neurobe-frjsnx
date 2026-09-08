@@ -457,7 +457,7 @@ export const OwnmenuConfig = {
     },
   ],
 
-  course_coordinatorr: [
+  hr: [
     {
       type: "link",
       icon: "IconMenuDashboard",
@@ -589,7 +589,7 @@ export const OwnmenuConfig = {
     //   ],
     // },
   ],
-  hr: [
+  course: [
     {
       type: "heading",
       label: "INSTRUCTOR FUNCTIONS",
@@ -645,6 +645,14 @@ export const UNIT_TABS = [
   { key: "unit-3", label: "Unit 3", count: 4 },
   { key: "unit-4", label: "Unit 4", count: 3 },
   { key: "unit-5", label: "Unit 5", count: 3 },
+];
+
+export const MCQ_TABS = [
+  { key: "unit-1", label: "All Tests", count: 4 },
+  { key: "unit-2", label: "Needs Access Setup", count: 3 },
+  { key: "unit-3", label: "Upcoming", count: 4 },
+  { key: "unit-4", label: "Live", count: 3 },
+  { key: "unit-5", label: "Completed", count: 3 },
 ];
 
 export const QUS_TABS = [

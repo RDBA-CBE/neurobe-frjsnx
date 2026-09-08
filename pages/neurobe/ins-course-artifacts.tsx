@@ -59,6 +59,9 @@ import PedagogyTopicsCard from "@/components/academic-setup/PedagogyTopicsCard";
 import LessonPlanTopicsCard from "@/components/academic-setup/LessonPlanTopicsCard";
 import LearningMaterialsCard from "@/components/academic-setup/LearningMaterialsCard";
 import QuestionBankTopicsCard from "@/components/academic-setup/QuestionBankTopicsCard";
+import CIAQuestionPapersCard from "@/components/academic-setup/CIAQuestionPapersCard";
+import CIAPaperHeaderCard from "@/components/academic-setup/CIAPaperHeaderCard";
+import CIAQuestionPaperViewCard from "@/components/academic-setup/CIAQuestionPaperViewCard";
 
 const QUESTION_SETS: QuestionSetCardProps[] = [
   {
@@ -511,7 +514,7 @@ const MAPPING_RATIONALE_DATA = {
           poTitle: "Engineering Knowledge",
           strengthText: "Strength: 3 (High)",
           strengthBadgeClass:
-            "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300",
+            "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300",
           rationale:
             "The outcome requires students to apply core engineering and computing knowledge to understand network architectures and protocol models.",
         },
@@ -550,7 +553,7 @@ const MAPPING_RATIONALE_DATA = {
           poTitle: "Engineering Knowledge",
           strengthText: "Strength: 3 (High)",
           strengthBadgeClass:
-            "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300",
+            "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300",
           rationale:
             "Outcome requires analytical evaluation of error detection and flow control algorithms at the data link layer.",
         },
@@ -560,7 +563,7 @@ const MAPPING_RATIONALE_DATA = {
           poTitle: "Problem Analysis",
           strengthText: "Strength: 3 (High)",
           strengthBadgeClass:
-            "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300",
+            "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300",
           rationale:
             "Students analyze framing methods and error correction techniques for efficient transmission.",
         },
@@ -578,7 +581,7 @@ const MAPPING_RATIONALE_DATA = {
           poTitle: "Engineering Knowledge",
           strengthText: "Strength: 3 (High)",
           strengthBadgeClass:
-            "bg-[#f5f3ff] text-[#7c3aed] dark:bg-purple-950/60 dark:text-purple-300",
+            "bg-[#f5f3ff] text-color2 dark:bg-purple-950/60 dark:text-purple-300",
           rationale:
             "Application of IPv4 subnetting formulas and routing algorithm mechanics.",
         },
@@ -2038,6 +2041,7 @@ const QuestionBank = () => {
         academicYear="2026–2027 / Semester 3"
         students="40 Students"
         selectedCourse="CS309"
+        toogle="instructor"
         courseOptions={[
           { value: "CS309", label: "Course: CS309" },
           { value: "CS301", label: "Course: CS301" },
@@ -2052,7 +2056,7 @@ const QuestionBank = () => {
         title="Course Artifacts"
         records="CS309  —  Computer Networks"
         subtitle={`Access approved academic references prepared for this course.`}
-        icon={<Users className="h-5 w-5 text-[#7c3aed]" />}
+        icon={<Users className="h-5 w-5 text-color2" />}
         record2="Instructor View"
         record3="Read Only"
       />
@@ -2098,20 +2102,32 @@ const QuestionBank = () => {
 
             return (
               <>
-                <SyllabusHeaderCard
-                  title={currentHeaderData.title}
-                  icon={currentHeaderData.icon}
-                  subtitle={currentHeaderData.subtitle}
-                  approvedBy={currentHeaderData.approvedBy}
-                  approvedDate={currentHeaderData.approvedDate}
-                  unitsCountText={currentHeaderData.unitsCountText}
-                  versionBadgeText={currentHeaderData.versionBadgeText}
-                  bannerProgramme={SYLLABUS_HEADER_DATA.bannerProgramme}
-                  bannerBatch={SYLLABUS_HEADER_DATA.bannerBatch}
-                  bannerSemester={SYLLABUS_HEADER_DATA.bannerSemester}
-                  courseCode={SYLLABUS_HEADER_DATA.courseCode}
-                  courseTitle={SYLLABUS_HEADER_DATA.courseTitle}
-                />
+                {state.selectedReferenceId !== "cia-papers" && (
+                  <SyllabusHeaderCard
+                    title={currentHeaderData.title}
+                    icon={currentHeaderData.icon}
+                    subtitle={currentHeaderData.subtitle}
+                    approvedBy={currentHeaderData.approvedBy}
+                    approvedDate={currentHeaderData.approvedDate}
+                    unitsCountText={currentHeaderData.unitsCountText}
+                    versionBadgeText={currentHeaderData.versionBadgeText}
+                    bannerProgramme={SYLLABUS_HEADER_DATA.bannerProgramme}
+                    bannerBatch={SYLLABUS_HEADER_DATA.bannerBatch}
+                    bannerSemester={SYLLABUS_HEADER_DATA.bannerSemester}
+                    courseCode={SYLLABUS_HEADER_DATA.courseCode}
+                    courseTitle={SYLLABUS_HEADER_DATA.courseTitle}
+                  />
+                )}
+
+                {state.selectedReferenceId === "cia-papers" && (
+                  <div id="cia-papers-section" className="space-y-4 scroll-mt-36">
+                    <CIAQuestionPapersCard />
+                    <CIAPaperHeaderCard onPrint={() => window.print()} />
+                    <div id="printable-question-paper">
+                      <CIAQuestionPaperViewCard />
+                    </div>
+                  </div>
+                )}
                 {(state.selectedReferenceId === "syllabus" || state.selectedReferenceId === "copo") && (
                   <div className="sticky top-20 z-20 backdrop-blur-md dark:bg-gray-900/95 overflow-x-auto pt-2.5 pb-0 -mb-1">
                     <GenericTabs

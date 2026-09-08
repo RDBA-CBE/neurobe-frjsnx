@@ -59,6 +59,9 @@ import PedagogyTopicsCard from "@/components/academic-setup/PedagogyTopicsCard";
 import LessonPlanTopicsCard from "@/components/academic-setup/LessonPlanTopicsCard";
 import LearningMaterialsCard from "@/components/academic-setup/LearningMaterialsCard";
 import QuestionBankTopicsCard from "@/components/academic-setup/QuestionBankTopicsCard";
+import CIAQuestionPapersCard from "@/components/academic-setup/CIAQuestionPapersCard";
+import CIAPaperHeaderCard from "@/components/academic-setup/CIAPaperHeaderCard";
+import CIAQuestionPaperViewCard from "@/components/academic-setup/CIAQuestionPaperViewCard";
 
 const QUESTION_SETS: QuestionSetCardProps[] = [
   {
@@ -2098,20 +2101,32 @@ const QuestionBank = () => {
 
             return (
               <>
-                <SyllabusHeaderCard
-                  title={currentHeaderData.title}
-                  icon={currentHeaderData.icon}
-                  subtitle={currentHeaderData.subtitle}
-                  approvedBy={currentHeaderData.approvedBy}
-                  approvedDate={currentHeaderData.approvedDate}
-                  unitsCountText={currentHeaderData.unitsCountText}
-                  versionBadgeText={currentHeaderData.versionBadgeText}
-                  bannerProgramme={SYLLABUS_HEADER_DATA.bannerProgramme}
-                  bannerBatch={SYLLABUS_HEADER_DATA.bannerBatch}
-                  bannerSemester={SYLLABUS_HEADER_DATA.bannerSemester}
-                  courseCode={SYLLABUS_HEADER_DATA.courseCode}
-                  courseTitle={SYLLABUS_HEADER_DATA.courseTitle}
-                />
+                {state.selectedReferenceId !== "cia-papers" && (
+                  <SyllabusHeaderCard
+                    title={currentHeaderData.title}
+                    icon={currentHeaderData.icon}
+                    subtitle={currentHeaderData.subtitle}
+                    approvedBy={currentHeaderData.approvedBy}
+                    approvedDate={currentHeaderData.approvedDate}
+                    unitsCountText={currentHeaderData.unitsCountText}
+                    versionBadgeText={currentHeaderData.versionBadgeText}
+                    bannerProgramme={SYLLABUS_HEADER_DATA.bannerProgramme}
+                    bannerBatch={SYLLABUS_HEADER_DATA.bannerBatch}
+                    bannerSemester={SYLLABUS_HEADER_DATA.bannerSemester}
+                    courseCode={SYLLABUS_HEADER_DATA.courseCode}
+                    courseTitle={SYLLABUS_HEADER_DATA.courseTitle}
+                  />
+                )}
+
+                {state.selectedReferenceId === "cia-papers" && (
+                  <div id="cia-papers-section" className="space-y-4 scroll-mt-36">
+                    <CIAQuestionPapersCard />
+                    <CIAPaperHeaderCard onPrint={() => window.print()} />
+                    <div id="printable-question-paper">
+                      <CIAQuestionPaperViewCard />
+                    </div>
+                  </div>
+                )}
                 {(state.selectedReferenceId === "syllabus" || state.selectedReferenceId === "copo") && (
                   <div className="sticky top-20 z-20 backdrop-blur-md dark:bg-gray-900/95 overflow-x-auto pt-2.5 pb-0 -mb-1">
                     <GenericTabs

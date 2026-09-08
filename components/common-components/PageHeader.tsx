@@ -59,7 +59,8 @@ const PageHeader = ({
             {record2 && <span className=" text-color2 bg-color2-l rounded-full px-2 py-0.5 text-xs font-semibold">
               {record2}
             </span>}
-            {record3 && <span className="text-green-dark btn-green-l rounded-full px-2 py-0.5 text-xs font-semibold">
+
+            {record3 && <span className="inline-flex items-center self-start rounded-full border border-emerald-300 bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-600 ">
               {record3}
             </span>}
           </div>
