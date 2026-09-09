@@ -236,7 +236,7 @@ export const OwnmenuConfig = {
       type: "link",
       icon: "IconMenuNotes",
       label: "Marks Extraction & Verification",
-      href: "/neurobe/co-po-attainment",
+      href: "/neurobe/marks-extraction",
     },
     // {
     //   type: "submenu",

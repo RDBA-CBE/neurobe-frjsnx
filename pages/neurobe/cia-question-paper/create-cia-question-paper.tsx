@@ -4,7 +4,6 @@ import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState } from "@/utils/function.utils";
 import PrivateRouter from "@/hook/privateRouter";
 import CourseBanner from "@/components/academic-setup/CourseBanner";
-import StepHeader from "@/components/academic-setup/StepHeader";
 import PaperSetupSection from "@/components/academic-setup/PaperSetupSection";
 import SectionsAndQuestionsSection, {
   CIASection,
@@ -88,12 +87,12 @@ const CreateCIAPaper = () => {
         actionBtn2={{
           label: "Save Draft",
           icon: <Save className="h-4 w-4" />,
-          onClick: () => {},
+          onClick: () => { },
         }}
         actionBtn1={{
           label: "View Draft",
           icon: <Eye className="h-4 w-4" />,
-          onClick: () => {},
+          onClick: () => { },
         }}
       />
 
@@ -102,7 +101,7 @@ const CreateCIAPaper = () => {
         allocatedSectionMarks={state.allocatedSectionMarks}
         remainingToAllocate={state.remainingToAllocate}
         badgeText="80 marks remaining to allocate"
-        badgeColor= "#78350F"
+        badgeColor="#78350F"
         isBalanced={true}
       />
 

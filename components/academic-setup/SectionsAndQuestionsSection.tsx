@@ -176,8 +176,7 @@ const SectionsAndQuestionsSection = ({
                   <button
                     type="button"
                     onClick={() => isSettingsOpen ? closeSettings(section.id) : openSettings(section)}
-                    className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold shadow-2xs transition-all ${
-                      isSettingsOpen
+                    className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold shadow-2xs transition-all ${isSettingsOpen
                         ? "border-color2 bg-color2-l text-color2"
                         : "border-gray-200 bg-white text-[#000] hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                     }`}

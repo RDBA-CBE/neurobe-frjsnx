@@ -275,7 +275,7 @@ const CIAQuestionPaper = () => {
               }
               onResumeEditing={() => {
                 setState({ isEditing: true });
-                router.push("/neurobe/cia-question-paper-edit");
+                router.push("/neurobe/cia-question-paper/cia-question-paper-edit");
               }}
             />
 

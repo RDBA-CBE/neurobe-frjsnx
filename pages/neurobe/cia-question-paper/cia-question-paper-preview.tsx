@@ -135,7 +135,7 @@ const CIAQuestionPaperPreview = () => {
         ]}
         onCourseChange={(val) => console.log("course", val)}
         // activeView="cia-paper"
-        onBack={() => router.push("/neurobe/cia-question-paper-edit")}
+        onBack={() => router.push("/neurobe/cia-question-paper/cia-question-paper-edit")}
         onViewChange={(view) => console.log("view", view)}
       />
 
@@ -150,7 +150,7 @@ const CIAQuestionPaperPreview = () => {
         actionBtn1={{
           label: "Resume Editing",
           icon: <Edit3 className="h-4 w-4" />,
-          onClick: () => router.push("/neurobe/cia-question-paper-edit"),
+          onClick: () => router.push("/neurobe/cia-question-paper/cia-question-paper-edit"),
         }}
       />
 
