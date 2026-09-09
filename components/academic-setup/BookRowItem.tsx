@@ -30,16 +30,16 @@ const BookRowItem: React.FC<BookRowItemProps> = ({
         {index}.
       </span>
       <div className="flex-1 min-w-0">
-        <h4 className="text-[16verapx] font-bold text-gray-900 dark:text-white leading-snug">
+        <h4 className="text-[16verapx] font-bold text-[#000] dark:text-white leading-snug">
           {title}
         </h4>
         {authors && (
-          <p className="text-md font-medium text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-md font-medium text-pri dark:text-gray-400 mt-1">
             {authors}
           </p>
         )}
         {publisher && (
-          <p className="text-sm font-medium text-gray-400 dark:text-gray-500 mt-0.5">
+          <p className="text-sm font-medium text-[#000] dark:text-pri mt-0.5">
             {publisher}
           </p>
         )}

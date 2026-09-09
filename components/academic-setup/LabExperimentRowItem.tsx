@@ -22,7 +22,7 @@ const LabExperimentRowItem: React.FC<LabExperimentRowItemProps> = ({
       <span className="font-bold text-color2 dark:text-purple-400 font-mono text-sm mr-3 shrink-0">
         {index}.
       </span>
-      <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 leading-snug">
+      <span className="text-sm font-semibold text-[#000] dark:text-gray-200 leading-snug">
         {title}
       </span>
     </div>

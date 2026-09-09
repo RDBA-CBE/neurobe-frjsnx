@@ -100,8 +100,8 @@ const ApprovedSyllabusTopics = ({ courseCode = "CS309" }: ApprovedSyllabusTopics
     <div className=" mb-4">
       {/* Header */}
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white">Topics from Approved Syllabus</h3>
-        <span className="text-sm font-semibold text-gray-500">{courseCode} Syllabus</span>
+        <h3 className="text-lg font-bold text-[#000] dark:text-white">Topics from Approved Syllabus</h3>
+        <span className="text-sm font-semibold text-pri">{courseCode} Syllabus</span>
       </div>
 
       {/* Unit tabs */}
@@ -120,7 +120,7 @@ const ApprovedSyllabusTopics = ({ courseCode = "CS309" }: ApprovedSyllabusTopics
             className={`rounded-lg px-4 py-1 text-sm font-medium transition-all ${
               activeUnit === u.id
                 ? "bg-color2 text-white"
-                : "text-gray-500 hover:text-gray-700 dark:text-gray-400"
+                : "text-pri hover:text-[#000] dark:text-gray-400"
             }`}
           >
             {u.label}
@@ -154,8 +154,8 @@ const ApprovedSyllabusTopics = ({ courseCode = "CS309" }: ApprovedSyllabusTopics
                       <div className="flex shrink-0 h-8 w-8 items-center justify-center rounded-full bg-light-blue">
                         <span className="text-sm font-semibold text-primary">{topic.id}</span>
                       </div>
-                      <span className="flex-1 text-sm text-gray-700 font-medium dark:text-gray-300">{topic.title}</span>
-                      <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                      <span className="flex-1 text-sm text-[#000] font-medium dark:text-gray-300">{topic.title}</span>
+                      <ChevronDown className={`h-4 w-4 text-[#000] transition-transform ${isOpen ? "rotate-180" : ""}`} />
                     </button>
 
                     {/* Subtopics */}
@@ -168,18 +168,18 @@ const ApprovedSyllabusTopics = ({ courseCode = "CS309" }: ApprovedSyllabusTopics
                               sub.status === "Needs Review" ? "border-l-4 border-amber-400" : "border-l-4 border-transparent"
                             }`}
                           >
-                            <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                            <span className="text-sm font-medium text-[#000] dark:text-gray-200">
                               Topic {sub.id} — {sub.title}
                             </span>
                             <div className="flex items-center gap-3">
-                              <span className="text-sm text-gray-400">Hours: <span className="font-semibold text-gray-700">{sub.hours}</span></span>
+                              <span className="text-sm text-[#000]">Hours: <span className="font-semibold text-[#000]">{sub.hours}</span></span>
                               <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-600">{sub.level}</span>
                               <span className={`rounded-full border px-3 py-0.5 text-xs font-semibold ${
                                 sub.status === "Approved"
                                   ? "border-green-400 text-green-600"
                                   : "border-amber-400 text-amber-500"
                               }`}>{sub.status}</span>
-                              <button className="text-gray-400 hover:text-gray-600">
+                              <button className="text-gray-400 hover:text-[#000]">
                                 <Pencil className="h-4 w-4" />
                               </button>
                             </div>

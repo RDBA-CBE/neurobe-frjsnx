@@ -252,10 +252,10 @@ const GenerateQuestionsModal = ({
               <Sparkles className="h-5 w-5 text-white" />
             </div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-gray-900 dark:text-white">
+              <h2 className="text-base font-bold text-[#000] dark:text-white">
                 Generate Questions
               </h2>
-              <span className="rounded-full border border-gray-200 px-3 py-0.5 text-xs font-semibold text-gray-500">
+              <span className="rounded-full border border-gray-200 px-3 py-0.5 text-xs font-semibold text-pri">
                 {courseCode}
               </span>
             </div>
@@ -274,7 +274,7 @@ const GenerateQuestionsModal = ({
           style={{ scrollbarWidth: "none" }}
         >
           {/* Unit Selection */}
-          <p className="mb-2 text-sm font-bold text-gray-900 dark:text-white">
+          <p className="mb-2 text-sm font-bold text-[#000] dark:text-white">
             Unit Selection
           </p>
           <div className="mb-5 grid grid-cols-5 gap-2">
@@ -289,7 +289,7 @@ const GenerateQuestionsModal = ({
                 className={`rounded-xl border px-3 py-2 text-left text-xs font-bold transition-all ${
                   i === activeUnit
                     ? "border-color2 bg-color2 text-white"
-                    : "border-gray-200 bg-white text-gray-700 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                    : "border-gray-200 bg-white text-[#000] hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
                 }`}
               >
                 <div className=" text-sm font-bold">{u.label}</div>
@@ -306,9 +306,9 @@ const GenerateQuestionsModal = ({
 
           {/* Topics */}
           <div className="mb-3 flex items-center justify-between">
-            <p className="text-sm font-bold text-gray-900 dark:text-white">
+            <p className="text-sm font-bold text-[#000] dark:text-white">
               Topics{" "}
-              <span className="text-xs font-normal text-gray-400">
+              <span className="text-xs font-normal text-[#000]">
                 (Select multiple required topics)
               </span>
             </p>
@@ -319,7 +319,7 @@ const GenerateQuestionsModal = ({
               >
                 Select All
               </button>
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-[#000]">
                 {selectedTopics.length} Selected
               </span>
             </div>
@@ -362,7 +362,7 @@ const GenerateQuestionsModal = ({
                     className={`truncate text-xs font-semibold ${
                       checked
                         ? "text-color2"
-                        : "text-gray-700 dark:text-gray-300"
+                        : "text-[#000] dark:text-gray-300"
                     }`}
                   >
                     {t.label}
@@ -376,7 +376,7 @@ const GenerateQuestionsModal = ({
           {selectedTopics.length > 0 && allSubtopics.length > 0 && (
             <div className="mb-4 rounded-xl border border-gray-200 p-4 dark:border-gray-700">
               <div className="mb-3 flex items-center justify-between">
-                <p className="text-xs font-bold uppercase tracking-wide text-gray-500">
+                <p className="text-xs font-bold uppercase tracking-wide text-pri">
                   {
                     unit.topics.find((t) => selectedTopics.includes(t.id))
                       ?.label
@@ -390,7 +390,7 @@ const GenerateQuestionsModal = ({
                   >
                     Select All
                   </button>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-[#000]">
                     {selectedSubtopics.length} Selected
                   </span>
                 </div>
@@ -435,7 +435,7 @@ const GenerateQuestionsModal = ({
                         className={`truncate font-semibold ${
                           checked
                             ? "text-color2"
-                            : "text-gray-700 dark:text-gray-300"
+                            : "text-[#000] dark:text-gray-300"
                         }`}
                       >
                         {s}
@@ -476,7 +476,7 @@ const GenerateQuestionsModal = ({
           </div>
 
           {/* Difficulty */}
-          <p className="mb-2 text-sm font-bold text-gray-900 dark:text-white">
+          <p className="mb-2 text-sm font-bold text-[#000] dark:text-white">
             Target Difficulty
           </p>
           <div className="mb-4 grid grid-cols-3 gap-2 rounded-xl border border-gray-200 p-1 dark:border-gray-700">
@@ -487,7 +487,7 @@ const GenerateQuestionsModal = ({
                 className={`rounded-lg py-2 text-sm font-semibold transition-all ${
                   difficulty === d
                     ? "bg-color2 text-white shadow"
-                    : "text-gray-500 hover:text-gray-700"
+                    : "text-pri hover:text-[#000]"
                 }`}
               >
                 {d}
@@ -499,7 +499,7 @@ const GenerateQuestionsModal = ({
           <div className="mb-4 rounded-xl border border-gray-200 p-4 dark:border-gray-700">
             <div className="mb-3 flex items-center gap-2">
               <BarChart2 className="text-color2 h-4 w-4" />
-              <p className="text-sm font-bold text-gray-900 dark:text-white">
+              <p className="text-sm font-bold text-[#000] dark:text-white">
                 Knowledge Level-wise Question Count
               </p>
             </div>
@@ -511,21 +511,21 @@ const GenerateQuestionsModal = ({
                 >
                   <div className="mb-1 flex items-center justify-between">
                     <span className="text-color2 text-xs font-bold">{key}</span>
-                    <span className="text-xs text-gray-400">{label}</span>
+                    <span className="text-xs text-[#000]">{label}</span>
                   </div>
                   <div className="flex items-center justify-center gap-3">
                     <button
                       onClick={() => adjustK(key, -1)}
-                      className="hover:border-color2 hover:text-color2 flex h-6 w-6 items-center justify-center rounded-full border border-gray-300 text-gray-500"
+                      className="hover:border-color2 hover:text-color2 flex h-6 w-6 items-center justify-center rounded-full border border-gray-300 text-pri"
                     >
                       −
                     </button>
-                    <span className="w-4 text-center text-sm font-bold text-gray-800 dark:text-gray-200">
+                    <span className="w-4 text-center text-sm font-bold text-[#000] dark:text-gray-200">
                       {kCounts[key]}
                     </span>
                     <button
                       onClick={() => adjustK(key, 1)}
-                      className="hover:border-color2 hover:text-color2 flex h-6 w-6 items-center justify-center rounded-full border border-gray-300 text-gray-500"
+                      className="hover:border-color2 hover:text-color2 flex h-6 w-6 items-center justify-center rounded-full border border-gray-300 text-pri"
                     >
                       +
                     </button>
@@ -537,14 +537,14 @@ const GenerateQuestionsModal = ({
             {/* Total */}
             <div className="mt-3 flex items-center justify-between rounded-lg bg-gray-50 px-4 py-2 dark:bg-gray-800">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                <span className="text-sm font-bold text-[#000] dark:text-gray-300">
                   Total Questions to Generate:
                 </span>
-                <span className="rounded-lg border border-gray-300 px-3 py-0.5 text-sm font-bold text-gray-700 dark:text-gray-300">
+                <span className="rounded-lg border border-gray-300 px-3 py-0.5 text-sm font-bold text-[#000] dark:text-gray-300">
                   {total} Questions
                 </span>
               </div>
-              <div className="flex items-center gap-1 text-xs text-gray-500">
+              <div className="flex items-center gap-1 text-xs text-pri">
                 {K_LEVELS.filter((k) => kCounts[k.key] > 0).map((k, i, arr) => (
                   <span key={k.key}>
                     {k.key}: {kCounts[k.key]}
@@ -565,7 +565,7 @@ const GenerateQuestionsModal = ({
         <div className="flex shrink-0 justify-between border-t border-gray-100 px-6 py-4 dark:border-gray-700">
           <button
             onClick={onClose}
-            className="rounded-lg border border-gray-200 px-5 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50"
+            className="rounded-lg border border-gray-200 px-5 py-2 text-sm font-semibold text-[#000] hover:bg-gray-50"
           >
             Cancel
           </button>

@@ -39,16 +39,16 @@ const ProgramOutcomeAccordionItem: React.FC<
 
         <div className="flex items-center gap-2 shrink-0">
           {isOpen ? (
-            <ChevronUp className="h-4 w-4 text-gray-500" />
+            <ChevronUp className="h-4 w-4 text-pri" />
           ) : (
-            <ChevronDown className="h-4 w-4 text-gray-500" />
+            <ChevronDown className="h-4 w-4 text-pri" />
           )}
         </div>
       </button>
 
       {/* Expanded Description Box */}
       {isOpen && (
-        <div className="p-4 border-t border-gray-100 dark:border-gray-700/60 text-sm font-medium text-gray-700 dark:text-gray-300 leading-relaxed">
+        <div className="p-4 border-t border-gray-100 dark:border-gray-700/60 text-sm font-medium text-[#000] dark:text-gray-300 leading-relaxed">
           {description}
         </div>
       )}

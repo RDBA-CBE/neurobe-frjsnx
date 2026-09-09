@@ -97,7 +97,7 @@ const MCQTestExecutionCard: React.FC<MCQTestExecutionCardProps> = ({
         );
       case "completed":
         return (
-          <span className="inline-flex items-center rounded-full border border-gray-200 bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700 dark:border-gray-700 dark:bg-gray-700 dark:text-gray-300">
+          <span className="inline-flex items-center rounded-full border border-gray-200 bg-gray-100 px-3 py-1 text-xs font-semibold text-[#000] dark:border-gray-700 dark:bg-gray-700 dark:text-gray-300">
             {test.statusLabel || "Completed Session"}
           </span>
         );
@@ -111,29 +111,29 @@ const MCQTestExecutionCard: React.FC<MCQTestExecutionCardProps> = ({
       {/* 1. Header Top Row */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-bold text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+          <span className="rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-bold text-[#000] dark:bg-gray-700 dark:text-gray-300">
             {test.testCode}
           </span>
-          <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">
+          <h3 className="text-base md:text-lg font-bold text-[#000] dark:text-white">
             {test.title}
           </h3>
           {renderStatusBadge()}
         </div>
 
         {test.completedTimeAgo && (
-          <span className="text-xs font-medium text-gray-400 dark:text-gray-500">
+          <span className="text-xs font-medium text-[#000] dark:text-pri">
             {test.completedTimeAgo}
           </span>
         )}
       </div>
 
       {/* 2. Middle Gray Details Container */}
-      <div className="rounded-xl border border-gray-100 bg-[#F8FAFC] p-4 text-xs md:text-sm text-gray-700 dark:border-gray-700/60 dark:bg-gray-700/40 dark:text-gray-300 space-y-3">
+      <div className="rounded-xl border border-gray-100 bg-[#F8FAFC] p-4 text-xs md:text-sm text-[#000] dark:border-gray-700/60 dark:bg-gray-700/40 dark:text-gray-300 space-y-3">
         {/* Row 1: Unit, Questions, Duration, Test Window */}
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 items-center">
           <div className="flex items-center gap-2">
             <span className="text-pri font-medium">Unit:</span>
-            <span className="font-bold text-gray-900 dark:text-white">
+            <span className="font-bold text-[#000] dark:text-white">
               {test.unitLabel}
             </span>
           </div>
@@ -142,17 +142,17 @@ const MCQTestExecutionCard: React.FC<MCQTestExecutionCardProps> = ({
             <span className="text-pri font-medium">
               {test.status === "completed" ? "Questions" : "Questions:"}
             </span>
-            <span className="font-semibold text-gray-900 dark:text-white">
+            <span className="font-semibold text-[#000] dark:text-white">
               {test.questionsCount}
             </span>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="text-pri font-medium">Test Duration:</span>
-            <span className="inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-white px-2.5 py-0.5 text-xs font-bold text-gray-900 shadow-2xs dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+            <span className="inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-white px-2.5 py-0.5 text-xs font-bold text-[#000] shadow-2xs dark:border-gray-600 dark:bg-gray-800 dark:text-white">
               {test.duration}
               {test.isReadOnlyDuration && (
-                <span className="rounded bg-gray-200 px-1 py-0.2 text-[10px] font-extrabold uppercase text-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                <span className="rounded bg-gray-200 px-1 py-0.2 text-[10px] font-extrabold uppercase text-[#000] dark:bg-gray-700 dark:text-gray-300">
                   READ-ONLY
                 </span>
               )}
@@ -164,7 +164,7 @@ const MCQTestExecutionCard: React.FC<MCQTestExecutionCardProps> = ({
             <span
               className={`font-semibold ${test.isPendingWindow
                 ? "text-amber-600 dark:text-amber-400"
-                : "text-gray-900 dark:text-white"
+                : "text-[#000] dark:text-white"
                 }`}
             >
               {test.testWindow}
@@ -180,7 +180,7 @@ const MCQTestExecutionCard: React.FC<MCQTestExecutionCardProps> = ({
           <span className="text-pri font-medium shrink-0">
             {test.status === "completed" ? "Topics Covered" : "Topics:"}
           </span>
-          <span className="font-medium text-gray-800 dark:text-gray-200">
+          <span className="font-medium text-[#000] dark:text-gray-200">
             {test.topics}
           </span>
         </div>
@@ -282,9 +282,9 @@ const MCQTestExecutionCard: React.FC<MCQTestExecutionCardProps> = ({
           <button
             type="button"
             onClick={() => onPreviewQuestions && onPreviewQuestions(test)}
-            className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-1.5 text-xs md:text-sm font-semibold text-gray-700 shadow-2xs hover:bg-gray-50 hover:border-gray-300 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+            className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-1.5 text-xs md:text-sm font-semibold text-[#000] shadow-2xs hover:bg-gray-50 hover:border-gray-300 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
           >
-            <Eye className="h-4 w-4 text-gray-500" />
+            <Eye className="h-4 w-4 text-pri" />
             <span>Preview Questions</span>
           </button>
         </div>

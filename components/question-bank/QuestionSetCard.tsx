@@ -42,7 +42,7 @@ const QuestionSetCard = ({
         >
           {unit}
         </span>
-        <div className="flex items-center gap-1.5 text-xs text-gray-400">
+        <div className="flex items-center gap-1.5 text-xs text-[#000]">
           <Calendar className="h-3.5 w-3.5" />
           {date}
         </div>
@@ -50,15 +50,15 @@ const QuestionSetCard = ({
 
       {/* Title */}
       <div>
-        <h3 className="text-base font-bold text-gray-900">{title}</h3>
-        <div className="mt-1 flex items-center gap-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wide">
+        <h3 className="text-base font-bold text-[#000]">{title}</h3>
+        <div className="mt-1 flex items-center gap-1.5 text-xs font-semibold text-[#000] uppercase tracking-wide">
           <BookOpen className="h-3.5 w-3.5" />
           Topics Included
         </div>
       </div>
 
       {/* Topic summary pill */}
-      <div className="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-sm text-gray-600">
+      <div className="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-sm text-[#000]">
         {topicSummary}
       </div>
 

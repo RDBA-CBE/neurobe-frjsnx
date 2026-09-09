@@ -14,14 +14,14 @@ const ReviewModeBar = ({ onSaveDraft, onContinue }: ReviewModeBarProps) => {
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <p className="text-sm font-bold text-gray-900 dark:text-white">
+            <p className="text-sm font-bold text-[#000] dark:text-white">
               NOTHING IS FINAL UNTIL COORDINATOR APPROVAL
             </p>
             <span className="rounded-full border border-yellow-400 px-2 py-0.5 text-xs font-semibold text-yellow-600">
               Review Mode
             </span>
           </div>
-          <p className="mt-0.5 text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-0.5 text-sm text-[#000] dark:text-gray-400">
             Verify all AI-extracted fields against the source PDF on the left. You can edit every title, topic, L-T-P-C value, and Knowledge Level.
           </p>
         </div>
@@ -29,7 +29,7 @@ const ReviewModeBar = ({ onSaveDraft, onContinue }: ReviewModeBarProps) => {
       <div className="flex shrink-0 items-center gap-3">
         <button
           onClick={onSaveDraft}
-          className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+          className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-[#000] hover:bg-gray-50 transition-all dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
         >
           <span>🗒</span> Save Draft
         </button>

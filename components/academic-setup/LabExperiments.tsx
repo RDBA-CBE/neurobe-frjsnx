@@ -37,8 +37,8 @@ const LabExperiments = () => {
         <div className="flex items-start gap-2">
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary2 text-xs font-bold text-color2 mt-0.5">4</span>
           <div>
-            <h3 className="text-sm font-extrabold uppercase tracking-wide text-gray-900 dark:text-white">Lab Experiments</h3>
-            <p className="text-xs text-gray-400 mt-0.5">Hands-on laboratory experiments and practical exercises extracted from the syllabus.</p>
+            <h3 className="text-sm font-extrabold uppercase tracking-wide text-[#000] dark:text-white">Lab Experiments</h3>
+            <p className="text-xs text-[#000] mt-0.5">Hands-on laboratory experiments and practical exercises extracted from the syllabus.</p>
           </div>
         </div>
         <button
@@ -59,9 +59,9 @@ const LabExperiments = () => {
             <span className="flex bg-light-yellow h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-yellow text-sm font-bold text-amber-500">
               {exp.id}
             </span>
-            <span className="flex-1 text-sm text-gray-700 dark:text-gray-300">{exp.title}</span>
-            <span className="flex shrink-0 items-center gap-1 rounded-lg border border-gray-200 px-2.5 py-1 text-sm font-bold text-gray-700 dark:border-gray-600 dark:text-gray-300">
-              {exp.hours} <span className="text-xs font-normal text-gray-400">hrs</span>
+            <span className="flex-1 text-sm text-[#000] dark:text-gray-300">{exp.title}</span>
+            <span className="flex shrink-0 items-center gap-1 rounded-lg border border-gray-200 px-2.5 py-1 text-sm font-bold text-[#000] dark:border-gray-600 dark:text-gray-300">
+              {exp.hours} <span className="text-xs font-normal text-[#000]">hrs</span>
             </span>
             <button className="text-gray-400 hover:text-color2">
               <SquarePen className="h-4 w-4" />

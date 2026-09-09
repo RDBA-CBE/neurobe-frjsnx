@@ -445,6 +445,7 @@ const MCQTextPreperation = () => {
     appliedFilters: null as FilterValues | null,
     isSyllabusOpen: false,
     selectedSetId: null as string | null,
+    activeBannerTab: "coordinator",
   });
 
   useEffect(() => {
@@ -483,9 +484,9 @@ const MCQTextPreperation = () => {
           { value: "CS301", label: "Course: CS301" },
         ]}
         onCourseChange={(val) => console.log("course", val)}
-        activeView={state.activeTab}
+        activeView={state.activeBannerTab}
         onBack={() => router.back()}
-        onViewChange={(view) => setState({ activeTab: view })}
+        onViewChange={(view) => setState({ activeBannerTab: view })}
       />
 
       <PageHeader
@@ -564,7 +565,7 @@ const MCQTextPreperation = () => {
             />
           ))
         ) : (
-          <div className="rounded-xl border border-dashed border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 p-8 text-center text-gray-500">
+          <div className="rounded-xl border border-dashed border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 p-8 text-center text-pri">
             No tests found matching your criteria.
           </div>
         )}

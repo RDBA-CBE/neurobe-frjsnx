@@ -123,11 +123,11 @@ const AccordiansStyleEditor = ({
         <div>
           {/* sub-header */}
           <div className="flex items-center justify-between border border-t-0 border-gray-200 bg-white p-3 px-5 py-2">
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-[#000]">
               Directly edit headings, paragraphs, explanations, examples, and
               exercises.
             </p>
-            <p className="text-xs italic text-gray-400">
+            <p className="text-xs italic text-[#000]">
               Standard Academic Text Format
             </p>
           </div>
@@ -150,7 +150,7 @@ const AccordiansStyleEditor = ({
               <button
                 type="button"
                 onClick={onCancelEdit}
-                className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-gray-800"
+                className="flex items-center gap-1.5 text-sm font-semibold text-pri hover:text-[#000]"
               >
                 ← Back to Learning Materials
               </button>
@@ -158,7 +158,7 @@ const AccordiansStyleEditor = ({
               <button
                 type="button"
                 onClick={onCancelEdit}
-                className="flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-gray-900"
+                className="flex items-center gap-1.5 text-sm font-semibold text-[#000] hover:text-[#000]"
               >
                 Cancel
               </button>
@@ -198,11 +198,11 @@ const AccordiansStyleEditor = ({
             <div className="space-y-6">
               {sections.map((section, i) => (
                 <div key={i}>
-                  <h2 className="mb-2 text-base font-bold text-gray-900">
+                  <h2 className="mb-2 text-base font-bold text-[#000]">
                     {i + 1}. {section.heading}
                   </h2>
                   {section.body && (
-                    <p className="text-sm leading-relaxed text-gray-500">
+                    <p className="text-sm leading-relaxed text-pri">
                       {section.body}
                     </p>
                   )}
@@ -211,11 +211,11 @@ const AccordiansStyleEditor = ({
                       {section.bullets.map((b, j) => (
                         <li
                           key={j}
-                          className="flex gap-1 text-sm text-gray-500"
+                          className="flex gap-1 text-sm text-pri"
                         >
                           <span className="shrink-0">•</span>
                           <span>
-                            <span className="font-bold text-gray-800">
+                            <span className="font-bold text-[#000]">
                               {b.label}
                             </span>{" "}
                             {b.text}
@@ -225,7 +225,7 @@ const AccordiansStyleEditor = ({
                     </ul>
                   )}
                   {section.footer && (
-                    <p className="mt-3 text-sm leading-relaxed text-gray-500">
+                    <p className="mt-3 text-sm leading-relaxed text-pri">
                       {section.footer}
                     </p>
                   )}
@@ -240,7 +240,7 @@ const AccordiansStyleEditor = ({
             <button
               type="button"
               onClick={onBack}
-              className="flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-gray-900"
+              className="flex items-center gap-1.5 text-sm font-semibold text-[#000] hover:text-[#000]"
             >
               ← Back to Learning Materials
             </button>

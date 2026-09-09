@@ -121,7 +121,7 @@ const MyAssignedCourses = () => {
 
       {/* <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="relative max-w-[300px] flex-1">
-          <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+          <span className="absolute inset-y-0 left-3 flex items-center text-[#000]">
             <IconSearch className="h-4 w-4" />
           </span>
           <input

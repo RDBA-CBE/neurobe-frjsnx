@@ -30,7 +30,7 @@ const QuestionBankPreviewCard: React.FC<QuestionBankPreviewCardProps> = ({
     >
       {/* Top Header Row */}
       <div className="flex items-center justify-between">
-        <h4 className="text-base font-bold text-gray-900 dark:text-white">
+        <h4 className="text-base font-bold text-[#000] dark:text-white">
           Question {questionNumber}
         </h4>
         <div className="flex items-center gap-2">
@@ -48,7 +48,7 @@ const QuestionBankPreviewCard: React.FC<QuestionBankPreviewCardProps> = ({
       </div>
 
       {/* Question Text */}
-      <p className="mt-1.5 text-sm font-bold text-gray-900 dark:text-white leading-snug">
+      <p className="mt-1.5 text-sm font-bold text-[#000] dark:text-white leading-snug">
         {question}
       </p>
 
@@ -59,7 +59,7 @@ const QuestionBankPreviewCard: React.FC<QuestionBankPreviewCardProps> = ({
             key={opt.key}
             className={`rounded-xl border px-4 py-2 text-sm font-semibold transition flex items-start gap-2 ${opt.isCorrect
               ? "border-emerald-500 bg-emerald-50/60 text-emerald-800 font-bold dark:border-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-300"
-              : "border-gray-200 bg-white text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              : "border-gray-200 bg-white text-[#000] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
               }`}
           >
             <span className="font-bold">{opt.key}.</span>

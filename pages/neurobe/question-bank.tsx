@@ -253,6 +253,7 @@ const QuestionBank = () => {
     appliedFilters: null as FilterValues | null,
     isSyllabusOpen: false,
     selectedSetId: null as string | null,
+    activeBannerTab: "coordinator",
   });
 
   useEffect(() => {
@@ -275,9 +276,9 @@ const QuestionBank = () => {
           { value: "CS301", label: "Course: CS301" },
         ]}
         onCourseChange={(val) => console.log("course", val)}
-        activeView={state.activeTab}
+        activeView={state.activeBannerTab}
         onBack={() => router.back()}
-        onViewChange={(view) => setState({ activeTab: view })}
+        onViewChange={(view) => setState({ activeBannerTab: view })}
       />
 
       <PageHeader
@@ -395,11 +396,11 @@ const QuestionBank = () => {
                 onChange={(unit) => setState({ activeTab: unit as string })}
                 rightContent={
                   <div className="flex items-center gap-2 rounded-xl mb-1 border border-gray-200 bg-white px-4  h-11">
-                    <Search className="h-4 w-4 shrink-0 text-gray-400" />
+                    <Search className="h-4 w-4 shrink-0 text-[#000]" />
                     <input
                       type="text"
                       placeholder="Search questions in this set..."
-                      className="w-64 bg-transparent text-sm text-gray-600 placeholder:text-gray-400 outline-none"
+                      className="w-64 bg-transparent text-sm text-[#000] placeholder:text-gray-400 outline-none"
                     />
                   </div>
                 }

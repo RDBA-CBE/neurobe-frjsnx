@@ -54,12 +54,12 @@ const SyllabusHeaderCard: React.FC<SyllabusHeaderCardProps> = ({
     >
       {/* Top Banner Pill Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-2xl border border-gray-200/70 bg-dark_grey px-5 py-2.5 dark:border-gray-800 dark:bg-gray-800/40">
-        <div className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-          <span>Programme: <strong className="text-gray-700 dark:text-gray-200">{bannerProgramme}</strong></span>
+        <div className="text-sm font-semibold text-pri dark:text-gray-400">
+          <span>Programme: <strong className="text-[#000] dark:text-gray-200">{bannerProgramme}</strong></span>
           <span className="mx-2 text-gray-300">•</span>
-          <span>Batch: <strong className="text-gray-700 dark:text-gray-200">{bannerBatch}</strong></span>
+          <span>Batch: <strong className="text-[#000] dark:text-gray-200">{bannerBatch}</strong></span>
           <span className="mx-2 text-gray-300">•</span>
-          <span>Semester: <strong className="text-gray-700 dark:text-gray-200">{bannerSemester}</strong></span>
+          <span>Semester: <strong className="text-[#000] dark:text-gray-200">{bannerSemester}</strong></span>
         </div>
         <div className="text-sm font-bold text-color2 dark:text-purple-400">
           {courseCode} — {courseTitle}
@@ -79,14 +79,14 @@ const SyllabusHeaderCard: React.FC<SyllabusHeaderCardProps> = ({
               <h2 className="page-ti mb-2 dark:text-white">
                 {title}
               </h2>
-              <p className="mt-0.5 text-sm font-medium text-gray-500 dark:text-gray-400">
+              <p className="mt-0.5 text-sm font-medium text-pri dark:text-gray-400">
                 {subtitle}
               </p>
             </div>
           </div>
 
           {/* Approved Meta Line */}
-          <div className="mt-3 flex flex-wrap items-center gap-x-2 text-xs text-gray-500 dark:text-gray-400">
+          <div className="mt-3 flex flex-wrap items-center gap-x-2 text-xs text-pri dark:text-gray-400">
             <span>
               <strong>Approved by:</strong> {approvedBy}
             </span>

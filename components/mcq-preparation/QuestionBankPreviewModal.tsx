@@ -34,16 +34,16 @@ const QuestionBankPreviewModal: React.FC<QuestionBankPreviewModalProps> = ({
         {/* Header */}
         <div className="flex shrink-0 items-start justify-between border-b border-gray-100 px-8 py-5 dark:border-gray-800">
           <div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h3 className="text-xl font-bold text-[#000] dark:text-white">
               {title}
             </h3>
-            <p className="mt-1 text-xs font-semibold text-gray-500 dark:text-gray-400">
+            <p className="mt-1 text-xs font-semibold text-pri dark:text-gray-400">
               {subtitle}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="rounded-full border border-gray-200 p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:border-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-200 transition"
+            className="rounded-full border border-gray-200 p-1.5 text-[#000] hover:bg-gray-100 hover:text-[#000] dark:border-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-200 transition"
           >
             <X className="h-4 w-4" />
           </button>

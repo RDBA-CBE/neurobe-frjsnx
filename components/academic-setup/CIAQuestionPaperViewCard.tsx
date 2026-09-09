@@ -166,26 +166,26 @@ const CIAQuestionPaperViewCard: React.FC<CIAQuestionPaperViewCardProps> = ({
     <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800">
       {/* 1. Header Titles */}
       <div className="text-center mb-8">
-        <h2 className="text-lg font-bold uppercase tracking-wide text-gray-900 dark:text-white sm:text-xl">
+        <h2 className="text-lg font-bold uppercase tracking-wide text-[#000] dark:text-white sm:text-xl">
           {department}
         </h2>
-        <h3 className="mt-1 text-base font-bold uppercase tracking-wider text-gray-800 dark:text-gray-200">
+        <h3 className="mt-1 text-base font-bold uppercase tracking-wider text-[#000] dark:text-gray-200">
           {assessmentTitle}
         </h3>
       </div>
 
       {/* 2. Metadata Grid */}
-      <div className="space-y-3.5 pb-5 border-b border-gray-200/80 dark:border-gray-700 text-sm text-gray-700 dark:text-gray-300">
+      <div className="space-y-3.5 pb-5 border-b border-gray-200/80 dark:border-gray-700 text-sm text-[#000] dark:text-gray-300">
         {/* Row 1 */}
         <div className="flex flex-row justify-between gap-4 print-row-1">
           <div className="w-1/2 print-col-left">
-            <span className="font-bold text-gray-900 dark:text-white">
+            <span className="font-bold text-[#000] dark:text-white">
               Course:{" "}
             </span>
             <span className="font-medium">{courseCodeTitle}</span>
           </div>
           <div className="w-[45%] print-col-right">
-            <span className="font-bold text-gray-900 dark:text-white">
+            <span className="font-bold text-[#000] dark:text-white">
               Programme:{" "}
             </span>
             <span className="font-medium">
@@ -199,13 +199,13 @@ const CIAQuestionPaperViewCard: React.FC<CIAQuestionPaperViewCardProps> = ({
         {/* Row 2 */}
         <div className="flex flex-row justify-between gap-4 print-row-2">
           <div className="w-1/2 print-col-left">
-            <span className="font-bold text-gray-900 dark:text-white">
+            <span className="font-bold text-[#000] dark:text-white">
               Semester:{" "}
             </span>
             <span className="font-medium">{semester}</span>
           </div>
           <div className="w-[45%] print-col-right">
-            <span className="font-bold text-gray-900 dark:text-white">
+            <span className="font-bold text-[#000] dark:text-white">
               Academic Year:{" "}
             </span>
             <span className="font-medium">{academicYear}</span>
@@ -215,19 +215,19 @@ const CIAQuestionPaperViewCard: React.FC<CIAQuestionPaperViewCardProps> = ({
         {/* Row 3 */}
         <div className="flex flex-row justify-between items-center gap-4 print-row-3">
           <div>
-            <span className="font-bold text-gray-900 dark:text-white">
+            <span className="font-bold text-[#000] dark:text-white">
               Max. Marks:{" "}
             </span>
             <span className="font-medium">{maxMarks}</span>
           </div>
           <div className="text-center">
-            <span className="font-bold text-gray-900 dark:text-white">
+            <span className="font-bold text-[#000] dark:text-white">
               Duration:{" "}
             </span>
             <span className="font-medium">{duration}</span>
           </div>
           <div className="text-right print-date-right">
-            <span className="font-bold text-gray-900 dark:text-white">
+            <span className="font-bold text-[#000] dark:text-white">
               Date:{" "}
             </span>
             <span className="font-medium">{date}</span>
@@ -236,9 +236,9 @@ const CIAQuestionPaperViewCard: React.FC<CIAQuestionPaperViewCardProps> = ({
       </div>
 
       {/* 3. Note Box */}
-      <div className="my-6 rounded-xl border border-gray-100 bg-[#F8FAFC] p-4 text-xs sm:text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-700/40 dark:text-gray-300">
+      <div className="my-6 rounded-xl border border-gray-100 bg-[#F8FAFC] p-4 text-xs sm:text-sm text-[#000] dark:border-gray-700 dark:bg-gray-700/40 dark:text-gray-300">
         <p className="leading-relaxed">
-          <strong className="font-bold text-gray-900 dark:text-white">
+          <strong className="font-bold text-[#000] dark:text-white">
             Note:{" "}
           </strong>
           {noteText.replace(/^Note:\s*/i, "")}
@@ -249,10 +249,10 @@ const CIAQuestionPaperViewCard: React.FC<CIAQuestionPaperViewCardProps> = ({
       <div className="mt-8 space-y-4">
         {/* Part A Header */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 pb-2 dark:border-gray-700">
-          <h4 className="text-base font-bold text-gray-900 dark:text-white">
+          <h4 className="text-base font-bold text-[#000] dark:text-white">
             PART A
           </h4>
-          <span className="text-sm font-bold text-gray-900 dark:text-white">
+          <span className="text-sm font-bold text-[#000] dark:text-white">
             Answer ALL Questions (5 x 2 = 10 Marks)
           </span>
         </div>
@@ -262,20 +262,20 @@ const CIAQuestionPaperViewCard: React.FC<CIAQuestionPaperViewCardProps> = ({
           {partAQuestions.map((q) => (
             <div
               key={q.id}
-              className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 text-sm text-gray-800 dark:text-gray-200 print-avoid-break"
+              className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 text-sm text-[#000] dark:text-gray-200 print-avoid-break"
             >
               <div className="flex items-start gap-3 flex-1">
-                <span className="w-6 shrink-0 font-bold text-gray-900 dark:text-white">
+                <span className="w-6 shrink-0 font-bold text-[#000] dark:text-white">
                   {q.qNo}
                 </span>
                 <p className="leading-relaxed font-medium">{q.question}</p>
               </div>
 
               <div className="flex shrink-0 items-center gap-4 self-end sm:self-start">
-                <span className="inline-flex items-center rounded-md border border-gray-200 bg-[#F1F5F9] px-2.5 py-1 text-xs font-semibold text-gray-600 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                <span className="inline-flex items-center rounded-md border border-gray-200 bg-[#F1F5F9] px-2.5 py-1 text-xs font-semibold text-[#000] dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300">
                   {q.coTag}
                 </span>
-                <span className="w-16 text-right font-bold text-gray-900 dark:text-white">
+                <span className="w-16 text-right font-bold text-[#000] dark:text-white">
                   {q.marks}
                 </span>
               </div>
@@ -288,10 +288,10 @@ const CIAQuestionPaperViewCard: React.FC<CIAQuestionPaperViewCardProps> = ({
       <div className="mt-10 space-y-6">
         {/* Part B Header */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 pb-2 dark:border-gray-700">
-          <h4 className="text-base font-bold text-gray-900 dark:text-white">
+          <h4 className="text-base font-bold text-[#000] dark:text-white">
             PART B
           </h4>
-          <span className="text-sm font-bold text-gray-900 dark:text-white">
+          <span className="text-sm font-bold text-[#000] dark:text-white">
             Answer ALL Questions (Either / Or Pattern) (5 x 8 = 40 Marks)
           </span>
         </div>
@@ -301,9 +301,9 @@ const CIAQuestionPaperViewCard: React.FC<CIAQuestionPaperViewCardProps> = ({
           {partBQuestions.map((pair) => (
             <div key={pair.id} className="space-y-5 print-avoid-break">
               {/* Question A */}
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 text-sm text-gray-800 dark:text-gray-200">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 text-sm text-[#000] dark:text-gray-200">
                 <div className="flex items-start gap-3 flex-1">
-                  <span className="w-10 shrink-0 font-bold text-gray-900 dark:text-white">
+                  <span className="w-10 shrink-0 font-bold text-[#000] dark:text-white">
                     {pair.qNoA}
                   </span>
                   <p className="leading-relaxed font-medium">
@@ -312,10 +312,10 @@ const CIAQuestionPaperViewCard: React.FC<CIAQuestionPaperViewCardProps> = ({
                 </div>
 
                 <div className="flex shrink-0 items-center gap-4 self-end sm:self-start">
-                  <span className="inline-flex items-center rounded-md border border-gray-200 bg-[#F1F5F9] px-2.5 py-1 text-xs font-semibold text-gray-600 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                  <span className="inline-flex items-center rounded-md border border-gray-200 bg-[#F1F5F9] px-2.5 py-1 text-xs font-semibold text-[#000] dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300">
                     {pair.coTagA}
                   </span>
-                  <span className="w-16 text-right font-bold text-gray-900 dark:text-white">
+                  <span className="w-16 text-right font-bold text-[#000] dark:text-white">
                     {pair.marksA}
                   </span>
                 </div>
@@ -324,15 +324,15 @@ const CIAQuestionPaperViewCard: React.FC<CIAQuestionPaperViewCardProps> = ({
               {/* OR Divider */}
               <div className="relative flex items-center justify-center my-4">
                 <div className="w-full border-t border-dashed border-gray-200 dark:border-gray-700" />
-                <span className="absolute bg-white dark:bg-gray-800 px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 tracking-widest">
+                <span className="absolute bg-white dark:bg-gray-800 px-4 text-xs font-semibold text-[#000] dark:text-pri tracking-widest">
                   — OR —
                 </span>
               </div>
 
               {/* Question B */}
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 text-sm text-gray-800 dark:text-gray-200">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 text-sm text-[#000] dark:text-gray-200">
                 <div className="flex items-start gap-3 flex-1">
-                  <span className="w-10 shrink-0 font-bold text-gray-900 dark:text-white">
+                  <span className="w-10 shrink-0 font-bold text-[#000] dark:text-white">
                     {pair.qNoB}
                   </span>
                   <p className="leading-relaxed font-medium">
@@ -341,10 +341,10 @@ const CIAQuestionPaperViewCard: React.FC<CIAQuestionPaperViewCardProps> = ({
                 </div>
 
                 <div className="flex shrink-0 items-center gap-4 self-end sm:self-start">
-                  <span className="inline-flex items-center rounded-md border border-gray-200 bg-[#F1F5F9] px-2.5 py-1 text-xs font-semibold text-gray-600 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                  <span className="inline-flex items-center rounded-md border border-gray-200 bg-[#F1F5F9] px-2.5 py-1 text-xs font-semibold text-[#000] dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300">
                     {pair.coTagB}
                   </span>
-                  <span className="w-16 text-right font-bold text-gray-900 dark:text-white">
+                  <span className="w-16 text-right font-bold text-[#000] dark:text-white">
                     {pair.marksB}
                   </span>
                 </div>
@@ -356,7 +356,7 @@ const CIAQuestionPaperViewCard: React.FC<CIAQuestionPaperViewCardProps> = ({
 
       {/* 6. Footer Section */}
       <div className="mt-8 border-t border-gray-200 pt-5 text-center dark:border-gray-700 space-y-1.5 print-avoid-break">
-        <p className="text-sm font-bold uppercase tracking-widest text-gray-900 dark:text-white">
+        <p className="text-sm font-bold uppercase tracking-widest text-[#000] dark:text-white">
           *** End of Question Paper ***
         </p>
         <p className="text-sm font-medium text-pri dark:text-gray-400">

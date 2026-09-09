@@ -26,9 +26,9 @@ export const CIAPaperFinalizationActions: React.FC<CIAPaperFinalizationActionsPr
         <button
           type="button"
           onClick={onBackToEditSections || (() => window.history.back())}
-          className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs md:text-sm font-semibold text-gray-700 shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+          className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs md:text-sm font-semibold text-[#000] shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
         >
-          <ArrowLeft className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          <ArrowLeft className="h-4 w-4 text-pri dark:text-gray-400" />
           <span>Back to Edit Sections</span>
         </button>
 
@@ -37,7 +37,7 @@ export const CIAPaperFinalizationActions: React.FC<CIAPaperFinalizationActionsPr
           <button
             type="button"
             onClick={onSaveDraft || (() => console.log("Save Draft"))}
-            className="inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs md:text-sm font-semibold text-gray-700 shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+            className="inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs md:text-sm font-semibold text-[#000] shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
           >
             Save Draft
           </button>

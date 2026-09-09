@@ -46,23 +46,23 @@ const Modal = ({
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
     <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl dark:bg-gray-900">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-bold text-gray-900 dark:text-white">{title}</h3>
-        <button onClick={onClose} className="text-gray-400 hover:text-gray-600"><X className="h-4 w-4" /></button>
+        <h3 className="text-sm font-bold text-[#000] dark:text-white">{title}</h3>
+        <button onClick={onClose} className="text-gray-400 hover:text-[#000]"><X className="h-4 w-4" /></button>
       </div>
       <div className="space-y-3">
         {fields.map((f) => (
           <div key={f.key}>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-400">{f.label}</label>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#000]">{f.label}</label>
             <input
               value={form[f.key]}
               onChange={(e) => onChange(f.key, e.target.value)}
-              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none focus:border-color2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-[#000] outline-none focus:border-color2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             />
           </div>
         ))}
       </div>
       <div className="mt-5 flex justify-end gap-2">
-        <button onClick={onClose} className="rounded-lg border border-gray-200 px-4 py-2 text-sm text-gray-500 hover:bg-gray-50">Cancel</button>
+        <button onClick={onClose} className="rounded-lg border border-gray-200 px-4 py-2 text-sm text-pri hover:bg-gray-50">Cancel</button>
         <button onClick={onSubmit} className="rounded-lg bg-color2 px-4 py-2 text-sm font-semibold text-white hover:opacity-90">Add</button>
       </div>
     </div>
@@ -86,26 +86,26 @@ const BookCard = ({
     </div>
     <div className="grid grid-cols-2 gap-3">
       <div>
-        <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-400">Title</label>
+        <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#000]">Title</label>
         <input value={book.title} onChange={(e) => onChange("title", e.target.value)}
-          className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
+          className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-[#000] outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
       </div>
       <div>
-        <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-400">Author(s)</label>
+        <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#000]">Author(s)</label>
         <input value={book.authors} onChange={(e) => onChange("authors", e.target.value)}
-          className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
+          className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-[#000] outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
       </div>
       {showEditionPublisher && (
         <>
           <div>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-400">Edition / Year</label>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#000]">Edition / Year</label>
             <input value={book.edition} onChange={(e) => onChange("edition", e.target.value)}
-              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
+              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-[#000] outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
           </div>
           <div>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-400">Publisher</label>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#000]">Publisher</label>
             <input value={book.publisher} onChange={(e) => onChange("publisher", e.target.value)}
-              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
+              className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-[#000] outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
           </div>
         </>
       )}
@@ -159,8 +159,8 @@ const PrescribedTextbooks = () => {
         <div className="flex items-start gap-2">
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary2 text-xs font-bold text-color2 mt-0.5">5</span>
           <div>
-            <h3 className="text-sm font-extrabold uppercase tracking-wide text-gray-900 dark:text-white">Prescribed Textbooks & Reference Literature</h3>
-            <p className="text-xs text-gray-400 mt-0.5">Standard BoS references with edition, author, and publisher citations.</p>
+            <h3 className="text-sm font-extrabold uppercase tracking-wide text-[#000] dark:text-white">Prescribed Textbooks & Reference Literature</h3>
+            <p className="text-xs text-[#000] mt-0.5">Standard BoS references with edition, author, and publisher citations.</p>
           </div>
         </div>
         <button onClick={() => openModal("textbook")}
@@ -194,7 +194,7 @@ const PrescribedTextbooks = () => {
         {references.map((book, i) => (
           <BookCard key={book.id} book={book}
             label={`Ref ${String(i + 1).padStart(2, "0")}`}
-            labelClass="bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+            labelClass="bg-gray-100 text-[#000] dark:bg-gray-700 dark:text-gray-300"
             showEditionPublisher={false}
             onDelete={() => deleteBook(references, setReferences, book.id)}
             onChange={(field, value) => updateBook(references, setReferences, book.id, field, value)} />

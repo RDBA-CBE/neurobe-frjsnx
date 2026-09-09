@@ -38,48 +38,48 @@ const AssignedCourseCard: React.FC<AssignedCourseCardProps> = ({
         </div>
 
         {/* Card Title using sec-heading */}
-        <h3 className="font-bold text-lg my-4 text-gray-900 dark:text-white">
+        <h3 className="font-bold text-lg my-4 text-[#000] dark:text-white">
           {code} — {title}
         </h3>
 
         {/* Metadata Details */}
         <div className="space-y-3 pt-1">
           <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2 text-pri text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-pri text-pri dark:text-gray-400">
               <GraduationCap className="h-4 w-4 shrink-0" />
               <span>Programme:</span>
             </div>
-            <span className="font-semibold text-gray-900 dark:text-white">
+            <span className="font-semibold text-[#000] dark:text-white">
               {programme}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2 text-pri text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-pri text-pri dark:text-gray-400">
               <Calendar className="h-4 w-4 shrink-0" />
               <span>Batch:</span>
             </div>
-            <span className="font-semibold text-gray-900 dark:text-white">
+            <span className="font-semibold text-[#000] dark:text-white">
               {batch}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2 text-pri text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-pri text-pri dark:text-gray-400">
               <Layers className="h-4 w-4 shrink-0" />
               <span>Semester:</span>
             </div>
-            <span className="font-semibold text-gray-900 dark:text-white">
+            <span className="font-semibold text-[#000] dark:text-white">
               {semester}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2 text-pri text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-pri text-pri dark:text-gray-400">
               <User className="h-4 w-4 shrink-0" />
               <span>Enrolled Students:</span>
             </div>
-            <span className="font-semibold text-gray-900 dark:text-white">
+            <span className="font-semibold text-[#000] dark:text-white">
               {enrolledStudents}
             </span>
           </div>

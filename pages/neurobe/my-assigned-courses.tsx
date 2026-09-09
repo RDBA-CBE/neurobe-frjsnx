@@ -173,8 +173,8 @@ const MyAssignedCourses = () => {
       title: "COURSE TITLE",
       render: ({ title, programme }: any) => (
         <div>
-          <p className="font-medium text-gray-900 dark:text-white">{title}</p>
-          <p className="text-xs text-gray-500">{programme}</p>
+          <p className="font-medium text-[#000] dark:text-white">{title}</p>
+          <p className="text-xs text-pri">{programme}</p>
         </div>
       ),
     },
@@ -183,8 +183,8 @@ const MyAssignedCourses = () => {
       title: "BATCH & SEMESTER",
       render: ({ batch, semester }: any) => (
         <div>
-          <p className="text-sm text-gray-800 dark:text-gray-200">{batch}</p>
-          <span className="text-xs text-gray-400">{semester}</span>
+          <p className="text-sm text-[#000] dark:text-gray-200">{batch}</p>
+          <span className="text-xs text-[#000]">{semester}</span>
         </div>
       ),
     },
@@ -201,7 +201,7 @@ const MyAssignedCourses = () => {
       accessor: "studentsCount",
       title: "STUDENTS",
       render: ({ studentsCount }: any) => (
-        <span className="font-medium text-gray-700 dark:text-gray-300">
+        <span className="font-medium text-[#000] dark:text-gray-300">
           {studentsCount} Enrolled
         </span>
       ),
@@ -223,7 +223,7 @@ const MyAssignedCourses = () => {
           className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
             status === "Active"
               ? "bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-              : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+              : "bg-gray-100 text-[#000] dark:bg-gray-700 dark:text-gray-300"
           }`}
         >
           <span
@@ -288,7 +288,7 @@ const MyAssignedCourses = () => {
       {/* Filters */}
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="relative max-w-[300px] flex-1">
-          <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+          <span className="absolute inset-y-0 left-3 flex items-center text-[#000]">
             <IconSearch className="h-4 w-4" />
           </span>
           <input

@@ -60,7 +60,7 @@ export const DROPDOWN_INSTITUTION_ADMIN = [
 
 
 export const OwnmenuConfig = {
-  erp_admin: [
+  erp: [
     {
       type: "heading",
       label: "CORE WORKSPACES",

@@ -163,7 +163,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
         <div className="flex shrink-0 items-start justify-between border-b border-gray-100 px-8 py-5 dark:border-gray-800">
           <div>
             <div className="flex flex-wrap items-center gap-3">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-bold text-[#000] dark:text-white">
                 {testData?.title || "Network Models & Physical Layer Quiz"}
               </h2>
               <span className="rounded-full border border-[#ddd6fe] bg-[#f5f3ff] px-3 py-0.5 text-xs font-semibold text-color2 dark:bg-purple-950/40 dark:border-purple-800 dark:text-purple-300">
@@ -173,19 +173,19 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 {testData?.status || "Live"}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-0.5 text-xs font-semibold text-gray-600 dark:bg-gray-800 dark:text-gray-300">
-                <Lock className="h-3 w-3 text-gray-500" />
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-0.5 text-xs font-semibold text-[#000] dark:bg-gray-800 dark:text-gray-300">
+                <Lock className="h-3 w-3 text-pri" />
                 Read Only
               </span>
             </div>
-            <p className="mt-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+            <p className="mt-1 text-sm font-medium text-pri dark:text-gray-400">
               Academic test configuration & approved question preview
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="rounded-full border border-gray-200 p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:border-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-200 transition"
+            className="rounded-full border border-gray-200 p-1 text-[#000] hover:bg-gray-100 hover:text-[#000] dark:border-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-200 transition"
           >
             <X className="h-4 w-4" />
           </button>
@@ -199,7 +199,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
           {/* SECTION 1 — TEST SUMMARY */}
           <div>
             <div className="mb-3 flex items-center justify-between">
-              <div className="flex items-center gap-2 text-md font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
+              <div className="flex items-center gap-2 text-md font-extrabold uppercase tracking-wider text-[#000] dark:text-white">
                 <FileText className="h-4 w-4 text-color2" />
                 <span className="font-bold">SECTION 1 — TEST SUMMARY</span>
               </div>
@@ -215,7 +215,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
                 <p className="text-[11px] font-bold uppercase tracking-wider text-pri dark:text-gray-400 mb-1">
                   UNIT
                 </p>
-                <p className="text-sm font-bold text-gray-900 dark:text-white leading-snug">
+                <p className="text-sm font-bold text-[#000] dark:text-white leading-snug">
                   {testData?.unit || "Unit 1 — Physical & Network Models"}
                 </p>
               </div>
@@ -225,7 +225,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
                 <p className="text-[11px] font-bold uppercase tracking-wider text-pri dark:text-gray-400 mb-1">
                   QUESTIONS
                 </p>
-                <p className="text-sm font-bold text-gray-900 dark:text-white">
+                <p className="text-sm font-bold text-[#000] dark:text-white">
                   {testData?.questionsCount || 5}
                 </p>
               </div>
@@ -235,7 +235,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
                 <p className="text-[11px] font-bold uppercase tracking-wider text-pri dark:text-gray-400 mb-1">
                   KNOWLEDGE LEVELS
                 </p>
-                <p className="text-sm font-bold text-gray-900 dark:text-white">
+                <p className="text-sm font-bold text-[#000] dark:text-white">
                   {testData?.knowledgeLevels || "K1: 2 • K2: 3"}
                 </p>
               </div>
@@ -246,11 +246,11 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
                   <p className="text-[11px] font-bold uppercase tracking-wider text-pri dark:text-gray-400">
                     TEST WINDOW
                   </p>
-                  <Calendar className="h-3.5 w-3.5 text-gray-400" />
+                  <Calendar className="h-3.5 w-3.5 text-[#000]" />
                 </div>
-                <p className="text-sm font-bold text-gray-900 dark:text-white leading-snug">
+                <p className="text-sm font-bold text-[#000] dark:text-white leading-snug">
                   {testData?.testWindowDate || "01 Sep 2026"},{" "}
-                  <span className="font-semibold text-gray-600 dark:text-gray-300">
+                  <span className="font-semibold text-[#000] dark:text-gray-300">
                     {testData?.testWindowTime || "2:00 PM – 3:00 PM"}
                   </span>
                 </p>
@@ -262,7 +262,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
               <p className="text-[11px] font-bold uppercase tracking-wider text-pri dark:text-gray-400 mb-2">
                 TOPICS
               </p>
-              <div className="space-y-1 text-xs font-semibold text-gray-700 dark:text-gray-300">
+              <div className="space-y-1 text-xs font-semibold text-[#000] dark:text-gray-300">
                 {(
                   testData?.topics || [
                     "1.3 OSI and TCP/IP Reference Models",
@@ -282,13 +282,13 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
           <div>
             <div className="mb-4 flex items-center justify-between">
               <div>
-                <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
+                <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-[#000] dark:text-white">
                   <HelpCircle className="h-4 w-4 text-color2" />
                   <span className="font-bold">
                     SECTION 2 — SELECTED QUESTIONS ({questionsList.length})
                   </span>
                 </div>
-                <p className="text-xs font-medium text-gray-400 dark:text-gray-400 mt-0.5">
+                <p className="text-xs font-medium text-[#000] dark:text-gray-400 mt-0.5">
                   Complete approved question list in read-only mode.
                 </p>
               </div>
@@ -315,16 +315,16 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
                     {/* Top Row: Question Badge + Code + Level + Marks + Toggle */}
                     <div className="flex items-center justify-between gap-3 mb-2">
                       <div className="flex items-center gap-2">
-                        <span className="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-bold text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                        <span className="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-bold text-[#000] dark:bg-gray-700 dark:text-gray-200">
                           Question {q.questionNumber}
                         </span>
-                        <span className="text-xs font-medium text-gray-400 dark:text-gray-500">
+                        <span className="text-xs font-medium text-[#000] dark:text-pri">
                           {q.code}
                         </span>
                         <span className="rounded bg-[#eff6ff] px-2 py-0.5 text-xs font-bold text-[#3b82f6] dark:bg-blue-950/50 dark:text-blue-300">
                           {q.level}
                         </span>
-                        <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+                        <span className="text-xs font-semibold text-[#000] dark:text-gray-300">
                           {q.marks}
                         </span>
                       </div>
@@ -349,15 +349,15 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
                     </div>
 
                     {/* Topic & Subtopic */}
-                    <p className="text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wide mb-2">
-                      TOPIC: <span className="text-xs font-bold text-gray-800 dark:text-gray-200 normal-case">{q.topic}</span>
-                      <span className="mx-1.5 text-gray-300 dark:text-gray-600">•</span>
+                    <p className="text-[11px] font-bold text-[#000] dark:text-gray-400 uppercase tracking-wide mb-2">
+                      TOPIC: <span className="text-xs font-bold text-[#000] dark:text-gray-200 normal-case">{q.topic}</span>
+                      <span className="mx-1.5 text-gray-300 dark:text-[#000]">•</span>
                       SUBTOPIC:{" "}
-                      <span className="text-xs font-bold text-gray-800 dark:text-gray-200 normal-case">{q.subtopic}</span>
+                      <span className="text-xs font-bold text-[#000] dark:text-gray-200 normal-case">{q.subtopic}</span>
                     </p>
 
                     {/* Question Text */}
-                    <h4 className="text-sm font-bold text-gray-900 dark:text-white leading-snug">
+                    <h4 className="text-sm font-bold text-[#000] dark:text-white leading-snug">
                       {q.question}
                     </h4>
 
@@ -371,7 +371,7 @@ const ViewTestDetailsModal: React.FC<ViewTestDetailsModalProps> = ({
                                 key={opt.key}
                                 className={`rounded-xl border px-3.5 py-2 text-xs font-medium ${opt.isCorrect
                                   ? "border-emerald-300 bg-emerald-50 text-emerald-900 font-bold dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-200"
-                                  : "border-gray-200 bg-gray-50 text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                                  : "border-gray-200 bg-gray-50 text-[#000] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
                                   }`}
                               >
                                 <span className="font-bold mr-1.5">

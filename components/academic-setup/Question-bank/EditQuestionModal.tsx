@@ -204,7 +204,7 @@ export const EditQuestionModal = ({
 
         {/* Answer Options */}
         <div>
-          <p className="mb-3 text-sm font-extrabold uppercase tracking-wide text-gray-800">
+          <p className="mb-3 text-sm font-extrabold uppercase tracking-wide text-[#000]">
             Answer Options & Correct Key
           </p>
           <div className="grid grid-cols-2 gap-4">
@@ -260,7 +260,7 @@ export const EditQuestionModal = ({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-gray-700 hover:bg-gray-50"
+            className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-[#000] hover:bg-gray-50"
           >
             Cancel
           </button>

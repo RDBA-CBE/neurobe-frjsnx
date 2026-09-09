@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Check, EditIcon, Hourglass, RefreshCw, ReplaceAll, Save, Sparkles } from "lucide-react";
+import { Check, EditIcon, Hourglass, Lightbulb, Presentation, RefreshCw, ReplaceAll, Save, Sparkles } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState, Success } from "@/utils/function.utils";
 import PrivateRouter from "@/hook/privateRouter";
@@ -14,6 +14,7 @@ import { EditPedagogyModal, ReplacePedagogyModal } from "@/components/co-po-mapp
 import { useRouter } from "next/navigation";
 import TableTitle from "@/components/common-components/TableTitle";
 import { UNIT_TABS } from "@/utils/constant.utils";
+import PageHeader from "@/components/common-components/PageHeader";
 
 // ─── Static config ────────────────────────────────────────────────────────────
 
@@ -114,6 +115,7 @@ const Pedagogy = () => {
     recommendationsGenerated: false,
     acceptedCount: 0,
     pedagogyApproved: false,
+    activeBannerTab: "coordinator",
   });
 
   // accepted set per unit-tab
@@ -252,15 +254,18 @@ const Pedagogy = () => {
           { value: "CS301", label: "Course: CS301" },
         ]}
         onCourseChange={(val) => console.log("course", val)}
-        activeView={state.activeTab}
+        activeView={state.activeBannerTab}
         onBack={() => console.log("back")}
-        onViewChange={(view) => setState({ activeTab: view })}
+        onViewChange={(view) => setState({ activeBannerTab: view })}
       />
 
-      <StepHeader
-        title="Pedagogy"
-        description="Choose suitable teaching methods for the approved topics."
-        pill="CS309 — Computer Networks"
+
+      <PageHeader
+         title="Pedagogy"
+        records="CS309 — Computer Networks"
+        subtitle={`Choose suitable teaching methods for the approved topics.`}
+        icon={<Lightbulb className="h-5 w-5 text-color2" />}
+        
       />
 
       {/* ── Stat tabs — shown only before recommendations are generated ── */}

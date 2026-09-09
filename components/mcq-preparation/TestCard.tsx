@@ -23,8 +23,8 @@ const STATUS_CONFIG = {
   draft: {
     label: "Draft",
     bgClass: "bg-gray-100 dark:bg-gray-700",
-    textClass: "text-gray-700 dark:text-gray-300",
-    badgeClass: "bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200",
+    textClass: "text-[#000] dark:text-gray-300",
+    badgeClass: "bg-gray-200 dark:bg-gray-600 text-[#000] dark:text-gray-200",
   },
   upcoming: {
     label: "Upcoming",
@@ -71,17 +71,17 @@ const TestCard: React.FC<TestCardProps> = ({
         {/* Left Content */}
         <div className="min-w-0 flex-1">
           {/* Title */}
-          <h3 className="mb-1 text-sm font-bold text-gray-900 dark:text-white">
+          <h3 className="mb-1 text-sm font-bold text-[#000] dark:text-white">
             {title}
           </h3>
 
           {/* Meta */}
-          <p className="mb-3 text-xs text-gray-600 dark:text-gray-400">
+          <p className="mb-3 text-xs text-[#000] dark:text-gray-400">
             {unit} • {topic}
           </p>
 
           {/* Stats */}
-          <div className="flex flex-wrap gap-4 text-xs text-gray-600 dark:text-gray-400">
+          <div className="flex flex-wrap gap-4 text-xs text-[#000] dark:text-gray-400">
             <div className="flex items-center gap-1">
               <FileText className="h-3.5 w-3.5" />
               <span>{questions} Questions</span>
@@ -101,7 +101,7 @@ const TestCard: React.FC<TestCardProps> = ({
           {/* Score for completed */}
           {status === "completed" && highestScore !== undefined && (
             <div className="mt-3 rounded-lg bg-white dark:bg-gray-700 px-3 py-2">
-              <p className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              <p className="text-xs font-semibold text-[#000] dark:text-gray-300">
                 Highest Score: <span className="text-purple-600 dark:text-purple-400">{highestScore}%</span>
               </p>
             </div>
@@ -110,7 +110,7 @@ const TestCard: React.FC<TestCardProps> = ({
           {/* Scheduled date */}
           {status === "upcoming" && scheduledDate && (
             <div className="mt-3 rounded-lg bg-white dark:bg-gray-700 px-3 py-2">
-              <p className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              <p className="text-xs font-semibold text-[#000] dark:text-gray-300">
                 Scheduled: <span className="text-blue-600 dark:text-blue-400">{scheduledDate}</span>
               </p>
             </div>
@@ -147,7 +147,7 @@ const TestCard: React.FC<TestCardProps> = ({
             {status === "completed" && onRetry && (
               <button
                 onClick={onRetry}
-                className="flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                className="flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-xs font-semibold text-[#000] dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
               >
                 Retry
               </button>
@@ -155,7 +155,7 @@ const TestCard: React.FC<TestCardProps> = ({
             {onView && (
               <button
                 onClick={onView}
-                className="flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                className="flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-xs font-semibold text-[#000] dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
               >
                 View
                 <ChevronRight className="h-3 w-3" />

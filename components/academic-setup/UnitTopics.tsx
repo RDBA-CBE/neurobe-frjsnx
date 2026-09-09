@@ -115,10 +115,10 @@ const UnitTopics = () => {
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary2 text-xs font-bold text-color2 mt-0.5">3</span>
           <div>
             <h3 className="text-sm font-extrabold uppercase tracking-wide text-color1 dark:text-white">Unit Titles, Hours & Topics</h3>
-            <p className="text-xs text-gray-400 mt-0.5">Curriculum units with lecture topic sequences.</p>
+            <p className="text-xs text-[#000] mt-0.5">Curriculum units with lecture topic sequences.</p>
           </div>
         </div>
-        <span className="text-sm font-bold text-gray-800 dark:text-gray-200 whitespace-nowrap self-center">
+        <span className="text-sm font-bold text-[#000] dark:text-gray-200 whitespace-nowrap self-center">
           {units.length} Units • {totalHours} Total Hours
         </span>
       </div>
@@ -139,16 +139,16 @@ const UnitTopics = () => {
                   )
                 }
                 size={unit.title.length || 1}
-                className="min-w-0 rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm font-semibold text-gray-800 outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                className="min-w-0 rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm font-semibold text-[#000] outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"
               />
               <div className="ml-auto flex shrink-0 items-center gap-2">
-                <span className="text-sm text-gray-500">Hours:</span>
+                <span className="text-sm text-pri">Hours:</span>
                 <input
                   disabled
                   type="number"
                   value={unit.hours}
                   onChange={(e) => updateHours(unit.id, Number(e.target.value))}
-                  className="w-14 rounded-lg border border-gray-200 py-1.5 text-center text-sm font-bold text-gray-800 tabular-nums dark:border-gray-600 dark:bg-gray-800 dark:text-white [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  className="w-14 rounded-lg border border-gray-200 py-1.5 text-center text-sm font-bold text-[#000] tabular-nums dark:border-gray-600 dark:bg-gray-800 dark:text-white [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 />
               </div>
             </div>
@@ -173,8 +173,8 @@ const UnitTopics = () => {
                   key={topic.id}
                   className="flex items-center gap-3 rounded-lg border border-gray-200 px-3 py-2.5 dark:border-gray-700"
                 >
-                  <span className="w-4 text-xs font-semibold text-gray-400">{topic.id}</span>
-                  <span className="flex-1 text-sm text-gray-700 dark:text-gray-300">{topic.title}</span>
+                  <span className="w-4 text-xs font-semibold text-[#000]">{topic.id}</span>
+                  <span className="flex-1 text-sm text-[#000] dark:text-gray-300">{topic.title}</span>
                   <button
                     onClick={() => deleteTopic(unit.id, topic.id)}
                     className="text-color1 hover:text-red-500"

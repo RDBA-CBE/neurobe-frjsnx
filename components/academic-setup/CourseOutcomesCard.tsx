@@ -65,7 +65,7 @@ const CourseOutcomesCard: React.FC<CourseOutcomesCardProps> = ({
     >
       {/* Header Row */}
       <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
+        <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-[#000] dark:text-white">
           <span className="h-2 w-2 rounded-full bg-[#7c3aed]" />
           <span className="text-md font-bold">{title}</span>
         </div>
@@ -89,7 +89,7 @@ const CourseOutcomesCard: React.FC<CourseOutcomesCardProps> = ({
       {/* Bottom Footer Bar */}
       {isCopoView ? (
         <div className="mt-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3 rounded-2xl border border-purple-100 bg-[#f9f8ff] px-4 py-3.5 dark:border-purple-900/40 dark:bg-purple-950/30">
-          <div className="flex items-center gap-x-2 text-xs font-bold text-gray-900 dark:text-white shrink-0 whitespace-nowrap">
+          <div className="flex items-center gap-x-2 text-xs font-bold text-[#000] dark:text-white shrink-0 whitespace-nowrap">
             <span>5 Course Outcomes</span>
             <span className="text-gray-300">•</span>
             <span>11 Program Outcomes</span>
@@ -98,23 +98,23 @@ const CourseOutcomesCard: React.FC<CourseOutcomesCardProps> = ({
               Approved v1.0
             </span>
           </div>
-          <div className="flex items-center gap-x-1.5 text-xs text-gray-500 dark:text-gray-400 shrink-0 whitespace-nowrap overflow-x-auto">
+          <div className="flex items-center gap-x-1.5 text-xs text-pri dark:text-gray-400 shrink-0 whitespace-nowrap overflow-x-auto">
             <span>Mapping Scale:</span>
-            <span className="font-semibold text-gray-700 dark:text-gray-300">3 = High</span>
+            <span className="font-semibold text-[#000] dark:text-gray-300">3 = High</span>
             <span className="text-gray-300">·</span>
-            <span className="font-semibold text-gray-700 dark:text-gray-300">2 = Medium</span>
+            <span className="font-semibold text-[#000] dark:text-gray-300">2 = Medium</span>
             <span className="text-gray-300">·</span>
-            <span className="font-semibold text-gray-700 dark:text-gray-300">1 = Low</span>
+            <span className="font-semibold text-[#000] dark:text-gray-300">1 = Low</span>
             <span className="text-gray-300">·</span>
-            <span className="font-semibold text-gray-700 dark:text-gray-300">– = No Mapping</span>
+            <span className="font-semibold text-[#000] dark:text-gray-300">– = No Mapping</span>
           </div>
         </div>
       ) : (
         <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-2xl border border-gray-100 bg-[#f8fafc] p-4 dark:border-gray-800 dark:bg-gray-800/40">
-          <span className="text-xs font-bold uppercase tracking-wider text-pri dark:text-gray-500">
+          <span className="text-xs font-bold uppercase tracking-wider text-pri dark:text-pri">
             SYLLABUS COVERAGE
           </span>
-          <div className="text-xs font-bold font-mono text-gray-700 dark:text-gray-300 flex flex-wrap items-center gap-x-4">
+          <div className="text-xs font-bold font-mono text-[#000] dark:text-gray-300 flex flex-wrap items-center gap-x-4">
             <span>{coverageUnitsText}</span>
             <span>·</span>
             <span>{coverageTheoryHoursText}</span>

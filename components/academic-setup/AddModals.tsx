@@ -843,7 +843,7 @@ export const EnrollStudentsModal = ({
     >
       {/* Search */}
       <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#000]" />
         <input
           type="text"
           placeholder="Search students..."
@@ -854,14 +854,14 @@ export const EnrollStudentsModal = ({
       </div>
 
       {/* List label */}
-      <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
+      <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-[#000]">
         Available Students ({filtered.length})
       </p>
 
       {/* Student list */}
       <div className="max-h-72 space-y-2 overflow-y-auto pr-1">
         {filtered.length === 0 ? (
-          <p className="py-6 text-center text-sm text-gray-400">No students found.</p>
+          <p className="py-6 text-center text-sm text-[#000]">No students found.</p>
         ) : (
           filtered.map((student) => {
             const isSelected = selectedIds.has(student.id);
@@ -887,13 +887,13 @@ export const EnrollStudentsModal = ({
 
                 {/* info */}
                 <div className="min-w-0 flex-1">
-                  <p className={`text-sm font-semibold ${isSelected ? "text-color2" : "text-gray-800 dark:text-white"}`}>
+                  <p className={`text-sm font-semibold ${isSelected ? "text-color2" : "text-[#000] dark:text-white"}`}>
                     {student.regNo} — {student.name}
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-[#000]">
                     {student.programme} • Batch {student.batch}
                   </p>
-                  <p className="text-xs text-gray-400">{student.email}</p>
+                  <p className="text-xs text-[#000]">{student.email}</p>
                 </div>
 
                 {isSelected && (
@@ -916,7 +916,7 @@ export const EnrollStudentsModal = ({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300"
+            className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-[#000] hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300"
           >
             Cancel
           </button>

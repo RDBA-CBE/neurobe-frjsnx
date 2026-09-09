@@ -71,7 +71,7 @@ const AIGenerateModal = ({
           </div>
           <button
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-600 text-gray-400 hover:text-white"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-600 text-[#000] hover:text-white"
           >
             <X className="h-4 w-4" />
           </button>
@@ -84,7 +84,7 @@ const AIGenerateModal = ({
         <div className="flex items-center justify-between border-t border-gray-200 bg-white px-6 py-4">
           <button
             onClick={onClose}
-            className="text-pri text-sm font-medium hover:text-gray-700"
+            className="text-pri text-sm font-medium hover:text-[#000]"
           >
             {cancelLabel}
           </button>

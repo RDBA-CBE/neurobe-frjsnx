@@ -296,14 +296,14 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
       {/* Top Heading Row */}
       <div className="flex flex-wrap items-start justify-between gap-3 pb-3 border-b border-gray-100 dark:border-gray-800">
         <div>
-          <div className="flex items-center gap-2 text-sm sm:text-base font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
+          <div className="flex items-center gap-2 text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#000] dark:text-white">
             <span className="h-2 w-2 rounded-full bg-[#7c3aed] shrink-0" />
             <span className="font-bold text-[#1e1b4b] dark:text-white">
               {title}
             </span>
           </div>
           {subtitle && (
-            <p className="mt-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+            <p className="mt-1 text-xs font-medium text-pri dark:text-gray-400">
               {subtitle}
             </p>
           )}
@@ -319,7 +319,7 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
       {/* Toolbar Controls */}
       <div className="flex flex-wrap items-center justify-between gap-4 py-1 px-1">
         <div className="relative flex items-center w-64 sm:w-72">
-          <Search className="absolute left-3.5 h-4 w-4 text-gray-400 pointer-events-none" />
+          <Search className="absolute left-3.5 h-4 w-4 text-[#000] pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
@@ -337,7 +337,7 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
           >
             Expand All
           </button>
-          <span className="text-gray-300 dark:text-gray-700">|</span>
+          <span className="text-gray-300 dark:text-[#000]">|</span>
           <button
             type="button"
             onClick={handleCollapseAll}
@@ -370,14 +370,14 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
                   {isOpen ? (
                     <ChevronDown className="h-4 w-4 text-color2 shrink-0" />
                   ) : (
-                    <ChevronRight className="h-4 w-4 text-gray-400 shrink-0" />
+                    <ChevronRight className="h-4 w-4 text-[#000] shrink-0" />
                   )}
 
                   <div className="flex items-center gap-3 text-sm sm:text-base font-bold truncate">
                     <span className="text-color2 font-bold shrink-0">
                       {unit.unitCodeText}
                     </span>
-                    <span className="text-gray-900 dark:text-white font-bold truncate">
+                    <span className="text-[#000] dark:text-white font-bold truncate">
                       {unit.title}
                     </span>
                   </div>
@@ -407,7 +407,7 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
                             <span className="rounded-md bg-[#f5f3ff] px-2.5 py-1 text-xs sm:text-sm font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300 shrink-0">
                               {q.questionCode}
                             </span>
-                            <span className="text-sm sm:text-base font-bold text-gray-900 dark:text-white truncate">
+                            <span className="text-sm sm:text-base font-bold text-[#000] dark:text-white truncate">
                               {q.topicCode} {q.topicTitle}
                             </span>
                           </div>
@@ -423,7 +423,7 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
                         </div>
 
                         {/* Question Text */}
-                        <p className="text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-200 leading-relaxed">
+                        <p className="text-xs sm:text-sm font-medium text-[#000] dark:text-gray-200 leading-relaxed">
                           {q.questionText}
                         </p>
 
@@ -453,13 +453,13 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
                                       key={opt.key}
                                       className={`flex items-start gap-2.5 rounded-xl border p-2.5 text-xs sm:text-sm font-medium ${opt.isCorrect
                                         ? "border-emerald-200 bg-emerald-50/60 text-emerald-900 dark:border-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-300"
-                                        : "border-gray-200/80 bg-gray-50/50 text-gray-700 dark:border-gray-800 dark:bg-gray-800/40 dark:text-gray-300"
+                                        : "border-gray-200/80 bg-gray-50/50 text-[#000] dark:border-gray-800 dark:bg-gray-800/40 dark:text-gray-300"
                                         }`}
                                     >
                                       <span
                                         className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold ${opt.isCorrect
                                           ? "bg-emerald-600 text-white"
-                                          : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+                                          : "bg-gray-200 text-[#000] dark:bg-gray-700 dark:text-gray-300"
                                           }`}
                                       >
                                         {opt.key}
@@ -479,7 +479,7 @@ const QuestionBankTopicsCard: React.FC<QuestionBankTopicsCardProps> = ({
                             )}
 
                             {q.explanation && (
-                              <div className="rounded-xl border border-purple-100 bg-[#fbf9ff] p-3 text-xs text-gray-700 dark:border-purple-950 dark:bg-purple-950/20 dark:text-gray-300">
+                              <div className="rounded-xl border border-purple-100 bg-[#fbf9ff] p-3 text-xs text-[#000] dark:border-purple-950 dark:bg-purple-950/20 dark:text-gray-300">
                                 <strong className="text-color2 font-bold">Explanation: </strong>
                                 {q.explanation}
                               </div>

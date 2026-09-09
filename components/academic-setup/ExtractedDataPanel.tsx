@@ -59,7 +59,7 @@ const ExtractedDataPanel = () => {
             className={`rounded-md px-4 py-1.5 text-sm font-medium transition-all ${
               activeTab === tab
                 ? "bg-primary-custom text-white"
-                : "border border-gray-200 bg-white text-gray-600 hover:border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
+                : "border border-gray-200 bg-white text-[#000] hover:border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
             }`}
           >
             {tab}
@@ -68,7 +68,7 @@ const ExtractedDataPanel = () => {
       </div>
 
       {/* Textbooks accept row */}
-      <div className="mb-3 flex items-center gap-2 text-sm text-gray-500">
+      <div className="mb-3 flex items-center gap-2 text-sm text-pri">
         <span>Textbooks:</span>
         <button className="flex items-center gap-1 rounded-md bg-primary2 px-3 py-1 text-color2 font-semibold hover:bg-color2/20">
           <CheckCircle2 className="h-4 w-4" /> Accept All Inferred Levels
@@ -82,21 +82,21 @@ const ExtractedDataPanel = () => {
         <div ref={sectionRefs["Course Details"]} className="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary2 text-xs font-bold text-color2 dark:bg-gray-100 dark:text-gray-900">1</span>
-              <h3 className="text-sm font-extrabold uppercase tracking-wide text-gray-900 dark:text-white">Course Identification & L-T-P-C Structure</h3>
+              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary2 text-xs font-bold text-color2 dark:bg-gray-100 dark:text-[#000]">1</span>
+              <h3 className="text-sm font-extrabold uppercase tracking-wide text-[#000] dark:text-white">Course Identification & L-T-P-C Structure</h3>
             </div>
-            <span className="text-xs text-gray-400">Editable extracted fields</span>
+            <span className="text-xs text-[#000]">Editable extracted fields</span>
           </div>
 
           <div className="mb-4 grid grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-xs text-gray-500">Course Code:</label>
+              <label className="mb-1 block text-xs text-pri">Course Code:</label>
               <input value={courseCode} onChange={(e) => setCourseCode(e.target.value)}
               disabled
                 className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-gray-500">Course Title:</label>
+              <label className="mb-1 block text-xs text-pri">Course Title:</label>
               <input
               disabled value={courseTitle} onChange={(e) => setCourseTitle(e.target.value)}
                 className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
@@ -106,15 +106,15 @@ const ExtractedDataPanel = () => {
           <div className="mb-4 grid grid-cols-4 gap-3">
             {[["Lecture (L):", L, setL], ["Tutorial (T):", T, setT], ["Practical (P):", P, setP], ["Credits (C):", C, setC]].map(([label, val, setter]: any) => (
               <div key={label}>
-                <label className="mb-1 block text-xs text-gray-500">{label}</label>
+                <label className="mb-1 block text-xs text-pri">{label}</label>
                 <input disabled value={val} onChange={(e) => setter(e.target.value)}
                   className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
               </div>
             ))}
           </div>
 
-          <div className="flex items-center justify-between text-sm text-gray-500">
-            <span>Theory Hours: <strong className="text-gray-800 dark:text-gray-200">45 hrs</strong> (45 periods) &nbsp; Lab Hours: <strong className="text-gray-800 dark:text-gray-200">30 hrs</strong> (30 periods)</span>
+          <div className="flex items-center justify-between text-sm text-pri">
+            <span>Theory Hours: <strong className="text-[#000] dark:text-gray-200">45 hrs</strong> (45 periods) &nbsp; Lab Hours: <strong className="text-[#000] dark:text-gray-200">30 hrs</strong> (30 periods)</span>
             <span className="text-md font-bold text-color2">Total Contact: 75 hrs</span>
           </div>
         </div>

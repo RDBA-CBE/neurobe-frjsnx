@@ -172,7 +172,7 @@ export const CIAPaperReviewCard: React.FC<CIAPaperReviewCardProps> = ({
   const paperSheet = (
     <div className="rounded-2xl bg-[#F6F8FA] p-4 md:p-8 flex justify-center dark:bg-gray-950">
       {/* Printable Paper Card */}
-      <div className="max-w-4xl w-full bg-white rounded-2xl shadow-lg border border-gray-200/80 p-6 md:p-10 space-y-6 text-gray-900 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-800">
+      <div className="max-w-4xl w-full bg-white rounded-2xl shadow-lg border border-gray-200/80 p-6 md:p-10 space-y-6 text-[#000] dark:bg-gray-900 dark:text-gray-100 dark:border-gray-800">
 
           {/* Header Section: Logo & Titles */}
           <div className="text-center space-y-2 border-b border-gray-200 pb-5 dark:border-gray-800">
@@ -187,7 +187,7 @@ export const CIAPaperReviewCard: React.FC<CIAPaperReviewCardProps> = ({
                   <span className="bg-purple-600 rounded-xs" />
                 </div>
                 <div className="text-left leading-tight">
-                  <h1 className="text-lg md:text-xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                  <h1 className="text-lg md:text-xl font-extrabold tracking-tight text-[#000] dark:text-white">
                     {info.collegeName}
                   </h1>
                 </div>
@@ -214,10 +214,10 @@ export const CIAPaperReviewCard: React.FC<CIAPaperReviewCardProps> = ({
 
             {/* Department & Exam Title */}
             <div className="pt-2 space-y-0.5">
-              <h2 className="text-sm md:text-base font-extrabold tracking-wide uppercase text-gray-900 dark:text-white">
+              <h2 className="text-sm md:text-base font-extrabold tracking-wide uppercase text-[#000] dark:text-white">
                 {info.departmentName}
               </h2>
-              <h3 className="text-xs md:text-sm font-bold tracking-wide uppercase text-gray-800 dark:text-gray-200">
+              <h3 className="text-xs md:text-sm font-bold tracking-wide uppercase text-[#000] dark:text-gray-200">
                 {info.examTitle}
               </h3>
             </div>
@@ -228,17 +228,17 @@ export const CIAPaperReviewCard: React.FC<CIAPaperReviewCardProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 divide-y sm:divide-y-0 md:divide-x divide-gray-200 dark:divide-gray-800 border-b border-gray-200 dark:border-gray-800">
               <div className="p-3 bg-white dark:bg-gray-900">
                 <span className="text-sm text-pri dark:text-gray-400 block font-semibold">Course:</span>
-                <strong className="font-bold text-gray-900 dark:text-white">{info.courseCodeTitle}</strong>
+                <strong className="font-bold text-[#000] dark:text-white">{info.courseCodeTitle}</strong>
               </div>
 
               <div className="p-3 bg-white dark:bg-gray-900">
                 <span className="text-sm text-pri dark:text-gray-400 block font-semibold">Academic Year:</span>
-                <strong className="font-bold text-gray-900 dark:text-white">{info.academicYear}</strong>
+                <strong className="font-bold text-[#000] dark:text-white">{info.academicYear}</strong>
               </div>
 
               <div className="p-3 bg-white dark:bg-gray-900">
                 <span className="text-sm text-pri dark:text-gray-400 block font-semibold">Duration / Time:</span>
-                <strong className="font-bold text-gray-900 dark:text-white">{info.duration}</strong>
+                <strong className="font-bold text-[#000] dark:text-white">{info.duration}</strong>
               </div>
 
               <div className="p-3 bg-white dark:bg-gray-900">
@@ -250,17 +250,17 @@ export const CIAPaperReviewCard: React.FC<CIAPaperReviewCardProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 divide-y sm:divide-y-0 md:divide-x divide-gray-200 dark:divide-gray-800">
               <div className="p-3 bg-white dark:bg-gray-900">
                 <span className="text-sm text-pri dark:text-gray-400 block font-semibold">Programme / Branch:</span>
-                <strong className="font-bold text-gray-900 dark:text-white">{info.programmeBranch}</strong>
+                <strong className="font-bold text-[#000] dark:text-white">{info.programmeBranch}</strong>
               </div>
 
               <div className="p-3 bg-white dark:bg-gray-900">
                 <span className="text-sm text-pri dark:text-gray-400 block font-semibold">Semester:</span>
-                <strong className="font-bold text-gray-900 dark:text-white">{info.semester}</strong>
+                <strong className="font-bold text-[#000] dark:text-white">{info.semester}</strong>
               </div>
 
               <div className="p-3 bg-white dark:bg-gray-900">
                 <span className="text-sm text-pri dark:text-gray-400 block font-semibold">Total Questions:</span>
-                <strong className="font-bold text-gray-900 dark:text-white">{info.totalQuestions}</strong>
+                <strong className="font-bold text-[#000] dark:text-white">{info.totalQuestions}</strong>
               </div>
 
               <div className="p-3 bg-white dark:bg-gray-900">
@@ -273,7 +273,7 @@ export const CIAPaperReviewCard: React.FC<CIAPaperReviewCardProps> = ({
           {/* Instructions Box */}
           <div className="rounded-xl border border-gray-200 bg-[#F9FAFB] p-4 text-xs space-y-2.5 dark:border-gray-800 dark:bg-gray-800/50">
             <div className="flex items-center justify-between gap-4 flex-wrap">
-              <p className="text-gray-700 dark:text-gray-300">
+              <p className="text-[#000] dark:text-gray-300">
                 <strong className="font-bold text-color1 text-sm dark:text-white">Instructions:</strong>
                 <span className="ml-2 text-sm">{info.instructions}</span>
               </p>
@@ -298,7 +298,7 @@ export const CIAPaperReviewCard: React.FC<CIAPaperReviewCardProps> = ({
               <div key={sec.id} className="space-y-4">
                 {/* Section Header Line */}
                 <div className="flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-800">
-                  <h4 className="font-extrabold text-sm md:text-base text-gray-900 dark:text-white uppercase tracking-wide">
+                  <h4 className="font-extrabold text-sm md:text-base text-[#000] dark:text-white uppercase tracking-wide">
                     {sec.sectionTitle}
                   </h4>
                   <span className="font-extrabold text-sm md:text-base text-color2 dark:text-purple-400">
@@ -310,13 +310,13 @@ export const CIAPaperReviewCard: React.FC<CIAPaperReviewCardProps> = ({
                   {sec.questions.map((q) => (
                     <div key={q.id} className="py-2 space-y-0.5">
                       <div className="flex items-start justify-between gap-4">
-                        <p className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">
+                        <p className="text-sm font-semibold text-[#000] dark:text-white leading-snug">
                           <strong className="font-bold">{q.qNoNumber}.</strong>
                           <span className="text-sm font-bold"> {q.text}</span>
                         </p>
 
                         <div className="text-right shrink-0">
-                          <span className="font-bold text-xs md:text-sm text-gray-900 dark:text-white block">
+                          <span className="font-bold text-xs md:text-sm text-[#000] dark:text-white block">
                             [{q.marks}]
                           </span>
                           <span className="text-[11px] font-bold text-pri dark:text-gray-400">
@@ -347,7 +347,7 @@ export const CIAPaperReviewCard: React.FC<CIAPaperReviewCardProps> = ({
       {/* Outer Panel Top Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-lg md:text-xl font-bold text-[#000] dark:text-white">
             {title}
           </h2>
           <p className="mt-0.5 text-xs md:text-sm font-semibold text-pri dark:text-gray-400">
@@ -358,7 +358,7 @@ export const CIAPaperReviewCard: React.FC<CIAPaperReviewCardProps> = ({
         <button
           type="button"
           onClick={onFinalInspection || (() => console.log("Final Inspection"))}
-          className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs md:text-sm font-bold text-gray-800 shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+          className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs md:text-sm font-bold text-[#000] shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
         >
           <span>Final Inspection</span>
         </button>

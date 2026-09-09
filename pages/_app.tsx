@@ -4,6 +4,8 @@ import DefaultLayout from '../components/Layouts/DefaultLayout';
 import { Provider } from 'react-redux';
 import store from '../store/index';
 import Head from 'next/head';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { appWithI18Next } from 'ni18n';
 import { ni18nConfig } from 'ni18n.config.ts';
@@ -37,6 +39,17 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
             </Head>
 
             {getLayout(<Component {...pageProps} />)}
+            <ToastContainer
+                position="top-right"
+                autoClose={3500}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                pauseOnHover
+                draggable
+                toastClassName="neurobe-toast"
+                progressClassName="neurobe-toast-progress"
+            />
         </Provider>
     );
 };

@@ -79,7 +79,7 @@ const PageFooter = ({
             {batch && <span className="inline-flex h-2 w-2 rounded-full bg-green-500" />}
             {status && (
               <>
-                <span className="text-sm font-semibold text-gray-700">Status:</span>
+                <span className="text-sm font-semibold text-[#000]">Status:</span>
                 <span className="text-sm font-semibold" style={{ color: status.color ?? "#f97316" }}>{status.label}</span>
                 <span className="inline-flex h-1 w-1 rounded-full bg-gray-400" />
               </>

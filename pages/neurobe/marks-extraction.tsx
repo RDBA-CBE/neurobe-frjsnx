@@ -82,8 +82,8 @@ const MarksExtraction = () => {
       title: "MARKS EXTRACTION BATCH",
       render: ({ batchTitle, course }: any) => (
         <div>
-          <p className="font-semibold text-gray-900 dark:text-white">{batchTitle}</p>
-          <p className="text-xs text-gray-500">{course}</p>
+          <p className="font-semibold text-[#000] dark:text-white">{batchTitle}</p>
+          <p className="text-xs text-pri">{course}</p>
         </div>
       ),
     },
@@ -91,7 +91,7 @@ const MarksExtraction = () => {
       accessor: "format",
       title: "SOURCE FORMAT",
       render: ({ format }: any) => (
-        <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+        <span className="text-xs font-medium text-[#000] dark:text-gray-300">
           {format}
         </span>
       ),
@@ -100,7 +100,7 @@ const MarksExtraction = () => {
       accessor: "totalRows",
       title: "ROWS EXTRACTED",
       render: ({ totalRows, validRows }: any) => (
-        <span className="font-medium text-gray-800 dark:text-gray-200">
+        <span className="font-medium text-[#000] dark:text-gray-200">
           {validRows} / {totalRows}
         </span>
       ),
@@ -121,7 +121,7 @@ const MarksExtraction = () => {
       accessor: "extractedOn",
       title: "EXTRACTION DATE",
       render: ({ extractedOn }: any) => (
-        <span className="text-xs text-gray-500">{extractedOn}</span>
+        <span className="text-xs text-pri">{extractedOn}</span>
       ),
     },
     {
@@ -162,22 +162,22 @@ const MarksExtraction = () => {
       {/* Stats Cards */}
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Processed Batches</span>
-          <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">3</p>
+          <span className="text-xs font-medium text-pri">Processed Batches</span>
+          <p className="mt-2 text-2xl font-bold text-[#000] dark:text-white">3</p>
           <span className="text-xs text-purple-600">Total Uploads</span>
         </div>
         <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Records Synchronized</span>
+          <span className="text-xs font-medium text-pri">Records Synchronized</span>
           <p className="mt-2 text-2xl font-bold text-green-600">188</p>
           <span className="text-xs text-green-600">Marks Stored</span>
         </div>
         <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Validation Accuracy</span>
+          <span className="text-xs font-medium text-pri">Validation Accuracy</span>
           <p className="mt-2 text-2xl font-bold text-blue-600">98.9%</p>
           <span className="text-xs text-blue-600">Automated Checks</span>
         </div>
         <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Pending Review</span>
+          <span className="text-xs font-medium text-pri">Pending Review</span>
           <p className="mt-2 text-2xl font-bold text-amber-600">2 Rows</p>
           <span className="text-xs text-amber-600">Correction Needed</span>
         </div>
@@ -186,7 +186,7 @@ const MarksExtraction = () => {
       {/* Filters */}
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="relative max-w-[300px] flex-1">
-          <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+          <span className="absolute inset-y-0 left-3 flex items-center text-[#000]">
             <IconSearch className="h-4 w-4" />
           </span>
           <input

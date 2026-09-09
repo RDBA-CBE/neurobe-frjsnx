@@ -121,7 +121,7 @@ const QuestionBankFilter = ({ onApply, question }: Props) => {
       {/* Search row */}
       <div className={`flex items-center ${question ? "gap-3" : "gap-20"}`}>
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#000]" />
           <input
             type="text"
             value={state.search}
@@ -147,7 +147,7 @@ const QuestionBankFilter = ({ onApply, question }: Props) => {
               onClick={() => setState({ showFilters: !state.showFilters })}
               className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-colors ${state.showFilters
                 ? "border-color2 bg-purple-50 text-color2"
-                : "border-gray-200 text-gray-600 hover:border-color2 hover:text-color2"
+                : "border-gray-200 text-[#000] hover:border-color2 hover:text-color2"
                 }`}
             >
               <SlidersHorizontal className="h-4 w-4" />
@@ -164,27 +164,27 @@ const QuestionBankFilter = ({ onApply, question }: Props) => {
         <div className="mt-4 border-t border-gray-100 pt-4">
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-6">
             <div>
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-gray-400">Topic</p>
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-[#000]">Topic</p>
               <CustomSelect options={TOPIC_OPTIONS} value={state.topic} onChange={(v) => setState({ topic: v })} placeholder="All Topics" isClearable={false} isSearchable={false} />
             </div>
             <div>
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-gray-400">Subtopic</p>
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-[#000]">Subtopic</p>
               <CustomSelect options={SUBTOPIC_OPTIONS} value={state.subtopic} onChange={(v) => setState({ subtopic: v })} placeholder="All Subtopics" isClearable={false} isSearchable={false} />
             </div>
             <div>
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-gray-400">Course Outcome</p>
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-[#000]">Course Outcome</p>
               <CustomSelect options={CO_OPTIONS} value={state.courseOutcome} onChange={(v) => setState({ courseOutcome: v })} placeholder="All COs" isClearable={false} isSearchable={false} />
             </div>
             <div>
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-gray-400">Knowledge Level</p>
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-[#000]">Knowledge Level</p>
               <CustomSelect options={LEVEL_OPTIONS} value={state.knowledgeLevel} onChange={(v) => setState({ knowledgeLevel: v })} placeholder="All Levels" isClearable={false} isSearchable={false} />
             </div>
             <div>
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-gray-400">Status</p>
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-[#000]">Status</p>
               <CustomSelect options={STATUS_OPTIONS} value={state.status} onChange={(v) => setState({ status: v })} placeholder="All Statuses" isClearable={false} isSearchable={false} />
             </div>
             <div>
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-gray-400">Difficulty</p>
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-[#000]">Difficulty</p>
               <CustomSelect options={DIFFICULTY_OPTIONS} value={state.difficulty} onChange={(v) => setState({ difficulty: v })} placeholder="All Difficulties" isClearable={false} isSearchable={false} />
             </div>
           </div>
@@ -205,13 +205,13 @@ const QuestionBankFilter = ({ onApply, question }: Props) => {
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-gray-400">Select criteria to refine results</p>
+              <p className="text-xs text-[#000]">Select criteria to refine results</p>
             )}
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={handleClear}
-                className="rounded-full bg-gray-100 px-5 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-200"
+                className="rounded-full bg-gray-100 px-5 py-2 text-sm font-semibold text-[#000] hover:bg-gray-200"
               >
                 Clear
               </button>

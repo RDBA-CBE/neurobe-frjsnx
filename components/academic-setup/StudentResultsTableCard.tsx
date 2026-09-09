@@ -80,7 +80,7 @@ export const StudentResultsTableCard: React.FC<StudentResultsTableCardProps> = (
       accessor: "regNo",
       title: "REGISTER NUMBER",
       render: ({ regNo }: StudentResultRecord) => (
-        <span className="text-xs font-bold text-gray-900 dark:text-white">
+        <span className="text-xs font-bold text-[#000] dark:text-white">
           {regNo}
         </span>
       ),
@@ -89,7 +89,7 @@ export const StudentResultsTableCard: React.FC<StudentResultsTableCardProps> = (
       accessor: "name",
       title: "STUDENT NAME",
       render: ({ name }: StudentResultRecord) => (
-        <span className="text-xs font-semibold text-gray-800 dark:text-gray-200">
+        <span className="text-xs font-semibold text-[#000] dark:text-gray-200">
           {name}
         </span>
       ),
@@ -100,7 +100,7 @@ export const StudentResultsTableCard: React.FC<StudentResultsTableCardProps> = (
       textAlignment: "right",
       render: ({ score, percentage }: StudentResultRecord) => (
         <div className="text-right">
-          <span className="text-xs font-bold text-gray-900 dark:text-white">
+          <span className="text-xs font-bold text-[#000] dark:text-white">
             {score}
           </span>
           <span className="ml-1 text-xs font-medium text-pri">
@@ -118,7 +118,7 @@ export const StudentResultsTableCard: React.FC<StudentResultsTableCardProps> = (
         <div>
           <div className="flex flex-wrap items-center gap-2.5">
             <Users className="h-5 w-5 text-color2" />
-            <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">
+            <h3 className="text-base md:text-lg font-bold text-[#000] dark:text-white">
               {title}
             </h3>
 
@@ -138,13 +138,13 @@ export const StudentResultsTableCard: React.FC<StudentResultsTableCardProps> = (
 
         {/* Search Box on right */}
         <div className="relative self-start sm:self-auto">
-          <Search className="absolute left-3.5 top-3 h-4.5 w-4.5 text-gray-400 pointer-events-none" />
+          <Search className="absolute left-3.5 top-3 h-4.5 w-4.5 text-[#000] pointer-events-none" />
           <input
             type="text"
             placeholder="Search register no. or name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full sm:w-80 md:w-96 rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm font-semibold text-gray-900 shadow-2xs focus:border-color2 focus:bg-white focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+            className="w-full sm:w-80 md:w-96 rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm font-semibold text-[#000] shadow-2xs focus:border-color2 focus:bg-white focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white"
           />
         </div>
       </div>

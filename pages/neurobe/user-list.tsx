@@ -106,7 +106,7 @@ const UserList = () => {
 
       {/* ── User Directory label ────────────────────────────────────────────── */}
       {/* <div className="mb-2 flex items-center gap-2 px-1">
-        <p className="text-sm font-semibold text-gray-700 dark:text-white">
+        <p className="text-sm font-semibold text-[#000] dark:text-white">
           User Directory
         </p>
         <span className="text-xs text-[#000]">

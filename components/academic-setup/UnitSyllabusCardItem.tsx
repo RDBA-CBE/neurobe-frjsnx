@@ -38,13 +38,13 @@ const UnitSyllabusCardItem: React.FC<UnitSyllabusCardItemProps> = ({
           <span className="text-md font-bold uppercase tracking-wider text-color2 dark:text-purple-400">
             UNIT {unitNumber}
           </span>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white leading-tight">
+          <h3 className="text-lg font-bold text-[#000] dark:text-white leading-tight">
             {unitTitle}
           </h3>
         </div>
 
         <div className="flex items-center gap-2 self-start sm:self-auto">
-          <span className="rounded-xl border border-gray-200 bg-white px-3 py-1 text-sm font-bold text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+          <span className="rounded-xl border border-gray-200 bg-white px-3 py-1 text-sm font-bold text-[#000] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
             {hoursText}
           </span>
           <span className="rounded-xl border border-purple-100 bg-[#f5f3ff] px-3 py-1 text-sm font-bold text-color2 dark:border-purple-900 dark:bg-purple-950/60 dark:text-purple-300">
@@ -55,7 +55,7 @@ const UnitSyllabusCardItem: React.FC<UnitSyllabusCardItemProps> = ({
 
       {/* Topics Header Row */}
       <div className="mt-4 mb-3 flex items-center justify-between">
-        <span className="text-md font-bold uppercase tracking-wider text-pri dark:text-gray-500">
+        <span className="text-md font-bold uppercase tracking-wider text-pri dark:text-pri">
           SYLLABUS TOPICS
         </span>
         <button
@@ -75,7 +75,7 @@ const UnitSyllabusCardItem: React.FC<UnitSyllabusCardItemProps> = ({
             <span className="font-bold text-color2 dark:text-purple-400 shrink-0">
               {t.code}
             </span>
-            <span className="font-semibold text-gray-800 dark:text-gray-200 leading-snug">
+            <span className="font-semibold text-[#000] dark:text-gray-200 leading-snug">
               {t.title}
             </span>
           </div>

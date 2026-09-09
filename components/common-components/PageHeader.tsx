@@ -66,7 +66,7 @@ const PageHeader = ({
     <div className="panel mb-4 flex items-center gap-4 rounded-xl border border-gray-100 px-5 py-5 lg:justify-between">
       <div className="flex items-center gap-3">
         {icon &&
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#ede9fe]">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#ede9fe]">
             {icon}
           </div>
         }
@@ -100,7 +100,7 @@ const PageHeader = ({
             )}
           </div>
          { subtitle && <p
-            className="mt-1 text-xs text-[#000]"
+            className="mt-2 text-xs text-[#000]"
             dangerouslySetInnerHTML={{ __html: subtitle }}
           />}
           {(subContent1 || subContent2 || editMode) && (
@@ -141,7 +141,7 @@ const PageHeader = ({
             <div className="mt-2 flex gap-3">
               {program.map((item) => (
                 <div key={item.title} className="flex gap-1">
-                  <span className="text-xs font-semibold text-gray-700">
+                  <span className="text-xs font-semibold text-[#000]">
                     {item.title} :
                   </span>
                   <span

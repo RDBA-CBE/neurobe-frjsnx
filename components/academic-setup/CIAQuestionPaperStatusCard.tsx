@@ -61,7 +61,7 @@ export const CIAQuestionPaperStatusCard: React.FC<CIAQuestionPaperStatusCardProp
       {/* Top Header: Title & Status Badge */}
       <div className="flex items-start justify-between">
         <div>
-          <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
+          <h3 className="text-lg md:text-xl font-bold text-[#000] dark:text-white">
             {displayTitle}
           </h3>
           <p className="text-sm font-semibold text-pri dark:text-gray-400">
@@ -87,7 +87,7 @@ export const CIAQuestionPaperStatusCard: React.FC<CIAQuestionPaperStatusCardProp
           <p className="text-[11px] font-bold uppercase tracking-wider text-pri">
             PROGRESS:
           </p>
-          <p className="text-sm md:text-base font-bold text-gray-900 dark:text-white">
+          <p className="text-sm md:text-base font-bold text-[#000] dark:text-white">
             {prog.sectionsCompleted}
           </p>
           <p className="text-sm md:text-base font-bold text-color2 dark:text-purple-400">
@@ -105,7 +105,7 @@ export const CIAQuestionPaperStatusCard: React.FC<CIAQuestionPaperStatusCardProp
               <p className="text-[11px] font-bold uppercase tracking-wider text-pri">
                 TOTAL MARKS
               </p>
-              <p className="text-base md:text-lg font-bold text-gray-900 dark:text-white mt-1">
+              <p className="text-base md:text-lg font-bold text-[#000] dark:text-white mt-1">
                 {appr.totalMarks}
               </p>
             </div>
@@ -114,7 +114,7 @@ export const CIAQuestionPaperStatusCard: React.FC<CIAQuestionPaperStatusCardProp
               <p className="text-[11px] font-bold uppercase tracking-wider text-pri">
                 SECTIONS
               </p>
-              <p className="text-base md:text-lg font-bold text-gray-900 dark:text-white mt-1">
+              <p className="text-base md:text-lg font-bold text-[#000] dark:text-white mt-1">
                 {appr.sections}
               </p>
             </div>
@@ -123,7 +123,7 @@ export const CIAQuestionPaperStatusCard: React.FC<CIAQuestionPaperStatusCardProp
               <p className="text-[11px] font-bold uppercase tracking-wider text-pri">
                 QUESTIONS
               </p>
-              <p className="text-base md:text-lg font-bold text-gray-900 dark:text-white mt-1">
+              <p className="text-base md:text-lg font-bold text-[#000] dark:text-white mt-1">
                 {appr.questions}
               </p>
             </div>
@@ -142,7 +142,7 @@ export const CIAQuestionPaperStatusCard: React.FC<CIAQuestionPaperStatusCardProp
             <button
               type="button"
               onClick={onViewDraft}
-              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-2 text-xs font-bold text-gray-700 shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-2 text-xs font-bold text-[#000] shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
             >
               <Eye className="h-4 w-4 text-sm text-pri dark:text-gray-400" />
               <span className="text-sm">View Draft</span>
@@ -162,9 +162,9 @@ export const CIAQuestionPaperStatusCard: React.FC<CIAQuestionPaperStatusCardProp
             <button
               type="button"
               onClick={onViewPaper}
-              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-2 text-xs font-bold text-gray-700 shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-2 text-xs font-bold text-[#000] shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
             >
-              <Eye className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+              <Eye className="h-4 w-4 text-pri dark:text-gray-400" />
               <span className="text-sm">View Paper</span>
             </button>
 

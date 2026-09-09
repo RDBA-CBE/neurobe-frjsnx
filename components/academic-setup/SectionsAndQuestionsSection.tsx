@@ -156,7 +156,7 @@ const SectionsAndQuestionsSection = ({
                   <button
                     type="button"
                     onClick={() => toggleSection(section.id)}
-                    className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                    className="text-gray-400 hover:text-[#000] dark:hover:text-gray-200 transition-colors"
                   >
                     {isExpanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
                   </button>
@@ -165,7 +165,7 @@ const SectionsAndQuestionsSection = ({
                     {letter}
                   </span>
 
-                  <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-base md:text-lg font-bold text-[#000] dark:text-white">
                     {section.title}
                   </h3>
 
@@ -179,7 +179,7 @@ const SectionsAndQuestionsSection = ({
                     className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold shadow-2xs transition-all ${
                       isSettingsOpen
                         ? "border-color2 bg-color2-l text-color2"
-                        : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                        : "border-gray-200 bg-white text-[#000] hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                     }`}
                   >
                     <Settings2 className="h-3.5 w-3.5" />
@@ -190,13 +190,13 @@ const SectionsAndQuestionsSection = ({
                 {/* Right: questions count, marks used, complete/remaining, delete */}
                 <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm">
                   <span className="font-semibold text-pri dark:text-gray-400">
-                    Questions: <strong className="font-bold text-gray-900 dark:text-white">{qCount}</strong>
+                    Questions: <strong className="font-bold text-[#000] dark:text-white">{qCount}</strong>
                   </span>
 
-                  <span className="text-gray-300 dark:text-gray-700">|</span>
+                  <span className="text-gray-300 dark:text-[#000]">|</span>
 
                   <span className="font-semibold text-pri dark:text-gray-400">
-                    Marks Used: <strong className="font-bold text-gray-900 dark:text-white">{marksUsed}</strong>
+                    Marks Used: <strong className="font-bold text-[#000] dark:text-white">{marksUsed}</strong>
                   </span>
 
                   {isComplete ? (
@@ -256,8 +256,8 @@ const SectionsAndQuestionsSection = ({
                         onChange={(e) => updateDraft(section.id, "totalMarks", Number(e.target.value))}
                         rightIcon={
                           <div className="flex flex-col">
-                            <button type="button" onClick={() => updateDraft(section.id, "totalMarks", draft.totalMarks + 1)} className="flex h-5 items-center justify-center text-[10px] text-gray-400 hover:text-gray-700">▲</button>
-                            <button type="button" onClick={() => updateDraft(section.id, "totalMarks", Math.max(0, draft.totalMarks - 1))} className="flex h-5 items-center justify-center text-[10px] text-gray-400 hover:text-gray-700">▼</button>
+                            <button type="button" onClick={() => updateDraft(section.id, "totalMarks", draft.totalMarks + 1)} className="flex h-5 items-center justify-center text-[10px] text-[#000] hover:text-[#000]">▲</button>
+                            <button type="button" onClick={() => updateDraft(section.id, "totalMarks", Math.max(0, draft.totalMarks - 1))} className="flex h-5 items-center justify-center text-[10px] text-[#000] hover:text-[#000]">▼</button>
                           </div>
                         }
                       />
@@ -271,7 +271,7 @@ const SectionsAndQuestionsSection = ({
                 <div className="space-y-4 pt-1">
                   {section.questions.length === 0 ? (
                     <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 py-8 text-center dark:border-gray-700">
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white">No questions added yet.</p>
+                      <p className="text-sm font-semibold text-[#000] dark:text-white">No questions added yet.</p>
                       <p className="mt-0.5 text-xs text-pri">Target for Section {letter} is {section.totalMarks} marks.</p>
                       <div className="mt-4 flex items-center gap-3">
                         <button
@@ -284,7 +284,7 @@ const SectionsAndQuestionsSection = ({
                         <button
                           type="button"
                           onClick={() => openAdd(section)}
-                          className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs font-bold text-gray-700 shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                          className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs font-bold text-[#000] shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                         >
                           <Plus className="h-4 w-4 text-color1" /> Add Question
                         </button>
@@ -305,7 +305,7 @@ const SectionsAndQuestionsSection = ({
                                 <span className="inline-flex items-center justify-center rounded-lg bg-[#F1F5F9] px-2 py-0.5 text-sm font-bold text-color1 shrink-0 dark:bg-gray-800 dark:text-white">
                                   Q{idx + 1}
                                 </span>
-                                <p className="text-sm md:text-base font-bold text-gray-900 dark:text-white leading-snug">
+                                <p className="text-sm md:text-base font-bold text-[#000] dark:text-white leading-snug">
                                   {q.text}
                                 </p>
                               </div>
@@ -322,12 +322,12 @@ const SectionsAndQuestionsSection = ({
                                     {q.bloomLevel}
                                   </span>
                                 )}
-                                <span className="rounded-full border border-gray-200 bg-gray-50/80 px-3 py-0.5 font-bold text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                                <span className="rounded-full border border-gray-200 bg-gray-50/80 px-3 py-0.5 font-bold text-[#000] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
                                   {q.marks} Marks
                                 </span>
                                 {q.topic && (
                                   <>
-                                    <span className="text-gray-300 dark:text-gray-700 font-light">|</span>
+                                    <span className="text-gray-300 dark:text-[#000] font-light">|</span>
                                     <span className="font-semibold text-pri text-sm dark:text-gray-400">
                                       Topic:{" "}
                                       <span className="font-bold text-color1 dark:text-gray-200">{q.topic}</span>
@@ -341,7 +341,7 @@ const SectionsAndQuestionsSection = ({
                             <div className="flex items-center gap-2 shrink-0 pt-1">
                               <button
                                 type="button"
-                                className="text-color1 hover:text-gray-600 dark:hover:text-gray-200 transition-colors p-1"
+                                className="text-color1 hover:text-[#000] dark:hover:text-gray-200 transition-colors p-1"
                                 title="Edit Question"
                               >
                                 <Edit3 className="h-4 w-4" />
@@ -364,7 +364,7 @@ const SectionsAndQuestionsSection = ({
                         <button
                           type="button"
                           onClick={() => openAdd(section)}
-                          className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs md:text-sm font-bold text-gray-700 shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                          className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-4 py-2 text-xs md:text-sm font-bold text-[#000] shadow-2xs hover:bg-gray-50 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                         >
                           <Plus className="h-4 w-4 text-color1 dark:text-gray-400" />
                           <span className="font-bold text-color1">Add Question</span>
@@ -388,7 +388,7 @@ const SectionsAndQuestionsSection = ({
 
         {sections.length === 0 && (
           <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-200 py-10 text-center dark:border-gray-700">
-            <p className="text-sm font-semibold text-gray-900 dark:text-white">No sections added yet.</p>
+            <p className="text-sm font-semibold text-[#000] dark:text-white">No sections added yet.</p>
             <p className="mt-0.5 text-xs text-pri">Click "Add Section" to get started.</p>
           </div>
         )}

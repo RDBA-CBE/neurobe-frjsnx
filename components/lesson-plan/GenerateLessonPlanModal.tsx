@@ -84,7 +84,7 @@ const GenerateLessonPlanModal = ({
               </span>
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-[#000]">{step.title}</p>
-                <p className="mt-0.5 text-xs text-gray-500">{step.description}</p>
+                <p className="mt-0.5 text-xs text-pri">{step.description}</p>
               </div>
             </div>
           ))}
@@ -93,7 +93,7 @@ const GenerateLessonPlanModal = ({
         {/* ── Stats row ── */}
         <div className="grid grid-cols-3 divide-x divide-gray-100 rounded-xl border border-gray-100 bg-gray-50">
           <div className="flex flex-col items-center py-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#000]">
               Topics
             </span>
             <span className="mt-1 text-base font-bold text-[#000]">
@@ -101,7 +101,7 @@ const GenerateLessonPlanModal = ({
             </span>
           </div>
           <div className="flex flex-col items-center py-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#000]">
               Units
             </span>
             <span className="mt-1 text-base font-bold text-[#000]">
@@ -109,7 +109,7 @@ const GenerateLessonPlanModal = ({
             </span>
           </div>
           <div className="flex flex-col items-center py-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#000]">
               Hours
             </span>
             <span className="mt-1 text-base font-bold text-color2">

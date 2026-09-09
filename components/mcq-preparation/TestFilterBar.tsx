@@ -29,7 +29,7 @@ const TestFilterBar: React.FC<TestFilterBarProps> = ({
       <div className="flex items-center justify-between gap-4">
         {/* Search */}
         <div className="relative flex-1 max-w-sm">
-          <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+          <span className="absolute inset-y-0 left-3 flex items-center text-[#000]">
             <Search className="h-4 w-4" />
           </span>
           <input
@@ -50,7 +50,7 @@ const TestFilterBar: React.FC<TestFilterBarProps> = ({
               className={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${
                 activeTab === tab.key
                   ? "bg-gray-800 text-white dark:bg-gray-700"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                  : "bg-gray-100 text-[#000] hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
               }`}
             >
               {tab.label}

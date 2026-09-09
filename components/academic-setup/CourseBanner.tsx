@@ -1,5 +1,9 @@
 import { ChevronLeft, Users } from "lucide-react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
+import { setCourseView } from "@/store/courseViewSlice";
+import { IRootState } from "@/store";
 
 type CourseBannerProps = {
   courseCode: string;
@@ -12,10 +16,11 @@ type CourseBannerProps = {
   selectedCourse?: string;
   courseOptions?: { value: string; label: string }[];
   onCourseChange?: (val: any) => void;
-  activeView?: "coordinator" | "instructor";
+  /** Accepted for backward compat — view highlight is driven by Redux, this value is ignored */
+  activeView?: string;
   onBack?: () => void;
   onViewChange?: (view: "coordinator" | "instructor") => void;
-  toogle?: string
+  toogle?: string;
 };
 
 export default function CourseBanner({
@@ -29,11 +34,28 @@ export default function CourseBanner({
   selectedCourse,
   courseOptions = [],
   onCourseChange,
-  activeView = "coordinator",
   onBack,
   onViewChange,
   toogle
 }: CourseBannerProps) {
+  const dispatch = useDispatch();
+
+  // Redux is the single source of truth for the active view — always starts as "coordinator"
+  const activeView = useSelector((state: IRootState) => state.courseView.activeView);
+
+  // Reset to coordinator only once per app session (not on every page navigation)
+  useEffect(() => {
+    const alreadySet = sessionStorage.getItem("courseViewInitialized");
+    if (!alreadySet) {
+      dispatch(setCourseView("coordinator"));
+      sessionStorage.setItem("courseViewInitialized", "1");
+    }
+  }, []);
+
+  const handleViewChange = (view: "coordinator" | "instructor") => {
+    dispatch(setCourseView(view));
+    onViewChange?.(view);
+  };
   return (
     <div className="mb-6 mt-2 rounded-2xl bg-color1 px-8 py-5">
       {/* Top Row */}
@@ -73,7 +95,7 @@ export default function CourseBanner({
         {toogle != "instructor" &&
           <div className="flex shrink-0 items-center border-[0.5px] border-[#fff]/20 rounded-xl  p-1">
             <button
-              onClick={() => onViewChange?.("coordinator")}
+              onClick={() => handleViewChange("coordinator")}
               className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all ${activeView === "coordinator"
                   ? "bg-primary-custom text-white"
                   : "text-white hover:text-white"
@@ -82,7 +104,7 @@ export default function CourseBanner({
               Coordinator View
             </button>
             <button
-              onClick={() => onViewChange?.("instructor")}
+              onClick={() => handleViewChange("instructor")}
               className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all ${activeView === "instructor"
                   ? "bg-primary-custom text-white"
                   : "text-white hover:text-white"

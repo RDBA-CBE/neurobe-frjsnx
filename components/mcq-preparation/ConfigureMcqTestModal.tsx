@@ -119,7 +119,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
         {/* Modal Header */}
         <div className="flex shrink-0 items-center justify-between border-b border-gray-100 px-8 py-5 dark:border-gray-800">
           <div className="flex items-center gap-3">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-bold text-[#000] dark:text-white">
               {modalTitle}
             </h2>
             <span className="rounded-full border border-[#ddd6fe] bg-[#f5f3ff] px-3 py-0.5 text-xs font-semibold text-color2 dark:bg-purple-950/40 dark:border-purple-800 dark:text-purple-300">
@@ -128,7 +128,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="rounded-full border border-color1 p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-200 transition"
+            className="rounded-full border border-color1 p-1 text-[#000] hover:bg-gray-100 hover:text-[#000] dark:hover:bg-gray-800 dark:hover:text-gray-200 transition"
           >
             <X className="h-4 w-4 text-pri" />
           </button>
@@ -141,13 +141,13 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
             <div
               className={`flex items-center gap-2 rounded-full px-4 py-2 transition-all ${activeStep === 1
                 ? "bg-[#7c3aed] text-white shadow-sm"
-                : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+                : "bg-gray-100 text-pri dark:bg-gray-800 dark:text-gray-400"
                 }`}
             >
               <span
                 className={`flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold ${activeStep === 1
                   ? "bg-white text-color2"
-                  : "border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300"
+                  : "border border-gray-300 text-[#000] dark:border-gray-600 dark:text-gray-300"
                   }`}
               >
                 1
@@ -155,16 +155,16 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
               <span>Step 1 — Test Details</span>
             </div>
 
-            <ChevronRight className="h-4 w-4 text-gray-400" />
+            <ChevronRight className="h-4 w-4 text-[#000]" />
 
             {/* Step 2 */}
             <div
               className={`flex items-center gap-2 rounded-full px-4 py-2 transition-all ${activeStep === 2
                 ? "bg-[#7c3aed] text-white shadow-sm"
-                : "text-gray-500 dark:text-gray-400"
+                : "text-pri dark:text-gray-400"
                 }`}
             >
-              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 text-xs font-bold text-gray-500 dark:border-gray-600 dark:text-gray-400">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 text-xs font-bold text-pri dark:border-gray-600 dark:text-gray-400">
                 2
               </span>
               <span>Step 2 — Select Approved Questions</span>
@@ -179,7 +179,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
         >
           {/* Test Name Field */}
           <div>
-            <label className="mb-2 block text-sm font-bold text-gray-900 dark:text-gray-100">
+            <label className="mb-2 block text-sm font-bold text-[#000] dark:text-gray-100">
               Test Name <span className="text-red-500">*</span>
             </label>
             <input
@@ -187,7 +187,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
               value={testName}
               onChange={(e) => setTestName(e.target.value)}
               placeholder="Enter test name..."
-              className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-900 outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+              className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-[#000] outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] dark:border-gray-700 dark:bg-gray-800 dark:text-white"
             />
           </div>
 
@@ -196,7 +196,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
             {/* Unit Selection */}
             <div>
               <div className="mb-2 flex h-6 items-center">
-                <label className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                <label className="text-sm font-bold text-[#000] dark:text-gray-100">
                   Unit <span className="text-red-500">*</span>
                 </label>
               </div>
@@ -213,7 +213,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
             {/* Question Count */}
             <div>
               <div className="mb-2 flex h-6 items-center justify-between">
-                <label className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                <label className="text-sm font-bold text-[#000] dark:text-gray-100">
                   Number of Questions <span className="text-red-500">*</span>
                 </label>
                 <span className="text-sm font-semibold text-color2 dark:text-purple-400">
@@ -226,7 +226,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
                 onChange={(e) => setQuestionCount(e.target.value)}
                 min={1}
                 max={availableApproved}
-                className="h-[38px] w-full rounded-[14px] border border-gray-200 bg-white px-4 text-sm font-semibold text-gray-900 outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                className="h-[38px] w-full rounded-[14px] border border-gray-200 bg-white px-4 text-sm font-semibold text-[#000] outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] dark:border-gray-700 dark:bg-gray-800 dark:text-white"
               />
             </div>
           </div>
@@ -234,7 +234,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
           {/* Topics Selection Grid */}
           <div>
             <div className="mb-2.5 flex items-center justify-between">
-              <label className="text-sm font-bold text-gray-900 dark:text-gray-100">
+              <label className="text-sm font-bold text-[#000] dark:text-gray-100">
                 Topics <span className="text-red-500">*</span>
               </label>
               <span className="text-sm font-semibold text-color2 dark:text-purple-400">
@@ -253,7 +253,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
                       onClick={() => toggleTopic(topic.id)}
                       className={`flex cursor-pointer items-center gap-3.5 rounded-2xl border px-4 py-3.5 transition-all ${isChecked
                         ? "border-[#ddd6fe] bg-[#f5f3ff] text-color2 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-300"
-                        : "border-gray-200 bg-white text-gray-800 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                        : "border-gray-200 bg-white text-[#000] hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
                         }`}
                     >
                       {/* Checkbox */}
@@ -282,7 +282,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition"
+            className="text-sm font-semibold text-[#000] hover:text-[#000] dark:text-gray-400 dark:hover:text-white transition"
           >
             Cancel
           </button>
@@ -291,7 +291,7 @@ const ConfigureMcqTestModal: React.FC<ConfigureMcqTestModalProps> = ({
             <button
               type="button"
               onClick={handleDraft}
-              className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 transition"
+              className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-[#000] shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 transition"
             >
               Save Draft
             </button>

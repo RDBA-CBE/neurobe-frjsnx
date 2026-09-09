@@ -43,7 +43,7 @@ const CourseInformationCard: React.FC<CourseInformationCardProps> = ({
           <span className="h-2 w-2 rounded-full bg-[#7c3aed]" />
           <span className="text-md font-bold">{title}</span>
         </div>
-        <span className="text-xs font-mono font-medium text-gray-400 dark:text-gray-500">
+        <span className="text-xs font-mono font-medium text-[#000] dark:text-pri">
           {headerSubtitle}
         </span>
       </div>
@@ -51,7 +51,7 @@ const CourseInformationCard: React.FC<CourseInformationCardProps> = ({
       {/* 2 Column Code & Title Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-12 gap-3.5 mb-4">
         <div className="sm:col-span-4 rounded-2xl border border-gray-200/60 bg-gray-50/50 p-4 dark:border-gray-800 dark:bg-gray-800/40">
-          <p className="text-xs font-bold uppercase tracking-wider text-pri dark:text-gray-500 mb-1">
+          <p className="text-xs font-bold uppercase tracking-wider text-pri dark:text-pri mb-1">
             COURSE CODE
           </p>
           <p className="text-lg font-extrabold text-color2 dark:text-purple-400">
@@ -60,10 +60,10 @@ const CourseInformationCard: React.FC<CourseInformationCardProps> = ({
         </div>
 
         <div className="sm:col-span-8 rounded-2xl border border-gray-200/60 bg-gray-50/50 p-4 dark:border-gray-800 dark:bg-gray-800/40">
-          <p className="text-xs font-bold uppercase tracking-wider text-pri dark:text-gray-500 mb-1">
+          <p className="text-xs font-bold uppercase tracking-wider text-pri dark:text-pri mb-1">
             COURSE TITLE
           </p>
-          <p className="text-lg font-bold text-gray-900 dark:text-white">
+          <p className="text-lg font-bold text-[#000] dark:text-white">
             {courseTitle}
           </p>
         </div>
@@ -82,7 +82,7 @@ const CourseInformationCard: React.FC<CourseInformationCardProps> = ({
             <p
               className={`text-xs font-bold mb-1 ${stat.isPurpleLabel
                 ? "text-color2 dark:text-purple-300"
-                : "text-gray-500 dark:text-gray-400"
+                : "text-pri dark:text-gray-400"
                 }`}
             >
               {stat.label}
@@ -90,7 +90,7 @@ const CourseInformationCard: React.FC<CourseInformationCardProps> = ({
             <p
               className={`text-lg font-extrabold ${stat.isHighlighted
                 ? "text-color2 dark:text-purple-300"
-                : "text-gray-900 dark:text-white"
+                : "text-[#000] dark:text-white"
                 }`}
             >
               {stat.value}

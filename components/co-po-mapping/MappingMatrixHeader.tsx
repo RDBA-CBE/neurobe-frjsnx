@@ -16,7 +16,7 @@ const MappingMatrixHeader = ({
 }: MappingMatrixHeaderProps) => (
   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 px-5 py-4 dark:border-gray-700">
     {/* Title + version badge */}
-    <h3 className="text-sm font-bold text-gray-800 dark:text-white">
+    <h3 className="text-sm font-bold text-[#000] dark:text-white">
       {title}
       <span className="text-color2 ml-2 rounded-full bg-[#ede9fe] px-2 py-0.5 text-xs font-semibold">
         {version}

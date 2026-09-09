@@ -52,21 +52,21 @@ const TopicRow = ({ topic }: { topic: SyllabusTopic }) => {
       >
         {hasSubtopics ? (
           expanded
-            ? <ChevronDown className="h-3.5 w-3.5 text-gray-400 shrink-0" />
-            : <ChevronRight className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+            ? <ChevronDown className="h-3.5 w-3.5 text-[#000] shrink-0" />
+            : <ChevronRight className="h-3.5 w-3.5 text-[#000] shrink-0" />
         ) : (
           <ChevronRight className="h-3.5 w-3.5 text-gray-300 shrink-0" />
         )}
-        <span className="flex-1 text-sm text-gray-600">{topic.name}</span>
-        <span className="text-sm text-gray-500">{topic.count}</span>
+        <span className="flex-1 text-sm text-[#000]">{topic.name}</span>
+        <span className="text-sm text-pri">{topic.count}</span>
       </div>
       {expanded && hasSubtopics && (
         <div className="divide-y divide-gray-50 bg-gray-50">
           {topic.subtopics!.map((s) => (
             <div key={s.name} className="flex items-center gap-2 px-4 py-2 pl-14">
               <ChevronRight className="h-3 w-3 text-gray-300 shrink-0" />
-              <span className="flex-1 text-sm text-gray-500">{s.name}</span>
-              <span className="text-sm text-gray-400">{s.count}</span>
+              <span className="flex-1 text-sm text-pri">{s.name}</span>
+              <span className="text-sm text-[#000]">{s.count}</span>
             </div>
           ))}
         </div>
@@ -84,9 +84,9 @@ const UnitRow = ({ unit }: { unit: SyllabusUnit }) => {
         onClick={() => setExpanded((p) => !p)}
       >
         {expanded
-          ? <ChevronDown className="h-4 w-4 text-gray-400 shrink-0" />
-          : <ChevronRight className="h-4 w-4 text-gray-400 shrink-0" />}
-        <span className="flex-1 text-sm font-semibold text-gray-800 truncate">
+          ? <ChevronDown className="h-4 w-4 text-[#000] shrink-0" />
+          : <ChevronRight className="h-4 w-4 text-[#000] shrink-0" />}
+        <span className="flex-1 text-sm font-semibold text-[#000] truncate">
           {unit.label}: {unit.title}
         </span>
         <span className="text-sm font-bold text-color2">{unit.count}</span>
@@ -124,13 +124,13 @@ const SyllabusStructureSidebar = ({
           <div className="flex items-center gap-3">
             <BookOpen className="h-5 w-5 text-color2" />
             <div>
-              <h3 className="text-base font-bold text-gray-900">Academic Structure</h3>
-              <p className="mt-0.5 text-xs text-gray-400">{courseCode} syllabus hierarchy</p>
+              <h3 className="text-base font-bold text-[#000]">Academic Structure</h3>
+              <p className="mt-0.5 text-xs text-[#000]">{courseCode} syllabus hierarchy</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="rounded-full border border-gray-300 p-0.5 text-gray-400 hover:text-gray-700"
+            className="rounded-full border border-gray-300 p-0.5 text-[#000] hover:text-[#000]"
           >
             <X className="h-3 w-3" />
           </button>

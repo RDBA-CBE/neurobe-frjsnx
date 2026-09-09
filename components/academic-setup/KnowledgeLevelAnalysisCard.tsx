@@ -42,7 +42,7 @@ export const KnowledgeLevelAnalysisCard: React.FC<KnowledgeLevelAnalysisCardProp
       <div>
         <div className="flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-color2" />
-          <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">
+          <h3 className="text-base md:text-lg font-bold text-[#000] dark:text-white">
             {title}
           </h3>
         </div>
@@ -59,7 +59,7 @@ export const KnowledgeLevelAnalysisCard: React.FC<KnowledgeLevelAnalysisCardProp
             className="rounded-2xl border border-gray-100 bg-sec1 p-4.5 space-y-3 dark:border-gray-800/80 dark:bg-gray-800/60"
           >
             <div className="flex items-center justify-between">
-              <span className="text-base font-bold text-gray-900 dark:text-white">
+              <span className="text-base font-bold text-[#000] dark:text-white">
                 {item.key} — {item.percentage}%
               </span>
               <span className="rounded-md bg-purple-100 px-2 py-0.5 text-xs font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300">

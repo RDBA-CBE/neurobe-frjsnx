@@ -57,9 +57,9 @@ const MappingRationaleItem: React.FC<MappingRationaleItemProps> = ({
             {mappedCountText}
           </span>
           {isOpen ? (
-            <ChevronUp className="h-4 w-4 text-gray-500" />
+            <ChevronUp className="h-4 w-4 text-pri" />
           ) : (
-            <ChevronDown className="h-4 w-4 text-gray-500" />
+            <ChevronDown className="h-4 w-4 text-pri" />
           )}
         </div>
       </button>
@@ -71,7 +71,7 @@ const MappingRationaleItem: React.FC<MappingRationaleItemProps> = ({
             <div key={po.id || idx} className="space-y-2 pt-2">
               {/* PO Title & Strength Badge Row */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 ">
-                <div className="flex items-center gap-1.5 text-sm font-bold text-gray-900 dark:text-white">
+                <div className="flex items-center gap-1.5 text-sm font-bold text-[#000] dark:text-white">
                   <span className="font-bold">{po.poCode}</span>
                   <span className="font-extrabold text-pri">•</span>
                   <span className="font-bold text-sm text-color1">{po.poTitle}</span>
@@ -88,10 +88,10 @@ const MappingRationaleItem: React.FC<MappingRationaleItemProps> = ({
 
               {/* Approved Academic Rationale Box */}
               <div className="rounded-xl border border-gray-100 bg-[#f8fafc] p-4 dark:border-gray-800 dark:bg-gray-800/40">
-                <p className="text-xs font-bold uppercase tracking-wider text-pri dark:text-gray-500 mb-1">
+                <p className="text-xs font-bold uppercase tracking-wider text-pri dark:text-pri mb-1">
                   APPROVED ACADEMIC RATIONALE
                 </p>
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p className="text-sm font-medium text-[#000] dark:text-gray-300 leading-relaxed">
                   {po.rationale}
                 </p>
               </div>

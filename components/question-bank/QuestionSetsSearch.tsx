@@ -41,11 +41,11 @@ const QuestionSetsSearch = ({
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl border border-gray-200/80 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 shadow-sm">
       {/* Search Input + Optional Unit Select */}
       <div className="flex flex-1 items-center gap-3 w-full">
-        <Search className="h-4 w-4 shrink-0 text-gray-400" />
+        <Search className="h-4 w-4 shrink-0 text-[#000]" />
         <input
           type="text"
           placeholder={placeholder}
-          className="flex-1 bg-transparent text-sm text-gray-700 dark:text-gray-200 placeholder:text-gray-400 outline-none"
+          className="flex-1 bg-transparent text-sm text-[#000] dark:text-gray-200 placeholder:text-gray-400 outline-none"
           onChange={(e) => onSearch?.(e.target.value)}
         />
         {showUnitSelect && (

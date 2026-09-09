@@ -29,14 +29,14 @@ export const CIAPaperMarksAllocationBar: React.FC<
           <span className="font-bold text-white">{totalPaperMarks}</span>
         </div>
 
-        <span className="select-none font-light text-gray-500">|</span>
+        <span className="select-none font-light text-pri">|</span>
 
         <div className="flex items-center gap-1.5">
           <span className="text-gray-300">Allocated Section Marks:</span>
           <span className="font-bold text-white">{allocatedSectionMarks}</span>
         </div>
 
-        <span className="select-none font-light text-gray-500">|</span>
+        <span className="select-none font-light text-pri">|</span>
 
         <div className="flex items-center gap-1.5">
           <span className="text-gray-300">Remaining to Allocate:</span>

@@ -42,7 +42,7 @@ const GenericTabs = ({
               className={`${noWrap ? "mb-1" : "mb-2"} flex items-center gap-2 sm:gap-3 rounded-full border px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-semibold transition-all shrink-0 whitespace-nowrap ${
                 active
                   ? " bg-color2 text-white"
-                  : "border-gray-200 text-[#000] hover:text-gray-700 bg-[#fff]"
+                  : "border-gray-200 text-[#000] hover:text-[#000] bg-[#fff]"
               }`}
             >
               {tab.label}
@@ -60,7 +60,7 @@ const GenericTabs = ({
         })}
       </div>
       {rightContent && (
-        <div className="flex items-center pr-2 text-xs text-gray-400">{rightContent}</div>
+        <div className="flex items-center pr-2 text-xs text-[#000]">{rightContent}</div>
       )}
     </div>
   );

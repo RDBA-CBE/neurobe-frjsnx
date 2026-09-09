@@ -98,10 +98,10 @@ const McqTestPrepCard: React.FC<McqTestPrepCardProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         {/* Left Side: Code Badge + Title + Status Pill */}
         <div className="flex flex-wrap items-center gap-2.5">
-          <span className="rounded bg-gray-100 dark:bg-gray-700 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-300">
+          <span className="rounded bg-gray-100 dark:bg-gray-700 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-[#000] dark:text-gray-300">
             {code}
           </span>
-          <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
+          <h3 className="text-base sm:text-lg font-bold text-[#000] dark:text-white">
             {title}
           </h3>
           <span
@@ -125,16 +125,16 @@ const McqTestPrepCard: React.FC<McqTestPrepCardProps> = ({
           ) : (
             <button
               onClick={onViewTest}
-              className="flex items-center gap-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-1.5 text-md font-semibold text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 transition"
+              className="flex items-center gap-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-1.5 text-md font-semibold text-[#000] dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 transition"
             >
-              <Eye className="h-3.5 w-3.5 text-gray-600 dark:text-gray-300" />
+              <Eye className="h-3.5 w-3.5 text-[#000] dark:text-gray-300" />
               View Test
             </button>
           )}
 
           <button
             onClick={onPreviewQuestions}
-            className="text-md font-medium text-pri dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition"
+            className="text-md font-medium text-pri dark:text-gray-400 hover:text-[#000] dark:hover:text-gray-200 transition"
           >
             Preview Questions
           </button>
@@ -145,7 +145,7 @@ const McqTestPrepCard: React.FC<McqTestPrepCardProps> = ({
       <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-y-4 gap-x-6 text-xs">
         {/* Unit */}
         <div>
-          <p className="text-md font-bold uppercase tracking-wider text-pri dark:text-gray-500 mb-1">
+          <p className="text-md font-bold uppercase tracking-wider text-pri dark:text-pri mb-1">
             UNIT
           </p>
           <p className="font-bold text-color1 text-sm  dark:text-gray-100">{unit}</p>
@@ -153,7 +153,7 @@ const McqTestPrepCard: React.FC<McqTestPrepCardProps> = ({
 
         {/* Questions */}
         <div>
-          <p className="text-md font-bold uppercase tracking-wider text-pri dark:text-gray-500 mb-1">
+          <p className="text-md font-bold uppercase tracking-wider text-pri dark:text-pri mb-1">
             QUESTIONS
           </p>
           <p className="font-bold text-color1 text-sm  dark:text-gray-100">{questionsCount}</p>
@@ -161,7 +161,7 @@ const McqTestPrepCard: React.FC<McqTestPrepCardProps> = ({
 
         {/* Knowledge Levels */}
         <div>
-          <p className="text-md font-bold uppercase tracking-wider text-pri dark:text-gray-500 mb-1">
+          <p className="text-md font-bold uppercase tracking-wider text-pri dark:text-pri mb-1">
             KNOWLEDGE LEVELS
           </p>
           <p className="font-bold text-color1 text-sm  dark:text-gray-100">{knowledgeLevels}</p>
@@ -169,7 +169,7 @@ const McqTestPrepCard: React.FC<McqTestPrepCardProps> = ({
 
         {/* Selected */}
         <div>
-          <p className="text-md font-bold uppercase tracking-wider text-pri dark:text-gray-500 mb-1">
+          <p className="text-md font-bold uppercase tracking-wider text-pri dark:text-pri mb-1">
             SELECTED
           </p>
           <p className="font-bold text-color1 text-sm  dark:text-gray-100 flex items-center gap-1.5">
@@ -184,7 +184,7 @@ const McqTestPrepCard: React.FC<McqTestPrepCardProps> = ({
       {/* Topics section */}
       {topics && topics.length > 0 && (
         <div className="mt-4 text-xs">
-          <p className="text-md font-bold uppercase tracking-wider text-pri dark:text-gray-500 mb-1">
+          <p className="text-md font-bold uppercase tracking-wider text-pri dark:text-pri mb-1">
             TOPICS
           </p>
           <div className="space-y-0.5 text-color1 text-sm  dark:text-gray-300">
@@ -198,25 +198,25 @@ const McqTestPrepCard: React.FC<McqTestPrepCardProps> = ({
       {/* Footer Window */}
       {(testWindowDate || readOnly) && (
         <div className="mt-5 border-t border-gray-100 dark:border-gray-700/60 pt-3 flex items-center justify-between text-xs">
-          <div className="flex items-center gap-1.5 text-gray-400 dark:text-gray-500">
+          <div className="flex items-center gap-1.5 text-[#000] dark:text-pri">
             <Calendar className="h-3.5 w-3.5" />
             <span className="text-[10px] text-color1 mt-1 uppercase tracking-wider">
               TEST WINDOW :
             </span>
             {testWindowDate && (
-              <span className="font-bold text-gray-800 mt-1 dark:text-gray-200">
+              <span className="font-bold text-[#000] mt-1 dark:text-gray-200">
                 {testWindowDate}
               </span>
             )}
             {testWindowTime && (
-              <span className="text-gray-500 dark:text-gray-400 mt-1 text-color1  font-normal">
+              <span className="text-pri dark:text-gray-400 mt-1 text-color1  font-normal">
                 {testWindowTime}
               </span>
             )}
           </div>
 
           {readOnly && (
-            <span className="rounded bg-gray-100 dark:bg-gray-700 text-color1  px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            <span className="rounded bg-gray-100 dark:bg-gray-700 text-color1  px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-pri dark:text-gray-400">
               {readOnlyLabel}
             </span>
           )}

@@ -31,7 +31,7 @@ const LabExperimentsSummary = ({ experiments = DEFAULT_EXPERIMENTS }: LabExperim
         </div>
           <h3 className="text-lg font-bold text-color  dark:text-white">Lab Experiments</h3>
         </div>
-        <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+        <span className="text-sm font-semibold text-[#000] dark:text-gray-300">
           {experiments.length} Experiments • {totalHours} Hours
         </span>
       </div>
@@ -42,8 +42,8 @@ const LabExperimentsSummary = ({ experiments = DEFAULT_EXPERIMENTS }: LabExperim
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-color2 text-xs font-bold text-white dark:bg-purple-900/20">
               {exp.id}
             </span>
-            <span className="flex-1 text-sm text-gray-700 dark:text-gray-300">{exp.title}</span>
-            <span className="shrink-0 rounded-md border px-2 py-0.5 text-xs border-primary2  font-semibold text-gray-500 dark:border-gray-600">
+            <span className="flex-1 text-sm text-[#000] dark:text-gray-300">{exp.title}</span>
+            <span className="shrink-0 rounded-md border px-2 py-0.5 text-xs border-primary2  font-semibold text-pri dark:border-gray-600">
               {exp.hours} hrs
             </span>
           </div>

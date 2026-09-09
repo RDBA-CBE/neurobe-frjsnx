@@ -103,13 +103,13 @@ export const ResultAnalysisHeaderCard: React.FC<ResultAnalysisHeaderCardProps> =
       {/* Top Section: Title, Badges & Toggle */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-3">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-bold text-[#000] dark:text-white">
             Results & Analysis
           </h2>
           <span className="rounded-lg bg-color2-l px-3 py-1 text-xs font-semibold text-color2 dark:bg-purple-950/60 dark:text-purple-300">
             {courseCode}
           </span>
-          <span className="rounded-lg bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+          <span className="rounded-lg bg-gray-100 px-3 py-1 text-xs font-medium text-[#000] dark:bg-gray-800 dark:text-gray-300">
             {enrolledText}
           </span>
         </div>
@@ -121,7 +121,7 @@ export const ResultAnalysisHeaderCard: React.FC<ResultAnalysisHeaderCardProps> =
             onClick={() => handleModeChange("mcq")}
             className={`rounded-lg px-4 py-1.5 text-xs font-bold transition-all ${mode === "mcq"
               ? "bg-color2 text-white shadow-xs"
-              : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+              : "text-[#000] hover:text-[#000] dark:text-gray-400 dark:hover:text-white"
               }`}
           >
             MCQ Tests
@@ -131,7 +131,7 @@ export const ResultAnalysisHeaderCard: React.FC<ResultAnalysisHeaderCardProps> =
             onClick={() => handleModeChange("cia")}
             className={`rounded-lg px-4 py-1.5 text-xs font-bold transition-all ${mode === "cia"
               ? "bg-color2 text-white shadow-xs"
-              : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+              : "text-[#000] hover:text-[#000] dark:text-gray-400 dark:hover:text-white"
               }`}
           >
             CIA Results
@@ -151,7 +151,7 @@ export const ResultAnalysisHeaderCard: React.FC<ResultAnalysisHeaderCardProps> =
         className={`mt-4 flex flex-wrap items-center gap-2 ${mode === "cia" ? "border-t border-gray-100 pt-4 dark:border-gray-800" : ""
           }`}
       >
-        <span className="text-sm font-bold text-gray-700 dark:text-gray-300 shrink-0">
+        <span className="text-sm font-bold text-[#000] dark:text-gray-300 shrink-0">
           {mode === "mcq"
             ? "Select Completed MCQ Test:"
             : "Select Internal Assessment:"}
@@ -167,8 +167,8 @@ export const ResultAnalysisHeaderCard: React.FC<ResultAnalysisHeaderCardProps> =
                   type="button"
                   onClick={() => handleMcqSelect(test.id)}
                   className={`rounded-xl px-3.5 py-1.5 text-xs transition-all ${isActive
-                    ? "border border-color2 bg-[#F9F5FF] text-gray-900 shadow-2xs dark:border-purple-500 dark:bg-purple-950/40 dark:text-white"
-                    : "border border-gray-200 bg-white text-gray-400 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                    ? "border border-color2 bg-[#F9F5FF] text-[#000] shadow-2xs dark:border-purple-500 dark:bg-purple-950/40 dark:text-white"
+                    : "border border-gray-200 bg-white text-[#000] hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
                     }`}
                 >
                   <span
@@ -180,7 +180,7 @@ export const ResultAnalysisHeaderCard: React.FC<ResultAnalysisHeaderCardProps> =
                   >
                     [{test.code}]
                   </span>
-                  <span className={isActive ? "font-bold text-gray-900 dark:text-white text-sm" : "font-medium text-pri text-sm dark:text-gray-400"}>
+                  <span className={isActive ? "font-bold text-[#000] dark:text-white text-sm" : "font-medium text-pri text-sm dark:text-gray-400"}>
                     {test.title}
                   </span>
                 </button>
@@ -196,7 +196,7 @@ export const ResultAnalysisHeaderCard: React.FC<ResultAnalysisHeaderCardProps> =
                   onClick={() => handleCiaSelect(cia.id)}
                   className={`rounded-full px-4 py-1 text-sm font-bold transition-all ${isActive
                     ? "border border-color2 bg-[#F9F5FF] text-color2 shadow-2xs dark:border-purple-500 dark:bg-purple-950/40 dark:text-purple-300"
-                    : "border border-gray-200 bg-white text-gray-500 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                    : "border border-gray-200 bg-white text-pri hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
                     }`}
                 >
                   {cia.label}

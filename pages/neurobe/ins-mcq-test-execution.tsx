@@ -505,7 +505,7 @@ const MCQTestExecution = () => {
       render: ({ title, id }: any) => (
         <div>
           <p className="font-semibold text-[#000] dark:text-white">{title}</p>
-          <p className="mt-0.5 text-xs text-gray-400">Topic {id}</p>
+          <p className="mt-0.5 text-xs text-[#000]">Topic {id}</p>
         </div>
       ),
     },
@@ -513,7 +513,7 @@ const MCQTestExecution = () => {
       accessor: "level",
       title: "LEVEL",
       render: ({ level }: any) => (
-        <span className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs font-bold text-gray-600">
+        <span className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs font-bold text-[#000]">
           {level}
         </span>
       ),
@@ -526,7 +526,7 @@ const MCQTestExecution = () => {
           <p className="text-xs text-[#000]">
             <span className="font-semibold">Textbook:</span> {textbook}
           </p>
-          <p className="mt-0.5 text-xs text-gray-400">
+          <p className="mt-0.5 text-xs text-[#000]">
             <span className="font-semibold">Reference:</span> {reference}
           </p>
         </div>
@@ -593,7 +593,7 @@ const MCQTestExecution = () => {
               },
             })
           }
-          className="flex items-center gap-1 text-xs font-semibold text-gray-500 hover:text-color2"
+          className="flex items-center gap-1 text-xs font-semibold text-pri hover:text-color2"
         >
           <EditIcon className="h-3.5 w-3.5" /> Edit
         </button>

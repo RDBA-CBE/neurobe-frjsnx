@@ -11,7 +11,7 @@ import SectionsAndQuestionsSection, {
 } from "@/components/academic-setup/SectionsAndQuestionsSection";
 import ReviewAndFinalizeSection from "@/components/academic-setup/ReviewAndFinalizeSection";
 import PageHeader from "@/components/common-components/PageHeader";
-import { Eye, Save, Users } from "lucide-react";
+import { Eye, Plus, Save, Users } from "lucide-react";
 import CIAPaperMarksAllocationBar from "@/components/academic-setup/CIAPaperMarksAllocationBar";
 
 const COURSE_OPTIONS = [
@@ -84,7 +84,7 @@ const CreateCIAPaper = () => {
       <PageHeader
         title="Create CIA Question Paper"
         subtitle="Create CIA Question Paper"
-        icon={<Users className="text-color2 h-5 w-5" />}
+        icon={<Plus className="text-color2 h-5 w-5" />}
         actionBtn2={{
           label: "Save Draft",
           icon: <Save className="h-4 w-4" />,

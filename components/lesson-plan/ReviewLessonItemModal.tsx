@@ -26,7 +26,7 @@ interface ReviewLessonItemModalProps {
 
 const InfoRow = ({ label, value }: { label: string; value: string }) => (
   <div className="flex flex-col gap-0.5">
-    <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+    <span className="text-[10px] font-semibold uppercase tracking-wider text-[#000]">
       {label}
     </span>
     <span className="text-sm font-medium text-[#000] dark:text-white">{value}</span>
@@ -59,7 +59,7 @@ const ReviewLessonItemModal = ({
 
         {/* Topic title */}
         <div className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-[#000]">
             Topic
           </p>
           <p className="mt-1 text-sm font-semibold text-[#000] dark:text-white">
@@ -70,21 +70,21 @@ const ReviewLessonItemModal = ({
         {/* Level / Hours / Pedagogy */}
         <div className="grid grid-cols-3 divide-x divide-gray-100 rounded-xl border border-gray-100 bg-gray-50">
           <div className="flex flex-col items-center py-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#000]">
               Level
             </span>
-            <span className="mt-1 rounded-md border border-gray-200 bg-white px-2 py-0.5 text-xs font-bold text-gray-600">
+            <span className="mt-1 rounded-md border border-gray-200 bg-white px-2 py-0.5 text-xs font-bold text-[#000]">
               {data.level}
             </span>
           </div>
           <div className="flex flex-col items-center py-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#000]">
               Hours
             </span>
             <span className="mt-1 text-sm font-bold text-[#000]">{data.hours}</span>
           </div>
           <div className="flex flex-col items-center py-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#000]">
               Pedagogy
             </span>
             <span className="mt-1 text-center text-xs font-semibold text-color2">

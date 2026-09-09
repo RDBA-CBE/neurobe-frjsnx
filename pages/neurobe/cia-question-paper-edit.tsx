@@ -298,19 +298,17 @@ const CIAQuestionPaperEdit = () => {
 
       <PageHeader
         title="CIA–1 Question Paper"
-        draft="Draft"
+        records="Draft"
         actionBtn2={{
-          label: "Save Draft",
-          icon: <Save className="h-4 w-4" />,
-          onClick: () => console.log("Save Draft"),
-          outline: true,
-        }}
-        actionBtn1={{
-          label: "View Draft",
-          icon: <Eye className="h-4 w-4" />,
-          onClick: () => router.push("/neurobe/cia-question-paper-preview"),
-          outline: true,
-        }}
+              label: "Save Draft",
+              icon: <Save className="h-4 w-4" />,
+              onClick: () => {},
+            }}
+            actionBtn1={{
+              label: "View Draft",
+              icon: <Eye className="h-4 w-4" />,
+              onClick: () => {},
+            }}
       />
 
       <CIAPaperMarksAllocationBar

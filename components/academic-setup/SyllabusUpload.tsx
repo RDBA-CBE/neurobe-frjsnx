@@ -49,7 +49,7 @@ const SyllabusUpload = ({ onFileSelect }: SyllabusUploadProps) => {
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-purple-50 dark:bg-purple-900/20">
           <CloudUpload className="h-7 w-7 text-primary" />
         </div>
-        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+        <p className="text-sm font-semibold text-[#000] dark:text-gray-200">
           Drag & drop your syllabus document here, or{" "}
           <span
             className="cursor-pointer text-primary underline"
@@ -58,7 +58,7 @@ const SyllabusUpload = ({ onFileSelect }: SyllabusUploadProps) => {
             browse
           </span>
         </p>
-        <p className="mt-1 text-xs text-gray-400">Supported formats: PDF, DOCX, DOC</p>
+        <p className="mt-1 text-xs text-[#000]">Supported formats: PDF, DOCX, DOC</p>
         <input
           ref={inputRef}
           type="file"
@@ -76,11 +76,11 @@ const SyllabusUpload = ({ onFileSelect }: SyllabusUploadProps) => {
         <div className="mt-4 flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-800">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
-              <File className="h-5 w-5 text-gray-400" />
+              <File className="h-5 w-5 text-[#000]" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">{file.name}</p>
-              <div className="flex items-center gap-2 text-xs text-gray-400">
+              <p className="text-sm font-semibold text-[#000] dark:text-gray-200">{file.name}</p>
+              <div className="flex items-center gap-2 text-xs text-[#000]">
                 <span>{formatSize(file.size)}</span>
                 <span>•</span>
                 <span className="flex items-center gap-1">

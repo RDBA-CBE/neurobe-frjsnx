@@ -38,7 +38,7 @@ const StepCircle = ({ step, status }: { step: Step; status: StepStatus }) => {
     );
   }
   return (
-    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-gray-300 text-sm font-semibold text-gray-400 dark:border-gray-600 dark:text-[#000]">
+    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-gray-300 text-sm font-semibold text-[#000] dark:border-gray-600 dark:text-[#000]">
       {step.number}
     </div>
   );
@@ -64,12 +64,12 @@ const SyllabusStepper = ({
       {/* Header */}
       <div className="mb-4 flex items-start justify-between">
         <div>
-          <h2 className="text-base font-bold text-gray-900 dark:text-white">{title}</h2>
-          <p className="mt-0.5 text-sm text-gray-500">{description}</p>
+          <h2 className="text-base font-bold text-[#000] dark:text-white">{title}</h2>
+          <p className="mt-0.5 text-sm text-pri">{description}</p>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-500">
+        <div className="flex items-center gap-2 text-sm text-pri">
           <span>Status:</span>
-          <span className={`rounded-full border px-3 py-0.5 text-xs font-semibold dark:border-gray-600 dark:text-gray-300 ${statusClassName || "border-gray-300 text-gray-700"}`}>
+          <span className={`rounded-full border px-3 py-0.5 text-xs font-semibold dark:border-gray-600 dark:text-gray-300 ${statusClassName || "border-gray-300 text-[#000]"}`}>
             {statusLabel}
           </span>
         </div>

@@ -275,12 +275,12 @@ const Header = () => {
         <div className="bg-lblue border-lblue z-2 relative flex w-full items-center border-b  dark:bg-black">
 
           {/* logo */}
-          <div className="bg-color1 px-1  py-1 logo-bg-parent">
-            <div className="horizontal-logo flex items-center justify-between px-7 py-4  bg-[#fff] rounded-md logo-bg">
+          <div className="  px-1  py-1 logo-bg-parent">
+            <div className="horizontal-logo flex items-center justify-between px-5 py-4  bg-[#fff] rounded-md logo-bg">
               <Link href="/" className="main-logo flex shrink-0 items-center">
                 <img
-                  className="inline h-[30px] w-[170px] ltr:-ml-1 rtl:-mr-1"
-                  src="/assets/images/faculty-logo.png"
+                  className="inline h-[30px] w-auto ltr:-ml-1 rtl:-mr-1"
+                  src="/assets/images/neurobe/logo.png"
                   alt="logo"
                 />
                 {/* <span className="hidden align-middle text-2xl  font-semibold  transition-all duration-300 dark:text-white-light md:inline ltr:ml-1.5 rtl:mr-1.5">
@@ -305,14 +305,14 @@ const Header = () => {
           </div>
 
           {/* greeting */}
-          <div className="ltr:ml-6 rtl:mr-6 flex-1">
+          <div className="ltr:ml-6 rtl:mr-6 hidden lg:block flex-1">
             <p className="text-xl font-bold text-[#000] dark:text-white flex gap-4 items-center">
               {getGreeting()}, {state.name} <IconHandWave />
             </p>
           </div>
 
           {/* right actions */}
-          <div className="flex items-center gap-4 ltr:mr-4 rtl:ml-4">
+          <div className="ms-auto pr-4 flex items-center gap-4 ltr:mr-5 rtl:ml-4">
             {/* notification bell */}
             <button
               type="button"

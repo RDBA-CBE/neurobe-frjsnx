@@ -197,22 +197,22 @@ const CIAQuestionPapersCard: React.FC<CIAQuestionPapersCardProps> = ({
     <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 space-y-6">
       {/* Top Banner Info Bar */}
       <div className="flex flex-wrap items-center justify-between rounded-xl bg-[#F8FAFC] px-4 py-2.5 text-sm dark:bg-gray-700/60">
-        <div className="flex flex-wrap items-center gap-4 text-gray-500 dark:text-gray-400">
+        <div className="flex flex-wrap items-center gap-4 text-pri dark:text-gray-400">
           <span>
             Programme:{" "}
-            <strong className="font-bold text-gray-900 dark:text-white">
+            <strong className="font-bold text-[#000] dark:text-white">
               {programme}
             </strong>
           </span>
           <span>
             Batch:{" "}
-            <strong className="font-bold text-gray-900 dark:text-white">
+            <strong className="font-bold text-[#000] dark:text-white">
               {batch}
             </strong>
           </span>
           <span>
             Semester:{" "}
-            <strong className="font-bold text-gray-900 dark:text-white">
+            <strong className="font-bold text-[#000] dark:text-white">
               {semester}
             </strong>
           </span>
@@ -229,10 +229,10 @@ const CIAQuestionPapersCard: React.FC<CIAQuestionPapersCardProps> = ({
             <FileCode className="h-6 w-6" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h3 className="text-xl font-bold text-[#000] dark:text-white">
               {title}
             </h3>
-            <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+            <p className="mt-0.5 text-sm text-pri dark:text-gray-400">
               {subtitle}
             </p>
           </div>
@@ -244,7 +244,7 @@ const CIAQuestionPapersCard: React.FC<CIAQuestionPapersCardProps> = ({
 
       {/* Selector & Details Content */}
       <div className="space-y-5 pt-2">
-        <h4 className="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+        <h4 className="text-xs font-bold uppercase tracking-wider text-[#000] dark:text-gray-300">
           CIA QUESTION PAPERS
         </h4>
 
@@ -264,7 +264,7 @@ const CIAQuestionPapersCard: React.FC<CIAQuestionPapersCardProps> = ({
                 <span
                   className={`text-base font-bold ${isSelected
                     ? "text-[#5C28CA] dark:text-purple-300"
-                    : "text-gray-900 dark:text-white"
+                    : "text-[#000] dark:text-white"
                     }`}
                 >
                   {paper.name}
@@ -272,7 +272,7 @@ const CIAQuestionPapersCard: React.FC<CIAQuestionPapersCardProps> = ({
                 <span
                   className={`text-sm ${isSelected
                     ? "font-semibold text-[#5C28CA] dark:text-purple-300"
-                    : "font-medium text-gray-500 dark:text-gray-400"
+                    : "font-medium text-pri dark:text-gray-400"
                     }`}
                 >
                   {paper.statusText}

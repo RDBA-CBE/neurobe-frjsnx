@@ -127,7 +127,7 @@ const BulkImport = () => {
       </ul> */}
 
       {/* Page title */}
-      {/* <h1 className="mb-5 text-2xl font-bold text-gray-900 dark:text-white">
+      {/* <h1 className="mb-5 text-2xl font-bold text-[#000] dark:text-white">
         Bulk Import
       </h1> */}
 

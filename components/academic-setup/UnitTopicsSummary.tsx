@@ -55,7 +55,7 @@ const UnitTopicsSummary = ({ units = DEFAULT_UNITS }: UnitTopicsSummaryProps) =>
         </div>
           <h3 className="text-lg font-bold text-color dark:text-white">Units & Topics</h3>
         </div>
-        <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+        <span className="text-sm font-semibold text-[#000] dark:text-gray-300">
           {units.length} Units • {totalHours} Hours
         </span>
       </div>
@@ -73,14 +73,14 @@ const UnitTopicsSummary = ({ units = DEFAULT_UNITS }: UnitTopicsSummaryProps) =>
             }`}
           >
             <div className="flex items-center justify-between">
-              <span className={`text-sm font-bold ${i === activeUnit ? "text-color2" : "text-gray-500"}`}>
+              <span className={`text-sm font-bold ${i === activeUnit ? "text-color2" : "text-pri"}`}>
                 Unit {String(u.id).padStart(2, "0")}
               </span>
               <span className={`text-xs text-color2 font-semibold`}>
                 {u.hours} hrs
               </span>
             </div>
-            <p className={`mt-1 text-xs font-medium leading-snug ${i === activeUnit ? "text-color2" : "text-gray-700 dark:text-gray-300"}`}>
+            <p className={`mt-1 text-xs font-medium leading-snug ${i === activeUnit ? "text-color2" : "text-[#000] dark:text-gray-300"}`}>
               {u.title}
             </p>
           </button>
@@ -92,7 +92,7 @@ const UnitTopicsSummary = ({ units = DEFAULT_UNITS }: UnitTopicsSummaryProps) =>
         <div className="mb-3 flex items-center justify-between">
           <div>
             <p className="text-sm font-extrabold uppercase tracking-wide text-color2 ">Unit {String(unit.id).padStart(2, "0")}</p>
-            <p className="text-lg font-bold text-gray-900 dark:text-white">{unit.title}</p>
+            <p className="text-lg font-bold text-[#000] dark:text-white">{unit.title}</p>
           </div>
           <span className="rounded-full border border-purple-200 px-3 py-1 text-xs font-semibold text-color2 bg-color2-l">
             {unit.hours} Lecture Hours
@@ -103,7 +103,7 @@ const UnitTopicsSummary = ({ units = DEFAULT_UNITS }: UnitTopicsSummaryProps) =>
           {unit.topics.map((t) => (
             <div key={t.id} className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-3 py-2.5 dark:border-gray-700 dark:bg-gray-900">
               <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-purple-50 text-xs font-bold text-color2">{t.id}</span>
-              <span className="text-sm text-gray-700 dark:text-gray-300">{t.title}</span>
+              <span className="text-sm text-[#000] dark:text-gray-300">{t.title}</span>
             </div>
           ))}
         </div>

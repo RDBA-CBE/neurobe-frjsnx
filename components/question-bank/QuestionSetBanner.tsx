@@ -29,10 +29,10 @@ const QuestionSetBanner = ({
         >
           {unit}
         </span>
-        <h2 className="text-xl font-bold text-gray-900">{title}</h2>
+        <h2 className="text-xl font-bold text-[#000]">{title}</h2>
       </div>
       <div className="flex items-center gap-2 shrink-0">
-        <span className="rounded-full border border-gray-200 bg-gray-50 px-4 py-1.5 text-sm font-semibold text-gray-700">
+        <span className="rounded-full border border-gray-200 bg-gray-50 px-4 py-1.5 text-sm font-semibold text-[#000]">
           {totalQuestions} Total Questions
         </span>
         <span className="rounded-full border border-green-200 bg-green-50 px-4 py-1.5 text-sm font-semibold text-green-600">
@@ -42,11 +42,11 @@ const QuestionSetBanner = ({
     </div>
 
     {/* Row 2: date */}
-    <p className="text-sm text-gray-400">Generated on {generatedOn}</p>
+    <p className="text-sm text-[#000]">Generated on {generatedOn}</p>
 
     {/* Row 3: topics */}
     <div className="flex items-center gap-2 rounded-xl bg-gray-50 px-4 py-3 flex-wrap">
-      <span className="text-sm text-gray-400 shrink-0">Topics Covered:</span>
+      <span className="text-sm text-[#000] shrink-0">Topics Covered:</span>
       {topics.map((t) => (
         <span
           key={t}

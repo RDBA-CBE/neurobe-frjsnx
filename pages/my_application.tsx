@@ -1545,7 +1545,7 @@ const Application = () => {
             </div>
 
             <div className="flex flex-col">
-              <p className="text-2xl  leading-none text-gray-900 dark:text-white">
+              <p className="text-2xl  leading-none text-[#000] dark:text-white">
                 {state.applicationCount?.count || 0}
               </p>
               <p className="text-sm text-[#000] dark:text-[#000]">
@@ -1567,7 +1567,7 @@ const Application = () => {
             </div>
 
             <div className="flex flex-col">
-              <p className="text-2xl  leading-none text-gray-900 dark:text-white">
+              <p className="text-2xl  leading-none text-[#000] dark:text-white">
                 {state.applicationCount?.applications_by_status?.applied ||
                   state.applicationCount?.applications_by_status?.Applied ||
                   0}
@@ -1591,7 +1591,7 @@ const Application = () => {
             </div>
 
             <div className="flex flex-col">
-              <p className="text-2xl  leading-none text-gray-900 dark:text-white">
+              <p className="text-2xl  leading-none text-[#000] dark:text-white">
                 {state.applicationCount?.applications_by_status?.Selected || 0}
               </p>
               <p className="text-sm text-[#000] dark:text-[#000]">
@@ -1615,7 +1615,7 @@ const Application = () => {
             </div>
 
             <div className="flex flex-col">
-              <p className="text-2xl  leading-none text-gray-900 dark:text-white">
+              <p className="text-2xl  leading-none text-[#000] dark:text-white">
                 {state.applicationCount?.applications_by_status?.[
                   "Interview Scheduled"
                 ] ||
@@ -1867,7 +1867,7 @@ const Application = () => {
                   <Link
                     href={`/faculty/application_detail?id=${row?.id}`}
                     title={row?.applicant_name}
-                    className={`inline-flex items-center gap-2 ${!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-[#000]'}`}
+                    className={`inline-flex items-center gap-2 ${!row?.is_viewed ? 'text-[#000] font-semibold' : 'text-[#000] dark:text-[#000]'}`}
                   >
                     {row?.applicant_name}
                   </Link>
@@ -1881,7 +1881,7 @@ const Application = () => {
                   <Link
                     href={`/faculty/job_details?id=${row?.job_id}`}
                     title={row?.job_title}
-                    className={!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-[#000]'}
+                    className={!row?.is_viewed ? 'text-[#000] font-semibold' : 'text-[#000] dark:text-[#000]'}
                   >
                     {row?.job_short_title}
                   </Link>
@@ -1895,7 +1895,7 @@ const Application = () => {
                 render: (row) => (
                   <div
                     title={row?.college_name}
-                    className={!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-[#000]'}
+                    className={!row?.is_viewed ? 'text-[#000] font-semibold' : 'text-[#000] dark:text-[#000]'}
                   >
                     {row?.college_name}
                   </div>
@@ -1922,7 +1922,7 @@ const Application = () => {
                       {/* First department text */}
                       <span
                         title={firstDept}
-                        className={`text-sm ${!row?.is_viewed ? 'text-gray-900 font-semibold' : 'text-[#000] dark:text-gray-300'}`}
+                        className={`text-sm ${!row?.is_viewed ? 'text-[#000] font-semibold' : 'text-[#000] dark:text-gray-300'}`}
                       >
                         {firstDept}
                       </span>

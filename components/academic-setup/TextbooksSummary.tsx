@@ -22,7 +22,7 @@ const BookCard = ({ book }: { book: Book }) => (
     <span className="mb-2 inline-block rounded-md bg-color2-l px-2.5 py-0.5 text-xs font-bold text-color2 dark:bg-purple-900/20">
       {book.label}
     </span>
-    <p className="text-lg font-bold text-gray-900 dark:text-white">{book.title}</p>
+    <p className="text-lg font-bold text-[#000] dark:text-white">{book.title}</p>
     <p className="mt-1 text-sm text-pri">{book.citation}</p>
   </div>
 );

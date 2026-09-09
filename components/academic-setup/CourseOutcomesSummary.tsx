@@ -73,7 +73,7 @@ const CourseOutcomesSummary = ({
             <span className="text-color2 rounded-md bg-purple-50 px-2.5 py-0.5 text-xs font-bold dark:bg-purple-900/20">
               {co.id}
             </span>
-            <span className="text-sm text-gray-700 dark:text-gray-300">
+            <span className="text-sm text-[#000] dark:text-gray-300">
               {co.description}
             </span>
           </div>

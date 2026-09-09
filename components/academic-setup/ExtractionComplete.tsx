@@ -34,15 +34,15 @@ const ExtractionComplete = ({
         <span className="flex items-center gap-1.5 rounded-full border border-green-300 bg-green-50 px-3 py-1 text-xs font-semibold text-green-600">
           <CheckCircle2 className="h-3.5 w-3.5" /> Extraction Complete
         </span>
-        <span className="text-sm text-gray-500">{fileName}</span>
+        <span className="text-sm text-pri">{fileName}</span>
       </div>
 
       {/* Title */}
-      <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Extraction Complete</h2>
+      <h2 className="mb-4 text-xl font-bold text-[#000] dark:text-white">Extraction Complete</h2>
 
       {/* Progress bar */}
       <div className="mb-6">
-        <div className="mb-1 flex items-center justify-between text-sm font-semibold text-gray-800 dark:text-gray-200">
+        <div className="mb-1 flex items-center justify-between text-sm font-semibold text-[#000] dark:text-gray-200">
           <span>Extraction Complete</span>
           <span className="text-primary">{progress}%</span>
         </div>
@@ -62,7 +62,7 @@ const ExtractionComplete = ({
               <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-custom">
                 <CheckCircle2 className="h-4 w-4 text-white" />
               </div>
-              <span className="text-sm text-gray-700 dark:text-gray-300">{task}</span>
+              <span className="text-sm text-[#000] dark:text-gray-300">{task}</span>
             </div>
             <span className="text-sm font-medium text-primary">Completed</span>
           </div>
@@ -72,7 +72,7 @@ const ExtractionComplete = ({
       {/* Footer CTA */}
       <div className="flex items-center justify-between rounded-xl bg-purple-50 px-5 py-4 dark:bg-purple-900/20">
         <div>
-          <p className="text-sm font-bold text-gray-900 dark:text-white">Extraction Complete</p>
+          <p className="text-sm font-bold text-[#000] dark:text-white">Extraction Complete</p>
           <p className="mt-0.5 text-sm text-primary">
             AI extraction completed. Faculty review and ratification is required before final approval.
           </p>

@@ -25,7 +25,7 @@ const CIAPaperHeaderCard: React.FC<CIAPaperHeaderCardProps> = ({
         <span className="text-xs font-medium uppercase tracking-wider text-pri">
           SELECTED:
         </span>
-        <span className="font-bold text-gray-900 dark:text-white">
+        <span className="font-bold text-[#000] dark:text-white">
           {selectedPaperName}
         </span>
 
@@ -36,17 +36,17 @@ const CIAPaperHeaderCard: React.FC<CIAPaperHeaderCardProps> = ({
         </span>
 
         {/* View Mode Badge */}
-        <span className="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-          <Eye className="h-3.5 w-3.5 text-gray-500" />
+        <span className="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-3 py-1 text-xs font-medium text-[#000] dark:bg-gray-700 dark:text-gray-300">
+          <Eye className="h-3.5 w-3.5 text-pri" />
           {viewModeText}
         </span>
 
-        <span className="text-gray-300 dark:text-gray-600">|</span>
+        <span className="text-gray-300 dark:text-[#000]">|</span>
 
         {/* Approved Metadata */}
         <span className="text-sm text-pri">
           Approved by{" "}
-          <strong className="font-bold text-gray-900 dark:text-white">
+          <strong className="font-bold text-[#000] dark:text-white">
             {approvedBy}
           </strong>{" "}
           on {approvedDate}

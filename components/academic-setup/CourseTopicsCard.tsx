@@ -295,16 +295,16 @@ const CourseTopicsCard: React.FC<CourseTopicsCardProps> = ({
         {/* Left Stats Bar */}
         <div className="flex items-center gap-2 text-sm font-bold text-[#1e1b4b] dark:text-white">
           <span >5 Units</span>
-          <span className="text-gray-300 dark:text-gray-700">•</span>
+          <span className="text-gray-300 dark:text-[#000]">•</span>
           <span className="text-color2 font-bold">20 Main Topics</span>
-          <span className="text-gray-300 dark:text-gray-700">•</span>
+          <span className="text-gray-300 dark:text-[#000]">•</span>
           <span>70 Child Topics</span>
         </div>
 
         {/* Right Search + Expand/Collapse */}
         <div className="flex items-center gap-4">
           <div className="relative flex items-center w-64 sm:w-72">
-            <Search className="absolute left-3.5 h-4 w-4 text-gray-400 pointer-events-none" />
+            <Search className="absolute left-3.5 h-4 w-4 text-[#000] pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
@@ -322,7 +322,7 @@ const CourseTopicsCard: React.FC<CourseTopicsCardProps> = ({
             >
               Expand All
             </button>
-            <span className="text-gray-300 dark:text-gray-700">|</span>
+            <span className="text-gray-300 dark:text-[#000]">|</span>
             <button
               type="button"
               onClick={handleCollapseAll}
@@ -356,17 +356,17 @@ const CourseTopicsCard: React.FC<CourseTopicsCardProps> = ({
                   {isOpen ? (
                     <ChevronDown className="h-4 w-4 text-color2 shrink-0" />
                   ) : (
-                    <ChevronRight className="h-4 w-4 text-gray-400 shrink-0" />
+                    <ChevronRight className="h-4 w-4 text-[#000] shrink-0" />
                   )}
 
                   <div className="flex items-center gap-3 text-sm sm:text-base font-bold truncate">
                     <span className="text-color2 font-bold shrink-0">
                       {unit.unitCodeText}
                     </span>
-                    <span className="text-gray-200 dark:text-gray-700 shrink-0">
+                    <span className="text-gray-200 dark:text-[#000] shrink-0">
                       |
                     </span>
-                    <span className="text-gray-900 dark:text-white font-bold truncate">
+                    <span className="text-[#000] dark:text-white font-bold truncate">
                       {unit.title}
                     </span>
                   </div>
@@ -374,7 +374,7 @@ const CourseTopicsCard: React.FC<CourseTopicsCardProps> = ({
 
                 <div className="flex items-center gap-2 text-xs sm:text-sm font-bold shrink-0">
                   <span className="text-pri font-medium">{unit.hoursText}</span>
-                  <span className="text-pri dark:text-gray-700">•</span>
+                  <span className="text-pri dark:text-[#000]">•</span>
                   <span className="text-color2">{unit.topicsCountText}</span>
                 </div>
               </button>
@@ -394,11 +394,11 @@ const CourseTopicsCard: React.FC<CourseTopicsCardProps> = ({
                             {topic.code}
                           </span>
                           <div>
-                            <h4 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white leading-snug">
+                            <h4 className="text-sm sm:text-base font-bold text-[#000] dark:text-white leading-snug">
                               {topic.title}
                             </h4>
                             {topic.description && (
-                              <p className="mt-1.5 text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                              <p className="mt-1.5 text-xs sm:text-sm text-pri dark:text-gray-400 leading-relaxed">
                                 {topic.description}
                               </p>
                             )}
@@ -406,7 +406,7 @@ const CourseTopicsCard: React.FC<CourseTopicsCardProps> = ({
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
-                          <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                          <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-[#000] dark:bg-gray-800 dark:text-gray-300">
                             {topic.hoursText}
                           </span>
                           <span className="rounded-full bg-[#f5f3ff] px-3 py-1 text-xs font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300">
@@ -421,10 +421,10 @@ const CourseTopicsCard: React.FC<CourseTopicsCardProps> = ({
                           {topic.subtopics.map((sub) => (
                             <div
                               key={sub.code}
-                              className="flex items-center gap-3 pl-2 text-xs sm:text-sm text-gray-700 dark:text-gray-300"
+                              className="flex items-center gap-3 pl-2 text-xs sm:text-sm text-[#000] dark:text-gray-300"
                             >
                               <svg
-                                className="h-3.5 w-3.5 text-gray-500 dark:text-gray-600 shrink-0"
+                                className="h-3.5 w-3.5 text-pri dark:text-[#000] shrink-0"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
@@ -436,10 +436,10 @@ const CourseTopicsCard: React.FC<CourseTopicsCardProps> = ({
                                   d="M9 5v6a2 2 0 002 2h6"
                                 />
                               </svg>
-                              <span className="font-bold text-gray-800 dark:text-gray-200 min-w-[36px]">
+                              <span className="font-bold text-[#000] dark:text-gray-200 min-w-[36px]">
                                 {sub.code}
                               </span>
-                              <span className="font-medium text-gray-700 dark:text-gray-300">
+                              <span className="font-medium text-[#000] dark:text-gray-300">
                                 {sub.title}
                               </span>
                             </div>

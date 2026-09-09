@@ -43,7 +43,7 @@ const DEFAULT_COURSE_ITEMS: ReferenceItem[] = [
   },
   {
     id: "copo",
-    icon: <GitBranch className="h-5 w-5 text-gray-500 dark:text-gray-400" />,
+    icon: <GitBranch className="h-5 w-5 text-pri dark:text-gray-400" />,
     title: "CO-PO Mapping",
     subtitle: "11 Program Outcomes",
     isCompleted: true,
@@ -51,7 +51,7 @@ const DEFAULT_COURSE_ITEMS: ReferenceItem[] = [
   },
   {
     id: "topics",
-    icon: <Layers className="h-5 w-5 text-gray-500 dark:text-gray-400" />,
+    icon: <Layers className="h-5 w-5 text-pri dark:text-gray-400" />,
     title: "Topics",
     subtitle: "5 Units • 20 Main Topics",
     isCompleted: true,
@@ -59,7 +59,7 @@ const DEFAULT_COURSE_ITEMS: ReferenceItem[] = [
   },
   {
     id: "pedagogy",
-    icon: <GraduationCap className="h-5 w-5 text-gray-500 dark:text-gray-400" />,
+    icon: <GraduationCap className="h-5 w-5 text-pri dark:text-gray-400" />,
     title: "Pedagogy",
     subtitle: "Teaching Approaches",
     isCompleted: true,
@@ -67,7 +67,7 @@ const DEFAULT_COURSE_ITEMS: ReferenceItem[] = [
   },
   {
     id: "lesson-plan",
-    icon: <Calendar className="h-5 w-5 text-gray-500 dark:text-gray-400" />,
+    icon: <Calendar className="h-5 w-5 text-pri dark:text-gray-400" />,
     title: "Lesson Plan",
     subtitle: "Course Delivery Plan",
     isCompleted: true,
@@ -75,7 +75,7 @@ const DEFAULT_COURSE_ITEMS: ReferenceItem[] = [
   },
   {
     id: "learning-materials",
-    icon: <BookOpen className="h-5 w-5 text-gray-500 dark:text-gray-400" />,
+    icon: <BookOpen className="h-5 w-5 text-pri dark:text-gray-400" />,
     title: "Learning Materials",
     subtitle: "6 Approved Materials",
     isCompleted: true,
@@ -86,7 +86,7 @@ const DEFAULT_COURSE_ITEMS: ReferenceItem[] = [
 const DEFAULT_ASSESSMENT_ITEMS: ReferenceItem[] = [
   {
     id: "question-bank",
-    icon: <HelpCircle className="h-5 w-5 text-gray-500 dark:text-gray-400" />,
+    icon: <HelpCircle className="h-5 w-5 text-pri dark:text-gray-400" />,
     title: "Question Bank",
     subtitle: "12 Approved Questions",
     isCompleted: true,
@@ -94,7 +94,7 @@ const DEFAULT_ASSESSMENT_ITEMS: ReferenceItem[] = [
   },
   {
     id: "cia-papers",
-    icon: <FileCode className="h-5 w-5 text-gray-500 dark:text-gray-400" />,
+    icon: <FileCode className="h-5 w-5 text-pri dark:text-gray-400" />,
     title: "CIA Question Papers",
     subtitle: "3 Approved Papers",
     isCompleted: true,
@@ -138,7 +138,7 @@ const CourseReferencesCard: React.FC<CourseReferencesCardProps> = ({
 
           {/* Title & Subtitle */}
           <div>
-            <h4 className="text-sm font-bold text-gray-900 dark:text-white leading-tight">
+            <h4 className="text-sm font-bold text-[#000] dark:text-white leading-tight">
               {item.title}
             </h4>
             <p className="mt-0.5 text-xs font-semibold text-pri dark:text-gray-400">
@@ -161,10 +161,10 @@ const CourseReferencesCard: React.FC<CourseReferencesCardProps> = ({
     >
       {/* Header */}
       <div className="mb-4">
-        <h3 className="text-base font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
+        <h3 className="text-base font-extrabold uppercase tracking-wider text-[#000] dark:text-white">
           {title}
         </h3>
-        <p className="mt-0.5 text-xs font-semibold text-pri dark:text-gray-500">
+        <p className="mt-0.5 text-xs font-semibold text-pri dark:text-pri">
           {availableCountText}
         </p>
       </div>
@@ -177,7 +177,7 @@ const CourseReferencesCard: React.FC<CourseReferencesCardProps> = ({
       {/* Assessment References Header */}
       {assessmentItems && assessmentItems.length > 0 && (
         <div className="mt-6">
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+          <p className="mb-3 text-[11px] font-bold uppercase tracking-wider text-[#000] dark:text-pri">
             ASSESSMENT REFERENCES
           </p>
           <div className="space-y-3">

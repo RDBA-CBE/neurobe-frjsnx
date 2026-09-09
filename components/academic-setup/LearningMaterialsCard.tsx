@@ -545,14 +545,14 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
       {/* Top Heading Row */}
       <div className="flex flex-wrap items-start justify-between gap-3 pb-3 border-b border-gray-100 dark:border-gray-800">
         <div>
-          <div className="flex items-center gap-2 text-sm sm:text-base font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
+          <div className="flex items-center gap-2 text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#000] dark:text-white">
             <span className="h-2 w-2 rounded-full bg-[#7c3aed] shrink-0" />
             <span className="font-bold text-[#1e1b4b] dark:text-white">
               {title}
             </span>
           </div>
           {subtitle && (
-            <p className="mt-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+            <p className="mt-1 text-xs font-medium text-pri dark:text-gray-400">
               {subtitle}
             </p>
           )}
@@ -568,7 +568,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
       {/* Toolbar Controls */}
       <div className="flex flex-wrap items-center justify-between gap-4 py-1 px-1">
         <div className="relative flex items-center w-64 sm:w-72">
-          <Search className="absolute left-3.5 h-4 w-4 text-gray-400 pointer-events-none" />
+          <Search className="absolute left-3.5 h-4 w-4 text-[#000] pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
@@ -586,7 +586,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
           >
             Expand All
           </button>
-          <span className="text-gray-300 dark:text-gray-700">|</span>
+          <span className="text-gray-300 dark:text-[#000]">|</span>
           <button
             type="button"
             onClick={handleCollapseAll}
@@ -619,14 +619,14 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                   {isOpen ? (
                     <ChevronDown className="h-4 w-4 text-color2 shrink-0" />
                   ) : (
-                    <ChevronRight className="h-4 w-4 text-gray-400 shrink-0" />
+                    <ChevronRight className="h-4 w-4 text-[#000] shrink-0" />
                   )}
 
                   <div className="flex items-center gap-3 text-sm sm:text-base font-bold truncate">
                     <span className="text-color2 font-bold shrink-0">
                       {unit.unitCodeText}
                     </span>
-                    <span className="text-gray-900 dark:text-white font-bold truncate">
+                    <span className="text-[#000] dark:text-white font-bold truncate">
                       {unit.title}
                     </span>
                   </div>
@@ -663,7 +663,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                               <h3 className="mt-1 text-lg sm:text-xl font-bold text-[#1e1b4b] dark:text-white leading-snug">
                                 {mat.materialTitle}
                               </h3>
-                              <p className="mt-1 text-sm text-pri dark:text-gray-500">
+                              <p className="mt-1 text-sm text-pri dark:text-pri">
                                 {mat.versionText || "v1.0"} • {mat.approvedDateText || "Approved 26 Aug 2026"}
                               </p>
                             </div>
@@ -691,13 +691,13 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                             <div className="flex items-center gap-4 text-pri dark:text-gray-400">
                               <span>
                                 Approved by:{" "}
-                                <strong className="text-gray-900 dark:text-gray-200 font-bold">
+                                <strong className="text-[#000] dark:text-gray-200 font-bold">
                                   {details.approvedBy || "Dr. Arun Kumar"}
                                 </strong>
                               </span>
                               <span className="text-pri">
                                 Approved on:{" "}
-                                <strong className="text-gray-900 dark:text-gray-200 font-bold">
+                                <strong className="text-[#000] dark:text-gray-200 font-bold">
                                   {details.approvedDate || "26 Aug 2026"}
                                 </strong>
                               </span>
@@ -711,7 +711,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                                 <span className="h-1.5 w-1.5 rounded-full bg-[#7c3aed]" />
                                 <span className="text-color2 font-bold text-sm">OVERVIEW</span>
                               </div>
-                              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                              <p className="text-xs sm:text-sm text-[#000] dark:text-gray-300 leading-relaxed">
                                 {details.overview}
                               </p>
                             </div>
@@ -734,7 +734,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                                           {idx + 1}. {section.title}
                                         </h5>
                                         {section.items && (
-                                          <ul className="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                                          <ul className="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-[#000] dark:text-gray-300 leading-relaxed">
                                             {section.items.map(
                                               (item, itemIdx) => (
                                                 <li key={itemIdx}>{item}</li>
@@ -761,7 +761,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                                 <h5 className="text-xs sm:text-sm font-bold text-color2">
                                   {details.example.title}
                                 </h5>
-                                <ol className="list-decimal pl-5 space-y-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                                <ol className="list-decimal pl-5 space-y-2 text-xs sm:text-sm text-[#000] dark:text-gray-300 leading-relaxed">
                                   {details.example.steps.map(
                                     (step, stepIdx) => (
                                       <li key={stepIdx}>{step}</li>
@@ -782,7 +782,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                                 </div>
 
                                 <div className="rounded-2xl border border-gray-200/90 bg-white p-4.5 sm:p-5 dark:border-gray-800 dark:bg-gray-800/40">
-                                  <ol className="list-decimal pl-5 space-y-2.5 text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                  <ol className="list-decimal pl-5 space-y-2.5 text-xs sm:text-sm text-[#000] dark:text-gray-300 leading-relaxed">
                                     {details.exercises.map((ex, exIdx) => (
                                       <li key={exIdx}>{ex}</li>
                                     ))}
@@ -800,11 +800,11 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                                   <span className="text-color2 font-bold text-sm">REFERENCES</span>
                                 </div>
 
-                                <ul className="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                                <ul className="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-[#000] dark:text-gray-300">
                                   {details.references.map(
                                     (ref, refIdx) => (
                                       <li key={refIdx}>
-                                        <strong className="text-gray-900 dark:text-white font-bold">
+                                        <strong className="text-[#000] dark:text-white font-bold">
                                           {ref.title}:
                                         </strong>{" "}
                                         <span>{ref.author}</span>
@@ -825,7 +825,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
                       >
                         {/* Left side: Topic Code Badge + Topic Title + Material Title */}
                         <div className="space-y-1 min-w-0 flex-1">
-                          <div className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400">
+                          <div className="flex items-center gap-2 text-xs font-medium text-pri dark:text-gray-400">
                             <span className="rounded-md bg-[#f5f3ff] px-2 py-0.5 text-xs font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300">
                               {mat.topicCode}
                             </span>
@@ -838,7 +838,7 @@ const LearningMaterialsCard: React.FC<LearningMaterialsCardProps> = ({
 
                         {/* Right side: Version + Approved Date + View Material Button */}
                         <div className="flex flex-wrap items-center gap-4 shrink-0">
-                          <div className="text-xs font-medium text-pri dark:text-gray-500">
+                          <div className="text-xs font-medium text-pri dark:text-pri">
                             {mat.versionText || "v1.0"} • {mat.approvedDateText || "Approved 26 Aug 2026"}
                           </div>
                           <button

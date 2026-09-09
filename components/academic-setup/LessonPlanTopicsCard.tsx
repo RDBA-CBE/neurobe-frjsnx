@@ -297,14 +297,14 @@ const LessonPlanTopicsCard: React.FC<LessonPlanTopicsCardProps> = ({
       {/* Top Heading Row */}
       <div className="flex flex-wrap items-start justify-between gap-3 pb-3 border-b border-gray-100 dark:border-gray-800">
         <div>
-          <div className="flex items-center gap-2 text-sm sm:text-base font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
+          <div className="flex items-center gap-2 text-sm sm:text-base font-extrabold uppercase tracking-wider text-[#000] dark:text-white">
             <span className="h-2 w-2 rounded-full bg-[#7c3aed] shrink-0" />
             <span className="font-bold text-[#1e1b4b] dark:text-white">
               {title}
             </span>
           </div>
           {subtitle && (
-            <p className="mt-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+            <p className="mt-1 text-xs font-medium text-pri dark:text-gray-400">
               {subtitle}
             </p>
           )}
@@ -320,7 +320,7 @@ const LessonPlanTopicsCard: React.FC<LessonPlanTopicsCardProps> = ({
       {/* Toolbar Controls */}
       <div className="flex flex-wrap items-center justify-between gap-4 py-1 px-1">
         <div className="relative flex items-center w-64 sm:w-72">
-          <Search className="absolute left-3.5 h-4 w-4 text-gray-400 pointer-events-none" />
+          <Search className="absolute left-3.5 h-4 w-4 text-[#000] pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
@@ -338,7 +338,7 @@ const LessonPlanTopicsCard: React.FC<LessonPlanTopicsCardProps> = ({
           >
             Expand All
           </button>
-          <span className="text-gray-300 dark:text-gray-700">|</span>
+          <span className="text-gray-300 dark:text-[#000]">|</span>
           <button
             type="button"
             onClick={handleCollapseAll}
@@ -371,17 +371,17 @@ const LessonPlanTopicsCard: React.FC<LessonPlanTopicsCardProps> = ({
                   {isOpen ? (
                     <ChevronDown className="h-4 w-4 text-color2 shrink-0" />
                   ) : (
-                    <ChevronRight className="h-4 w-4 text-gray-400 shrink-0" />
+                    <ChevronRight className="h-4 w-4 text-[#000] shrink-0" />
                   )}
 
                   <div className="flex items-center gap-3 text-sm sm:text-base font-bold truncate">
                     <span className="text-color2 font-bold shrink-0">
                       {unit.unitCodeText}
                     </span>
-                    <span className="text-gray-200 dark:text-gray-700 shrink-0">
+                    <span className="text-gray-200 dark:text-[#000] shrink-0">
                       |
                     </span>
-                    <span className="text-gray-900 dark:text-white font-bold truncate">
+                    <span className="text-[#000] dark:text-white font-bold truncate">
                       {unit.title}
                     </span>
                   </div>
@@ -389,7 +389,7 @@ const LessonPlanTopicsCard: React.FC<LessonPlanTopicsCardProps> = ({
 
                 <div className="flex items-center gap-2 text-xs sm:text-sm font-bold shrink-0">
                   <span className="text-pri font-medium">{unit.hoursText}</span>
-                  <span className="text-pri dark:text-gray-700">•</span>
+                  <span className="text-pri dark:text-[#000]">•</span>
                   <span className="text-color2">{unit.topicsCountText}</span>
                 </div>
               </button>
@@ -408,13 +408,13 @@ const LessonPlanTopicsCard: React.FC<LessonPlanTopicsCardProps> = ({
                           <span className="rounded-lg bg-[#f5f3ff] px-2.5 py-1 text-xs font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300 shrink-0">
                             {topic.code}
                           </span>
-                          <h4 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white leading-snug">
+                          <h4 className="text-sm sm:text-base font-bold text-[#000] dark:text-white leading-snug">
                             {topic.title}
                           </h4>
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
-                          <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                          <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-[#000] dark:bg-gray-800 dark:text-gray-300">
                             {topic.hoursText}
                           </span>
                           <span className="rounded-full bg-[#f5f3ff] px-3 py-1 text-xs font-bold text-color2 dark:bg-purple-950/60 dark:text-purple-300">

@@ -49,7 +49,7 @@ const STATUS_CONFIG = {
   },
   draft: {
     label: "Draft",
-    icon: <Clock className="h-4 w-4 text-gray-400" />,
+    icon: <Clock className="h-4 w-4 text-[#000]" />,
     cell: "bg-white border border-gray-200 dark:border-gray-600 dark:bg-gray-800",
   },
 };
@@ -83,10 +83,10 @@ export default function CourseCard({
               NEW
             </span>
           )}
-          <span className="rounded-md bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-700 dark:bg-gray-700 dark:text-gray-200">
+          <span className="rounded-md bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-[#000] dark:bg-gray-700 dark:text-gray-200">
             {code}
           </span>
-          <span className="text-xs text-gray-500">{credits}</span>
+          <span className="text-xs text-pri">{credits}</span>
         </div>
         <span className="rounded-full border border-purple-300 px-3 py-1 text-xs font-medium text-purple-700">
           {role}
@@ -95,7 +95,7 @@ export default function CourseCard({
 
       {/* Title */}
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+        <h3 className="text-xl font-bold text-[#000] dark:text-white">
           {title}
         </h3>
         {readiness && (
@@ -114,10 +114,10 @@ export default function CourseCard({
           { label: "STUDENTS", value: students },
         ].map((m) => (
           <div key={m.label}>
-            <p className="text-[10px] font-medium uppercase tracking-wide text-gray-400">
+            <p className="text-[10px] font-medium uppercase tracking-wide text-[#000]">
               {m.label}
             </p>
-            <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+            <p className="text-sm font-semibold text-[#000] dark:text-gray-200">
               {m.value}
             </p>
           </div>
@@ -127,7 +127,7 @@ export default function CourseCard({
       {/* Prep Section */}
       <div>
         <div className="mb-2 flex items-center justify-between border-t border-gray-100 pt-3">
-          <p className="text-sm font-bold text-gray-800 dark:text-gray-200">
+          <p className="text-sm font-bold text-[#000] dark:text-gray-200">
             {hasProgress
               ? "Academic Preparation Progress"
               : "Academic Preparation"}
@@ -147,13 +147,13 @@ export default function CourseCard({
                 className={`flex items-center justify-between rounded-lg px-3 py-2.5 ${cfg.cell}`}
               >
                 <div>
-                  <p className="text-[12px] font-medium uppercase tracking-wide text-gray-600">
+                  <p className="text-[12px] font-medium uppercase tracking-wide text-[#000]">
                     {item.label}
                   </p>
-                  <p className="text-sm font-bold text-gray-800 dark:text-gray-200">
+                  <p className="text-sm font-bold text-[#000] dark:text-gray-200">
                     {cfg.label}
                     {item.extra && (
-                      <span className="ml-1 text-xs text-gray-500">
+                      <span className="ml-1 text-xs text-pri">
                         {item.extra}
                       </span>
                     )}
@@ -171,7 +171,7 @@ export default function CourseCard({
         className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${
           hasProgress
             ? "border border-yellow-200 bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20"
-            : "bg-gray-50 text-gray-600 dark:bg-gray-800"
+            : "bg-gray-50 text-[#000] dark:bg-gray-800"
         }`}
       >
         {hasProgress ? (
@@ -186,7 +186,7 @@ export default function CourseCard({
 
       {/* Footer */}
       <div className="flex items-center justify-between border-t border-gray-100 pt-3 dark:border-gray-700">
-        <p className="text-xs text-gray-500">{instructors}</p>
+        <p className="text-xs text-pri">{instructors}</p>
         <button
           onClick={() => onAction?.()}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all ${

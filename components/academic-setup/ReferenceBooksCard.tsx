@@ -35,12 +35,12 @@ const ReferenceBooksCard: React.FC<ReferenceBooksCardProps> = ({
     >
       {/* Header Row */}
       <div className="mb-5 flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800">
-        <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
+        <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-[#000] dark:text-white">
           <span className="h-2 w-2 rounded-full bg-[#7c3aed]" />
           <span className="text-md font-bold">{title}</span>
 
         </div>
-        <span className="text-xs font-mono font-medium text-pri dark:text-gray-500">
+        <span className="text-xs font-mono font-medium text-pri dark:text-pri">
           {headerSubtitle}
         </span>
       </div>

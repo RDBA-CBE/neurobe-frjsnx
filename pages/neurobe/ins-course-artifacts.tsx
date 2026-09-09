@@ -534,7 +534,7 @@ const MAPPING_RATIONALE_DATA = {
           poTitle: "Modern Tool Usage",
           strengthText: "Strength: 1 (Low)",
           strengthBadgeClass:
-            "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300",
+            "bg-gray-100 text-[#000] dark:bg-gray-800 dark:text-gray-300",
           rationale:
             "Students examine packet structures and basic physical transmission concepts using simulation tools and network diagnostic utilities.",
         },
@@ -1911,7 +1911,7 @@ const QuestionBank = () => {
         <FileText
           className={`h-5 w-5 ${state.selectedReferenceId === "syllabus"
             ? "text-white"
-            : "text-gray-500 dark:text-gray-400"
+            : "text-pri dark:text-gray-400"
             }`}
         />
       ),
@@ -1926,7 +1926,7 @@ const QuestionBank = () => {
         <GitBranch
           className={`h-5 w-5 ${state.selectedReferenceId === "copo"
             ? "text-white"
-            : "text-gray-500 dark:text-gray-400"
+            : "text-pri dark:text-gray-400"
             }`}
         />
       ),
@@ -1941,7 +1941,7 @@ const QuestionBank = () => {
         <Layers
           className={`h-5 w-5 ${state.selectedReferenceId === "topics"
             ? "text-white"
-            : "text-gray-500 dark:text-gray-400"
+            : "text-pri dark:text-gray-400"
             }`}
         />
       ),
@@ -1956,7 +1956,7 @@ const QuestionBank = () => {
         <GraduationCap
           className={`h-5 w-5 ${state.selectedReferenceId === "pedagogy"
             ? "text-white"
-            : "text-gray-500 dark:text-gray-400"
+            : "text-pri dark:text-gray-400"
             }`}
         />
       ),
@@ -1971,7 +1971,7 @@ const QuestionBank = () => {
         <Calendar
           className={`h-5 w-5 ${state.selectedReferenceId === "lesson-plan"
             ? "text-white"
-            : "text-gray-500 dark:text-gray-400"
+            : "text-pri dark:text-gray-400"
             }`}
         />
       ),
@@ -1986,7 +1986,7 @@ const QuestionBank = () => {
         <BookOpen
           className={`h-5 w-5 ${state.selectedReferenceId === "learning-materials"
             ? "text-white"
-            : "text-gray-500 dark:text-gray-400"
+            : "text-pri dark:text-gray-400"
             }`}
         />
       ),
@@ -2004,7 +2004,7 @@ const QuestionBank = () => {
         <HelpCircle
           className={`h-5 w-5 ${state.selectedReferenceId === "question-bank"
             ? "text-white"
-            : "text-gray-500 dark:text-gray-400"
+            : "text-pri dark:text-gray-400"
             }`}
         />
       ),
@@ -2019,7 +2019,7 @@ const QuestionBank = () => {
         <FileCode
           className={`h-5 w-5 ${state.selectedReferenceId === "cia-papers"
             ? "text-white"
-            : "text-gray-500 dark:text-gray-400"
+            : "text-pri dark:text-gray-400"
             }`}
         />
       ),

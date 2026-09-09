@@ -258,7 +258,7 @@ const UserList = () => {
         },
         Inactive: {
           bg: "bg-gray-50",
-          text: "text-gray-700",
+          text: "text-[#000]",
           dot: "bg-gray-600",
         },
         Locked: { bg: "bg-red-50", text: "text-red-700", dot: "bg-red-600" },
@@ -283,7 +283,7 @@ const UserList = () => {
                 <Users className="h-6 w-6 text-purple-600 dark:text-purple-400" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h1 className="text-2xl font-bold text-[#000] dark:text-white">
                   Users
                 </h1>
                 <p className="text-sm text-[#000] dark:text-[#000]">
@@ -304,7 +304,7 @@ const UserList = () => {
               onClick={() =>
                 setState({ modalOpen: true, modalType: "bulk_import" })
               }
-              className="rounded-xl border border-gray-300 px-4 py-1 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+              className="rounded-xl border border-gray-300 px-4 py-1 text-sm font-semibold text-[#000] transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
             >
               ⬇️ Bulk Import
             </button>
@@ -339,7 +339,7 @@ const UserList = () => {
           <select
             value={state.roleFilter}
             onChange={(e) => setState({ roleFilter: e.target.value })}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-[#000] outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
           >
             {ROLE_OPTIONS.map((o) => (
               <option key={o}>{o}</option>
@@ -349,7 +349,7 @@ const UserList = () => {
           <select
             value={state.departmentFilter}
             onChange={(e) => setState({ departmentFilter: e.target.value })}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-[#000] outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
           >
             {DEPARTMENT_OPTIONS.map((o) => (
               <option key={o}>{o}</option>
@@ -359,7 +359,7 @@ const UserList = () => {
           <select
             value={state.programmeFilter}
             onChange={(e) => setState({ programmeFilter: e.target.value })}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-[#000] outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
           >
             {PROGRAMME_OPTIONS.map((o) => (
               <option key={o}>{o}</option>
@@ -369,7 +369,7 @@ const UserList = () => {
           <select
             value={state.batchFilter}
             onChange={(e) => setState({ batchFilter: e.target.value })}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-[#000] outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
           >
             {BATCH_OPTIONS.map((o) => (
               <option key={o}>{o}</option>
@@ -379,7 +379,7 @@ const UserList = () => {
           <select
             value={state.statusFilter}
             onChange={(e) => setState({ statusFilter: e.target.value })}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-[#000] outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-purple-400"
           >
             {STATUS_OPTIONS.map((o) => (
               <option key={o}>{o}</option>
@@ -389,7 +389,7 @@ const UserList = () => {
 
         {/* User Directory */}
         <div>
-          <h3 className="mb-4 text-sm font-semibold text-gray-700 dark:text-gray-300">
+          <h3 className="mb-4 text-sm font-semibold text-[#000] dark:text-gray-300">
             User Directory ({filteredRecords.length} shown of{" "}
             {MOCK_USERS.length})
           </h3>
@@ -398,31 +398,31 @@ const UserList = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
-                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
+                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-[#000] dark:text-gray-300">
                     NAME / JOINED
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
+                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-[#000] dark:text-gray-300">
                     EMAIL
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
+                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-[#000] dark:text-gray-300">
                     REGISTER NO.
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
+                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-[#000] dark:text-gray-300">
                     ROLE
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
+                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-[#000] dark:text-gray-300">
                     DEPARTMENT
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
+                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-[#000] dark:text-gray-300">
                     PROGRAMME
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
+                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-[#000] dark:text-gray-300">
                     BATCH
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
+                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-[#000] dark:text-gray-300">
                     STATUS
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
+                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-[#000] dark:text-gray-300">
                     ACTIONS
                   </th>
                 </tr>
@@ -443,10 +443,10 @@ const UserList = () => {
                             {user.initials}
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                            <p className="text-sm font-semibold text-[#000] dark:text-white">
                               {user.name}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-pri">
                               {user.joined}
                             </p>
                           </div>
@@ -489,10 +489,10 @@ const UserList = () => {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex gap-2">
-                          <button className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 dark:hover:bg-gray-700">
+                          <button className="rounded-lg p-2 text-pri transition hover:bg-gray-100 dark:hover:bg-gray-700">
                             <Eye className="h-4 w-4" />
                           </button>
-                          <button className="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 dark:hover:bg-gray-700">
+                          <button className="rounded-lg p-2 text-pri transition hover:bg-gray-100 dark:hover:bg-gray-700">
                             <Edit2 className="h-4 w-4" />
                           </button>
                           <button className="rounded-lg p-2 text-red-500 transition hover:bg-red-50 dark:hover:bg-red-900/20">
@@ -715,7 +715,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({
               <button
                 type="button"
                 onClick={handleClose}
-                className="rounded-lg border border-gray-200 px-6 py-2 text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                className="rounded-lg border border-gray-200 px-6 py-2 text-[#000] transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
               >
                 Cancel
               </button>
@@ -877,7 +877,7 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
 
               {/* Text Content */}
               <div className="text-center">
-                <h3 className="text-3xl font-bold text-gray-900 dark:text-white">
+                <h3 className="text-3xl font-bold text-[#000] dark:text-white">
                   Bulk Ingestion Completed
                 </h3>
                 <p className="mt-4 text-lg font-medium text-green-700 dark:text-green-300">
@@ -1002,7 +1002,7 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
             >
               <div className="text-3xl">📋</div>
               <div className="text-center">
-                <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                <p className="text-sm font-semibold text-[#000] dark:text-white">
                   Drop CSV or Excel (.xlsx) file here, or{" "}
                   <span className="text-blue-600 dark:text-blue-400">
                     browse
@@ -1049,7 +1049,7 @@ const BulkImportModal: React.FC<BulkImportModalProps> = ({ open, close }) => {
             <button
               type="button"
               onClick={close}
-              className="rounded-lg border border-gray-200 px-6 py-2 text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+              className="rounded-lg border border-gray-200 px-6 py-2 text-[#000] transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
             >
               Cancel
             </button>

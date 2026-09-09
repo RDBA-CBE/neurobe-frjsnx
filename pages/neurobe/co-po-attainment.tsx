@@ -107,14 +107,14 @@ const COPOAttainment = () => {
       accessor: "statement",
       title: "COURSE OUTCOME STATEMENT",
       render: ({ statement }: any) => (
-        <span className="text-xs text-gray-800 dark:text-gray-200">{statement}</span>
+        <span className="text-xs text-[#000] dark:text-gray-200">{statement}</span>
       ),
     },
     {
       accessor: "target",
       title: "TARGET SET",
       render: ({ target }: any) => (
-        <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">{target}</span>
+        <span className="text-xs font-semibold text-[#000] dark:text-gray-300">{target}</span>
       ),
     },
     {
@@ -135,7 +135,7 @@ const COPOAttainment = () => {
       accessor: "overallAttainment",
       title: "OVERALL (%)",
       render: ({ overallAttainment }: any) => (
-        <span className="font-bold text-gray-900 dark:text-white">{overallAttainment}</span>
+        <span className="font-bold text-[#000] dark:text-white">{overallAttainment}</span>
       ),
     },
     {
@@ -182,7 +182,7 @@ const COPOAttainment = () => {
       {/* Course Selection */}
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="text-sm font-semibold text-gray-700 dark:text-white">Selected Course:</span>
+          <span className="text-sm font-semibold text-[#000] dark:text-white">Selected Course:</span>
           <div className="w-80">
             <CustomSelect
               options={COURSE_OPTIONS}
@@ -201,22 +201,22 @@ const COPOAttainment = () => {
       {/* Stats Cards */}
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Average CO Attainment</span>
+          <span className="text-xs font-medium text-pri">Average CO Attainment</span>
           <p className="mt-2 text-2xl font-bold text-green-600">76.6%</p>
           <span className="text-xs text-green-600">Target: 70.0% Met</span>
         </div>
         <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Attained COs</span>
+          <span className="text-xs font-medium text-pri">Attained COs</span>
           <p className="mt-2 text-2xl font-bold text-purple-600">4 / 5</p>
           <span className="text-xs text-purple-600">80% Fully Achieved</span>
         </div>
         <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Direct vs Indirect Weight</span>
-          <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">80:20</p>
-          <span className="text-xs text-gray-400">Institutional Ratio</span>
+          <span className="text-xs font-medium text-pri">Direct vs Indirect Weight</span>
+          <p className="mt-2 text-2xl font-bold text-[#000] dark:text-white">80:20</p>
+          <span className="text-xs text-[#000]">Institutional Ratio</span>
         </div>
         <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <span className="text-xs font-medium text-gray-500">Overall Course Level</span>
+          <span className="text-xs font-medium text-pri">Overall Course Level</span>
           <p className="mt-2 text-2xl font-bold text-color2">2.8 / 3.0</p>
           <span className="text-xs text-color2">High Attainment</span>
         </div>
@@ -225,7 +225,7 @@ const COPOAttainment = () => {
       {/* Search */}
       <div className="mb-4 flex max-w-[300px] items-center">
         <div className="relative w-full">
-          <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+          <span className="absolute inset-y-0 left-3 flex items-center text-[#000]">
             <IconSearch className="h-4 w-4" />
           </span>
           <input

@@ -11,7 +11,7 @@ const UserCell = ({ name, email }: { name: string; email: string }) => (
       {name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
     </div>
     <div>
-      <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">{name}</p>
+      <p className="text-sm font-semibold text-[#000] dark:text-gray-100">{name}</p>
       <p className="text-xs text-[#000]">{email}</p>
     </div>
   </div>
@@ -22,11 +22,11 @@ const RoleBadge = ({ role }: { role: string }) => {
     "ERP Admin":          "bg-orange-50 text-orange-700",
     "Course Coordinator": "bg-purple-50 text-purple-700",
     "Course Instructor":  "bg-blue-50 text-blue-700",
-    "Student":            "bg-gray-100 text-gray-600",
+    "Student":            "bg-gray-100 text-[#000]",
     "Super Admin":        "bg-red-50 text-red-700",
   };
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${map[role] ?? "bg-gray-100 text-gray-600"}`}>
+    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${map[role] ?? "bg-gray-100 text-[#000]"}`}>
       {role}
     </span>
   );
@@ -41,7 +41,7 @@ const CategoryBadge = ({ category }: { category: string }) => {
     "AI & Attainment":     "bg-pink-50 text-pink-700",
   };
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${map[category] ?? "bg-gray-100 text-gray-600"}`}>
+    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${map[category] ?? "bg-gray-100 text-[#000]"}`}>
       {category}
     </span>
   );
@@ -109,14 +109,14 @@ export const AUDIT_COLUMNS = [
     accessor: "action",
     title: "ACTION",
     render: ({ action }: any) => (
-      <span className="text-sm text-gray-700 dark:text-gray-300">{action}</span>
+      <span className="text-sm text-[#000] dark:text-gray-300">{action}</span>
     ),
   },
   {
     accessor: "entity",
     title: "ENTITY",
     render: ({ entity }: any) => (
-      <span className="text-sm text-gray-600 dark:text-[#000]">{entity}</span>
+      <span className="text-sm text-[#000] dark:text-[#000]">{entity}</span>
     ),
   },
   {
@@ -129,7 +129,7 @@ export const AUDIT_COLUMNS = [
     title: "DATE & TIME",
     render: ({ date, time }: any) => (
       <div>
-        <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{date}</p>
+        <p className="text-sm font-medium text-[#000] dark:text-gray-100">{date}</p>
         <p className="text-xs text-[#000]">{time}</p>
       </div>
     ),

@@ -159,10 +159,10 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
         {/* Modal Header */}
         <div className="flex items-start justify-between border-b border-gray-100 px-6 py-4 dark:border-gray-800">
           <div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h3 className="text-xl font-bold text-[#000] dark:text-white">
               Edit Test Schedule & Access
             </h3>
-            <p className="mt-0.5 text-xs font-semibold text-gray-500 dark:text-gray-400">
+            <p className="mt-0.5 text-xs font-semibold text-pri dark:text-gray-400">
               <span className="text-[#6D28D9] dark:text-purple-400 font-bold">
                 {code}
               </span>{" "}
@@ -173,7 +173,7 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-200 transition-colors"
+            className="rounded-full p-1 text-[#000] hover:bg-gray-100 hover:text-[#000] dark:hover:bg-gray-800 dark:hover:text-gray-200 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -184,7 +184,7 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
           {/* SECTION 1: READ-ONLY COORDINATOR DETAILS */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-pri dark:text-gray-400">
                 <Lock className="h-3.5 w-3.5" />
                 <span>READ-ONLY COORDINATOR DETAILS</span>
               </div>
@@ -199,7 +199,7 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
                 <span className="text-pri dark:text-gray-400 font-medium">
                   Test Name
                 </span>
-                <span className="col-span-2 font-bold text-gray-900 dark:text-white">
+                <span className="col-span-2 font-bold text-[#000] dark:text-white">
                   {name}
                 </span>
               </div>
@@ -208,7 +208,7 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
                 <span className="text-pri dark:text-gray-400 font-medium">
                   Unit
                 </span>
-                <span className="col-span-2 font-bold text-gray-900 dark:text-white">
+                <span className="col-span-2 font-bold text-[#000] dark:text-white">
                   {unit}
                 </span>
               </div>
@@ -217,7 +217,7 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
                 <span className="text-pri dark:text-gray-400 font-medium pt-0.5">
                   Topics
                 </span>
-                <span className="col-span-2 font-bold text-gray-900 dark:text-white leading-relaxed">
+                <span className="col-span-2 font-bold text-[#000] dark:text-white leading-relaxed">
                   {topics}
                 </span>
               </div>
@@ -226,7 +226,7 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
                 <span className="text-pri dark:text-gray-400 font-medium">
                   Question Count
                 </span>
-                <span className="col-span-2 font-bold text-gray-900 dark:text-white">
+                <span className="col-span-2 font-bold text-[#000] dark:text-white">
                   {questionsCount}
                 </span>
               </div>
@@ -274,10 +274,10 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
                   options={{
                     dateFormat: "d/m/Y",
                   }}
-                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-2xs focus:border-[#6D28D9] focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white cursor-pointer"
+                  className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-[#000] shadow-2xs focus:border-[#6D28D9] focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white cursor-pointer"
                   onChange={(_, dateStr) => setTestDate(dateStr)}
                 />
-                <CalendarIcon className="absolute right-3.5 top-3 h-4 w-4 text-gray-400 pointer-events-none" />
+                <CalendarIcon className="absolute right-3.5 top-3 h-4 w-4 text-[#000] pointer-events-none" />
               </div>
             </div>
 
@@ -296,10 +296,10 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
                       enableTime: true,
                       dateFormat: "h:i K",
                     }}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-2xs focus:border-[#6D28D9] focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white cursor-pointer"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-[#000] shadow-2xs focus:border-[#6D28D9] focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white cursor-pointer"
                     onChange={(_, dateStr) => setStartTime(dateStr)}
                   />
-                  <Clock className="absolute right-3.5 top-3 h-4 w-4 text-gray-400 pointer-events-none" />
+                  <Clock className="absolute right-3.5 top-3 h-4 w-4 text-[#000] pointer-events-none" />
                 </div>
               </div>
 
@@ -316,10 +316,10 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
                       enableTime: true,
                       dateFormat: "h:i K",
                     }}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-2xs focus:border-[#6D28D9] focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white cursor-pointer"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-[#000] shadow-2xs focus:border-[#6D28D9] focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white cursor-pointer"
                     onChange={(_, dateStr) => setEndTime(dateStr)}
                   />
-                  <Clock className="absolute right-3.5 top-3 h-4 w-4 text-gray-400 pointer-events-none" />
+                  <Clock className="absolute right-3.5 top-3 h-4 w-4 text-[#000] pointer-events-none" />
                 </div>
               </div>
             </div>
@@ -338,12 +338,12 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
               <div className="flex flex-wrap sm:flex-nowrap items-center gap-3">
                 {/* Input box */}
                 <div className="relative flex-1">
-                  <Key className="absolute left-3.5 top-3 h-4 w-4 text-gray-400" />
+                  <Key className="absolute left-3.5 top-3 h-4 w-4 text-[#000]" />
                   <input
                     type="text"
                     value={secureCode}
                     onChange={(e) => setSecureCode(e.target.value)}
-                    className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm font-bold text-gray-900 shadow-2xs focus:border-[#6D28D9] focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm font-bold text-[#000] shadow-2xs focus:border-[#6D28D9] focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                     placeholder="CN-XXXX"
                   />
                 </div>
@@ -361,7 +361,7 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
                 <button
                   type="button"
                   onClick={handleCopyCode}
-                  className="inline-flex items-center gap-1.5  rounded-xl border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-bold text-gray-700 shadow-2xs hover:bg-gray-100 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+                  className="inline-flex items-center gap-1.5  rounded-xl border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-bold text-[#000] shadow-2xs hover:bg-gray-100 active:scale-[0.99] transition-all dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
                 >
                   {copied ? (
                     <>
@@ -370,7 +370,7 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
                     </>
                   ) : (
                     <>
-                      <Copy className="h-4 w-4 text-gray-500" />
+                      <Copy className="h-4 w-4 text-pri" />
                       <span>Copy Code</span>
                     </>
                   )}
@@ -390,7 +390,7 @@ export const EditTestScheduleModal: React.FC<EditTestScheduleModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+            className="text-sm font-semibold text-[#000] hover:text-[#000] dark:text-gray-400 dark:hover:text-white transition-colors"
           >
             Cancel
           </button>

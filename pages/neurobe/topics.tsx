@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   BookOpen,
+  BookOpenCheck,
   Check,
   CheckCircle2,
   Clock,
@@ -25,6 +26,7 @@ import PageFooter from "@/components/common-components/PageFooter";
 import AddTopicModal from "@/components/academic-setup/AddTopicModal";
 import { useRouter } from "next/navigation";
 import { UNIT_TABS } from "@/utils/constant.utils";
+import PageHeader from "@/components/common-components/PageHeader";
 
 // ─── Raw unit data ─────────────────────────────────────────────────────────────
 
@@ -267,6 +269,7 @@ const Topics = () => {
     approvedCount: 0,
     topicsApproved: false,
     showGenerateModal: false,
+    activeBannerTab: "coordinator",
   });
 
   // per-unit accepted (approved) subtopic IDs
@@ -338,7 +341,7 @@ const Topics = () => {
             key: "hours",
             label: `${sub.hours} Hours`,
             asTag: true as const,
-            className: "rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-600",
+            className: "rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-[#000]",
           },
           isApproved
             ? {
@@ -360,7 +363,7 @@ const Topics = () => {
             label: "",
             icon: <EditIcon className="h-3.5 w-3.5" />,
             className:
-              "flex items-center rounded-full border border-gray-300 p-1.5 text-gray-400 hover:border-color2 hover:text-color2",
+              "flex items-center rounded-full border border-gray-300 p-1.5 text-[#000] hover:border-color2 hover:text-color2",
           },
         ];
 
@@ -415,16 +418,20 @@ const Topics = () => {
           { value: "CS301", label: "Course: CS301" },
         ]}
         onCourseChange={(val) => console.log("course", val)}
-        activeView={state.activeTab}
+        activeView={state.activeBannerTab}
         onBack={() => console.log("back")}
-        onViewChange={(view) => setState({ activeTab: view })}
+        onViewChange={(view) => setState({ activeBannerTab: view })}
       />
 
       {/* ── Step header ── */}
-      <StepHeader
-        title="Topics"
-        description="Create a detailed topic structure from the approved syllabus."
-        pill="CS309 — Computer Networks"
+      
+
+      <PageHeader
+         title="Topics"
+        records="CS309 — Computer Networks"
+        subtitle={`Create a detailed topic structure from the approved syllabus.`}
+        icon={<BookOpenCheck className="h-5 w-5 text-color2" />}
+        
       />
 
       {/* ── Stat cards — hidden after generation ── */}
@@ -594,8 +601,8 @@ const Topics = () => {
                       <Check className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
                     </span>
                     <div>
-                      <p className="text-sm font-bold text-gray-900 dark:text-white">{step.title}</p>
-                      <p className="text-xs text-gray-500">{step.description}</p>
+                      <p className="text-sm font-bold text-[#000] dark:text-white">{step.title}</p>
+                      <p className="text-xs text-pri">{step.description}</p>
                     </div>
                   </div>
                 ))}

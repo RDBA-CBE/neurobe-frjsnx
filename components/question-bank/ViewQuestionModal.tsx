@@ -48,14 +48,14 @@ const OptionCell = ({
   >
     <span
       className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold ${
-        isCorrect ? "bg-green-700 text-white" : "bg-gray-100 text-gray-600"
+        isCorrect ? "bg-green-700 text-white" : "bg-gray-100 text-[#000]"
       }`}
     >
       {letter}
     </span>
     <span
       className={`text-sm font-medium ${
-        isCorrect ? "text-green-800" : "text-gray-700"
+        isCorrect ? "text-green-800" : "text-[#000]"
       }`}
     >
       {text}
@@ -106,7 +106,7 @@ const ViewQuestionModal = ({
                 </span>
               )}
               {question.aiVersion && (
-                <span className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-semibold text-gray-500">
+                <span className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-semibold text-pri">
                   {question.aiVersion}
                 </span>
               )}
@@ -136,7 +136,7 @@ const ViewQuestionModal = ({
                 </>
               )}
             </p>
-            <h2 className="text-base font-bold text-gray-900 dark:text-white">
+            <h2 className="text-base font-bold text-[#000] dark:text-white">
               {question.question.slice(0, 60)}
               {question.question.length > 60 ? "..." : ""}
             </h2>
@@ -145,12 +145,12 @@ const ViewQuestionModal = ({
           {/* Meta tags */}
           <div className="mb-5 flex flex-wrap items-center gap-2">
             {question.co && (
-              <span className="rounded-full border border-gray-200 px-3 py-1 text-xs font-semibold text-gray-600">
+              <span className="rounded-full border border-gray-200 px-3 py-1 text-xs font-semibold text-[#000]">
                 Outcome: {question.co}
               </span>
             )}
             {question.level && (
-              <span className="rounded-full border border-gray-200 px-3 py-1 text-xs font-semibold text-gray-600">
+              <span className="rounded-full border border-gray-200 px-3 py-1 text-xs font-semibold text-[#000]">
                 Level: {question.level}
               </span>
             )}
@@ -160,22 +160,22 @@ const ViewQuestionModal = ({
               </span>
             )}
             {question.marks && (
-              <span className="rounded-full border border-gray-200 px-3 py-1 text-xs font-semibold text-gray-600">
+              <span className="rounded-full border border-gray-200 px-3 py-1 text-xs font-semibold text-[#000]">
                 {question.marks} Marks
               </span>
             )}
             {question.difficulty && (
-              <span className="rounded-full border border-gray-200 px-3 py-1 text-xs font-semibold text-gray-600">
+              <span className="rounded-full border border-gray-200 px-3 py-1 text-xs font-semibold text-[#000]">
                 Difficulty: {question.difficulty}
               </span>
             )}
           </div>
 
           {/* Question Statement */}
-          <p className="mb-2 text-xs font-bold uppercase tracking-wide text-gray-400">
+          <p className="mb-2 text-xs font-bold uppercase tracking-wide text-[#000]">
             Question Statement
           </p>
-          <div className="mb-5 rounded-xl border border-gray-200 bg-gray-50 px-4 py-4 text-sm font-semibold text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+          <div className="mb-5 rounded-xl border border-gray-200 bg-gray-50 px-4 py-4 text-sm font-semibold text-[#000] dark:bg-gray-800 dark:text-gray-200">
             {question.question}
           </div>
 
@@ -185,7 +185,7 @@ const ViewQuestionModal = ({
             question.optionC ||
             question.optionD) && (
             <>
-              <p className="mb-3 text-xs font-bold uppercase tracking-wide text-gray-400">
+              <p className="mb-3 text-xs font-bold uppercase tracking-wide text-[#000]">
                 Answer Options & Key
               </p>
               <div className="mb-5 grid grid-cols-2 gap-3">
@@ -206,21 +206,21 @@ const ViewQuestionModal = ({
           {/* Explanation */}
           {question.explanation && (
             <>
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-gray-400">
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-[#000]">
                 Solution & Explanation
               </p>
-              <div className="mb-5 rounded-xl border border-gray-200 bg-gray-50 px-4 py-4 text-sm text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+              <div className="mb-5 rounded-xl border border-gray-200 bg-gray-50 px-4 py-4 text-sm text-[#000] dark:bg-gray-800 dark:text-gray-300">
                 {question.explanation}
               </div>
             </>
           )}
 
           {/* Footer meta */}
-          <div className="mb-5 flex items-center justify-between text-xs text-gray-400">
+          <div className="mb-5 flex items-center justify-between text-xs text-[#000]">
             {question.course && (
               <span>
                 Course:{" "}
-                <strong className="text-gray-700 dark:text-gray-300">
+                <strong className="text-[#000] dark:text-gray-300">
                   {question.course}
                 </strong>
               </span>
@@ -228,7 +228,7 @@ const ViewQuestionModal = ({
             {question.approvedBy && (
               <span>
                 Approved by:{" "}
-                <strong className="text-gray-700 dark:text-gray-300">
+                <strong className="text-[#000] dark:text-gray-300">
                   {question.approvedBy} {question.approvedDate}
                 </strong>
               </span>
@@ -240,7 +240,7 @@ const ViewQuestionModal = ({
             {onCreateDraft && (
               <button
                 onClick={onCreateDraft}
-                className="flex items-center gap-1.5 rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                className="flex items-center gap-1.5 rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-[#000] hover:bg-gray-50"
               >
                 <SquarePen className="h-4 w-4" /> Create New Draft Version
               </button>

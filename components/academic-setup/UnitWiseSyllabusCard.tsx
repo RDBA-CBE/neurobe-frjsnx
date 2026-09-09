@@ -59,13 +59,13 @@ const UnitWiseSyllabusCard: React.FC<UnitWiseSyllabusCardProps> = ({
     >
       {/* Header Row */}
       <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
+        <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-[#000] dark:text-white">
           <span className="h-2 w-2 rounded-full bg-[#7c3aed]" />
           <span className="text-md font-bold">{title}</span>
 
 
         </div>
-        <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+        <span className="text-xs font-semibold text-pri dark:text-gray-400">
           {headerStatsText}
         </span>
       </div>

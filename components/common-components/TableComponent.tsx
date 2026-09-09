@@ -66,7 +66,7 @@ const TableComponent = ({
             <button
               onClick={() => goTo(page - 1)}
               disabled={page === 1}
-              className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-40 dark:border-gray-600 dark:text-gray-300"
+              className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-[#000] hover:bg-gray-50 disabled:opacity-40 dark:border-gray-600 dark:text-gray-300"
             >
               <ArrowLeft className="h-4 w-4" />
             </button>
@@ -78,7 +78,7 @@ const TableComponent = ({
                 className={`h-7 w-7 rounded-lg text-xs font-semibold transition-colors ${
                   p === page
                     ? "bg-[#7c3aed] text-white"
-                    : "border border-gray-200 text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300"
+                    : "border border-gray-200 text-[#000] hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300"
                 }`}
               >
                 {p}
@@ -88,7 +88,7 @@ const TableComponent = ({
             <button
               onClick={() => goTo(page + 1)}
               disabled={page === totalPages}
-              className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-40 dark:border-gray-600 dark:text-gray-300"
+              className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-[#000] hover:bg-gray-50 disabled:opacity-40 dark:border-gray-600 dark:text-gray-300"
             >
               <ArrowRight className="h-4 w-4" />
             </button>

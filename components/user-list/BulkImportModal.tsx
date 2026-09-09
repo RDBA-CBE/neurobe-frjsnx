@@ -80,14 +80,14 @@ const BulkImportModal = ({ open, onClose }: Props) => {
                     <p className="text-sm font-semibold text-[#000]">
                       {file.name}
                     </p>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-[#000]">
                       {(file.size / 1024).toFixed(1)} KB
                     </p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setFile(null)}
-                    className="ml-2 text-gray-400 hover:text-red-500"
+                    className="ml-2 text-[#000] hover:text-red-500"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -98,10 +98,10 @@ const BulkImportModal = ({ open, onClose }: Props) => {
                   <p className="text-sm font-medium text-[#000]">
                     Drag & drop your file here
                   </p>
-                  <p className="mt-0.5 text-xs text-gray-400">
+                  <p className="mt-0.5 text-xs text-[#000]">
                     or click to browse
                   </p>
-                  <p className="mt-1 text-xs text-gray-400">
+                  <p className="mt-1 text-xs text-[#000]">
                     Supports .csv, .xlsx — max 5MB
                   </p>
                 </>
@@ -119,7 +119,7 @@ const BulkImportModal = ({ open, onClose }: Props) => {
           <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
             <div className="flex items-center gap-2">
               <FileText className="h-4 w-4 text-color2" />
-              <p className="text-xs font-medium text-gray-700">
+              <p className="text-xs font-medium text-[#000]">
                 Download import template
               </p>
             </div>

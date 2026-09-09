@@ -174,7 +174,7 @@ const SelectApprovedQuestionsModal: React.FC<
           {/* Modal Header */}
           <div className="flex shrink-0 items-center justify-between border-b border-gray-100 px-8 py-5 dark:border-gray-800">
             <div className="flex items-center gap-3">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-bold text-[#000] dark:text-white">
                 {modalTitle}
               </h2>
               <span className="rounded-full border border-[#ddd6fe] bg-[#f5f3ff] px-3 py-0.5 text-xs font-semibold text-color2 dark:bg-purple-950/40 dark:border-purple-800 dark:text-purple-300">
@@ -183,7 +183,7 @@ const SelectApprovedQuestionsModal: React.FC<
             </div>
             <button
               onClick={onClose}
-              className="rounded-full border border-gray-200 p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:border-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-200 transition"
+              className="rounded-full border border-gray-200 p-1 text-[#000] hover:bg-gray-100 hover:text-[#000] dark:border-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-200 transition"
             >
               <X className="h-4 w-4" />
             </button>
@@ -195,7 +195,7 @@ const SelectApprovedQuestionsModal: React.FC<
               {/* Step 1 - Completed */}
               <div
                 onClick={onBackToStep1}
-                className="flex cursor-pointer items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 transition-all"
+                className="flex cursor-pointer items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-[#000] hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 transition-all"
               >
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold">
                   <Check className="h-3 w-3 stroke-[2.5]" />
@@ -203,7 +203,7 @@ const SelectApprovedQuestionsModal: React.FC<
                 <span>Step 1 — Test Details</span>
               </div>
 
-              <ChevronRight className="h-4 w-4 text-gray-400" />
+              <ChevronRight className="h-4 w-4 text-[#000]" />
 
               {/* Step 2 - Active */}
               <div className="flex items-center gap-2 rounded-full bg-[#7c3aed] px-4 py-2 text-white shadow-sm transition-all">
@@ -224,10 +224,10 @@ const SelectApprovedQuestionsModal: React.FC<
             <div className="rounded-2xl border border-gray-200/80 bg-white p-5 space-y-4 dark:border-gray-700 dark:bg-gray-800">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="text-base font-bold text-gray-900 dark:text-white mb-1">
+                  <h3 className="text-base font-bold text-[#000] dark:text-white mb-1">
                     Select {requiredCount} Approved Questions
                   </h3>
-                  <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                  <p className="text-sm font-bold text-[#000] dark:text-gray-100">
                     {selectedCount} of {requiredCount} Selected
                   </p>
                   <p className="text-xs font-semibold text-pri dark:text-gray-400 mt-0.5">
@@ -242,18 +242,18 @@ const SelectApprovedQuestionsModal: React.FC<
               {/* Search + Dropdown Row */}
               <div className="flex flex-col sm:flex-row items-center gap-4">
                 <div className="relative flex-1 w-full">
-                  <Search className="absolute left-3.5 top-3 h-4 w-4 text-gray-400" />
+                  <Search className="absolute left-3.5 top-3 h-4 w-4 text-[#000]" />
                   <input
                     type="text"
                     placeholder="Search Questions..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                    className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm text-[#000] placeholder:text-gray-400 outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] dark:border-gray-700 dark:bg-gray-700 dark:text-white"
                   />
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
-                  <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 whitespace-nowrap">
+                  <label className="text-sm font-semibold text-[#000] dark:text-gray-300 whitespace-nowrap">
                     Question Set:
                   </label>
                   <CustomSelect
@@ -301,7 +301,7 @@ const SelectApprovedQuestionsModal: React.FC<
                       <div className="flex-1 min-w-0">
                         {/* Top Question Row + Badges */}
                         <div className="flex items-start justify-between gap-3 mb-1">
-                          <h4 className="text-sm font-bold text-gray-900 dark:text-white leading-snug">
+                          <h4 className="text-sm font-bold text-[#000] dark:text-white leading-snug">
                             {q.question}
                           </h4>
                           <div
@@ -311,7 +311,7 @@ const SelectApprovedQuestionsModal: React.FC<
                             <span className="rounded bg-purple-50 px-2 py-0.5 text-xs font-bold text-color2 dark:bg-purple-900/40 dark:text-purple-300">
                               {q.level}
                             </span>
-                            <span className="rounded bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                            <span className="rounded bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-[#000] dark:bg-gray-700 dark:text-gray-300">
                               {q.marks}
                             </span>
                             <button
@@ -326,20 +326,20 @@ const SelectApprovedQuestionsModal: React.FC<
                         </div>
 
                         {/* Question Code / ID */}
-                        <p className="text-xs font-medium text-gray-400 dark:text-gray-500 mb-2">
+                        <p className="text-xs font-medium text-[#000] dark:text-pri mb-2">
                           {q.id}
                         </p>
 
                         {/* Topic & Subtopic */}
-                        <div className="space-y-0.5 text-xs text-gray-500 dark:text-gray-400 font-medium">
+                        <div className="space-y-0.5 text-xs text-pri dark:text-gray-400 font-medium">
                           <p>
-                            <span className="font-semibold text-gray-600 dark:text-gray-300">
+                            <span className="font-semibold text-[#000] dark:text-gray-300">
                               Topic:
                             </span>{" "}
                             {q.topic}
                           </p>
                           <p>
-                            <span className="font-semibold text-gray-600 dark:text-gray-300">
+                            <span className="font-semibold text-[#000] dark:text-gray-300">
                               Subtopic:
                             </span>{" "}
                             {q.subtopic}
@@ -393,7 +393,7 @@ const SelectApprovedQuestionsModal: React.FC<
             <button
               type="button"
               onClick={onClose}
-              className="text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition"
+              className="text-sm font-semibold text-[#000] hover:text-[#000] dark:text-gray-400 dark:hover:text-white transition"
             >
               Cancel
             </button>
@@ -402,7 +402,7 @@ const SelectApprovedQuestionsModal: React.FC<
               <button
                 type="button"
                 onClick={handleDraft}
-                className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 transition"
+                className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-[#000] shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 transition"
               >
                 Save Draft
               </button>

@@ -76,13 +76,13 @@ const CopoMappingMatrixCard: React.FC<CopoMappingMatrixCardProps> = ({
     }
     if (score === 1) {
       return (
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-gray-100 text-xs font-bold text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-gray-100 text-xs font-bold text-[#000] dark:bg-gray-800 dark:text-gray-300">
           1
         </span>
       );
     }
     return (
-      <span className="text-xs font-medium text-gray-300 dark:text-gray-600">
+      <span className="text-xs font-medium text-gray-300 dark:text-[#000]">
         –
       </span>
     );
@@ -95,20 +95,20 @@ const CopoMappingMatrixCard: React.FC<CopoMappingMatrixCardProps> = ({
       {/* Header Row */}
       <div className="mb-4 flex items-start justify-between pb-4 border-b border-gray-100 dark:border-gray-800">
         <div>
-          <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
+          <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-[#000] dark:text-white">
             <span className="h-2 w-2 rounded-full bg-[#7c3aed]" />
             <span className="text-md font-bold text-color2 dark:text-purple-400">
               {title}
             </span>
           </div>
           {subtitle && (
-            <p className="mt-1 text-xs font-medium text-pri dark:text-gray-500">
+            <p className="mt-1 text-xs font-medium text-pri dark:text-pri">
               {subtitle}
             </p>
           )}
         </div>
 
-        <span className="text-xs font-mono font-medium text-pri dark:text-gray-500 shrink-0">
+        <span className="text-xs font-mono font-medium text-pri dark:text-pri shrink-0">
           {headerStatsText}
         </span>
       </div>
@@ -118,13 +118,13 @@ const CopoMappingMatrixCard: React.FC<CopoMappingMatrixCardProps> = ({
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-50/60 border-b border-gray-100 dark:bg-gray-800/40 dark:border-gray-800">
-              <th className="py-3.5 px-4 text-xs font-bold text-gray-700 dark:text-gray-300 min-w-[130px]">
+              <th className="py-3.5 px-4 text-xs font-bold text-[#000] dark:text-gray-300 min-w-[130px]">
                 Course Outcome
               </th>
               {poHeaders.map((po) => (
                 <th
                   key={po}
-                  className="py-3.5 px-2 text-center text-xs font-bold text-gray-700 dark:text-gray-300 min-w-[48px]"
+                  className="py-3.5 px-2 text-center text-xs font-bold text-[#000] dark:text-gray-300 min-w-[48px]"
                 >
                   {po}
                 </th>

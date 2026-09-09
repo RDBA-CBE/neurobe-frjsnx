@@ -69,9 +69,9 @@ const Pagination = (props) => {
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       {/* Records Info */}
       <div className="text-sm text-[#000] dark:text-[#000]">
-        Showing <span className="font-medium text-gray-900 dark:text-white">{startRecord}</span> to{" "}
-        <span className="font-medium text-gray-900 dark:text-white">{endRecord}</span> of{" "}
-        <span className="font-medium text-gray-900 dark:text-white">{totalPage}</span> results
+        Showing <span className="font-medium text-[#000] dark:text-white">{startRecord}</span> to{" "}
+        <span className="font-medium text-[#000] dark:text-white">{endRecord}</span> of{" "}
+        <span className="font-medium text-[#000] dark:text-white">{totalPage}</span> results
       </div>
 
       {/* Pagination Controls */}
@@ -116,7 +116,7 @@ const Pagination = (props) => {
                 className={`relative flex h-7 w-7 items-center justify-center rounded-full text-sm font-semibold transition-all duration-200 ${
                   isActive
                     ? "bg-dblue text-white shadow-lg "
-                    : "text-[#000] hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
+                    : "text-[#000] hover:bg-gray-100 hover:text-[#000] dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
                 }`}
               >
                 {isActive && (

@@ -8,6 +8,8 @@ import {
   Save,
   Info,
   ArrowRight,
+  FileJsonIcon,
+  Cable,
 } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState, Success } from "@/utils/function.utils";
@@ -21,6 +23,7 @@ import TableComponent from "@/components/common-components/TableComponent";
 import PageFooter from "@/components/common-components/PageFooter";
 import KeepFilePrompt from "@/components/academic-setup/KeepFilePrompt";
 import { useRouter } from "next/navigation";
+import PageHeader from "@/components/common-components/PageHeader";
 
 const MOCK_MAPPINGS = [
   {
@@ -78,7 +81,7 @@ const COPOMapping = () => {
     search: "",
     selectedCourse: "CS301",
     loading: false,
-    activeTab: "",
+    activeTab: "coordinator",
     approvedMappings: [] as string[],
     mappingApproved: false,
     mappingModal: null as null | {
@@ -157,11 +160,14 @@ const COPOMapping = () => {
         onViewChange={(view) => setState({ activeTab: view })}
       />
 
-      <StepHeader
-        title="CO–PO Mapping"
-        description="AI-assisted mapping between approved Course Outcomes and the selected Program Outcome version. Review each suggested mapping and rationale before approval."
-        pill= "PO Version: PO 2025 v1"
+      <PageHeader
+         title="CO–PO Mapping"
+        records="PO Version: PO 2025 v1"
+        subtitle={`AI-assisted mapping between approved Course Outcomes and the selected Program Outcome version. Review each suggested mapping and rationale before approval.`}
+        icon={<Cable className="h-5 w-5 text-color2" />}
+        
       />
+
 
       
 

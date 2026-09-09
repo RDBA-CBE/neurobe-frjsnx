@@ -101,14 +101,14 @@ const AddUserModal = ({ open, onClose, initialData }: Props) => {
               <h3 className="text-base font-semibold text-[#000] dark:text-white">
                 {isEdit ? "Edit User" : "Add New User"}
               </h3>
-              <p className="mt-0.5 text-xs text-gray-400">
+              <p className="mt-0.5 text-xs text-[#000]">
                 Fill in user details: role, department, programme and batch.
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="mt-0.5 rounded-full border border-gray-400 p-0.5 text-gray-400 hover:text-[#000] dark:hover:text-gray-200"
+            className="mt-0.5 rounded-full border border-gray-400 p-0.5 text-[#000] hover:text-[#000] dark:hover:text-gray-200"
           >
             <X className="h-3 w-3" />
           </button>

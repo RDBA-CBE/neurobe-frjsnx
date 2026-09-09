@@ -43,7 +43,7 @@ const SyllabusApprovedSummary = ({
         <div className="flex items-center gap-2">
           <button
             onClick={onRevise}
-            className="flex items-center bg-grey gap-1.5 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300"
+            className="flex items-center bg-grey gap-1.5 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-[#000] hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300"
           >
             <Pencil className="h-4 w-4" /> Revise Syllabus
           </button>

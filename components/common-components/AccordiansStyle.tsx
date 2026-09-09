@@ -67,9 +67,9 @@ const AccordiansStyle = ({
                     {/* Chevron */}
                     {expandable &&
                       (isOpen ? (
-                        <ChevronDown className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-500" />
+                        <ChevronDown className="mt-0.5 h-3.5 w-3.5 shrink-0 text-pri" />
                       ) : (
-                        <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-400" />
+                        <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#000]" />
                       ))}
 
                     {/* Title + Meta */}
@@ -83,7 +83,7 @@ const AccordiansStyle = ({
                       {/* Verified Status */}
                       {topic.verified && (
                         <div className="mt-1 flex items-center gap-2">
-                          <span className="block text-sm font-normal text-gray-500">
+                          <span className="block text-sm font-normal text-pri">
                             Status:
                           </span>
 

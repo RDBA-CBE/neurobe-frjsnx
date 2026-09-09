@@ -61,7 +61,7 @@ const DEFAULT_CO_ITEMS: CoMappingItemData[] = [
         poTitle: "Modern Tool Usage",
         strengthText: "Strength: 1 (Low)",
         strengthBadgeClass:
-          "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300",
+          "bg-gray-100 text-[#000] dark:bg-gray-800 dark:text-gray-300",
         rationale:
           "Students examine packet structures and basic physical transmission concepts using simulation tools and network diagnostic utilities.",
       },
@@ -176,18 +176,18 @@ const MappingRationaleCard: React.FC<MappingRationaleCardProps> = ({
       {/* Header Row */}
       <div className="mb-4 flex items-start justify-between pb-4 border-b border-gray-100 dark:border-gray-800">
         <div>
-          <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">
+          <div className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wider text-[#000] dark:text-white">
             <span className="h-2 w-2 rounded-full bg-[#7c3aed]" />
             <span className="text-md font-bold">{title}</span>
           </div>
           {subtitle && (
-            <p className="mt-1 text-xs font-medium text-pri dark:text-gray-500">
+            <p className="mt-1 text-xs font-medium text-pri dark:text-pri">
               {subtitle}
             </p>
           )}
         </div>
 
-        <span className="text-xs font-mono font-medium text-pri dark:text-gray-500 shrink-0">
+        <span className="text-xs font-mono font-medium text-pri dark:text-pri shrink-0">
           {headerStatsText}
         </span>
       </div>

@@ -7,6 +7,7 @@ import {
   Sparkles,
   Save,
   EditIcon,
+  ClipboardList,
 } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
 import { Success, useSetState } from "@/utils/function.utils";
@@ -24,6 +25,7 @@ import EditLessonPlanModal, { LessonPlanEditData } from "@/components/lesson-pla
 import ReviewLessonItemModal, { ReviewLessonItemData } from "@/components/lesson-plan/ReviewLessonItemModal";
 import { useRouter } from "next/router";
 import { UNIT_TABS } from "@/utils/constant.utils";
+import PageHeader from "@/components/common-components/PageHeader";
 
 const MOCK_LESSON_PLANS = [
   {
@@ -342,6 +344,7 @@ const LessonPlan = () => {
     statusFilter: "all",
     loading: false,
     activeTab: "unit-1",
+    activeBannerTab: "coordinator",
   });
 
   useEffect(() => {
@@ -430,7 +433,7 @@ const LessonPlan = () => {
       render: ({ title, id }: any) => (
         <div>
           <p className="font-semibold text-[#000] dark:text-white">{title}</p>
-          <p className="mt-0.5 text-xs text-gray-400">Topic {id}</p>
+          <p className="mt-0.5 text-xs text-[#000]">Topic {id}</p>
         </div>
       ),
     },
@@ -438,7 +441,7 @@ const LessonPlan = () => {
       accessor: "level",
       title: "LEVEL",
       render: ({ level }: any) => (
-        <span className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs font-bold text-gray-600">
+        <span className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs font-bold text-[#000]">
           {level}
         </span>
       ),
@@ -451,7 +454,7 @@ const LessonPlan = () => {
           <p className="text-xs text-[#000]">
             <span className="font-semibold">Textbook:</span> {textbook}
           </p>
-          <p className="mt-0.5 text-xs text-gray-400">
+          <p className="mt-0.5 text-xs text-[#000]">
             <span className="font-semibold">Reference:</span> {reference}
           </p>
         </div>
@@ -518,7 +521,7 @@ const LessonPlan = () => {
               },
             })
           }
-          className="flex items-center gap-1 text-xs font-semibold text-gray-500 hover:text-color2"
+          className="flex items-center gap-1 text-xs font-semibold text-pri hover:text-color2"
         >
           <EditIcon className="h-3.5 w-3.5" /> Edit
         </button>
@@ -542,16 +545,19 @@ const LessonPlan = () => {
           { value: "CS301", label: "Course: CS301" },
         ]}
         onCourseChange={(val) => console.log("course", val)}
-        activeView={state.activeTab}
+        activeView={state.activeBannerTab}
         onBack={() => console.log("back")}
-        onViewChange={(view) => setState({ activeTab: view })}
+        onViewChange={(view) => setState({ activeBannerTab: view })}
       />
 
-      <StepHeader
-        title="Lesson Plan"
-        description="Create a teaching plan using the approved topics, books, hours, and pedagogies."
-        pill="CS309 — Computer Networks"
+      <PageHeader
+         title="Lesson Plan"
+        records="CS309 — Computer Networks"
+        subtitle={`Create a teaching plan using the approved topics, books, hours, and pedagogies.`}
+        icon={<ClipboardList className="h-5 w-5 text-color2" />}
+        
       />
+
 
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
         {STAT_TABS.map((tab) => (

@@ -24,7 +24,7 @@ const TabButton = ({ tabs, activeKey, onChange }: TabButtonProps) => {
           className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
             activeKey === tab.key
               ? "bg-color2 text-white"
-              : "border border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+              : "border border-gray-200 bg-white text-[#000] hover:border-gray-300"
           }`}
         >
           {tab.icon}

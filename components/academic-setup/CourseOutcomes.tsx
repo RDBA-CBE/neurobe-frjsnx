@@ -73,7 +73,7 @@ const CourseOutcomes = () => {
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary2 text-xs font-bold text-color2">2</span>
-          <h3 className="text-sm font-extrabold  uppercase tracking-wide text-gray-900 dark:text-white">Course Outcomes & Knowledge Levels</h3>
+          <h3 className="text-sm font-extrabold  uppercase tracking-wide text-[#000] dark:text-white">Course Outcomes & Knowledge Levels</h3>
         </div>
         <span className="text-md font-bold text-color2">{acceptedCount} / {cos.length} Accepted</span>
       </div>
@@ -87,7 +87,7 @@ const CourseOutcomes = () => {
             {/* Top row */}
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="rounded-md bg-gray-900 px-2.5 py-1.5 text-xs font-bold text-white dark:bg-gray-100 dark:text-gray-900">
+                <span className="rounded-md bg-gray-900 px-2.5 py-1.5 text-xs font-bold text-white dark:bg-gray-100 dark:text-[#000]">
                   {co.id}
                 </span>
                 <div className="w-36">
@@ -117,7 +117,7 @@ const CourseOutcomes = () => {
                     <CheckCircle2 className="h-3.5 w-3.5" /> Accept
                   </button>
                 )}
-                <button className="flex items-center gap-1 text-xs font-medium text-gray-500 hover:text-gray-700">
+                <button className="flex items-center gap-1 text-xs font-medium text-pri hover:text-[#000]">
                   <Pencil className="h-3.5 w-3.5" /> Edit
                 </button>
               </div>
@@ -125,15 +125,15 @@ const CourseOutcomes = () => {
 
             {/* Description */}
             {co.accepted ? (
-              <p className="mb-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-gray-700 dark:bg-gray-800 dark:text-gray-300">{co.description}</p>
+              <p className="mb-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-[#000] dark:bg-gray-800 dark:text-gray-300">{co.description}</p>
             ) : (
-              <p className="mb-3 text-sm text-gray-700 dark:text-gray-300">{co.description}</p>
+              <p className="mb-3 text-sm text-[#000] dark:text-gray-300">{co.description}</p>
             )}
 
             {/* Reason box */}
             <div className="flex items-start gap-2 rounded-lg bg-purple-50 px-3 py-2.5 dark:bg-purple-900/10">
               <Sparkle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-color2" />
-              <span className="text-xs text-gray-600 dark:text-gray-400">
+              <span className="text-xs text-[#000] dark:text-gray-400">
                 <strong className="text-color2">Reason for Inferred Knowledge Level: </strong>
                 {co.reason}
               </span>

@@ -7,6 +7,7 @@ import {
   Sparkles,
   Save,
   EditIcon,
+  GraduationCap,
 } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
 import { Success, useSetState } from "@/utils/function.utils";
@@ -32,6 +33,7 @@ import { Alert } from "@mantine/core";
 import AIGenerateModal from "@/components/common-components/AIGenerateModal";
 import TextArea from "@/components/FormFields/TextArea.component";
 import CheckboxInput from "@/components/FormFields/CheckBoxInput.component";
+import PageHeader from "@/components/common-components/PageHeader";
 
 const STAT_TABS = [
   {
@@ -304,6 +306,7 @@ const LearningMeterials = () => {
     statusFilter: "all",
     loading: false,
     activeTab: "unit-1",
+    activeBannerTab: "coordinator",
   });
 
   useEffect(() => {
@@ -393,7 +396,7 @@ const LearningMeterials = () => {
       render: ({ title, id }: any) => (
         <div>
           <p className="font-semibold text-[#000] dark:text-white">{title}</p>
-          <p className="mt-0.5 text-xs text-gray-400">Topic {id}</p>
+          <p className="mt-0.5 text-xs text-[#000]">Topic {id}</p>
         </div>
       ),
     },
@@ -401,7 +404,7 @@ const LearningMeterials = () => {
       accessor: "level",
       title: "LEVEL",
       render: ({ level }: any) => (
-        <span className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs font-bold text-gray-600">
+        <span className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs font-bold text-[#000]">
           {level}
         </span>
       ),
@@ -414,7 +417,7 @@ const LearningMeterials = () => {
           <p className="text-xs text-[#000]">
             <span className="font-semibold">Textbook:</span> {textbook}
           </p>
-          <p className="mt-0.5 text-xs text-gray-400">
+          <p className="mt-0.5 text-xs text-[#000]">
             <span className="font-semibold">Reference:</span> {reference}
           </p>
         </div>
@@ -517,7 +520,7 @@ const LearningMeterials = () => {
               },
             })
           }
-          className="hover:text-color2 flex items-center gap-1 text-xs font-semibold text-gray-500"
+          className="hover:text-color2 flex items-center gap-1 text-xs font-semibold text-pri"
         >
           <EditIcon className="h-3.5 w-3.5" /> Edit
         </button>
@@ -541,17 +544,21 @@ const LearningMeterials = () => {
           { value: "CS301", label: "Course: CS301" },
         ]}
         onCourseChange={(val) => console.log("course", val)}
-        activeView={state.activeTab}
+        activeView={state.activeBannerTab}
         onBack={() => console.log("back")}
-        onViewChange={(view) => setState({ activeTab: view })}
+        onViewChange={(view) => setState({ activeBannerTab: view })}
       />
 
-      <StepHeader
-        title="Learning Materials"
-        description="Generate, review, edit, and approve learning materials for approved course topics."
-        pill="CS309 — Computer Networks"
+      <PageHeader
+         title="Learning Materials"
+        records="CS309 — Computer Networks"
+        subtitle={`Generate, review, edit, and approve learning materials for approved course topics.`}
+       
+        icon={<GraduationCap className="h-5 w-5 text-color2" />}
+        
       />
 
+    
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
         {STAT_TABS.map((tab) => (
           <StatTabCard
@@ -631,7 +638,7 @@ const LearningMeterials = () => {
                 <span className="rounded-lg bg-purple-100 px-3 py-1 text-sm font-bold text-color2">
                   Topic {state.selectedTopic?.id}
                 </span>
-                <span className="text-base font-semibold text-gray-900">
+                <span className="text-base font-semibold text-[#000]">
                   {state.selectedTopic?.title?.replace(/^Topic [\d.]+ — /, "")}
                 </span>
               </div>
@@ -651,13 +658,13 @@ const LearningMeterials = () => {
                 checked={state.includeExamples ?? true}
                 onChange={(v) => setState({ includeExamples: v })}
                 label="Include Examples"
-                labelStyle="text-sm font-semibold text-gray-800"
+                labelStyle="text-sm font-semibold text-[#000]"
               />
               <CheckboxInput
                 checked={state.includeExercises ?? true}
                 onChange={(v) => setState({ includeExercises: v })}
                 label="Include Exercises"
-                labelStyle="text-sm font-semibold text-gray-800"
+                labelStyle="text-sm font-semibold text-[#000]"
               />
             </div>
           </div>

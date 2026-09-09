@@ -29,7 +29,7 @@ export const AvatarCell = ({ name, sub }: { name: string; sub: string }) => (
         .join("")}
     </div>
     <div>
-      <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">
+      <p className="text-sm font-semibold text-[#000] dark:text-gray-100">
         {name}
       </p>
       <p className="text-xs text-[#000]">{sub}</p>
@@ -235,7 +235,7 @@ export const makeUserListColumns = (onEdit: (row: any) => void) => [
     accessor: "regNo",
     title: "REGISTER NO.",
     render: ({ regNo }: any) => (
-      <span className="font-mono text-xs font-medium text-gray-700 dark:text-gray-300">
+      <span className="font-mono text-xs font-medium text-[#000] dark:text-gray-300">
         {regNo}
       </span>
     ),
