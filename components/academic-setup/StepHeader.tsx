@@ -17,7 +17,7 @@ const StepHeader = ({ title, description, pill, pill2 }: StepHeaderProps) => {
           <p className="text-xs text-green-dark btn-green-l p-1 px-1.5 rounded-lg font-bold">{pill2}</p>
         }
       </div>
-      <p className="pt-3 text-sm text-pri">{description}</p>
+      <p className="pt-1 text-sm text-pri">{description}</p>
     </div>
   );
 };
