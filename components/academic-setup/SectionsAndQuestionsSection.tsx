@@ -49,7 +49,7 @@ const SectionsAndQuestionsSection = ({
     }));
     setSettingsOpenFor(section.id);
     // ensure section is expanded when settings open
-    setExpandedSections((prev) => new Set([...prev, section.id]));
+    setExpandedSections((prev:any) => new Set([...prev, section.id]));
   };
 
   const closeSettings = (sectionId: string) => {
