@@ -7,6 +7,7 @@ import {
   Sparkles,
   Save,
   EditIcon,
+  ArrowRight,
 } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
 import { Success, useSetState } from "@/utils/function.utils";
@@ -14,12 +15,22 @@ import TableComponent from "@/components/common-components/TableComponent";
 import PrivateRouter from "@/hook/privateRouter";
 import CourseBanner from "@/components/academic-setup/CourseBanner";
 import StepHeader from "@/components/academic-setup/StepHeader";
-import StatTabCard from "@/components/academic-setup/StatTabCard";
-import TableTitle from "@/components/common-components/TableTitle";
-import GenericTabs from "@/components/common-components/GenericTabs";
-import AccordiansStyle from "@/components/common-components/AccordiansStyle";
-import PageFooter from "@/components/common-components/PageFooter";
-import GenerateLessonPlanModal from "@/components/lesson-plan/GenerateLessonPlanModal";
+import MarksExtractionStepper from "@/components/academic-setup/MarksExtractionStepper";
+import CIAMarksVerificationCard from "@/components/academic-setup/CIAMarksVerificationCard";
+import EvaluatedAnswerSheetsUpload from "@/components/academic-setup/EvaluatedAnswerSheetsUpload";
+import ExtractingMarksProgressCard from "@/components/academic-setup/ExtractingMarksProgressCard";
+import StudentVerificationFilterBar from "@/components/academic-setup/StudentVerificationFilterBar";
+import ShareVerificationTaskModal from "@/components/academic-setup/ShareVerificationTaskModal";
+import ShareVerificationSuccessModal from "@/components/academic-setup/ShareVerificationSuccessModal";
+import StudentVerificationSlider from "@/components/academic-setup/StudentVerificationSlider";
+import AnswerSheetPDFPreview from "@/components/academic-setup/AnswerSheetPDFPreview";
+import StudentVerificationSummaryCard from "@/components/academic-setup/StudentVerificationSummaryCard";
+import TotalNeedsReviewCard from "@/components/academic-setup/TotalNeedsReviewCard";
+import ReviewedBySuggestionCard from "@/components/academic-setup/ReviewedBySuggestionCard";
+import MarksVerificationTableCard from "@/components/academic-setup/MarksVerificationTableCard";
+import VerificationProgressApprovalCard from "@/components/academic-setup/VerificationProgressApprovalCard";
+import FinalApprovalCard from "@/components/academic-setup/FinalApprovalCard";
+import AssistantChangesModal from "@/components/academic-setup/AssistantChangesModal";
 import EditLessonPlanModal, {
   LessonPlanEditData,
 } from "@/components/lesson-plan/EditLessonPlanModal";
@@ -28,10 +39,7 @@ import ReviewLessonItemModal, {
 } from "@/components/lesson-plan/ReviewLessonItemModal";
 import { useRouter } from "next/router";
 import { UNIT_TABS } from "@/utils/constant.utils";
-import { Alert } from "@mantine/core";
-import AIGenerateModal from "@/components/common-components/AIGenerateModal";
-import TextArea from "@/components/FormFields/TextArea.component";
-import CheckboxInput from "@/components/FormFields/CheckBoxInput.component";
+
 
 const STAT_TABS = [
   {
@@ -551,117 +559,214 @@ const MarksExtraction = () => {
         description="Upload evaluated CIA answer sheets, review extracted marks, and verify each student before final approval."
       />
 
-      <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-        {STAT_TABS.map((tab) => (
-          <StatTabCard
-            key={tab.key}
-            icon={tab.icon}
-            label={tab.label}
-            subLabel={tab.subLabel}
-            count={tab.count}
-            active={state.activeTab === tab.key}
-          />
-        ))}
-      </div>
-
-      <TableTitle
-        title="Learning Material List"
-        label={`${totalUnits} Units`}
-        subLabel={`${totalTopics} Topics`}
+      <MarksExtractionStepper
+        currentStep={state.currentStep ?? 1}
+        verifiedCount={15}
+        totalStudents={40}
+        onStepClick={(step) => {
+          // Allow switching back to Step 1 or to Step 2 if unlocked
+          if (step === 1 || (state.hasExtracted && step <= 3)) {
+            setState({ currentStep: step });
+          }
+        }}
       />
 
-      <div className="mt-4">
-        <GenericTabs
-          tabs={UNIT_TABS}
-          activeKey={state.activeTab}
-          onChange={(unit) => setState({ activeTab: unit as string })}
+      {(state.currentStep ?? 1) === 3 ? (
+        /* ── Step 3: Final Approval View ── */
+        <FinalApprovalCard
+          courseName="CS309 — Computer Networks"
+          assessmentName="CIA-1"
+          totalStudents={40}
+          verifiedStudents={40}
+          unresolvedIssues={0}
+          onBackToVerification={() => setState({ currentStep: 2 })}
+          onViewResults={() => router.push("/neurobe/result-analysis")}
+          onBackToCourses={() => console.log("Back to Courses clicked")}
         />
-
-        {state.recommendationsGenerated ? (
-          /* ── Generated: flat table with header ── */
-          <div className="mb-5 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
-            {/* dark header */}
-            <div className="flex items-center justify-between bg-[#111238] px-4 py-3 text-white">
-              <div>
-                <h3 className="text-lg font-bold">{raw?.title}</h3>
-                <p className="mt-0.5 text-sm text-white/70">
-                  Approved topic sequencing and teaching methods
-                </p>
-              </div>
-              <span className="rounded bg-white/15 px-4 py-1 text-sm font-semibold">
-                {raw?.totalHours} Hours
-              </span>
-            </div>
-            <TableComponent
-              records={raw?.topics ?? []}
-              columns={lessonPlanColumns}
+      ) : (state.currentStep ?? 1) === 2 ? (
+        state.showVerificationFilterBar ? (
+          /* ── Step 2: Student Verification Filter Bar & Slider ── */
+          <div className="space-y-5">
+            <StudentVerificationFilterBar
+              onShareTask={() => setState({ showShareModal: true })}
             />
+            <StudentVerificationSlider
+              onSelectStudent={(student) => setState({ selectedStudent: student })}
+            />
+
+            {/* 2-Column Side-by-Side Verification View */}
+            <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2">
+              {/* Left Column: Answer Sheet PDF Preview */}
+              <div>
+                <AnswerSheetPDFPreview
+                  data={{
+                    studentName: state.selectedStudent?.name || "Sanjay Murugan",
+                    registerNo: state.selectedStudent?.registerNo || "24CS1041",
+                    totalMarksAwarded: state.customScore
+                      ? `${state.customScore} / 50`
+                      : state.selectedStudent?.marks || "43 / 50",
+                  }}
+                />
+              </div>
+
+              {/* Right Column: Student Summary Card, Review Warning, Table Card */}
+              <div className="space-y-5">
+                <StudentVerificationSummaryCard
+                  name={state.selectedStudent?.name || "Sanjay Murugan"}
+                  registerNo={state.selectedStudent?.registerNo || "24CS1041"}
+                  finalScore={
+                    state.customScore
+                      ? `${state.customScore} / 50`
+                      : state.selectedStudent?.marks || "45 / 50"
+                  }
+                />
+
+                {state.showReviewedBySuggestionCard && (
+                  <ReviewedBySuggestionCard
+                    reviewerName="Kavya Raman"
+                    suggestedChangesText="1 suggested change"
+                    actionBtnLabel="Review Suggestion"
+                    onActionClick={() =>
+                      setState({ showAssistantChangesModal: true })
+                    }
+                  />
+                )}
+
+                <TotalNeedsReviewCard
+                  paperTotal={43}
+                  questionTotal={45}
+                  onSave={(finalTotal) => {
+                    setState({
+                      customScore: finalTotal,
+                      hasExtracted: true,
+                      unlockedStep3: true,
+                    });
+                  }}
+                />
+
+                <MarksVerificationTableCard
+                  variation={state.isStudentVerified ? "verified" : "unverified"}
+                  onVerify={() => setState({ isStudentVerified: true })}
+                  onNextStudent={() => console.log("Next student clicked")}
+                />
+              </div>
+            </div>
+
+            {/* Full-width Verification Progress Approval Card */}
+            {state.isStudentVerified && (
+              <VerificationProgressApprovalCard
+                verifiedCount={40}
+                totalCount={40}
+                onProceed={() => setState({ currentStep: 3 })}
+              />
+            )}
           </div>
         ) : (
-          /* ── Pre-generate: accordion with level/hours badges ── */
-          <AccordiansStyle
-            expandable={false}
-            topics={buildInitialTopics()}
-            title={raw?.title}
-            subtitle="4 Approved Topics"
-            btnOnClick={(data: any) => setState({ showGenerateModal: true, selectedTopic: data })}
+          /* ── Step 2: Extracting Marks Progress Screen ── */
+          <ExtractingMarksProgressCard
+            onNext={() => setState({ showVerificationFilterBar: true })}
           />
-        )}
-      </div>
-      <AIGenerateModal
-        subtitle={state.selectedTopic?.title?.replace(/^Topic [\d.]+ — /, "") ?? ""}
-        title="Generate Learning Material"
-        onClose={() => setState({ showGenerateModal: false, selectedTopic: null })}
-        open={state.showGenerateModal}
+        )
+      ) : (
+        /* ── Step 1: Upload & Extract Content Panel ── */
+        <div className="panel p-4">
+          {/* Step 1 Content Section */}
+          <div className="mb-5">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+              Step 1 — Upload & Extract
+            </h2>
+            <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
+              Select the CIA assessment and upload the evaluated answer sheets PDF. Extractions will automatically advance to Student Verification.
+            </p>
+          </div>
 
-        onAction={() => {
-          setState({ showGenerateModal: false, selectedTopic: null })
-          router.push("/neurobe/view-learning-materials")
-        }}
-        actionIcon={<Sparkles className="h-4 w-4" />}
-        actionLabel="Generate with NEURO AI"
-        render={() => (
-          <div className="space-y-5 bg-white p-5">
-            {/* Selected Topic */}
-            <div className="rounded-xl bg-purple-50 p-4">
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-color2">
-                Selected Topic
-              </p>
-              <div className="flex items-center gap-3">
-                <span className="rounded-lg bg-purple-100 px-3 py-1 text-sm font-bold text-color2">
-                  Topic {state.selectedTopic?.id}
-                </span>
-                <span className="text-base font-semibold text-gray-900">
-                  {state.selectedTopic?.title?.replace(/^Topic [\d.]+ — /, "")}
-                </span>
-              </div>
-            </div>
+          {/* Assessment Sub-header */}
+          <div className="mb-3">
+            <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200">
+              Assessment
+            </h3>
+          </div>
 
-            {/* Textarea */}
-            <TextArea
-              title="Material Instructions"
-              name="materialInstructions"
-              placeholder="Explain this topic clearly for engineering students."
-              rows={5}
+          {/* CIA Cards Grid */}
+          <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <CIAMarksVerificationCard
+              title="CIA-1"
+              marks="50 Marks"
+              studentsCount="40 Students"
+              status="in_progress"
+              statusLabel="Verification In Progress"
+              verifiedCount={19}
+              totalCount={40}
+              reviewedByNote="Kavya Raman reviewed 5 students."
+              primaryBtnLabel="Continue Verification"
+              secondaryBtnLabel="View Shared Review"
+              onPrimaryClick={() => console.log("Continue Verification CIA-1")}
+              onSecondaryClick={() => console.log("View Shared Review CIA-1")}
             />
 
-            {/* Checkboxes */}
-            <div className="space-y-3">
-              <CheckboxInput
-                checked={state.includeExamples ?? true}
-                onChange={(v) => setState({ includeExamples: v })}
-                label="Include Examples"
-                labelStyle="text-sm font-semibold text-gray-800"
-              />
-              <CheckboxInput
-                checked={state.includeExercises ?? true}
-                onChange={(v) => setState({ includeExercises: v })}
-                label="Include Exercises"
-                labelStyle="text-sm font-semibold text-gray-800"
-              />
-            </div>
+            <CIAMarksVerificationCard
+              title="CIA-2"
+              marks="50 Marks"
+              studentsCount="40 Students"
+              status="not_started"
+              statusLabel="Not Started"
+              emptyNote="No evaluated answer sheets uploaded yet."
+              active={true}
+              primaryBtnLabel="Start Verification"
+              onPrimaryClick={() => console.log("Start Verification CIA-2")}
+            />
           </div>
-        )}
+
+          {/* Evaluated Answer Sheets Upload Component */}
+          <EvaluatedAnswerSheetsUpload />
+
+          {/* Bottom Action Footer Row */}
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-gray-200/60 pt-4 dark:border-gray-800">
+            <p className="text-xs text-gray-600 dark:text-gray-400 sm:text-sm">
+              Target Course: <span className="font-bold text-gray-900 dark:text-white">CS309 — Computer Networks</span> (40 Enrolled Students)
+            </p>
+            <button
+              type="button"
+              onClick={() => setState({ currentStep: 2, hasExtracted: true })}
+              className="create-btn inline-flex items-center justify-center gap-2"
+            >
+              <span>Extract Marks</span>
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Share Verification Task Modals */}
+      <ShareVerificationTaskModal
+        open={state.showShareModal || false}
+        onClose={() =>
+          setState({ showShareModal: false, showReviewedBySuggestionCard: true })
+        }
+        onGenerate={() =>
+          setState({ showShareModal: false, showShareSuccessModal: true })
+        }
+      />
+
+      <ShareVerificationSuccessModal
+        open={state.showShareSuccessModal || false}
+        onClose={() =>
+          setState({ showShareSuccessModal: false, showReviewedBySuggestionCard: true })
+        }
+        onRevoke={() => {
+          console.log("Revoke access clicked");
+          setState({ showShareSuccessModal: false, showReviewedBySuggestionCard: true });
+        }}
+      />
+
+      <AssistantChangesModal
+        open={state.showAssistantChangesModal || false}
+        onClose={() => setState({ showAssistantChangesModal: false })}
+        reviewerName="Kavya Raman"
+        onReviewRow={(record) => {
+          console.log("Review row clicked", record);
+          setState({ showAssistantChangesModal: false });
+        }}
       />
     </div>
   );

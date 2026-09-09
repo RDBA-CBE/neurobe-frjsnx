@@ -52,7 +52,7 @@ const Syllabus = () => {
     console.log("Keep file");
   };
 
-  const onDiscard = () => {};
+  const onDiscard = () => { };
 
   return (
     <div className="min-h-screen">
@@ -81,15 +81,15 @@ const Syllabus = () => {
             state.currentStep === 4
               ? "Approved"
               : state.currentStep === 3
-              ? "Review Required"
-              : "Awaiting Upload"
+                ? "Review Required"
+                : "Awaiting Upload"
           }
           statusClassName={
             state.currentStep === 4
               ? "border-green-300 bg-green-50 text-green-600 font-bold"
               : state.currentStep === 3
-              ? "border-orange-200 bg-orange-50 text-orange-600 font-bold"
-              : ""
+                ? "border-orange-200 bg-orange-50 text-orange-600 font-bold"
+                : ""
           }
         />
         <div className=" mx-6 border-t border-gray-200 dark:border-gray-700" />
@@ -156,9 +156,9 @@ const Syllabus = () => {
                       fileSize={
                         state.selectedFile
                           ? `${(
-                              state.selectedFile.size /
-                              (1024 * 1024)
-                            ).toFixed(1)} MB`
+                            state.selectedFile.size /
+                            (1024 * 1024)
+                          ).toFixed(1)} MB`
                           : ""
                       }
                     />
