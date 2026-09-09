@@ -247,11 +247,12 @@ const CIAQuestionPaper = () => {
               label: "Create CIA Paper",
               icon: <Plus className="h-4 w-4" />,
               onClick: () =>
-                setState({
-                  isConfiguring: true,
-                  modalMode: "create",
-                  activeConfigCode: "MCQ-CN-2026-T3",
-                }),
+                router.push("/neurobe/cia-question-paper/create-cia-question-paper")
+              // setState({
+              //   isConfiguring: true,
+              //   modalMode: "create",
+              //   activeConfigCode: "MCQ-CN-2026-T3",
+              // }),
             }}
           />
 
@@ -265,10 +266,10 @@ const CIAQuestionPaper = () => {
                 marksFilled: "75 of 100 Marks Filled",
                 lastEdited: "Last Edited: 2026–09–02 11:30 AM",
               }}
-              onViewDraft={() => router.push("/neurobe/cia-question-paper-preview")}
+              onViewDraft={() => router.push("/neurobe/cia-question-paper/cia-question-paper-preview")}
               onResumeEditing={() => {
                 setState({ isEditing: true });
-                router.push("/neurobe/cia-question-paper-edit");
+                router.push("/neurobe/cia-question-paper/cia-question-paper-edit");
               }}
             />
 

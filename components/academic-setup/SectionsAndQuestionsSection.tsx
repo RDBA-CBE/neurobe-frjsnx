@@ -49,7 +49,7 @@ const SectionsAndQuestionsSection = ({
     }));
     setSettingsOpenFor(section.id);
     // ensure section is expanded when settings open
-    setExpandedSections((prev) => new Set([...prev, section.id]));
+    setExpandedSections((prev: any) => new Set([...prev, section.id]));
   };
 
   const closeSettings = (sectionId: string) => {
@@ -176,11 +176,10 @@ const SectionsAndQuestionsSection = ({
                   <button
                     type="button"
                     onClick={() => isSettingsOpen ? closeSettings(section.id) : openSettings(section)}
-                    className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold shadow-2xs transition-all ${
-                      isSettingsOpen
+                    className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold shadow-2xs transition-all ${isSettingsOpen
                         ? "border-color2 bg-color2-l text-color2"
                         : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                    }`}
+                      }`}
                   >
                     <Settings2 className="h-3.5 w-3.5" />
                     <span className="font-bold">Section Settings</span>

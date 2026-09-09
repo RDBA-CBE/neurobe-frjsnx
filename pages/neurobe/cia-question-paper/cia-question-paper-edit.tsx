@@ -308,7 +308,7 @@ const CIAQuestionPaperEdit = () => {
         actionBtn1={{
           label: "View Draft",
           icon: <Eye className="h-4 w-4" />,
-          onClick: () => router.push("/neurobe/cia-question-paper-preview"),
+          onClick: () => router.push("/neurobe/cia-question-paper/cia-question-paper-preview"),
           outline: true,
         }}
       />

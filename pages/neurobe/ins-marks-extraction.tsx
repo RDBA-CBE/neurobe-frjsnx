@@ -294,7 +294,7 @@ const totalRecs = Object.values(RAW_UNIT_DATA).reduce(
   0
 );
 
-const MarksExtraction = () => {
+const InsMarksExtraction = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -547,8 +547,9 @@ const MarksExtraction = () => {
       />
 
       <StepHeader
-        title="Marks Extraction & Verification"
-        description="Upload evaluated CIA answer sheets, review extracted marks, and verify each student before final approval."
+        title="Learning Materials"
+        description="Generate, review, edit, and approve learning materials for approved course topics."
+        pill="CS309 — Computer Networks"
       />
 
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
@@ -667,4 +668,4 @@ const MarksExtraction = () => {
   );
 };
 
-export default PrivateRouter(MarksExtraction);
+export default PrivateRouter(InsMarksExtraction);
