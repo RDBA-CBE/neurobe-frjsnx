@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Edit, Info, PlusIcon, X } from "lucide-react";
 import TextInput from "@/components/FormFields/TextInput.component";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
+import { Failure } from "@/utils/function.utils";
 
 const toOpts = (arr: string[]) => arr.map((v) => ({ value: v, label: v }));
 const toOpt  = (v: string | null | undefined) => v ? { value: v, label: v } : null;
@@ -36,37 +37,155 @@ const useAnimatedVisibility = (open: boolean, duration = 220) => {
   return { visible, closing };
 };
 
-interface Props { open: boolean; onClose: () => void; initialData?: any; }
+interface Props {
+  open: boolean;
+  onClose: () => void;
+  initialData?: any;
+  onSubmit: (formData: any) => void;
+  submitting?: boolean;
+  departmentOptions?: { value: any; label: string }[];
+  programmeOptions?: { value: any; label: string }[];
+  batchOptions?: { value: any; label: string }[];
+  roleOptions?: { value: any; label: string }[];
+  statusOptions?: { value: any; label: string }[];
+}
 
-const AddUserModal = ({ open, onClose, initialData }: Props) => {
+const AddUserModal = ({
+  open,
+  onClose,
+  initialData,
+  onSubmit,
+  submitting = false,
+  departmentOptions,
+  programmeOptions,
+  batchOptions,
+  roleOptions,
+  statusOptions,
+}: Props) => {
   const isEdit = !!initialData;
 
+  const deptOpts = departmentOptions && departmentOptions.length > 0 ? departmentOptions : DEPT_OPTS;
+  const progOpts = programmeOptions && programmeOptions.length > 0 ? programmeOptions : PROG_OPTS;
+  const batchOpts = batchOptions && batchOptions.length > 0 ? batchOptions : BATCH_OPTS;
+  const roleOpts = roleOptions && roleOptions.length > 0 ? roleOptions : ROLE_OPTS;
+  const statusOpts = statusOptions && statusOptions.length > 0 ? statusOptions : STATUS_OPTS;
+
   const [form, setForm] = useState({
-    firstName: "", lastName: "", email: "", regNo: "",
-    role: null as any, department: null as any,
-    programme: null as any, batch: null as any, status: null as any,
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    regNo: "",
+    role: null as any,
+    department: null as any,
+    programme: null as any,
+    batch: null as any,
+    status: { value: "Active", label: "Active" } as any,
   });
 
   useEffect(() => {
     if (initialData) {
-      const [first = "", ...rest] = (initialData.name ?? "").split(" ");
+      const first = initialData.first_name || (initialData.name ? initialData.name.split(" ")[0] : "");
+      const last = initialData.last_name || (initialData.name ? initialData.name.split(" ").slice(1).join(" ") : "");
+      const normRole = initialData.role === "ERP_ADMIN" ? "ERP Admin" : initialData.role;
+
+      const deptMatch =
+        deptOpts.find(
+          (o: any) =>
+            o.value === initialData.department_id ||
+            o.label === (initialData.department?.department_name || initialData.department_name || initialData.department)
+        ) || (initialData.department ? toOpt(initialData.department?.department_name || initialData.department_name || initialData.department) : null);
+
+      const progMatch =
+        progOpts.find(
+          (o: any) =>
+            o.value === initialData.programme_id ||
+            o.label === (initialData.programme?.programme_name || initialData.programme_name || initialData.programme)
+        ) || (initialData.programme ? toOpt(initialData.programme?.programme_name || initialData.programme_name || initialData.programme) : null);
+
+      const batchMatch =
+        batchOpts.find(
+          (o: any) =>
+            o.value === initialData.batch_id ||
+            o.label === (initialData.batch?.name || initialData.batch_name || initialData.batch)
+        ) || (initialData.batch ? toOpt(initialData.batch?.name || initialData.batch_name || initialData.batch) : null);
+
+      const roleMatch =
+        roleOpts.find((o: any) => o.value === normRole || o.label === normRole) ||
+        toOpt(normRole);
+
       setForm({
         firstName:  first,
-        lastName:   rest.join(" "),
+        lastName:   last,
         email:      initialData.email  ?? "",
-        regNo:      initialData.regNo  ?? "",
-        role:       toOpt(initialData.role),
-        department: toOpt(initialData.department?.replace("...", "")),
-        programme:  toOpt(initialData.programme?.replace("...", "")),
-        batch:      toOpt(initialData.batch),
-        status:     toOpt(initialData.status),
+        password:   "",
+        regNo:      initialData.regNo  ?? initialData.registry_number ?? (initialData.id ? `USR-${String(initialData.id).padStart(4, "0")}` : ""),
+        role:       roleMatch,
+        department: deptMatch,
+        programme:  progMatch,
+        batch:      batchMatch,
+        status:     toOpt(initialData.is_active === false || initialData.status?.toLowerCase() === "inactive" ? "Inactive" : "Active"),
       });
     } else {
-      setForm({ firstName: "", lastName: "", email: "", regNo: "", role: null, department: null, programme: null, batch: null, status: null });
+      setForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "erp@123",
+        regNo: "",
+        role: null,
+        department: null,
+        programme: null,
+        batch: null,
+        status: { value: "Active", label: "Active" }
+      });
     }
-  }, [initialData, open]);
+  }, [initialData, open, departmentOptions, programmeOptions, batchOptions]);
 
   const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.firstName.trim()) {
+      Failure("Please enter first name");
+      return;
+    }
+    if (!form.lastName.trim()) {
+      Failure("Please enter last name");
+      return;
+    }
+    if (!form.email.trim()) {
+      Failure("Please enter email");
+      return;
+    }
+    if (!isEdit && !form.password.trim()) {
+      Failure("Please enter password");
+      return;
+    }
+    if (!form.role?.value) {
+      Failure("Please select a role");
+      return;
+    }
+
+    const isStudent = form.role.value === "Student";
+    const isActive = (form.status?.value ?? "Active").toLowerCase() === "active";
+
+    onSubmit({
+      ...form,
+      first_name: form.firstName.trim(),
+      last_name: form.lastName.trim(),
+      email: form.email.trim(),
+      password: form.password ? form.password.trim() : undefined,
+      role: form.role.value,
+      status: form.status?.value ?? "Active",
+      is_active: isActive,
+      is_staff: !isStudent,
+      department_id: form.department?.value && Number(form.department.value) > 0 ? Number(form.department.value) : null,
+      programme_id: form.programme?.value && Number(form.programme.value) > 0 ? Number(form.programme.value) : null,
+      batch_id: form.batch?.value && Number(form.batch.value) > 0 ? Number(form.batch.value) : null,
+      regNo: form.regNo?.trim() || undefined,
+    });
+  };
 
   const { visible, closing } = useAnimatedVisibility(open);
   useLockBodyScroll(visible);
@@ -116,7 +235,7 @@ const AddUserModal = ({ open, onClose, initialData }: Props) => {
 
         {/* Scrollable body */}
         <div className="flex-1 overflow-y-auto px-6 py-5">
-          <form id="user-form" onSubmit={(e) => { e.preventDefault(); onClose(); }}>
+          <form id="user-form" onSubmit={handleSubmit}>
             <div className="space-y-4">
 
               <div className="grid grid-cols-2 gap-4">
@@ -126,13 +245,22 @@ const AddUserModal = ({ open, onClose, initialData }: Props) => {
 
               <TextInput title="Email" required type="email" placeholder="e.g. arun@karpagam.edu" value={form.email} onChange={(e) => set("email", e.target.value)} />
 
-              <TextInput title="Registry / Employee Number" required placeholder="e.g. FAC-CSE-038 / 24C0068" value={form.regNo} onChange={(e) => set("regNo", e.target.value)} />
+              <TextInput
+                title={isEdit ? "Password (leave blank to keep current)" : "Password"}
+                required={!isEdit}
+                type="password"
+                placeholder="e.g. erp@123"
+                value={form.password}
+                onChange={(e) => set("password", e.target.value)}
+              />
 
-              <CustomSelect title="Role"       required options={ROLE_OPTS}   value={form.role}       onChange={(v) => set("role",       v)} placeholder="Select role..." />
-              <CustomSelect title="Department" required options={DEPT_OPTS}   value={form.department} onChange={(v) => set("department", v)} placeholder="Computer Science & Engineering" />
-              <CustomSelect title="Programme"  required options={PROG_OPTS}   value={form.programme}  onChange={(v) => set("programme",  v)} placeholder="B.E. Computer Science and Engineering" />
-              <CustomSelect title="Batch"      required options={BATCH_OPTS}  value={form.batch}      onChange={(v) => set("batch",      v)} placeholder="2024-2028" />
-              <CustomSelect title="Status"              options={STATUS_OPTS} value={form.status}     onChange={(v) => set("status",     v)} placeholder="Active" />
+              <TextInput title="Registry / Employee Number" placeholder="e.g. FAC-CSE-038 / 24C0068" value={form.regNo} onChange={(e) => set("regNo", e.target.value)} />
+
+              <CustomSelect title="Role"       required options={roleOpts}   value={form.role}       onChange={(v) => set("role",       v)} placeholder="Select role..." />
+              <CustomSelect title="Department" options={deptOpts}   value={form.department} onChange={(v) => set("department", v)} placeholder="Select department..." />
+              <CustomSelect title="Programme"  options={progOpts}   value={form.programme}  onChange={(v) => set("programme",  v)} placeholder="Select programme..." />
+              <CustomSelect title="Batch"      options={batchOpts}  value={form.batch}      onChange={(v) => set("batch",      v)} placeholder="Select batch..." />
+              <CustomSelect title="Status"     options={statusOpts} value={form.status}     onChange={(v) => set("status",     v)} placeholder="Active" />
 
               {/* Info notice */}
               <div className="flex items-start gap-2.5 rounded-xl bg-blue-50 px-4 py-3 dark:bg-blue-900/20">
@@ -151,16 +279,24 @@ const AddUserModal = ({ open, onClose, initialData }: Props) => {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-[#000] hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+            disabled={submitting}
+            className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-[#000] hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
           >
             Cancel
           </button>
           <button
             type="submit"
             form="user-form"
-            className="bg-color2 rounded-lg px-6 py-2 text-sm font-semibold text-white hover:opacity-90"
+            disabled={submitting}
+            className="bg-color2 flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
           >
-            {isEdit ? "Update User" : "Create User"}
+            {submitting && (
+              <svg className="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+              </svg>
+            )}
+            {submitting ? "Saving…" : isEdit ? "Update User" : "Create User"}
           </button>
         </div>
       </div>

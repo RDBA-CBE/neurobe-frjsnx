@@ -38,6 +38,7 @@ export const AvatarCell = ({ name, sub }: { name: string; sub: string }) => (
 );
 
 const RoleBadge = ({ role }: { role: string }) => {
+  const normRole = role === "ERP_ADMIN" ? "ERP Admin" : role;
   const map: Record<string, string> = {
     "Course Coordinator": "bg-purple-50 text-purple-700",
     "Course Instructor": "bg-blue-50 text-blue-700",
@@ -47,10 +48,10 @@ const RoleBadge = ({ role }: { role: string }) => {
   return (
     <span
       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-        map[role] ?? "bg-gray-100 text-[#000]"
+        map[normRole] ?? "bg-gray-100 text-[#000]"
       }`}
     >
-      {role}
+      {normRole}
     </span>
   );
 };
@@ -138,157 +139,176 @@ export const MOCK_USERS = [
   {
     id: 4,
     name: "Nivetha Krishnan",
-    sub: "Joined 2022",
-    email: "nivetha.krishnan@karpag...",
+    sub: "Joined 2020",
+    email: "nivetha.k@karpagam.edu",
+    regNo: "FAC-ECE-019",
+    role: "Course Coordinator",
+    department: "Electronics & Comm...",
+    programme: "B.Tech ECE",
+    batch: "Faculty / Staff",
+    status: "Active",
+    type: "Faculty / Staff",
+  },
+  {
+    id: 5,
+    name: "Rahul Mohan",
+    sub: "Joined 2024",
+    email: "rahul.m@karpagam.edu",
     regNo: "24C0068",
     role: "Student",
-    department: "Computer Science & Eng...",
-    programme: "B.E. Computer Science...",
+    department: "Artificial Intelligence",
+    programme: "D.Tech AI",
     batch: "2024-2028",
     status: "Active",
     type: "Student",
   },
   {
-    id: 5,
-    name: "Sanjay Murugan",
-    sub: "Joined 2022",
-    email: "sanjay.murugan@karpagam...",
-    regNo: "FAC-ADS-002",
-    role: "Course Coordinator",
-    department: "Artificial Intelligence & D...",
-    programme: "D.Tech Artificial Intelligen...",
-    batch: "Faculty / Staff",
-    status: "Inactive",
-    type: "Faculty / Staff",
-  },
-  {
     id: 6,
-    name: "Harini Ramesh",
-    sub: "Joined 2023",
-    email: "harini.ramesh@student.ka...",
-    regNo: "23A1019",
-    role: "Student",
-    department: "Artificial Intelligence & D...",
-    programme: "D.Tech Artificial Intelligen...",
-    batch: "2023-2027",
-    status: "Locked",
-    type: "Student",
+    name: "Deepa Natarajan",
+    sub: "Joined 2019",
+    email: "deepa.n@karpagam.edu",
+    regNo: "ADM-003",
+    role: "ERP Admin",
+    department: "Information Technology",
+    programme: "D.Tech IT",
+    batch: "Faculty / Staff",
+    status: "Active",
+    type: "Faculty / Staff",
   },
   {
     id: 7,
-    name: "Vignesh Kumar",
-    sub: "Joined 2021",
-    email: "vignesh.kumar@karpagam...",
-    regNo: "FAC-BCE-031",
-    role: "Course Coordinator",
-    department: "Electronics & Communica...",
-    programme: "B.E. Electronics & Comm...",
-    batch: "Faculty / Staff",
-    status: "Inactive",
-    type: "Faculty / Staff",
-  },
-  {
-    id: 8,
-    name: "Keerthana Kaveri",
-    sub: "Joined 2023",
-    email: "keerthana.kaveri@student...",
-    regNo: "22IT055",
+    name: "Siddharth Verma",
+    sub: "Joined 2022",
+    email: "siddharth.v@karpagam.edu",
+    regNo: "22C0112",
     role: "Student",
-    department: "Information Technology",
-    programme: "D.Tech Information Techn...",
+    department: "Computer Science & Eng...",
+    programme: "B.E. Computer Science...",
     batch: "2022-2026",
-    status: "Active",
+    status: "Inactive",
     type: "Student",
   },
   {
-    id: 9,
-    name: "Meena Subramanian",
-    sub: "Joined 2020",
-    email: "meena.subramanian@karpag...",
-    regNo: "ADM-JRP-001",
-    role: "ERP Admin",
-    department: "Academic Office & Exam...",
-    programme: "Institutional Administration",
-    batch: "Faculty / Staff",
-    status: "Active",
-    type: "Faculty / Staff",
+    id: 8,
+    name: "Ananya Iyer",
+    sub: "Joined 2021",
+    email: "ananya.iyer@karpagam.edu",
+    regNo: "21C0045",
+    role: "Student",
+    department: "Electronics & Comm...",
+    programme: "B.Tech ECE",
+    batch: "2021-2025",
+    status: "Locked",
+    type: "Student",
   },
 ];
 
-// ─── Column factory — accepts onEdit callback ─────────────────────────────────
-export const makeUserListColumns = (onEdit: (row: any) => void) => [
+// ─── Column factory ───────────────────────────────────────────────────────────
+export const makeUserListColumns = (
+  onEdit: (r: any) => void,
+  onDelete?: (r: any) => void
+) => [
   {
     accessor: "name",
     title: "NAME / JOINED",
-    render: ({ name, sub }: any) => <AvatarCell name={name} sub={sub} />,
+    render: (row: any) => {
+      const fullName = row.first_name
+        ? `${row.first_name} ${row.last_name || ""}`.trim()
+        : row.name || "-";
+      const sub = row.registered_on
+        ? `Joined ${new Date(row.registered_on).toLocaleDateString("en-US", {
+            month: "short",
+            year: "numeric",
+          })}`
+        : row.sub || "-";
+      return <AvatarCell name={fullName} sub={sub} />;
+    },
   },
   {
     accessor: "email",
     title: "EMAIL",
-    render: ({ email }: any) => (
-      <span className="flex items-center gap-1 text-xs  dark:text-[#000]">
-        {email}
+    render: (row: any) => (
+      <span className="flex items-center gap-1 text-xs dark:text-[#000]">
+        {row.email || "-"}
       </span>
     ),
   },
   {
     accessor: "regNo",
     title: "REGISTER NO.",
-    render: ({ regNo }: any) => (
+    render: (row: any) => (
       <span className="font-mono text-xs font-medium text-[#000] dark:text-gray-300">
-        {regNo}
+        {row.regNo || row.registry_number || (row.id ? `USR-${String(row.id).padStart(4, "0")}` : "-")}
       </span>
     ),
   },
   {
     accessor: "role",
     title: "ROLE",
-    render: ({ role }: any) => <RoleBadge role={role} />,
+    render: (row: any) => <RoleBadge role={row.role || "-"} />,
   },
   {
     accessor: "department",
     title: "DEPARTMENT",
-    render: ({ department }: any) => (
-      <span className="text-xs text-[#000] dark:text-[#000]">{department}</span>
+    render: (row: any) => (
+      <span className="text-xs text-[#000] dark:text-[#000]">
+        {row.department?.department_name || row.department_name || row.department || "-"}
+      </span>
     ),
   },
   {
     accessor: "programme",
     title: "PROGRAMME",
-    render: ({ programme }: any) => (
-      <span className="text-xs text-[#000] dark:text-[#000]">{programme}</span>
+    render: (row: any) => (
+      <span className="text-xs text-[#000] dark:text-[#000]">
+        {row.programme?.programme_name || row.programme_name || row.programme || "-"}
+      </span>
     ),
   },
   {
     accessor: "batch",
     title: "BATCH",
-    render: ({ batch }: any) => (
-      <span className="text-xs text-[#000] dark:text-[#000]">{batch}</span>
+    render: (row: any) => (
+      <span className="text-xs text-[#000] dark:text-[#000]">
+        {row.batch?.name || row.batch_name || row.batch || (row.is_staff ? "Faculty / Staff" : "-")}
+      </span>
     ),
   },
   {
     accessor: "status",
     title: "STATUS",
-    render: ({ status }: any) => <StatusBadge status={status} />,
+    render: (row: any) => {
+      const status = row.status || (row.is_active ? "Active" : "Inactive");
+      return <StatusBadge status={status} />;
+    },
   },
   {
     accessor: "type",
     title: "ACTIONS",
-    render: (row: any) => (
-      <div className="flex items-center gap-2">
-        <TypeBadge type={row.type} />
-        <button
-          onClick={() => onEdit(row)}
-          className="text-[#000] hover:text-color2"
-          title="Edit"
-        >
-          <IconEdit className="h-4 w-4" />
-        </button>
-        <button className="text-[#000] hover:text-red-500" title="Delete">
-          <IconTrash className="h-4 w-4" />
-        </button>
-      </div>
-    ),
+    render: (row: any) => {
+      const type = row.type || (row.is_staff ? "Faculty / Staff" : "Student");
+      return (
+        <div className="flex items-center gap-2">
+          <TypeBadge type={type} />
+          <button
+            onClick={() => onEdit(row)}
+            className="text-[#000] hover:text-color2"
+            title="Edit"
+          >
+            <IconEdit className="h-4 w-4" />
+          </button>
+          {onDelete && (
+            <button
+              onClick={() => onDelete(row)}
+              className="text-[#000] hover:text-red-500"
+              title="Delete"
+            >
+              <IconTrash className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+      );
+    },
   },
 ];
 

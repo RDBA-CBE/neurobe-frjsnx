@@ -9,19 +9,30 @@ const ActionCell = ({ onEdit, onDelete }: { onEdit?: () => void; onDelete?: () =
   </div>
 );
 
-const StatusCell = ({ status }: { status: string }) => (
-  <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${status === "Active" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-600"}`}>
-    <span className={`h-1.5 w-1.5 rounded-full ${status === "Active" ? "bg-green-500" : "bg-red-400"}`} />
-    {status}
-  </span>
-);
+const StatusCell = ({ status }: { status: string }) => {
+  const isActive = String(status || "").toLowerCase() === "active";
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
+        isActive ? "bg-green-50 text-green-700" : "bg-red-50 text-red-600"
+      }`}
+    >
+      <span
+        className={`h-1.5 w-1.5 rounded-full ${
+          isActive ? "bg-green-500" : "bg-red-400"
+        }`}
+      />
+      {isActive ? "Active" : "Inactive"}
+    </span>
+  );
+};
 
 const PurpleCode = ({ code }: { code: string }) => (
   <span className="font-medium text-color2">{code}</span>
 );
 
 const PurpleBadge = ({ value }: { value: number }) => (
-  <span className="inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[#ede9fe] px-1.5 text-xs font-bold text-color2">
+  <span className="inline-flex px-3 py-1 items-center justify-center rounded-lg bg-[#ede9fe] px-1.5 text-xs font-bold text-color2">
     {value}
   </span>
 );
@@ -36,12 +47,36 @@ export const MOCK_DEPARTMENTS = [
 ];
 
 export const makeDepartmentColumns = (onEdit: (r: any) => void, onDelete: (r: any) => void) => [
-  { accessor: "code",       title: "CODE",             render: ({ code }: any)       => <PurpleCode code={code} /> },
-  { accessor: "name",       title: "DEPARTMENT NAME",  render: ({ name }: any)       => <span className="text-[#000] dark:text-gray-200">{name}</span> },
-  { accessor: "hod",        title: "HEAD OF DEPT",     render: ({ hod }: any)        => <span className="text-[#000] dark:text-[#000]">{hod}</span> },
-  { accessor: "programmes", title: "PROGRAMMES",       render: ({ programmes }: any) => <PurpleBadge value={programmes} /> },
-  { accessor: "status",     title: "STATUS",           render: ({ status }: any)     => <StatusCell status={status} /> },
-  { accessor: "actions",    title: "ACTIONS",          render: (row: any)            => <ActionCell onEdit={() => onEdit(row)} onDelete={() => onDelete(row)} /> },
+  
+  {
+    accessor: "name",
+    title: "DEPARTMENT NAME",
+    render: (row: any) => (
+      <span className="text-[#000] dark:text-gray-200">
+        {row.department_name || row.name || "-"}
+      </span>
+    ),
+  },
+  
+  {
+    accessor: "short_name",
+    title: "SHORT NAME",
+    render: (row: any) => (
+      <PurpleBadge value={row.department_short_name ?? row.department_short_name ?? ""} />
+    ),
+  },
+  {
+    accessor: "status",
+    title: "STATUS",
+    render: (row: any) => <StatusCell status={row.status || "Active"} />,
+  },
+  {
+    accessor: "actions",
+    title: "ACTIONS",
+    render: (row: any) => (
+      <ActionCell onEdit={() => onEdit(row)} onDelete={() => onDelete(row)} />
+    ),
+  },
 ];
 
 // ─── PROGRAMMES ───────────────────────────────────────────────────────────────
@@ -53,15 +88,40 @@ export const MOCK_PROGRAMMES = [
 ];
 
 export const makeProgrammeColumns = (onEdit: (r: any) => void, onDelete: (r: any) => void) => [
-  { accessor: "code",       title: "CODE",           render: ({ code }: any)       => <PurpleCode code={code} /> },
-  { accessor: "name",       title: "PROGRAMME NAME", render: ({ name }: any)       => <span className="text-[#000] dark:text-gray-200">{name}</span> },
-  { accessor: "department", title: "DEPARTMENT",     render: ({ department }: any) => <span className="text-[#000] dark:text-[#000]">{department}</span> },
-  { accessor: "duration",   title: "DURATION",       render: ({ duration }: any)   => <span className="text-[#000] dark:text-[#000]">{duration}</span> },
-  { accessor: "type",       title: "TYPE",           render: ({ type }: any)       => (
-    <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">{type}</span>
-  )},
-  { accessor: "status",  title: "STATUS",  render: ({ status }: any)  => <StatusCell status={status} /> },
-  { accessor: "actions", title: "ACTIONS", render: (row: any)         => <ActionCell onEdit={() => onEdit(row)} onDelete={() => onDelete(row)} /> },
+  {
+    accessor: "code",
+    title: "CODE",
+    render: (row: any) => <PurpleCode code={row.short_name || row.code || "-"} />,
+  },
+  {
+    accessor: "name",
+    title: "PROGRAMME NAME",
+    render: (row: any) => <span className="text-[#000] dark:text-gray-200">{row.programme_name || row.name || "-"}</span>,
+  },
+  {
+    accessor: "department",
+    title: "DEPARTMENT",
+    render: (row: any) => <span className="text-[#000] dark:text-[#000]">{row.department_name || row.department?.department_name || row.department || "-"}</span>,
+  },
+  {
+    accessor: "type",
+    title: "DEGREE LEVEL",
+    render: (row: any) => (
+      <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+        {row.degree_level || row.type || "UG"}
+      </span>
+    ),
+  },
+  {
+    accessor: "status",
+    title: "STATUS",
+    render: (row: any) => <StatusCell status={row.status || "Active"} />,
+  },
+  {
+    accessor: "actions",
+    title: "ACTIONS",
+    render: (row: any) => <ActionCell onEdit={() => onEdit(row)} onDelete={() => onDelete(row)} />,
+  },
 ];
 
 // ─── BATCHES ──────────────────────────────────────────────────────────────────
@@ -75,14 +135,36 @@ export const MOCK_BATCHES = [
 ];
 
 export const makeBatchColumns = (onEdit: (r: any) => void, onDelete: (r: any) => void) => [
-  { accessor: "code",      title: "BATCH CODE", render: ({ code }: any)      => <PurpleCode code={code} /> },
-  { accessor: "name",      title: "BATCH NAME", render: ({ name }: any)      => <span className="text-[#000] dark:text-gray-200">{name}</span> },
-  { accessor: "programme", title: "PROGRAMME",  render: ({ programme }: any) => <span className="text-[#000] dark:text-[#000]">{programme}</span> },
-  { accessor: "startYear", title: "START YEAR", render: ({ startYear }: any) => <span className="text-[#000] dark:text-[#000]">{startYear}</span> },
-  { accessor: "endYear",   title: "END YEAR",   render: ({ endYear }: any)   => <span className="text-[#000] dark:text-[#000]">{endYear}</span> },
-  { accessor: "students",  title: "STUDENTS",   render: ({ students }: any)  => <PurpleBadge value={students} /> },
-  { accessor: "status",    title: "STATUS",     render: ({ status }: any)    => <StatusCell status={status} /> },
-  { accessor: "actions",   title: "ACTIONS",    render: (row: any)           => <ActionCell onEdit={() => onEdit(row)} onDelete={() => onDelete(row)} /> },
+  {
+    accessor: "name",
+    title: "BATCH NAME",
+    render: (row: any) => <span className="text-[#000] font-medium dark:text-gray-200">{row.name || row.batch || "-"}</span>,
+  },
+  {
+    accessor: "programme",
+    title: "PROGRAMME",
+    render: (row: any) => <span className="text-[#000] dark:text-[#000]">{row.programme_name || row.programme?.programme_name || row.programme || "-"}</span>,
+  },
+  {
+    accessor: "startYear",
+    title: "START YEAR",
+    render: (row: any) => <span className="text-[#000] dark:text-[#000]">{row.start_year ?? row.startYear ?? "-"}</span>,
+  },
+  {
+    accessor: "endYear",
+    title: "END YEAR",
+    render: (row: any) => <span className="text-[#000] dark:text-[#000]">{row.end_year ?? row.endYear ?? "-"}</span>,
+  },
+  {
+    accessor: "status",
+    title: "STATUS",
+    render: (row: any) => <StatusCell status={row.status || "Active"} />,
+  },
+  {
+    accessor: "actions",
+    title: "ACTIONS",
+    render: (row: any) => <ActionCell onEdit={() => onEdit(row)} onDelete={() => onDelete(row)} />,
+  },
 ];
 
 // ─── COURSES ──────────────────────────────────────────────────────────────────
@@ -96,16 +178,69 @@ export const MOCK_COURSES = [
 ];
 
 export const makeCourseColumns = (onEdit: (r: any) => void, onDelete: (r: any) => void) => [
-  { accessor: "code",   title: "COURSE CODE",  render: ({ code }: any)   => <PurpleCode code={code} /> },
-  { accessor: "title",  title: "COURSE TITLE", render: ({ title }: any)  => <span className="text-[#000] dark:text-gray-200">{title}</span> },
-  { accessor: "l",      title: "L",            render: ({ l }: any)      => <span className="text-[#000] dark:text-[#000]">{l}</span> },
-  { accessor: "t",      title: "T",            render: ({ t }: any)      => <span className="text-[#000] dark:text-[#000]">{t}</span> },
-  { accessor: "p",      title: "P",            render: ({ p }: any)      => <span className="text-[#000] dark:text-[#000]">{p}</span> },
-  { accessor: "c",      title: "C",            render: ({ c }: any)      => <PurpleBadge value={c} /> },
-  { accessor: "theory", title: "THEORY HOURS", render: ({ theory }: any) => <span className="text-[#000] dark:text-[#000]">{theory}</span> },
-  { accessor: "lab",    title: "LAB HOURS",    render: ({ lab }: any)    => <span className="text-[#000] dark:text-[#000]">{lab}</span> },
-  { accessor: "status", title: "STATUS",       render: ({ status }: any) => <StatusCell status={status} /> },
-  { accessor: "actions",title: "ACTIONS",      render: (row: any)        => <ActionCell onEdit={() => onEdit(row)} onDelete={() => onDelete(row)} /> },
+  {
+    accessor: "code",
+    title: "COURSE CODE",
+    render: (row: any) => <PurpleCode code={row.course_code || row.code || "-"} />,
+  },
+  {
+    accessor: "title",
+    title: "COURSE TITLE",
+    render: (row: any) => <span className="text-[#000] dark:text-gray-200">{row.course_title || row.title || "-"}</span>,
+  },
+  {
+    accessor: "department",
+    title: "DEPARTMENT",
+    render: (row: any) => <span className="text-[#000] dark:text-[#000]">{row.department_name || row.department?.department_name || row.department || "-"}</span>,
+  },
+  {
+    accessor: "l",
+    title: "L",
+    render: (row: any) => <span className="text-[#000] dark:text-[#000]">{row.lecture_hours ?? row.l ?? 0}</span>,
+  },
+  {
+    accessor: "t",
+    title: "T",
+    render: (row: any) => <span className="text-[#000] dark:text-[#000]">{row.tutorial_hours ?? row.t ?? 0}</span>,
+  },
+  {
+    accessor: "p",
+    title: "P",
+    render: (row: any) => <span className="text-[#000] dark:text-[#000]">{row.practical_hours ?? row.p ?? 0}</span>,
+  },
+  {
+    accessor: "c",
+    title: "C",
+    render: (row: any) => <PurpleBadge value={row.credits ?? row.c ?? 0} />,
+  },
+  {
+    accessor: "theory",
+    title: "THEORY HOURS",
+    render: (row: any) => (
+      <span className="text-[#000] dark:text-[#000]">
+        {row.total_theory_hours !== undefined && row.total_theory_hours !== null ? `${row.total_theory_hours} hrs` : row.theory || "-"}
+      </span>
+    ),
+  },
+  {
+    accessor: "lab",
+    title: "LAB HOURS",
+    render: (row: any) => (
+      <span className="text-[#000] dark:text-[#000]">
+        {row.total_lab_hours !== undefined && row.total_lab_hours !== null ? `${row.total_lab_hours} hrs` : row.lab || "-"}
+      </span>
+    ),
+  },
+  {
+    accessor: "status",
+    title: "STATUS",
+    render: (row: any) => <StatusCell status={row.status || "Active"} />,
+  },
+  {
+    accessor: "actions",
+    title: "ACTIONS",
+    render: (row: any) => <ActionCell onEdit={() => onEdit(row)} onDelete={() => onDelete(row)} />,
+  },
 ];
 
 // ─── PSOs ─────────────────────────────────────────────────────────────────────

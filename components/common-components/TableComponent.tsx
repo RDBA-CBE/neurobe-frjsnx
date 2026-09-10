@@ -27,15 +27,15 @@ const TableComponent = ({
   // reset to page 1 whenever records change (e.g. filter applied)
   useEffect(() => { setPage(1); }, [records]);
 
-  const totalPages = Math.max(1, Math.ceil(records.length / pageSize));
+  const totalPages = Math.max(1, Math.ceil(records?.length / pageSize));
   const paginated  = showPagination
-    ? records.slice((page - 1) * pageSize, page * pageSize)
+    ? records?.slice((page - 1) * pageSize, page * pageSize)
     : records;
 
   const goTo = (p: number) => { if (p >= 1 && p <= totalPages) setPage(p); };
 
-  const from = records.length === 0 ? 0 : (page - 1) * pageSize + 1;
-  const to   = Math.min(page * pageSize, records.length);
+  const from = records?.length === 0 ? 0 : (page - 1) * pageSize + 1;
+  const to   = Math.min(page * pageSize, records?.length);
 
   return (
     <div>
@@ -58,7 +58,7 @@ const TableComponent = ({
         <div className="flex items-center justify-between border-t border-gray-100 px-4 py-3 dark:border-gray-700">
           {/* count */}
           <p className="text-xs text-[#000]">
-            Showing {from}–{to} of {records.length} {paginationLabel}
+            Showing {from}–{to} of {records?.length} {paginationLabel}
           </p>
 
           {/* pages */}

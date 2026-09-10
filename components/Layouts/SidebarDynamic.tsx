@@ -8,7 +8,7 @@ import {
   clearApplicationCount,
   resetApplicationCount,
 } from "../../store/notificationSlice";
-import { OwnmenuConfig } from "@/utils/constant.utils";
+import { OwnmenuConfig, getMenuByRole } from "@/utils/constant.utils";
 
 const Icons: Record<string, () => JSX.Element> = {
   "Academic Setup": () => (
@@ -387,6 +387,11 @@ const SidebarDynamic = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [group, setGroup] = useState<string>("");
+  const [userProfile, setUserProfile] = useState({
+    name: "User",
+    role: "ERP Admin",
+    avatar: "U",
+  });
   const [hovered, setHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [expandedKey, setExpandedKey] = useState<string>("");
@@ -418,8 +423,32 @@ const SidebarDynamic = () => {
   const showLabels = isMobile || hovered;
 
   useEffect(() => {
-    setGroup(localStorage.getItem("role") || "");
-  }, []);
+    const role = localStorage.getItem("role") || localStorage.getItem("group") || "";
+    setGroup(role);
+
+    try {
+      const userStr = localStorage.getItem("user");
+      if (userStr) {
+        const u = JSON.parse(userStr);
+        const fullName =
+          `${u?.first_name || ""} ${u?.last_name || ""}`.trim() ||
+          u?.email ||
+          "User";
+        setUserProfile({
+          name: fullName,
+          role: u?.role || role || "ERP Admin",
+          avatar: (fullName || "U").charAt(0).toUpperCase(),
+        });
+      } else if (role) {
+        setUserProfile((prev) => ({
+          ...prev,
+          role: role,
+        }));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [router.pathname]);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 1024);
@@ -516,8 +545,7 @@ const SidebarDynamic = () => {
   };
 
   const getOwnMenu = () => {
-    if (!group) return OwnmenuConfig.hr;
-    return OwnmenuConfig?.[group] || OwnmenuConfig.hr;
+    return getMenuByRole(group);
   };
 
   const menu = getOwnMenu() || [];
@@ -579,16 +607,15 @@ const SidebarDynamic = () => {
                 border: "2px solid rgba(255,255,255,0.25)",
               }}
             >
-              {/* <img src="/assets/images/faculty-logo.png" alt="user" className="h-full w-full object-cover" /> */}
-              A
+              {userProfile.avatar}
             </div>
             {showLabels && (
               <div className="ml-3 min-w-0">
                 <p className="truncate text-[15px] font-bold text-[#fff]">
-                  Dr.Arun Kumar
+                  {userProfile.name}
                 </p>
                 <p className="truncate pt-1 text-[13px] text-white/80">
-                  Course Coordinator
+                  {userProfile.role}
                 </p>
               </div>
             )}

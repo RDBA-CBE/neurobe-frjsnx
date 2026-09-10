@@ -3,6 +3,7 @@ import { Check, Edit, PlusIcon, Search, Users, X } from "lucide-react";
 import TextInput from "@/components/FormFields/TextInput.component";
 import TextArea from "@/components/FormFields/TextArea.component";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
+import { Failure } from "@/utils/function.utils";
 
 // ─── Body scroll lock ─────────────────────────────────────────────────────────
 const useLockBodyScroll = (active: boolean) => {
@@ -141,66 +142,131 @@ const DEPT_OPTS = toOpts([
 ]);
 const STATUS_OPTS = toOpts(["Active", "Inactive"]);
 const PROG_OPTS = toOpts(["BTECH-CSE", "BTECH-ECE", "MTECH-AI", "MBA"]);
-const TYPE_OPTS = toOpts(["UG", "PG"]);
+const TYPE_OPTS = toOpts(["UG", "PG", "Diploma", "PhD"]);
+const BATCH_STATUS_OPTS = toOpts(["Active", "Draft", "Inactive"]);
 
 // ─── CREATE / EDIT COURSE MODAL ───────────────────────────────────────────────
+export interface CourseFormData {
+  department_id: number;
+  course_code: string;
+  course_title: string;
+  status: string;
+  lecture_hours: number;
+  tutorial_hours: number;
+  practical_hours: number;
+  credits: number;
+  total_theory_hours: number;
+  total_lab_hours: number;
+  syllabus_file?: string;
+  regulation?: string;
+  is_active?: boolean;
+}
+
 interface CourseModalProps {
   open: boolean;
   onClose: () => void;
   initialData?: any;
+  onSubmit: (formData: CourseFormData) => void;
+  submitting?: boolean;
+  departmentOptions?: { value: number | string; label: string }[];
 }
 
 export const CreateCourseModal = ({
   open,
   onClose,
   initialData,
+  onSubmit,
+  submitting = false,
+  departmentOptions,
 }: CourseModalProps) => {
   const isEdit = !!initialData;
+  const deptOpts = departmentOptions && departmentOptions.length > 0 ? departmentOptions : DEPT_OPTS;
 
   const [form, setForm] = useState({
     code: "",
     title: "",
     department: null as any,
-    status: null as any,
+    status: { value: "Active", label: "Active" } as any,
+    regulation: "R2023",
     lecture: "3",
     tutorial: "0",
     practical: "0",
-    credits: "4",
-    theoryHours: "",
-    labHours: "",
+    credits: "3",
+    theoryHours: "45",
+    labHours: "0",
   });
 
   useEffect(() => {
     if (initialData) {
+      const foundDept = deptOpts.find(
+        (d: any) =>
+          d.value === initialData.department_id ||
+          d.label === initialData.department_name ||
+          d.label === initialData.department
+      );
       setForm({
-        code: initialData.code ?? "",
-        title: initialData.title ?? "",
-        department: toOpt(initialData.department),
-        status: toOpt(initialData.status),
-        lecture: String(initialData.l ?? "3"),
-        tutorial: String(initialData.t ?? "0"),
-        practical: String(initialData.p ?? "0"),
-        credits: String(initialData.c ?? "4"),
-        theoryHours: initialData.theory?.replace(" hrs", "") ?? "",
-        labHours: initialData.lab?.replace(" hrs", "") ?? "",
+        code: initialData.course_code ?? initialData.code ?? "",
+        title: initialData.course_title ?? initialData.title ?? "",
+        department: foundDept ?? toOpt(initialData.department_name || initialData.department),
+        status: toOpt(initialData.status?.toLowerCase() === "inactive" ? "Inactive" : "Active"),
+        regulation: initialData.regulation ?? "R2023",
+        lecture: String(initialData.lecture_hours ?? initialData.l ?? "3"),
+        tutorial: String(initialData.tutorial_hours ?? initialData.t ?? "0"),
+        practical: String(initialData.practical_hours ?? initialData.p ?? "0"),
+        credits: String(initialData.credits ?? initialData.c ?? "3"),
+        theoryHours: String(initialData.total_theory_hours ?? initialData.theory?.replace(" hrs", "") ?? "45"),
+        labHours: String(initialData.total_lab_hours ?? initialData.lab?.replace(" hrs", "") ?? "0"),
       });
     } else {
       setForm({
         code: "",
         title: "",
         department: null,
-        status: null,
+        status: { value: "Active", label: "Active" },
+        regulation: "R2023",
         lecture: "3",
         tutorial: "0",
         practical: "0",
-        credits: "4",
-        theoryHours: "",
-        labHours: "",
+        credits: "3",
+        theoryHours: "45",
+        labHours: "0",
       });
     }
-  }, [initialData, open]);
+  }, [initialData, open, deptOpts]);
 
   const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.code.trim()) {
+      Failure("Please enter course code");
+      return;
+    }
+    if (!form.title.trim()) {
+      Failure("Please enter course title");
+      return;
+    }
+    if (!form.department?.value) {
+      Failure("Please select a department");
+      return;
+    }
+
+    onSubmit({
+      department_id: Number(form.department.value) || 0,
+      course_code: form.code.trim(),
+      course_title: form.title.trim(),
+      status: form.status?.value || "Active",
+      lecture_hours: Number(form.lecture) || 0,
+      tutorial_hours: Number(form.tutorial) || 0,
+      practical_hours: Number(form.practical) || 0,
+      credits: Number(form.credits) || 0,
+      total_theory_hours: Number(form.theoryHours) || 0,
+      total_lab_hours: Number(form.labHours) || 0,
+      syllabus_file: "",
+      regulation: form.regulation || "R2023",
+      is_active: (form.status?.value || "Active").toLowerCase() === "active",
+    });
+  };
 
   return (
     <ModalShell
@@ -215,12 +281,7 @@ export const CreateCourseModal = ({
       open={open}
       onClose={onClose}
     >
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onClose();
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
           <TextInput
             title="Course Code"
@@ -239,10 +300,10 @@ export const CreateCourseModal = ({
           <CustomSelect
             title="Department"
             required
-            options={DEPT_OPTS}
+            options={deptOpts}
             value={form.department}
             onChange={(v) => set("department", v)}
-            placeholder="CS - Computer Science"
+            placeholder="Select Department"
           />
           <CustomSelect
             title="Status"
@@ -253,36 +314,46 @@ export const CreateCourseModal = ({
           />
         </div>
 
-        <div className="mt-4 ">
+        <div className="mt-4 grid grid-cols-2 gap-4">
+          <TextInput
+            title="Regulation"
+            placeholder="e.g. R2023"
+            value={form.regulation}
+            onChange={(e) => set("regulation", e.target.value)}
+          />
+          <div></div>
+        </div>
+
+        <div className="mt-4">
           <div className="flex justify-between">
             <p className="mb-2 text-xs font-semibold text-[#000] dark:text-[#000]">
               L-T-P-C Breakdown (Weekly Hours &amp; Credits)
             </p>
-            <span className="text-color2 ml-2 cursor-pointer text-xs font-bold ">
-              Calculated Credits : 4
+            <span className="text-color2 ml-2 cursor-pointer text-xs font-bold">
+              Credits : {form.credits}
             </span>
           </div>
           <div className="grid grid-cols-4 gap-3">
             <TextInput
-              title="Lecture"
+              title="Lecture (L)"
               type="number"
               value={form.lecture}
               onChange={(e) => set("lecture", e.target.value)}
             />
             <TextInput
-              title="Tutorial"
+              title="Tutorial (T)"
               type="number"
               value={form.tutorial}
               onChange={(e) => set("tutorial", e.target.value)}
             />
             <TextInput
-              title="Practical"
+              title="Practical (P)"
               type="number"
               value={form.practical}
               onChange={(e) => set("practical", e.target.value)}
             />
             <TextInput
-              title="Credits"
+              title="Credits (C)"
               type="number"
               value={form.credits}
               onChange={(e) => set("credits", e.target.value)}
@@ -308,79 +379,111 @@ export const CreateCourseModal = ({
           />
         </div>
 
-        <ModalFooter
-          onClose={onClose}
-          submitLabel={isEdit ? "Update Entry" : "Create Entry"}
-        />
+        <div className="mt-6 flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={submitting}
+            className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-[#000] hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="bg-color2 flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
+          >
+            {submitting && (
+              <svg className="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+              </svg>
+            )}
+            {submitting ? "Saving…" : isEdit ? "Update Course" : "Create Course"}
+          </button>
+        </div>
       </form>
     </ModalShell>
   );
 };
 
 // ─── CREATE / EDIT DEPARTMENT MODAL ──────────────────────────────────────────
+export interface DepartmentFormData {
+  department_name: string;
+  department_short_name: string;
+  status: string;
+}
+
 interface DeptModalProps {
   open: boolean;
   onClose: () => void;
   initialData?: any;
+  onSubmit: (formData: DepartmentFormData) => void;
+  submitting?: boolean;
 }
 
 export const CreateDepartmentModal = ({
   open,
   onClose,
   initialData,
+  onSubmit,
+  submitting = false,
 }: DeptModalProps) => {
   const isEdit = !!initialData;
   const [form, setForm] = useState({
     code: "",
     name: "",
-    hod: "",
-    status: null as any,
+    status: { value: "Active", label: "Active" } as any,
   });
 
   useEffect(() => {
     if (initialData) {
       setForm({
-        code: initialData.code ?? "",
-        name: initialData.name ?? "",
-        hod: initialData.hod ?? "",
-        status: toOpt(initialData.status),
+        code: initialData.department_short_name ?? initialData.code ?? "",
+        name: initialData.department_name ?? initialData.name ?? "",
+        status: toOpt(initialData.status?.toLowerCase() === "inactive" ? "Inactive" : "Active"),
       });
     } else {
-      setForm({ code: "", name: "", hod: "", status: null });
+      setForm({ code: "", name: "", status: { value: "Active", label: "Active" } });
     }
   }, [initialData, open]);
 
   const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name?.trim()) {
+      Failure("Please enter department name");
+      return;
+    }
+    if (!form.code?.trim()) {
+      Failure("Please enter department short name / code");
+      return;
+    }
+
+    onSubmit({
+      department_name: form.name.trim(),
+      department_short_name: form.code.trim(),
+      status: (form.status?.value ?? "Active").toLowerCase(),
+    });
+  };
+
   return (
     <ModalShell
       title={isEdit ? "Edit Department" : "Create New Department"}
-      icon={
-        isEdit ? (
-          <Edit className="h-3.5 w-3.5" />
-        ) : (
-          <PlusIcon className="h-3.5 w-3.5" />
-        )
-      }
+      icon={isEdit ? <Edit className="h-3.5 w-3.5" /> : <PlusIcon className="h-3.5 w-3.5" />}
       open={open}
       onClose={onClose}
     >
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onClose();
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-4">
-          <div>
-            <TextInput
-              title="Department Name"
-              required
-              placeholder="e.g. Computer Science & Engineering"
-              value={form.name}
-              onChange={(e) => set("name", e.target.value)}
-            />
-          </div>
+          <TextInput
+            title="Department Name"
+            required
+            placeholder="e.g. Computer Science & Engineering"
+            value={form.name}
+            onChange={(e) => set("name", e.target.value)}
+          />
           <div className="grid grid-cols-2 gap-4">
             <TextInput
               title="Department Code"
@@ -389,13 +492,6 @@ export const CreateDepartmentModal = ({
               value={form.code}
               onChange={(e) => set("code", e.target.value)}
             />
-
-            {/* <TextInput
-            title="Head of Department"
-            placeholder="e.g. Dr. A. Kumar"
-            value={form.hod}
-            onChange={(e) => set("hod", e.target.value)}
-          /> */}
             <CustomSelect
               title="Status"
               options={STATUS_OPTS}
@@ -405,60 +501,122 @@ export const CreateDepartmentModal = ({
             />
           </div>
         </div>
-        <ModalFooter
-          onClose={onClose}
-          submitLabel={isEdit ? "Update Department" : "Create Department"}
-        />
+        <div className="mt-6 flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={submitting}
+            className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-[#000] hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="bg-color2 flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
+          >
+            {submitting && (
+              <svg className="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+              </svg>
+            )}
+            {submitting ? "Saving…" : isEdit ? "Update Department" : "Create Department"}
+          </button>
+        </div>
       </form>
     </ModalShell>
   );
 };
 
 // ─── CREATE / EDIT PROGRAMME MODAL ───────────────────────────────────────────
+export interface ProgrammeFormData {
+  department_id: number;
+  programme_name: string;
+  short_name: string;
+  degree_level: string;
+  status: string;
+}
+
 interface ProgModalProps {
   open: boolean;
   onClose: () => void;
   initialData?: any;
+  onSubmit: (formData: ProgrammeFormData) => void;
+  submitting?: boolean;
+  departmentOptions?: { value: number | string; label: string }[];
 }
 
 export const CreateProgrammeModal = ({
   open,
   onClose,
   initialData,
+  onSubmit,
+  submitting = false,
+  departmentOptions,
 }: ProgModalProps) => {
   const isEdit = !!initialData;
+  const deptOpts = departmentOptions && departmentOptions.length > 0 ? departmentOptions : DEPT_OPTS;
+
   const [form, setForm] = useState({
-    short_name: "",
     name: "",
+    short_name: "",
     department: null as any,
-    type: null as any,
-    duration: "",
-    status: null as any,
+    degree_level: { value: "UG", label: "UG" } as any,
+    status: { value: "Active", label: "Active" } as any,
   });
 
   useEffect(() => {
     if (initialData) {
+      const foundDept = deptOpts.find(
+        (d: any) =>
+          d.value === initialData.department_id ||
+          d.label === initialData.department_name ||
+          d.label === initialData.department
+      );
       setForm({
-        short_name: initialData.short_name ?? "",
-        name: initialData.name ?? "",
-        department: toOpt(initialData.department),
-        type: toOpt(initialData.type),
-        duration: initialData.duration ?? "",
-        status: toOpt(initialData.status),
+        name: initialData.programme_name ?? initialData.name ?? "",
+        short_name: initialData.short_name ?? initialData.code ?? "",
+        department: foundDept ?? toOpt(initialData.department_name || initialData.department),
+        degree_level: toOpt(initialData.degree_level ?? initialData.type ?? "UG"),
+        status: toOpt(initialData.status?.toLowerCase() === "inactive" ? "Inactive" : "Active"),
       });
     } else {
       setForm({
-        short_name: "",
         name: "",
+        short_name: "",
         department: null,
-        type: null,
-        duration: "",
-        status: null,
+        degree_level: { value: "UG", label: "UG" },
+        status: { value: "Active", label: "Active" },
       });
     }
-  }, [initialData, open]);
+  }, [initialData, open, deptOpts]);
 
   const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim()) {
+      Failure("Please enter programme name");
+      return;
+    }
+    if (!form.short_name.trim()) {
+      Failure("Please enter short name");
+      return;
+    }
+    if (!form.department?.value) {
+      Failure("Please select an associated department");
+      return;
+    }
+
+    onSubmit({
+      department_id: Number(form.department.value) || 0,
+      programme_name: form.name.trim(),
+      short_name: form.short_name.trim(),
+      degree_level: form.degree_level?.value || "UG",
+      status: form.status?.value || "Active",
+    });
+  };
 
   return (
     <ModalShell
@@ -473,12 +631,7 @@ export const CreateProgrammeModal = ({
       open={open}
       onClose={onClose}
     >
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onClose();
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <TextInput
           title="Programme Name"
           required
@@ -498,7 +651,7 @@ export const CreateProgrammeModal = ({
           <CustomSelect
             title="Associated Department"
             required
-            options={DEPT_OPTS}
+            options={deptOpts}
             value={form.department}
             onChange={(v) => set("department", v)}
             placeholder="Select Department"
@@ -507,17 +660,10 @@ export const CreateProgrammeModal = ({
             title="Degree Level"
             required
             options={TYPE_OPTS}
-            value={form.type}
-            onChange={(v) => set("type", v)}
+            value={form.degree_level}
+            onChange={(v) => set("degree_level", v)}
             placeholder="UG / PG"
           />
-          {/* <TextInput
-            title="Duration"
-            required
-            placeholder="e.g. 4 Years"
-            value={form.duration}
-            onChange={(e) => set("duration", e.target.value)}
-          /> */}
           <CustomSelect
             title="Status"
             options={STATUS_OPTS}
@@ -526,60 +672,128 @@ export const CreateProgrammeModal = ({
             placeholder="Active"
           />
         </div>
-        <ModalFooter
-          onClose={onClose}
-          submitLabel={isEdit ? "Update Programme" : "Create Programme"}
-        />
+        <div className="mt-6 flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={submitting}
+            className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-[#000] hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="bg-color2 flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
+          >
+            {submitting && (
+              <svg className="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+              </svg>
+            )}
+            {submitting ? "Saving…" : isEdit ? "Update Programme" : "Create Programme"}
+          </button>
+        </div>
       </form>
     </ModalShell>
   );
 };
 
 // ─── CREATE / EDIT BATCH MODAL ────────────────────────────────────────────────
+export interface BatchFormData {
+  name: string;
+  programme_id: number;
+  start_year: number;
+  end_year: number;
+  status: string;
+  is_active: boolean;
+}
+
 interface BatchModalProps {
   open: boolean;
   onClose: () => void;
   initialData?: any;
+  onSubmit: (formData: BatchFormData) => void;
+  submitting?: boolean;
+  programmeOptions?: { value: number | string; label: string }[];
 }
 
 export const CreateBatchModal = ({
   open,
   onClose,
   initialData,
+  onSubmit,
+  submitting = false,
+  programmeOptions,
 }: BatchModalProps) => {
   const isEdit = !!initialData;
+  const progOpts = programmeOptions && programmeOptions.length > 0 ? programmeOptions : PROG_OPTS;
+
   const [form, setForm] = useState({
-    batch: "",
     name: "",
     programme: null as any,
-    startYear: "",
-    endYear: "",
-    status: null as any,
+    start_year: "",
+    end_year: "",
+    status: { value: "Draft", label: "Draft" } as any,
   });
 
   useEffect(() => {
     if (initialData) {
+      const foundProg = progOpts.find(
+        (p: any) =>
+          p.value === initialData.programme_id ||
+          p.label === initialData.programme_name ||
+          p.label === initialData.programme
+      );
       setForm({
-        batch: initialData.batch ?? "",
-        name: initialData.name ?? "",
-        programme: toOpt(initialData.programme),
-        startYear: String(initialData.startYear ?? ""),
-        endYear: String(initialData.endYear ?? ""),
-        status: toOpt(initialData.status),
+        name: initialData.name ?? initialData.batch ?? "",
+        programme: foundProg ?? toOpt(initialData.programme_name || initialData.programme),
+        start_year: String(initialData.start_year ?? initialData.startYear ?? ""),
+        end_year: String(initialData.end_year ?? initialData.endYear ?? ""),
+        status: toOpt(initialData.status ?? "Draft"),
       });
     } else {
       setForm({
-        batch: "",
         name: "",
         programme: null,
-        startYear: "",
-        endYear: "",
-        status: null,
+        start_year: "",
+        end_year: "",
+        status: { value: "Draft", label: "Draft" },
       });
     }
-  }, [initialData, open]);
+  }, [initialData, open, progOpts]);
 
   const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim()) {
+      Failure("Please enter batch name");
+      return;
+    }
+    if (!form.programme?.value) {
+      Failure("Please select a programme");
+      return;
+    }
+    if (!form.start_year) {
+      Failure("Please enter start year");
+      return;
+    }
+    if (!form.end_year) {
+      Failure("Please enter end year");
+      return;
+    }
+
+    onSubmit({
+      name: form.name.trim(),
+      programme_id: Number(form.programme.value) || 0,
+      start_year: Number(form.start_year) || 0,
+      end_year: Number(form.end_year) || 0,
+      status: form.status?.value || "Draft",
+      is_active: (form.status?.value || "Draft").toLowerCase() === "active",
+    });
+  };
 
   return (
     <ModalShell
@@ -594,65 +808,71 @@ export const CreateBatchModal = ({
       open={open}
       onClose={onClose}
     >
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onClose();
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
           <TextInput
-            title="Batch Year"
-            required
-            placeholder="e.g. 2026 - 2030"
-            value={form.batch}
-            onChange={(e) => set("batch", e.target.value)}
-          />
-          {/* <TextInput
             title="Batch Name"
             required
-            placeholder="e.g. Batch 2025-29"
+            placeholder="e.g. Batch 2024-2028"
             value={form.name}
             onChange={(e) => set("name", e.target.value)}
-          /> */}
+          />
           <CustomSelect
             title="Programme"
             required
-            options={PROG_OPTS}
+            options={progOpts}
             value={form.programme}
             onChange={(v) => set("programme", v)}
             placeholder="Select Programme"
           />
-
-          {/* <TextInput
+          <TextInput
             title="Start Year"
             required
             type="number"
-            placeholder="e.g. 2025"
-            value={form.startYear}
-            onChange={(e) => set("startYear", e.target.value)}
+            placeholder="e.g. 2024"
+            value={form.start_year}
+            onChange={(e) => set("start_year", e.target.value)}
           />
           <TextInput
             title="End Year"
             required
             type="number"
-            placeholder="e.g. 2029"
-            value={form.endYear}
-            onChange={(e) => set("endYear", e.target.value)}
-          /> */}
+            placeholder="e.g. 2028"
+            value={form.end_year}
+            onChange={(e) => set("end_year", e.target.value)}
+          />
         </div>
         <CustomSelect
           title="Status"
-          options={STATUS_OPTS}
+          options={BATCH_STATUS_OPTS}
           value={form.status}
           onChange={(v) => set("status", v)}
-          placeholder="Active"
+          placeholder="Select Status"
           className="mt-4"
         />
-        <ModalFooter
-          onClose={onClose}
-          submitLabel={isEdit ? "Update Batch" : "Create Batch"}
-        />
+        <div className="mt-6 flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={submitting}
+            className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-[#000] hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="bg-color2 flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
+          >
+            {submitting && (
+              <svg className="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+              </svg>
+            )}
+            {submitting ? "Saving…" : isEdit ? "Update Batch" : "Create Batch"}
+          </button>
+        </div>
       </form>
     </ModalShell>
   );

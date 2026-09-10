@@ -4,8 +4,8 @@ export const CLIENT_ID =
 // export const BACKEND_URL = "http://31.97.206.165/api/";
 
 // export const BACKEND_URL = "http://88.222.213.249/api/";
-export const BACKEND_URL = "https://user-service.88.222.213.249.nip.io/api/";
-export const FRONTEND_URL = "https://www.facultypro.in/";
+export const BACKEND_URL = "https://neurobebk.irepute.co.in/org/api/v1/";
+export const FRONTEND_URL = "https://localhost:3000";
 
 export const CALENDAR_CLIENT_ID =
   "130334216230-5ur5a79k0k203lu20eri4crgkic25j9q.apps.googleusercontent.com";
@@ -13,54 +13,60 @@ export const CALENDAR_CLIENT_ID =
 export const CAPTCHA_SITE_KEY = "6LeEe9gsAAAAAKddSPmwNUF4J-v7zaz8CgeKZ7n3";
 
 export const ROLES = {
-  SUPER_ADMIN: "super_admin",
-  INSTITUTION_ADMIN: "institution_admin",
-  HR: "hr",
-  HOD: "hod",
-  APPLICANT: "applicant",
+ SUPER_ADMIN : "Super Admin",
+    ERP_ADMIN : "ERP Admin",
+    COURSE_COORDINATOR : "Course Coordinator",
+    COURSE_INSTRUCTOR : "Course Instructor",
+    STUDENT : "Student"
 };
+
+
 
 export const DROPDOWN_ROLES = [
   {
-    value: ROLES.INSTITUTION_ADMIN,
-    label: "Institution Admin",
+    value: ROLES.COURSE_COORDINATOR,
+    label: "Course Coordinator",
   },
   {
-    value: ROLES.HR,
-    label: "HR",
+    value: ROLES.COURSE_INSTRUCTOR,
+    label: "Instructor",
   },
 ];
 
 export const DROPDOWN_JOB_ROLES = [
   {
-    value: ROLES.INSTITUTION_ADMIN,
-    label: "Institution Admin",
+    value: ROLES.COURSE_COORDINATOR,
+    label: "Course Coordinator",
   },
   {
-    value: ROLES.HR,
-    label: "HR",
+    value: ROLES.COURSE_INSTRUCTOR,
+    label: "Instructor",
   },
   {
-    value: ROLES.HOD,
-    label: "HOD",
+    value: ROLES.STUDENT,
+    label: "Student",
   },
 ];
 
 export const DROPDOWN_INSTITUTION_ADMIN = [
   {
-    value: ROLES.HR,
-    label: "HR",
+    value: ROLES.COURSE_COORDINATOR,
+    label: "Course Coordinator",
   },
   {
-    value: ROLES.HOD,
-    label: "HOD",
+    value: ROLES.COURSE_INSTRUCTOR,  
+    label: "Instructor",
+  },
+  {
+    value: ROLES.STUDENT,
+    label: "Student",
   },
 ];
 
 
 
 export const OwnmenuConfig = {
-  erp: [
+  ERP_ADMIN: [
     {
       type: "heading",
       label: "CORE WORKSPACES",
@@ -131,7 +137,7 @@ export const OwnmenuConfig = {
     },
   ],
 
-  hr: [
+  COURSE_COORDINATOR: [
     {
       type: "link",
       icon: "IconMenuDashboard",
@@ -263,7 +269,7 @@ export const OwnmenuConfig = {
     //   ],
     // },
   ],
-  instructor: [
+  COURSE_INSTRUCTOR: [
     {
       type: "heading",
       label: "INSTRUCTOR FUNCTIONS",
@@ -311,6 +317,76 @@ export const OwnmenuConfig = {
 
 
   ],
+};
+
+// Aliases for role lookup consistency
+OwnmenuConfig["ERP Admin"] = OwnmenuConfig.ERP_ADMIN;
+OwnmenuConfig["Course Coordinator"] = OwnmenuConfig.COURSE_COORDINATOR;
+OwnmenuConfig["Course Instructor"] = OwnmenuConfig.COURSE_INSTRUCTOR;
+OwnmenuConfig["Super Admin"] = OwnmenuConfig.ERP_ADMIN;
+OwnmenuConfig.erp = OwnmenuConfig.ERP_ADMIN;
+OwnmenuConfig.hr = OwnmenuConfig.COURSE_COORDINATOR;
+OwnmenuConfig.instructor = OwnmenuConfig.COURSE_INSTRUCTOR;
+
+/**
+ * Returns the respective menu items based on the user's role
+ */
+export const getMenuByRole = (role) => {
+  if (!role) return OwnmenuConfig.ERP_ADMIN;
+  const normalized = String(role).trim().toUpperCase().replace(/\s+/g, "_");
+
+  if (
+    normalized === "ERP_ADMIN" ||
+    normalized === "SUPER_ADMIN" ||
+    normalized === "ERP" ||
+    normalized === "ADMIN"
+  ) {
+    return OwnmenuConfig.ERP_ADMIN;
+  }
+  if (
+    normalized === "COURSE_COORDINATOR" ||
+    normalized === "COORDINATOR" ||
+    normalized === "HR"
+  ) {
+    return OwnmenuConfig.COURSE_COORDINATOR;
+  }
+  if (
+    normalized === "COURSE_INSTRUCTOR" ||
+    normalized === "INSTRUCTOR" ||
+    normalized === "FACULTY"
+  ) {
+    return OwnmenuConfig.COURSE_INSTRUCTOR;
+  }
+
+  return (
+    OwnmenuConfig[role] ||
+    OwnmenuConfig[normalized] ||
+    OwnmenuConfig.ERP_ADMIN
+  );
+};
+
+/**
+ * Returns the default landing page for each user role
+ */
+export const getDefaultRouteByRole = (role) => {
+  const normalized = String(role || "")
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, "_");
+
+  if (
+    normalized === "COURSE_COORDINATOR" ||
+    normalized === "COORDINATOR"  ) {
+    return "/neurobe/my-assigned-courses";
+  }
+  if (
+    normalized === "COURSE_INSTRUCTOR" ||
+    normalized === "INSTRUCTOR") {
+    return "/neurobe/ins-my-assigned-courses";
+  }
+
+  // Default for ERP Admin and Super Admin
+  return "/neurobe/academic-setup";
 };
 
 export const UNIT_TABS = [

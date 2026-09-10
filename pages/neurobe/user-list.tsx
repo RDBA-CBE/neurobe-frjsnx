@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Upload, Users } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
-import { useSetState } from "@/utils/function.utils";
+import { useSetState, Success, Failure, showDeleteAlert } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
 import IconPlus from "@/components/Icon/IconPlus";
 import {
@@ -14,52 +14,324 @@ import BulkImportModal from "@/components/user-list/BulkImportModal";
 import PrivateRouter from "@/hook/privateRouter";
 import TableComponent from "@/components/common-components/TableComponent";
 import PageHeader from "@/components/common-components/PageHeader";
-
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import TextInput from "@/components/FormFields/TextInput.component";
+import Models from "@/imports/models.import";
+import useDebounce from "@/hook/useDebounce";
 
-const toOpts = (arr: string[]) => arr.map((v) => ({ value: v, label: v }));
+const ROLE_OPTIONS = [
+  { value: "All Roles", label: "All Roles" },
+  { value: "ERP Admin", label: "ERP Admin" },
+  { value: "Course Coordinator", label: "Course Coordinator" },
+  { value: "Course Instructor", label: "Course Instructor" },
+  { value: "Student", label: "Student" },
+];
 
-const ROLE_OPTS   = toOpts(["All Roles", "Course Coordinator", "Course Instructor", "Student", "ERP Admin"]);
-const DEPT_OPTS   = toOpts(["All Departments", "Computer Science & Engineering", "Electronics & Communication", "Artificial Intelligence", "Information Technology"]);
-const PROG_OPTS   = toOpts(["All Programmes", "B.E. Computer Science", "B.Tech ECE", "D.Tech AI", "D.Tech IT"]);
-const BATCH_OPTS  = toOpts(["All Batches", "Faculty / Staff", "2021-2025", "2022-2026", "2023-2027", "2024-2028"]);
-const STATUS_OPTS = toOpts(["All Status", "Active", "Inactive", "Locked"]);
+const STATUS_OPTIONS = [
+  { value: "All Status", label: "All Status" },
+  { value: "Active", label: "Active" },
+  { value: "Inactive", label: "Inactive" },
+];
 
 const UserList = () => {
   const dispatch = useDispatch();
 
   const [state, setState] = useSetState({
-    search:       "",
-    roleFilter:   null as any,
-    deptFilter:   null as any,
-    progFilter:   null as any,
-    batchFilter:  null as any,
+    search: "",
+    roleFilter: null as any,
+    deptFilter: null as any,
+    progFilter: null as any,
+    batchFilter: null as any,
     statusFilter: null as any,
-    loading:      false,
-    showModal:    false,
-    showBulkModal:false,
-    editRow:      null as any,
-    page:         1,
+    loading: false,
+    submitting: false,
+    showModal: false,
+    showBulkModal: false,
+    editRow: null as any,
+    page: 1,
+    userList: null as any[] | null,
+    departmentList: null as any[] | null,
+    programmeList: null as any[] | null,
+    batchList: null as any[] | null,
   });
 
-  const openCreate = ()         => setState({ showModal: true,  editRow: null });
-  const openEdit   = (row: any) => setState({ showModal: true,  editRow: row  });
-  const closeModal = ()         => setState({ showModal: false, editRow: null });
+  const debouncedSearch = useDebounce(state.search, 500);
+
+  const openCreate = () => setState({ showModal: true, editRow: null });
+  const openEdit = (row: any) => setState({ showModal: true, editRow: row });
+  const closeModal = () => setState({ showModal: false, editRow: null });
+
+  const getOrganizationId = (): number => {
+    if (typeof window !== "undefined") {
+      try {
+        const userStr = localStorage.getItem("user");
+        if (userStr) {
+          const user = JSON.parse(userStr);
+          if (user?.organization_id !== undefined && user?.organization_id !== null) {
+            return Number(user.organization_id);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to parse user organization_id", e);
+      }
+    }
+    return 3;
+  };
+
+  // ── Pre-load Master Lists ──────────────────────────────────────────────────
+  const getDepartmentList = async () => {
+    try {
+      const res: any = await Models.department.list({}, 1);
+      const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
+      setState({ departmentList: list });
+    } catch (error) {
+      console.log("department list error", error);
+    }
+  };
+
+  const getProgrammeList = async () => {
+    try {
+      const res: any = await Models.programme.list({}, 1);
+      const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
+      setState({ programmeList: list });
+    } catch (error) {
+      console.log("programme list error", error);
+    }
+  };
+
+  const getBatchList = async () => {
+    try {
+      const res: any = await Models.batch.list({}, 1);
+      const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
+      setState({ batchList: list });
+    } catch (error) {
+      console.log("batch list error", error);
+    }
+  };
+
+  // ── Dynamic Options ────────────────────────────────────────────────────────
+  const departmentOptions = [
+    { value: "All Departments", label: "All Departments" },
+    ...(state.departmentList ?? []).map((d: any) => ({
+      value: d.id,
+      label: d.department_name || d.name || d.department_short_name || `Department ${d.id}`,
+    })),
+  ];
+
+  const programmeOptions = [
+    { value: "All Programmes", label: "All Programmes" },
+    ...(state.programmeList ?? []).map((p: any) => ({
+      value: p.id,
+      label: p.programme_name || p.name || p.short_name || `Programme ${p.id}`,
+    })),
+  ];
+
+  const batchOptions = [
+    { value: "All Batches", label: "All Batches" },
+    ...(state.batchList ?? []).map((b: any) => ({
+      value: b.id,
+      label: b.name || (b.start_year && b.end_year ? `${b.start_year} - ${b.end_year}` : `Batch ${b.id}`),
+    })),
+  ];
+
+  const modalDepartmentOptions = (state.departmentList ?? []).map((d: any) => ({
+    value: d.id,
+    label: d.department_name || d.name || d.department_short_name || `Department ${d.id}`,
+  }));
+
+  const modalProgrammeOptions = (state.programmeList ?? []).map((p: any) => ({
+    value: p.id,
+    label: p.programme_name || p.name || p.short_name || `Programme ${p.id}`,
+  }));
+
+  const modalBatchOptions = (state.batchList ?? []).map((b: any) => ({
+    value: b.id,
+    label: b.name || (b.start_year && b.end_year ? `${b.start_year} - ${b.end_year}` : `Batch ${b.id}`),
+  }));
+
+  // ── Body Params for List API ───────────────────────────────────────────────
+  const bodyData = (searchVal = debouncedSearch) => {
+    let body: any = {};
+    if (searchVal) {
+      body.search = searchVal;
+    }
+    const statusVal = state.statusFilter?.value;
+    if (statusVal && statusVal !== "All Status" && statusVal !== "all_status") {
+      body.status = statusVal;
+    }
+    const roleVal = state.roleFilter?.value;
+    if (roleVal && roleVal !== "All Roles" && roleVal !== "all_roles") {
+      body.role = roleVal;
+    }
+    const deptVal = state.deptFilter?.value;
+    if (deptVal && deptVal !== "All Departments" && deptVal !== "all_depts") {
+      body.department_id = deptVal;
+    }
+    const progVal = state.progFilter?.value;
+    if (progVal && progVal !== "All Programmes" && progVal !== "all_progs") {
+      body.programme_id = progVal;
+    }
+    const batchVal = state.batchFilter?.value;
+    if (batchVal && batchVal !== "All Batches" && batchVal !== "all_batches") {
+      body.batch_id = batchVal;
+    }
+    return body;
+  };
+
+  const getUserList = async () => {
+    try {
+      setState({ loading: true });
+      const body = bodyData();
+      const res: any = await Models.users.list(body, 1);
+      const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
+      setState({ userList: list, loading: false });
+    } catch (error) {
+      console.log("user list error", error);
+      setState({ loading: false });
+    }
+  };
 
   useEffect(() => {
     dispatch(setPageTitle("User List"));
+    getDepartmentList();
+    getProgrammeList();
+    getBatchList();
   }, []);
 
-  // ── filter ─────────────────────────────────────────────────────────────────
-  const records = MOCK_USERS.filter((r) => {
+  useEffect(() => {
+    getUserList();
+  }, [
+    debouncedSearch,
+    state.statusFilter?.value,
+    state.roleFilter?.value,
+    state.deptFilter?.value,
+    state.progFilter?.value,
+    state.batchFilter?.value,
+  ]);
+
+  // ── Save User (Create / Update) ───────────────────────────────────────────
+  const handleSaveUser = async (formData: any) => {
+    try {
+      setState({ submitting: true });
+
+      const isStudent = formData.role === "Student";
+      const isActive = formData.is_active !== undefined ? formData.is_active : true;
+
+      const payload: any = {
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        email: formData.email,
+        role: formData.role,
+        is_active: isActive,
+        is_staff: formData.is_staff !== undefined ? formData.is_staff : !isStudent,
+        organization_id: getOrganizationId(),
+        department_id:
+          formData.department_id && Number(formData.department_id) > 0
+            ? Number(formData.department_id)
+            : null,
+        programme_id:
+          formData.programme_id && Number(formData.programme_id) > 0
+            ? Number(formData.programme_id)
+            : null,
+        batch_id:
+          formData.batch_id && Number(formData.batch_id) > 0
+            ? Number(formData.batch_id)
+            : null,
+      };
+
+      if (formData.password) {
+        payload.password = formData.password;
+      } else if (!state.editRow?.id) {
+        payload.password = "erp@123";
+      }
+
+      if (state.editRow?.id) {
+        await Models.users.update(state.editRow.id, payload);
+        Success("User updated successfully");
+      } else {
+        await Models.users.create(payload);
+        Success("User created successfully");
+      }
+
+      closeModal();
+      getUserList();
+    } catch (error: any) {
+      Failure(typeof error === "string" ? error : error?.message || "Failed to save user");
+    } finally {
+      setState({ submitting: false });
+    }
+  };
+
+  // ── Delete User ────────────────────────────────────────────────────────────
+  const handleDeleteUser = (row: any) => {
+    showDeleteAlert(
+      async () => {
+        try {
+          setState({ loading: true });
+          await Models.users.delete(row.id);
+          Success("User deleted successfully");
+          getUserList();
+        } catch (error: any) {
+          Failure(typeof error === "string" ? error : error?.message || "Failed to delete user");
+          setState({ loading: false });
+        }
+      },
+      () => {},
+      `Delete ${row.first_name ? `${row.first_name} ${row.last_name || ""}`.trim() : row.name || "User"}?`
+    );
+  };
+
+  // ── Filter Records ─────────────────────────────────────────────────────────
+  const userList = state.userList !== null ? state.userList : MOCK_USERS;
+  const records = userList.filter((r: any) => {
     const s = state.search.toLowerCase();
-    const matchSearch  = !s || r.name.toLowerCase().includes(s) || r.email.toLowerCase().includes(s) || r.regNo.toLowerCase().includes(s);
-    const matchRole    = !state.roleFilter   || state.roleFilter.value   === "All Roles"        || r.role       === state.roleFilter.label;
-    const matchDept    = !state.deptFilter   || state.deptFilter.value   === "All Departments"  || r.department.startsWith(state.deptFilter.label.slice(0, 10));
-    const matchProg    = !state.progFilter   || state.progFilter.value   === "All Programmes"   || r.programme.startsWith(state.progFilter.label.slice(0, 10));
-    const matchBatch   = !state.batchFilter  || state.batchFilter.value  === "All Batches"      || r.batch      === state.batchFilter.label;
-    const matchStatus  = !state.statusFilter || state.statusFilter.value === "All Status"       || r.status     === state.statusFilter.label;
+    const fullName = (r.first_name ? `${r.first_name} ${r.last_name || ""}` : r.name || "").toLowerCase();
+    const email = (r.email || "").toLowerCase();
+    const regNo = (r.regNo || r.registry_number || (r.id ? `USR-${String(r.id).padStart(4, "0")}` : "")).toLowerCase();
+    const matchSearch = !s || fullName.includes(s) || email.includes(s) || regNo.includes(s);
+
+    const rRole = (r.role === "ERP_ADMIN" ? "ERP Admin" : r.role || "").toLowerCase();
+    const matchRole =
+      !state.roleFilter ||
+      state.roleFilter.value === "All Roles" ||
+      rRole === String(state.roleFilter.value).toLowerCase();
+
+    const deptFilterVal = state.deptFilter?.value;
+    const matchDept =
+      !state.deptFilter ||
+      deptFilterVal === "All Departments" ||
+      (typeof deptFilterVal === "number" && (r.department_id === deptFilterVal || r.department?.id === deptFilterVal)) ||
+      String(r.department?.department_name || r.department_name || r.department || "")
+        .toLowerCase()
+        .includes(String(state.deptFilter.label || deptFilterVal).toLowerCase());
+
+    const progFilterVal = state.progFilter?.value;
+    const matchProg =
+      !state.progFilter ||
+      progFilterVal === "All Programmes" ||
+      (typeof progFilterVal === "number" && (r.programme_id === progFilterVal || r.programme?.id === progFilterVal)) ||
+      String(r.programme?.programme_name || r.programme_name || r.programme || "")
+        .toLowerCase()
+        .includes(String(state.progFilter.label || progFilterVal).toLowerCase());
+
+    const batchFilterVal = state.batchFilter?.value;
+    const matchBatch =
+      !state.batchFilter ||
+      batchFilterVal === "All Batches" ||
+      (typeof batchFilterVal === "number" && (r.batch_id === batchFilterVal || r.batch?.id === batchFilterVal)) ||
+      String(r.batch?.name || r.batch_name || r.batch || "")
+        .toLowerCase()
+        .includes(String(state.batchFilter.label || batchFilterVal).toLowerCase()) ||
+      (r.is_staff && String(batchFilterVal).toLowerCase().includes("staff"));
+
+    const statusFilterVal = state.statusFilter?.value;
+    const rStatus = (r.status || (r.is_active ? "Active" : "Inactive")).toLowerCase();
+    const matchStatus =
+      !state.statusFilter ||
+      statusFilterVal === "All Status" ||
+      statusFilterVal === "all_status" ||
+      rStatus === String(statusFilterVal).toLowerCase();
+
     return matchSearch && matchRole && matchDept && matchProg && matchBatch && matchStatus;
   });
 
@@ -69,7 +341,7 @@ const UserList = () => {
       <PageHeader
         title="User List"
         subtitle={`Institution: <span class="font-bold text-[#000]">Karpagam Institutions, Coimbatore</span>
-            &nbsp;·&nbsp; Admin: <span class="font-bold text-[#000]">Meena Subramanian`}
+            &nbsp;·&nbsp; Admin: <span class="font-bold text-[#000]">ERP Admin</span>`}
         icon={<Users className="h-5 w-5 text-color2" />}
         actionBtn1={{
           label: "Add User",
@@ -81,44 +353,67 @@ const UserList = () => {
           icon: <Upload className="h-4 w-4" />,
           onClick: () => setState({ showBulkModal: true }),
         }}
-        records={`${MOCK_USERS.length} Records`}
+        records={`${records.length} Records`}
       />
-      
 
       {/* ── Filters ────────────────────────────────────────────────────────── */}
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <div className="relative min-w-[220px] flex-1">
-           <TextInput
+          <TextInput
             placeholder="Search by name, email, register number..."
-              type="text"
-              value={state.search}
-              onChange={(e) => setState({ search: e.target.value })}
-              icon={<IconSearch className="h-4 w-4" />}
-            />
-        
+            type="text"
+            value={state.search}
+            onChange={(e) => setState({ search: e.target.value })}
+            icon={<IconSearch className="h-4 w-4" />}
+          />
         </div>
-        <CustomSelect options={ROLE_OPTS}   value={state.roleFilter}   onChange={(v) => setState({ roleFilter:   v })} placeholder="All Roles"        className="filter-input" isClearable />
-        <CustomSelect options={DEPT_OPTS}   value={state.deptFilter}   onChange={(v) => setState({ deptFilter:   v })} placeholder="All Departments"  className="filter-input" isClearable />
-        <CustomSelect options={PROG_OPTS}   value={state.progFilter}   onChange={(v) => setState({ progFilter:   v })} placeholder="All Programmes"   className="filter-input" isClearable />
-        <CustomSelect options={BATCH_OPTS}  value={state.batchFilter}  onChange={(v) => setState({ batchFilter:  v })} placeholder="All Batches"      className="filter-input" isClearable />
-        <CustomSelect options={STATUS_OPTS} value={state.statusFilter} onChange={(v) => setState({ statusFilter: v })} placeholder="All Status"        className="filter-input" isClearable />
+        <CustomSelect
+          options={ROLE_OPTIONS}
+          value={state.roleFilter}
+          onChange={(v) => setState({ roleFilter: v })}
+          placeholder="All Roles"
+          className="filter-input"
+          isClearable
+        />
+        <CustomSelect
+          options={departmentOptions}
+          value={state.deptFilter}
+          onChange={(v) => setState({ deptFilter: v })}
+          placeholder="All Departments"
+          className="filter-input"
+          isClearable
+        />
+        <CustomSelect
+          options={programmeOptions}
+          value={state.progFilter}
+          onChange={(v) => setState({ progFilter: v })}
+          placeholder="All Programmes"
+          className="filter-input"
+          isClearable
+        />
+        <CustomSelect
+          options={batchOptions}
+          value={state.batchFilter}
+          onChange={(v) => setState({ batchFilter: v })}
+          placeholder="All Batches"
+          className="filter-input"
+          isClearable
+        />
+        <CustomSelect
+          options={STATUS_OPTIONS}
+          value={state.statusFilter}
+          onChange={(v) => setState({ statusFilter: v })}
+          placeholder="All Status"
+          className="filter-input"
+          isClearable
+        />
       </div>
 
-      {/* ── User Directory label ────────────────────────────────────────────── */}
-      {/* <div className="mb-2 flex items-center gap-2 px-1">
-        <p className="text-sm font-semibold text-[#000] dark:text-white">
-          User Directory
-        </p>
-        <span className="text-xs text-[#000]">
-          Shown {records.length} of {MOCK_USERS.length}
-        </span>
-      </div> */}
-
-      {/* ── Table — columns passed as prop, defined in userListColumns.tsx ─── */}
+      {/* ── Table ──────────────────────────────────────────────────────────── */}
       <div className="panel">
         <TableComponent
           records={records}
-          columns={makeUserListColumns(openEdit)}
+          columns={makeUserListColumns(openEdit, handleDeleteUser)}
           loading={state.loading}
           noRecordsText="No users found"
         />
@@ -126,7 +421,7 @@ const UserList = () => {
 
       {/* ── Footer count ───────────────────────────────────────────────────── */}
       <p className="mt-3 text-xs text-[#000]">
-        Showing 1–{records.length} of {MOCK_USERS.length} users
+        Showing 1–{records.length} of {records.length} users
       </p>
 
       {/* ── Add User Modal ─────────────────────────────────────────────────── */}
@@ -134,6 +429,11 @@ const UserList = () => {
         open={state.showModal}
         onClose={closeModal}
         initialData={state.editRow}
+        onSubmit={handleSaveUser}
+        submitting={state.submitting}
+        departmentOptions={modalDepartmentOptions}
+        programmeOptions={modalProgrammeOptions}
+        batchOptions={modalBatchOptions}
       />
       <BulkImportModal
         open={state.showBulkModal}

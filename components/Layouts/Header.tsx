@@ -37,7 +37,7 @@ import IconMenuDatatables from "@/components/Icon/Menu/IconMenuDatatables";
 import IconMenuForms from "@/components/Icon/Menu/IconMenuForms";
 import IconMenuPages from "@/components/Icon/Menu/IconMenuPages";
 import IconMenuMore from "@/components/Icon/Menu/IconMenuMore";
-import { capitalizeFLetter, useSetState } from "@/utils/function.utils";
+import { Success, capitalizeFLetter, useSetState } from "@/utils/function.utils";
 import { userData } from "@/store/userConfigSlice";
 import Models from "@/imports/models.import";
 import IconCaretsDown from "../Icon/IconCaretsDown";
@@ -63,6 +63,8 @@ const Header = () => {
   const users = useSelector((state: any) => state.userData);
 
   const [flag, setFlag] = useState("");
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const [state, setState] = useSetState({
     userInfo: {},
@@ -126,19 +128,26 @@ const Header = () => {
 
   const getUserRole = async () => {
     try {
-      const userString = localStorage.getItem("userId");
+      const userString = localStorage.getItem("user");
+      const role = localStorage.getItem("role") || localStorage.getItem("group") || "";
+      let u: any = null;
       if (userString) {
-        const res: any = {};
-        console.log("getUserRole --->", res);
-        setState({
-          name:
-            res?.first_name && res?.last_name
-              ? `${capitalizeFLetter(res?.first_name)} ${res?.last_name}`
-              : capitalizeFLetter(res?.username),
-          user_type: capitalizeFLetter(res?.role_display),
-          email: res?.email,
-        });
+        try {
+          u = JSON.parse(userString);
+        } catch (e) {
+          u = null;
+        }
       }
+
+      const fullName = u
+        ? `${u.first_name || ""} ${u.last_name || ""}`.trim() || u.email
+        : "User";
+
+      setState({
+        name: fullName || "User",
+        user_type: u?.role || role || "ERP Admin",
+        email: u?.email || "",
+      });
     } catch (error) {
       console.log("error: ", error);
     }
@@ -146,18 +155,9 @@ const Header = () => {
 
   const getUserData = async () => {
     try {
-      const userString = localStorage.getItem("userId");
-      // const res = await Models.user.details(userString);
-      // console.log("✌️res --->", res);
-
-      //   dispatch(userData(res));
-
       const token = localStorage.getItem("token");
-
-      console.log("token", token);
-
-      //   const user = userString ? JSON.parse(userString) : null;
       setState({ token: token });
+      getUserRole();
     } catch (error) {
       console.log("error: ", error);
     }
@@ -165,20 +165,30 @@ const Header = () => {
 
   const onLogOut = async () => {
     try {
+      setLoggingOut(true);
       const reFreshToken = localStorage.getItem("refresh");
-      const body = {
-        refresh: reFreshToken,
-      };
-      // const res: any = await Models.auth.logout(body).then(() => {
-      //   localStorage.clear();
-      //   sessionStorage.clear();
-      //   router.replace("/auth/signin");
-      // });
+      if (reFreshToken) {
+        try {
+          await Models.auth.logout({ refresh: reFreshToken });
+        } catch (apiErr) {
+          console.warn("Logout API warning:", apiErr);
+        }
+      }
     } catch (error) {
-      localStorage.clear();
+      console.error("Logout error: ", error);
+    } finally {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("role");
+      localStorage.removeItem("group");
+      localStorage.removeItem("user");
       sessionStorage.clear();
+      dispatch(userData(null));
+      Success("Logged out successfully");
+      setShowLogoutModal(false);
+      setLoggingOut(false);
       router.replace("/auth/signin");
-      console.log("error: ", error);
     }
   };
 
@@ -323,24 +333,22 @@ const Header = () => {
             </button>
 
             {/* user info + avatar */}
-            <div className="flex items-center gap-3  border-l px-5">
+            <div className="flex items-center gap-3 border-l px-5">
               <div className="tour-profile bg-color1 text-lg flex h-12 w-12 items-center justify-center rounded-full font-bold text-white shadow-lg">
-                {/* {state.name?.charAt(0)?.toUpperCase()}  */}
-                K
-                
+                {(state.name || "U").trim().charAt(0).toUpperCase()}
               </div>
-              <div className=" text-left sm:block">
-                <p className="text-md font-bold text-[#000]">Karpagam Admin</p>
-                <p className="text-xs text-color2">ERP admin</p>
+              <div className="text-left sm:block">
+                <p className="text-md font-bold text-[#000] dark:text-white">{state.name || "User"}</p>
+                <p className="text-xs text-color2 capitalize">{state.user_type || "ERP Admin"}</p>
               </div>
-              
             </div>
 
             {/* logout */}
             <button
               type="button"
-              onClick={() => (state.token ? onLogOut() : checkValidToken())}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#000] text-[#fff]] "
+              onClick={() => setShowLogoutModal(true)}
+              title="Sign Out"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#000] text-[#fff] transition hover:bg-red-600 hover:scale-105"
             >
               <IconLogout className="h-4.5 w-4.5 rotate-90 text-[#fff] ms-1" />
             </button>
@@ -890,6 +898,70 @@ const Header = () => {
           </li>
         </ul>
       </div>
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-gray-100 bg-white p-7 text-center shadow-2xl dark:border-gray-800 dark:bg-[#0e1726]">
+            {/* Red Warning/Logout Icon */}
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-red-500 dark:bg-red-950/40 dark:text-red-400">
+              <IconLogout className="h-7 w-7 rotate-90" />
+            </div>
+
+            <h2 className="text-xl font-extrabold text-color1 dark:text-white">
+              Confirm Sign Out
+            </h2>
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+              Are you sure you want to sign out of your session? Any unsaved changes in your workspace may be lost.
+            </p>
+
+            <div className="mt-6 flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setShowLogoutModal(false)}
+                disabled={loggingOut}
+                className="w-1/2 rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 disabled:opacity-50"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                onClick={onLogOut}
+                disabled={loggingOut}
+                className="flex w-1/2 items-center justify-center gap-2 rounded-xl bg-red-600 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-red-700 disabled:opacity-60"
+              >
+                {loggingOut ? (
+                  <>
+                    <svg
+                      className="h-4 w-4 animate-spin text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8z"
+                      />
+                    </svg>
+                    Signing out...
+                  </>
+                ) : (
+                  "Sign Out"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Settings, Home } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
-import { useSetState } from "@/utils/function.utils";
+import { useSetState, Success, Failure, showDeleteAlert } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
 import IconPlus from "@/components/Icon/IconPlus";
 import PageBanner from "@/components/common-components/PageBanner";
@@ -30,22 +30,24 @@ import PrivateRouter from "@/hook/privateRouter";
 import TableComponent from "@/components/common-components/TableComponent";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import TextInput from "@/components/FormFields/TextInput.component";
+import Models from "@/imports/models.import";
+import useDebounce from "@/hook/useDebounce";
 
 const TABS = [
   {
     key: "departments",
     label: "Departments",
     subLabel: "Academic Divisions",
-    count: 5,
+    count: 0,
   },
   {
     key: "programmes",
     label: "Programmes",
     subLabel: "Degrees & Majors",
-    count: 4,
+    count: 0,
   },
-  { key: "batches", label: "Batches", subLabel: "Academic Batches", count: 6 },
-  { key: "courses", label: "Courses", subLabel: "Course Catalog", count: 6 },
+  { key: "batches", label: "Batches", subLabel: "Academic Batches", count: 0 },
+  { key: "courses", label: "Courses", subLabel: "Course Catalog", count: 0 },
   {
     key: "psos",
     label: "PSOs",
@@ -57,7 +59,7 @@ const TABS = [
 const STATUS_OPTIONS = [
   { value: "all_status", label: "All Statuses" },
   { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" },
+  { value: "Inactive", label: "Inactive" },
 ];
 
 const ADD_LABELS: Record<string, string> = {
@@ -72,18 +74,42 @@ const AcademicSetup = () => {
   const dispatch = useDispatch();
 
   const [state, setState] = useSetState({
-    activeTab: "courses",
+    activeTab: "departments",
     search: "",
-    statusFilter: "All Statuses",
+    statusFilter: { value: "all_status", label: "All Statuses" },
     deptFilter: "All Departments",
     loading: false,
+    submitting: false,
     showModal: false,
     editRow: null as any,
+    departmentList: null as any[] | null,
+    programmeList: null as any[] | null,
+    batchList: null as any[] | null,
+    courseList: null as any[] | null,
+    statCount: null as any,
   });
+
+  const debouncedSearch = useDebounce(state.search, 500);
 
   useEffect(() => {
     dispatch(setPageTitle("Academic Setup"));
+    // Pre-load departments, programmes, and stats so dashboard cards and dropdowns are populated immediately
+    statCount();
+    getDepartmentList();
+    getProgrammeList();
   }, []);
+
+  useEffect(() => {
+    if (state.activeTab === "departments") {
+      getDepartmentList();
+    } else if (state.activeTab === "programmes") {
+      getProgrammeList();
+    } else if (state.activeTab === "batches") {
+      getBatchList();
+    } else if (state.activeTab === "courses") {
+      getCourseList();
+    }
+  }, [debouncedSearch, state.statusFilter?.value, state.activeTab]);
 
   // ── filter helpers ─────────────────────────────────────────────────────────
   const bySearch = (row: any, keys: string[]) => {
@@ -97,16 +123,369 @@ const AcademicSetup = () => {
       )
     );
   };
-  const byStatus = (row: any) =>
-    state.statusFilter === "All Statuses" || row.status === state.statusFilter;
-  const byDept = (row: any) =>
-    state.deptFilter === "All Departments" ||
-    row.department === state.deptFilter;
+  const byStatus = (row: any) => {
+    const filterVal = state.statusFilter?.value;
+    if (!filterVal || filterVal === "all_status") return true;
+    return String(row.status ?? "").toLowerCase() === filterVal.toLowerCase();
+  };
+  const byDept = (row: any) => {
+    if (state.deptFilter === "All Departments") return true;
+    const deptName = row.department_name || row.department?.department_name || row.department;
+    return deptName === state.deptFilter;
+  };
 
   // ── modal helpers ──────────────────────────────────────────────────────────
   const openCreate = () => setState({ showModal: true, editRow: null });
   const openEdit = (row: any) => setState({ showModal: true, editRow: row });
   const closeModal = () => setState({ showModal: false, editRow: null });
+
+  // ── Select Options derived from Live Lists ─────────────────────────────────
+  const departmentOptions = (state.departmentList ?? []).map((d: any) => ({
+    value: d.id,
+    label: d.department_name || d.name || d.department_short_name || d.code || `Department ${d.id}`,
+  }));
+
+  const programmeOptions = (state.programmeList ?? []).map((p: any) => ({
+    value: p.id,
+    label: p.programme_name || p.name || p.short_name || p.code || `Programme ${p.id}`,
+  }));
+
+  // ── API Integration ────────────────────────────────────────────────────────
+  const getOrganizationId = (): number => {
+    if (typeof window !== "undefined") {
+      try {
+        const userStr = localStorage.getItem("user");
+        if (userStr) {
+          const user = JSON.parse(userStr);
+          if (user?.organization_id !== undefined && user?.organization_id !== null) {
+            return Number(user.organization_id);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to parse user organization_id", e);
+      }
+    }
+    return 0;
+  };
+
+  const bodyData = (searchVal = debouncedSearch) => {
+    let body: any = {};
+    if (searchVal) {
+      body.search = searchVal;
+    }
+    const statusVal = state.statusFilter?.value;
+    if (statusVal && statusVal !== "all_status") {
+      body.status = statusVal;
+    }
+    return body;
+  };
+
+  // ── GET Lists ──────────────────────────────────────────────────────────────
+
+  const statCount = async () =>{
+    try {
+      const res = await Models.stats.academic_setup()
+      setState({
+        statCount : res
+      })
+      
+    } catch (error) {
+      console.log("stat count error", error);
+      
+    }
+  }
+
+
+  const getDepartmentList = async (searchVal?: string) => {
+    try {
+      if (state.activeTab === "departments") setState({ loading: true });
+      const body = bodyData(searchVal !== undefined ? searchVal : debouncedSearch);
+      const res: any = await Models.department.list(body, 1);
+      const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
+      setState({
+        departmentList: list,
+        loading: false,
+      });
+    } catch (error) {
+      console.log("department error", error);
+      setState({ loading: false });
+    }
+  };
+
+  const getProgrammeList = async (searchVal?: string) => {
+    try {
+      if (state.activeTab === "programmes") setState({ loading: true });
+      const body = bodyData(searchVal !== undefined ? searchVal : debouncedSearch);
+      const res: any = await Models.programme.list(body, 1);
+      const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
+      setState({
+        programmeList: list,
+        loading: false,
+      });
+    } catch (error) {
+      console.log("programme error", error);
+      setState({ loading: false });
+    }
+  };
+
+  const getBatchList = async (searchVal?: string) => {
+    try {
+      setState({ loading: true });
+      const body = bodyData(searchVal !== undefined ? searchVal : debouncedSearch);
+      const res: any = await Models.batch.list(body, 1);
+      const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
+      setState({
+        batchList: list,
+        loading: false,
+      });
+    } catch (error) {
+      console.log("batch error", error);
+      setState({ loading: false });
+    }
+  };
+
+  const getCourseList = async (searchVal?: string) => {
+    try {
+      setState({ loading: true });
+      const body = bodyData(searchVal !== undefined ? searchVal : debouncedSearch);
+      const res: any = await Models.course.list(body, 1);
+      const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
+      setState({
+        courseList: list,
+        loading: false,
+      });
+    } catch (error) {
+      console.log("course error", error);
+      setState({ loading: false });
+    }
+  };
+
+  // ── SAVE Handlers (Create / Update) ────────────────────────────────────────
+  const handleSaveDepartment = async (formData: {
+    department_name: string;
+    department_short_name: string;
+    status: string;
+  }) => {
+    try {
+      setState({ submitting: true });
+
+      const body = {
+        organization_id: getOrganizationId(),
+        department_name: formData.department_name,
+        department_short_name: formData.department_short_name,
+        is_approved: true,
+        status: formData.status || "active",
+      };
+
+      if (state.editRow?.id) {
+        await Models.department.update(state.editRow.id, body);
+        Success("Department updated successfully");
+      } else {
+        await Models.department.create(body);
+        Success("Department created successfully");
+      }
+
+      closeModal();
+      getDepartmentList();
+      statCount();
+    } catch (error: any) {
+      Failure(typeof error === "string" ? error : error?.message || "Failed to save department");
+    } finally {
+      setState({ submitting: false });
+    }
+  };
+
+  const handleSaveProgramme = async (formData: {
+    department_id: number;
+    programme_name: string;
+    short_name: string;
+    degree_level: string;
+    status: string;
+  }) => {
+    try {
+      setState({ submitting: true });
+
+      const body = {
+        organization_id: getOrganizationId(),
+        department_id: formData.department_id,
+        programme_name: formData.programme_name,
+        short_name: formData.short_name,
+        degree_level: formData.degree_level,
+        status: formData.status || "Active",
+      };
+
+      if (state.editRow?.id) {
+        await Models.programme.update(state.editRow.id, body);
+        Success("Programme updated successfully");
+      } else {
+        await Models.programme.create(body);
+        Success("Programme created successfully");
+      }
+
+      closeModal();
+      getProgrammeList();
+      statCount();
+    } catch (error: any) {
+      Failure(typeof error === "string" ? error : error?.message || "Failed to save programme");
+    } finally {
+      setState({ submitting: false });
+    }
+  };
+
+  const handleSaveBatch = async (formData: {
+    name: string;
+    programme_id: number;
+    start_year: number;
+    end_year: number;
+    status: string;
+    is_active: boolean;
+  }) => {
+    try {
+      setState({ submitting: true });
+
+      const body = {
+        name: formData.name,
+        organization_id: getOrganizationId(),
+        programme_id: formData.programme_id,
+        start_year: formData.start_year,
+        end_year: formData.end_year,
+        status: formData.status || "Draft",
+        is_active: formData.is_active !== undefined ? formData.is_active : true,
+      };
+
+      if (state.editRow?.id) {
+        await Models.batch.update(state.editRow.id, body);
+        Success("Batch updated successfully");
+      } else {
+        await Models.batch.create(body);
+        Success("Batch created successfully");
+      }
+
+      closeModal();
+      getBatchList();
+      statCount();
+    } catch (error: any) {
+      Failure(typeof error === "string" ? error : error?.message || "Failed to save batch");
+    } finally {
+      setState({ submitting: false });
+    }
+  };
+
+  const handleSaveCourse = async (formData: any) => {
+    try {
+      setState({ submitting: true });
+
+      const body = {
+        organization_id: getOrganizationId(),
+        department_id: formData.department_id,
+        course_code: formData.course_code,
+        course_title: formData.course_title,
+        status: formData.status || "Active",
+        lecture_hours: formData.lecture_hours ?? 0,
+        tutorial_hours: formData.tutorial_hours ?? 0,
+        practical_hours: formData.practical_hours ?? 0,
+        credits: formData.credits ?? 0,
+        total_theory_hours: formData.total_theory_hours ?? 0,
+        total_lab_hours: formData.total_lab_hours ?? 0,
+        syllabus_file: formData.syllabus_file || "",
+        regulation: formData.regulation || "R2023",
+        is_active: formData.is_active !== undefined ? formData.is_active : true,
+      };
+
+      if (state.editRow?.id) {
+        await Models.course.update(state.editRow.id, body);
+        Success("Course updated successfully");
+      } else {
+        await Models.course.create(body);
+        Success("Course created successfully");
+      }
+
+      closeModal();
+      getCourseList();
+      statCount();
+    } catch (error: any) {
+      Failure(typeof error === "string" ? error : error?.message || "Failed to save course");
+    } finally {
+      setState({ submitting: false });
+    }
+  };
+
+  // ── DELETE Handlers ────────────────────────────────────────────────────────
+  const handleDeleteDepartment = (row: any) => {
+    showDeleteAlert(
+      async () => {
+        try {
+          setState({ loading: true });
+          await Models.department.delete(row.id);
+          Success("Department deleted successfully");
+          getDepartmentList();
+          statCount();
+        } catch (error: any) {
+          Failure(typeof error === "string" ? error : error?.message || "Failed to delete department");
+          setState({ loading: false });
+        }
+      },
+      () => {},
+      `Delete ${row.department_name || row.name || "Department"}?`
+    );
+  };
+
+  const handleDeleteProgramme = (row: any) => {
+    showDeleteAlert(
+      async () => {
+        try {
+          setState({ loading: true });
+          await Models.programme.delete(row.id);
+          Success("Programme deleted successfully");
+          getProgrammeList();
+          statCount();
+        } catch (error: any) {
+          Failure(typeof error === "string" ? error : error?.message || "Failed to delete programme");
+          setState({ loading: false });
+        }
+      },
+      () => {},
+      `Delete ${row.programme_name || row.name || "Programme"}?`
+    );
+  };
+
+  const handleDeleteBatch = (row: any) => {
+    showDeleteAlert(
+      async () => {
+        try {
+          setState({ loading: true });
+          await Models.batch.delete(row.id);
+          Success("Batch deleted successfully");
+          getBatchList();
+          statCount();
+        } catch (error: any) {
+          Failure(typeof error === "string" ? error : error?.message || "Failed to delete batch");
+          setState({ loading: false });
+        }
+      },
+      () => {},
+      `Delete ${row.name || row.batch || "Batch"}?`
+    );
+  };
+
+  const handleDeleteCourse = (row: any) => {
+    showDeleteAlert(
+      async () => {
+        try {
+          setState({ loading: true });
+          await Models.course.delete(row.id);
+          Success("Course deleted successfully");
+          getCourseList();
+          statCount();
+        } catch (error: any) {
+          Failure(typeof error === "string" ? error : error?.message || "Failed to delete course");
+          setState({ loading: false });
+        }
+      },
+      () => {},
+      `Delete ${row.course_title || row.title || row.course_code || "Course"}?`
+    );
+  };
 
   // ── per-tab config ─────────────────────────────────────────────────────────
   const TAB_CONFIG: Record<
@@ -114,36 +493,67 @@ const AcademicSetup = () => {
     { records: any[]; columns: any[]; noRecordsText: string }
   > = {
     departments: {
-      records: MOCK_DEPARTMENTS.filter(
-        (r) => bySearch(r, ["code", "name"]) && byStatus(r)
+      records: (state.departmentList ?? []).filter(
+        (r: any) =>
+          bySearch(r, [
+            "code",
+            "name",
+            "department_name",
+            "department_short_name",
+          ]) && byStatus(r)
       ),
-      columns: makeDepartmentColumns(openEdit, () => {}),
+      columns: makeDepartmentColumns(openEdit, handleDeleteDepartment),
       noRecordsText: "No departments found",
     },
     programmes: {
-      records: MOCK_PROGRAMMES.filter(
-        (r) => bySearch(r, ["code", "name"]) && byStatus(r)
+      records: (state.programmeList ?? []).filter(
+        (r: any) =>
+          bySearch(r, [
+            "code",
+            "name",
+            "short_name",
+            "programme_name",
+            "department",
+            "department_name",
+          ]) && byStatus(r)
       ),
-      columns: makeProgrammeColumns(openEdit, () => {}),
+      columns: makeProgrammeColumns(openEdit, handleDeleteProgramme),
       noRecordsText: "No programmes found",
     },
     batches: {
-      records: MOCK_BATCHES.filter(
-        (r) => bySearch(r, ["code", "name"]) && byStatus(r)
+      records: (state.batchList ?? []).filter(
+        (r: any) =>
+          bySearch(r, [
+            "code",
+            "name",
+            "batch",
+            "programme",
+            "programme_name",
+          ]) && byStatus(r)
       ),
-      columns: makeBatchColumns(openEdit, () => {}),
+      columns: makeBatchColumns(openEdit, handleDeleteBatch),
       noRecordsText: "No batches found",
     },
     courses: {
-      records: MOCK_COURSES.filter(
-        (r) => bySearch(r, ["code", "title"]) && byStatus(r) && byDept(r)
+      records: (state.courseList ?? []).filter(
+        (r: any) =>
+          bySearch(r, [
+            "code",
+            "title",
+            "course_code",
+            "course_title",
+            "department",
+            "department_name",
+          ]) &&
+          byStatus(r) &&
+          byDept(r)
       ),
-      columns: makeCourseColumns(openEdit, () => {}),
+      columns: makeCourseColumns(openEdit, handleDeleteCourse),
       noRecordsText: "No courses found",
     },
     psos: {
       records: MOCK_PSOS.filter(
-        (r) => bySearch(r, ["code", "programme", "description"]) && byStatus(r)
+        (r: any) => bySearch(r, ["code", "programme", "description"]) && byStatus(r)
       ),
       columns: makePSOColumns(openEdit, () => {}),
       noRecordsText: "No PSOs found",
@@ -178,21 +588,32 @@ const AcademicSetup = () => {
         open={state.showModal && state.activeTab === "courses"}
         onClose={closeModal}
         initialData={state.editRow}
+        onSubmit={handleSaveCourse}
+        submitting={state.submitting}
+        departmentOptions={departmentOptions}
       />
       <CreateDepartmentModal
         open={state.showModal && state.activeTab === "departments"}
         onClose={closeModal}
         initialData={state.editRow}
+        onSubmit={handleSaveDepartment}
+        submitting={state.submitting}
       />
       <CreateProgrammeModal
         open={state.showModal && state.activeTab === "programmes"}
         onClose={closeModal}
         initialData={state.editRow}
+        onSubmit={handleSaveProgramme}
+        submitting={state.submitting}
+        departmentOptions={departmentOptions}
       />
       <CreateBatchModal
         open={state.showModal && state.activeTab === "batches"}
         onClose={closeModal}
         initialData={state.editRow}
+        onSubmit={handleSaveBatch}
+        submitting={state.submitting}
+        programmeOptions={programmeOptions}
       />
       <CreatePSOModal
         open={state.showModal && state.activeTab === "psos"}
@@ -202,47 +623,71 @@ const AcademicSetup = () => {
 
       {/* Stat Tab Cards */}
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5">
-        {TABS.map((tab) => (
-          <StatTabCard
-            key={tab.key}
-            icon={<Home className="h-5 w-5" />}
-            label={tab.label}
-            subLabel={tab.subLabel}
-            count={tab.count}
-            active={state.activeTab === tab.key}
-            onClick={() =>
-              setState({
-                activeTab: tab.key,
-                search: "",
-                statusFilter: "All Statuses",
-                deptFilter: "All Departments",
-              })
+        {TABS.map((tab) => {
+          let count = tab.count;
+          if (state.statCount) {
+            if (tab.key === "departments" && state.statCount.departments_count !== undefined) {
+              count = state.statCount.departments_count;
+            } else if (tab.key === "programmes" && state.statCount.programmes_count !== undefined) {
+              count = state.statCount.programmes_count;
+            } else if (tab.key === "batches" && state.statCount.batches_count !== undefined) {
+              count = state.statCount.batches_count;
+            } else if (tab.key === "courses" && state.statCount.courses_count !== undefined) {
+              count = state.statCount.courses_count;
             }
-          />
-        ))}
+          } else {
+            if (tab.key === "departments" && state.departmentList !== null) {
+              count = state.departmentList.length;
+            } else if (tab.key === "programmes" && state.programmeList !== null) {
+              count = state.programmeList.length;
+            } else if (tab.key === "batches" && state.batchList !== null) {
+              count = state.batchList.length;
+            } else if (tab.key === "courses" && state.courseList !== null) {
+              count = state.courseList.length;
+            }
+          }
+
+          return (
+            <StatTabCard
+              key={tab.key}
+              icon={<Home className="h-5 w-5" />}
+              label={tab.label}
+              subLabel={tab.subLabel}
+              count={count}
+              active={state.activeTab === tab.key}
+              onClick={() =>
+                setState({
+                  activeTab: tab.key,
+                  search: "",
+                  statusFilter: { value: "all_status", label: "All Statuses" },
+                  deptFilter: "All Departments",
+                })
+              }
+            />
+          );
+        })}
       </div>
 
       {/* Filters */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 dark:border-gray-700">
         <div className="relative max-w-[300px] flex-1">
-          
-           <TextInput
-              placeholder={`Search ${state.activeTab}...`}
-              type="text"
-              value={state.search}
-              onChange={(e) => setState({ search: e.target.value })}
-              icon={<IconSearch className="h-4 w-4" />}
-            />
+          <TextInput
+            placeholder={`Search ${state.activeTab}...`}
+            type="text"
+            value={state.search}
+            onChange={(e) => setState({ search: e.target.value })}
+            icon={<IconSearch className="h-4 w-4" />}
+          />
         </div>
 
         <div className="flex gap-3">
           <CustomSelect
             options={STATUS_OPTIONS}
             value={
-              STATUS_OPTIONS.find((o) => o.label === state.statusFilter) ?? null
+              STATUS_OPTIONS.find((o) => o.value === state.statusFilter.value) ?? null
             }
             onChange={(e) =>
-              setState({ statusFilter: e?.label ?? "All Statuses" })
+              setState({ statusFilter: e ?? { value: "all_status", label: "All Statuses" } })
             }
             placeholder="All Status"
             className="filter-input"
@@ -252,13 +697,11 @@ const AcademicSetup = () => {
             <CustomSelect
               options={[
                 { value: "All Departments", label: "All Departments" },
-                { value: "CSE", label: "CSE" },
-                { value: "ECE", label: "ECE" },
-                { value: "AI", label: "AI" },
+                ...departmentOptions,
               ]}
               value={{ value: state.deptFilter, label: state.deptFilter }}
               onChange={(e) =>
-                setState({ deptFilter: e?.value ?? "All Departments" })
+                setState({ deptFilter: e?.label ?? e?.value ?? "All Departments" })
               }
               placeholder="All Departments"
               className="filter-input"
