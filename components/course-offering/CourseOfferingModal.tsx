@@ -1,153 +1,228 @@
-import { useState, useEffect } from "react";
-import { CheckCircle2, Edit, PlusIcon } from "lucide-react";
+import { useEffect } from "react";
+import { Edit, PlusIcon } from "lucide-react";
+import * as Yup from "yup";
 import { ModalShell } from "@/components/academic-setup/AddModals";
 import TextInput from "@/components/FormFields/TextInput.component";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
+import { useSetState, Dropdown, Failure } from "@/utils/function.utils";
+import Models from "@/imports/models.import";
 
-const toOpts = (arr: string[]) => arr.map((v) => ({ value: v, label: v }));
-const toOpt  = (v: string | null | undefined) => v ? { value: v, label: v } : null;
+type DropdownOption = { value: string | number; label: string };
 
-const PROGRAMME_OPTS   = toOpts(["B.Tech Computer Science & Engg", "B.Tech Electronics & Comm", "M.Tech Artificial Intelligence", "MBA"]);
-const BATCH_OPTS       = toOpts(["2025-2029", "2024-2028", "2023-2027", "2022-2026"]);
-const TERM_OPTS        = toOpts(["Semester 1", "Semester 2", "Semester 3", "Semester 4", "Semester 5", "Semester 6", "Semester 7", "Semester 8"]);
-const COURSE_OPTS      = toOpts(["CS301 - Data Structures (4 Credits)", "CS302 - Database Management Systems (4 Credits)", "CS303 - Operating Systems (4 Credits)", "EC201 - Digital Signal Processing (4 Credits)", "AI101 - Foundations of Machine Learning (4 Credits)"]);
-const COORDINATOR_OPTS = toOpts(["Arun Kumar (FAC-CSE-018)", "Priya Selvan (FAC-CSE-042)", "Vignesh Kumar (FAC-BCE-031)", "Priya Balwani (FAC-CSE-044)"]);
-const ALL_INSTRUCTORS  = ["Arun Kumar", "Priya Selvam", "Sanjay Murugan", "Vignesh Kumar", "Deepa Nair", "Dr. Senthil Nathan"];
+const TERM_OPTS: DropdownOption[] = [
+  { value: "1", label: "1" },
+  { value: "2", label: "2" },
+  { value: "3", label: "3" },
+  { value: "4", label: "4" },
+  { value: "5", label: "5" },
+  { value: "6", label: "6" },
+  { value: "7", label: "7" },
+  { value: "8", label: "8" },
+];
+
+const schema = Yup.object({
+  course_instance_name: Yup.string().trim().required("Course instance name is required"),
+  programme_id: Yup.mixed().required("Academic programme is required"),
+  batch_id: Yup.mixed().required("Batch is required"),
+  semester: Yup.mixed().required("Academic term is required"),
+  course_id: Yup.mixed().required("Course is required"),
+});
 
 interface Props { open: boolean; onClose: () => void; initialData?: any; }
 
 const CourseOfferingModal = ({ open, onClose, initialData }: Props) => {
   const isEdit = !!initialData;
 
-  const [form, setForm] = useState({
-    programme:   null as any,
-    batch:       null as any,
-    ay:          "",
-    term:        null as any,
-    course:      null as any,
-    coordinator: null as any,
-    instructors: ["Arun Kumar", "Priya Selvam"] as string[],
+  const [state, setState] = useSetState({
+    // form fields
+    course_instance_name: "",
+    programme: null as any,
+    batch: null as any,
+    term: null as any,
+    course: null as any,
+    // validation errors
+    errors: {} as Record<string, string>,
+    // dropdown options
+    programmeList: [] as DropdownOption[],
+    batchList: [] as DropdownOption[],
+    courseList: [] as DropdownOption[],
   });
 
   useEffect(() => {
-    if (initialData) {
-      setForm({
-        programme:   toOpt(initialData.programme),
-        batch:       toOpt(initialData.batch),
-        ay:          initialData.ay ?? "",
-        term:        toOpt(initialData.term),
-        course:      toOpt(initialData.course),
-        coordinator: toOpt(initialData.coordinator ? `${initialData.coordinator} (FAC-CSE-018)` : null),
-        instructors: initialData.instructors ?? [],
-      });
-    } else {
-      setForm({ programme: null, batch: null, ay: "", term: null, course: null, coordinator: null, instructors: ["Arun Kumar", "Priya Selvam"] });
+    if (open) {
+      batchList();
+      programmeList();
+      courseList();
     }
-  }, [initialData, open]);
+  }, [open]);
 
-  const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
+  // populate form when editing
+  useEffect(() => {
+    if (open && initialData) {
+      setState({
+        course_instance_name: initialData.course_instance_name ?? "",
+        programme: initialData.programme_id
+          ? { value: initialData.programme_id, label: initialData.programme_name ?? String(initialData.programme_id) }
+          : null,
+        batch: initialData.batch_id
+          ? { value: initialData.batch_id, label: initialData.batch_name ?? String(initialData.batch_id) }
+          : null,
+        term: initialData.term
+          ? { value: initialData.term, label: initialData.term }
+          : null,
+        course: initialData.course_id
+          ? { value: initialData.course_id, label: initialData.course_title ?? String(initialData.course_id) }
+          : null,
+        errors: {},
+      });
+    } else if (open && !initialData) {
+      setState({
+        course_instance_name: "",
+        programme: null,
+        batch: null,
+        term: null,
+        course: null,
+        errors: {},
+      });
+    }
+  }, [open, initialData]);
 
-  const toggleInstructor = (name: string) =>
-    setForm((p) => ({
-      ...p,
-      instructors: p.instructors.includes(name)
-        ? p.instructors.filter((i) => i !== name)
-        : [...p.instructors, name],
-    }));
+  const programmeList = async () => {
+    try {
+      const res: any = await Models.programme.list();
+      const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
+      setState({ programmeList: Dropdown(list, "programme_name") });
+    } catch (error: any) {
+      Failure(typeof error === "string" ? error : error?.message || "Failed to load programmes");
+    }
+  };
 
-  const coordinatorName = form.coordinator?.label?.split(" (")[0] ?? "";
+  const batchList = async () => {
+    try {
+      const res: any = await Models.batch.list();
+      const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
+      setState({ batchList: Dropdown(list, "name") });
+    } catch (error: any) {
+      Failure(typeof error === "string" ? error : error?.message || "Failed to load batches");
+    }
+  };
+
+  const courseList = async () => {
+  try {
+      const res: any = await Models.course.list();
+      const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
+      setState({ courseList: Dropdown(list, "course_title") });
+    } catch (error: any) {
+      Failure(typeof error === "string" ? error : error?.message || "Failed to load courses");
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const userStr = localStorage.getItem("user");
+    const user = JSON.parse(userStr);
+
+    const values = {
+      course_instance_name: state.course_instance_name,
+      programme_id: state.programme?.value,
+      batch_id: state.batch?.value,
+      semester: Number(state.term?.value),
+      course_id: state.course?.value,
+      organization_id: user.organization_id
+
+
+    };
+    console.log("values",values)
+
+    try {
+      await schema.validate(values, { abortEarly: false });
+      const response = await Models.course_instance.create(values)
+      console.log("response", response)
+      setState({ errors: {} });
+    } catch (err: any) {
+      const errors: Record<string, string> = {};
+      err.inner?.forEach((e: any) => {
+        errors[e.path] = e.message;
+      });
+      setState({ errors });
+      return;
+    }
+
+   
+  };
 
   return (
     <ModalShell
       title={isEdit ? "Edit Course Offering" : "Create Course Offering"}
-      // subtitle="Configure delivery instance for an academic course offering with faculty bindings."
       icon={isEdit ? <Edit className="w-3.5 h-3.5" /> : <PlusIcon className="w-3.5 h-3.5" />}
       open={open}
       onClose={onClose}
     >
-      <form
-        id="co-form"
-        onSubmit={(e) => { e.preventDefault(); onClose(); }}
-      >
+      <form onSubmit={handleSubmit}>
         <div className="space-y-4">
+          <TextInput
+            title="Course Instance Name"
+            required
+            placeholder="Enter course instance name"
+            value={state.course_instance_name}
+            onChange={(e) => setState({ course_instance_name: e.target.value })}
+            error={state.errors?.course_instance_name}
+          />
 
-          {/* Row 1: Programme + Batch */}
+          <CustomSelect
+            title="Academic Programme"
+            required
+            options={state.programmeList}
+            value={state.programme}
+            onChange={(v) => setState({ programme: v })}
+            placeholder="Select Programme"
+            error={state.errors?.programme}
+          />
+
           <div className="grid grid-cols-2 gap-4">
-            <CustomSelect title="Academic Programme" required options={PROGRAMME_OPTS} value={form.programme} onChange={(v) => set("programme", v)} placeholder="B.Tech Computer Science & Engg" />
-            <CustomSelect title="Batch"              required options={BATCH_OPTS}     value={form.batch}      onChange={(v) => set("batch",      v)} placeholder="2025-2029" />
-          </div>
-
-          {/* Row 2: Academic Year + Term */}
-          <div className="grid grid-cols-2 gap-4">
-            <TextInput title="Academic Year" required placeholder="2026-27" value={form.ay} onChange={(e) => set("ay", e.target.value)} />
-            <CustomSelect title="Academic Term / Semester" required options={TERM_OPTS} value={form.term} onChange={(v) => set("term", v)} placeholder="Semester 3" />
-          </div>
-
-          {/* Course */}
-          <CustomSelect title="Course" required options={COURSE_OPTS} value={form.course} onChange={(v) => set("course", v)} placeholder="CS301 - Data Structures (4 Credits)" />
-
-          {/* Coordinator box */}
-          <div className="rounded-xl border border-[#ede9fe] bg-[#faf8ff] p-4 dark:border-purple-800 dark:bg-purple-900/10">
             <CustomSelect
-              title="Assigned Course Coordinator"
+              title="Batch"
               required
-              options={COORDINATOR_OPTS}
-              value={form.coordinator}
-              onChange={(v) => set("coordinator", v)}
-              placeholder="Arun Kumar (FAC-CSE-018)"
+              options={state.batchList}
+              value={state.batch}
+              onChange={(v) => setState({ batch: v })}
+              placeholder="Select Batch"
+              error={state.errors?.batch}
             />
-            {coordinatorName && (
-              <div className="mt-2 flex items-center gap-1.5 text-xs text-green-600">
-                <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
-                <span>
-                  <span className="font-semibold">{coordinatorName}</span> will automatically receive Instructor access for this course.
-                </span>
-              </div>
-            )}
+            <CustomSelect
+              title="Academic Term / Semester"
+              required
+              options={TERM_OPTS}
+              value={state.term}
+              onChange={(v) => setState({ term: v })}
+              placeholder="Semester 3"
+              error={state.errors?.term}
+            />
           </div>
 
-          {/* Additional Instructors */}
-          <div>
-            <p className="mb-2 text-sm font-bold text-[#000] dark:text-gray-300">
-              Additional Course Instructor(s)
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              {ALL_INSTRUCTORS.map((name) => {
-                const checked = form.instructors.includes(name);
-                return (
-                  <button
-                    key={name}
-                    type="button"
-                    onClick={() => toggleInstructor(name)}
-                    className={`flex items-center gap-2 rounded-lg border px-3 py-2.5 text-left text-sm transition-colors ${
-                      checked
-                        ? "border-[#7c3aed] bg-[#ede9fe] text-color2"
-                        : "border-gray-200 bg-white text-[#000] hover:border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
-                    }`}
-                  >
-                    <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${checked ? "border-[#7c3aed] bg-[#7c3aed]" : "border-gray-300"}`}>
-                      {checked && (
-                        <svg className="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      )}
-                    </span>
-                    {name}
-                    {name === "Arun Kumar" && <span className="ml-auto text-yellow-400">☆</span>}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
+          <CustomSelect
+            title="Course"
+            required
+            options={state.courseList}
+            value={state.course}
+            onChange={(v) => setState({ course: v })}
+            placeholder="Select Course"
+            error={state.errors?.course}
+          />
         </div>
 
-        {/* Footer — same pattern as AddModals */}
         <div className="mt-6 flex justify-end gap-3">
-          <button type="button" onClick={onClose} className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-[#000] hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg border border-gray-200 px-5 py-2 text-sm text-[#000] hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+          >
             Cancel
           </button>
-          <button type="submit" className="bg-color2 rounded-lg px-6 py-2 text-sm font-semibold text-white hover:opacity-90">
+          <button
+            type="submit"
+            className="bg-color2 rounded-lg px-6 py-2 text-sm font-semibold text-white hover:opacity-90"
+          >
             {isEdit ? "Update Offering" : "Create Offering"}
           </button>
         </div>

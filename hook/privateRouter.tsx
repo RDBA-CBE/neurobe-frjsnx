@@ -12,12 +12,12 @@ const PrivateRouter = (WrappedComponent, allowedRoles = []) => {
       const token = localStorage.getItem("token");
       const role = localStorage.getItem("group"); // 👈 assuming you store role in localStorage
 
-      // if (!token) {
-      //   localStorage.clear();
-      //   sessionStorage.clear();
-      //   router.replace("/auth/signin");
-      //   return;
-      // }
+      if (!token) {
+        localStorage.clear();
+        sessionStorage.clear();
+        router.replace("/auth/signin");
+        return;
+      }
 
       if (allowedRoles?.length == 0) {
       } else if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {

@@ -15,6 +15,7 @@ import PrivateRouter from "@/hook/privateRouter";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import PageHeader from "@/components/common-components/PageHeader";
 import TextInput from "@/components/FormFields/TextInput.component";
+import Models from "@/imports/models.import";
 
 const PROGRAMME_OPTIONS = [
   { value: "all", label: "All Programmes" },
@@ -56,6 +57,21 @@ const CourseOffering = () => {
   useEffect(() => {
     dispatch(setPageTitle("Course Offerings"));
   }, []);
+
+   useEffect(() => {
+   course_instance_list()
+  }, []);
+
+  const course_instance_list=async()=>{
+    try {
+      const res=await Models.course_instance.list()
+      console.log("res",res)
+      
+    } catch (error) {
+      console.log("error",error)
+      
+    }
+  }
 
   // ── filtered records ───────────────────────────────────────────────────────
   const records = MOCK_OFFERINGS.filter((r) => {

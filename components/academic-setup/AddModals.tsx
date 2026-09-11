@@ -3,7 +3,10 @@ import { Check, Edit, PlusIcon, Search, Users, X } from "lucide-react";
 import TextInput from "@/components/FormFields/TextInput.component";
 import TextArea from "@/components/FormFields/TextArea.component";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
-import { Failure } from "@/utils/function.utils";
+import { Failure, useSetState } from "@/utils/function.utils";
+import Models from "@/imports/models.import";
+import { ROLES } from "@/utils/constant.utils";
+import PDFUploadDropzone from "./PDFUploadDropzone";
 
 // ─── Body scroll lock ─────────────────────────────────────────────────────────
 const useLockBodyScroll = (active: boolean) => {
@@ -18,6 +21,8 @@ const useLockBodyScroll = (active: boolean) => {
 const useAnimatedVisibility = (open: boolean, duration = 220) => {
   const [visible, setVisible] = useState(open);
   const [closing, setClosing] = useState(false);
+  const ALL_INSTRUCTORS = ["Arun Kumar", "Priya Selvam", "Sanjay Murugan", "Vignesh Kumar", "Deepa Nair", "Dr. Senthil Nathan"];
+
 
   useEffect(() => {
     if (open) {
@@ -157,9 +162,11 @@ export interface CourseFormData {
   credits: number;
   total_theory_hours: number;
   total_lab_hours: number;
-  syllabus_file?: string;
+  syllabus_file?: File | null;
   regulation?: string;
   is_active?: boolean;
+  coordinator?: { value: number | string; label: string } | null;
+  instructors?: { value: number | string; label: string }[];
 }
 
 interface CourseModalProps {
@@ -181,8 +188,9 @@ export const CreateCourseModal = ({
 }: CourseModalProps) => {
   const isEdit = !!initialData;
   const deptOpts = departmentOptions ;
+  const COORDINATOR_OPTS = toOpts(["Arun Kumar (FAC-CSE-018)", "Priya Selvan (FAC-CSE-042)", "Vignesh Kumar (FAC-BCE-031)", "Priya Balwani (FAC-CSE-044)"]);
 
-  const [form, setForm] = useState({
+  const [state, setState] = useSetState({
     code: "",
     title: "",
     department: null as any,
@@ -191,34 +199,46 @@ export const CreateCourseModal = ({
     lecture: "3",
     tutorial: "0",
     practical: "0",
-    credits: "3",
+    credits: "0",
     theoryHours: "45",
     labHours: "0",
+    coordinator: null as any,
+    coordinatorList: [],
+    instructorList: [],
+    instructor: [],
+    syllabusFile: null as File | null,
   });
 
   useEffect(() => {
-    if (initialData) {
-      const foundDept = deptOpts.find(
-        (d: any) =>
-          d.value === initialData.department_id ||
-          d.label === initialData.department_name ||
-          d.label === initialData.department
-      );
-      setForm({
-        code: initialData.course_code ?? initialData.code ?? "",
-        title: initialData.course_title ?? initialData.title ?? "",
-        department: foundDept ?? toOpt(initialData.department_name || initialData.department),
-        status: toOpt(initialData.status?.toLowerCase() === "inactive" ? "Inactive" : "Active"),
-        regulation: initialData.regulation ?? "R2023",
-        lecture: String(initialData.lecture_hours ?? initialData.l ?? "3"),
-        tutorial: String(initialData.tutorial_hours ?? initialData.t ?? "0"),
-        practical: String(initialData.practical_hours ?? initialData.p ?? "0"),
-        credits: String(initialData.credits ?? initialData.c ?? "3"),
-        theoryHours: String(initialData.total_theory_hours ?? initialData.theory?.replace(" hrs", "") ?? "45"),
-        labHours: String(initialData.total_lab_hours ?? initialData.lab?.replace(" hrs", "") ?? "0"),
+    getCourseCoordinator();
+    getCourseInstructor();
+  }, [open]);
+
+  useEffect(() => {
+    if (open && initialData) {
+      setState({
+        code: initialData.course_code || "",
+        title: initialData.course_title || "",
+        department: initialData.department_id
+          ? { value: initialData.department_id, label: initialData.department_name || String(initialData.department_id) }
+          : null,
+        status: initialData.status
+          ? { value: initialData.status, label: initialData.status }
+          : { value: "Active", label: "Active" },
+        regulation: initialData.regulation || "R2023",
+        lecture: String(initialData.lecture_hours ?? "3"),
+        tutorial: String(initialData.tutorial_hours ?? "0"),
+        practical: String(initialData.practical_hours ?? "0"),
+        credits: String(initialData.credits ?? "0"),
+        theoryHours: String(initialData.total_theory_hours ?? "45"),
+        labHours: String(initialData.total_lab_hours ?? "0"),
+        coordinator: initialData.coordinator_id
+          ? { value: initialData.coordinator_id, label: initialData.coordinator_name || String(initialData.coordinator_id) }
+          : null,
+        syllabusFile: null,
       });
-    } else {
-      setForm({
+    } else if (open && !initialData) {
+      setState({
         code: "",
         title: "",
         department: null,
@@ -227,44 +247,106 @@ export const CreateCourseModal = ({
         lecture: "3",
         tutorial: "0",
         practical: "0",
-        credits: "3",
+        credits: "0",
         theoryHours: "45",
         labHours: "0",
+        coordinator: null,
+        instructor: [],
+        syllabusFile: null,
       });
     }
-  }, [initialData, open, deptOpts]);
+  }, [open, initialData]);
 
-  const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
+  const getCourseCoordinator = async () => {
+    try {
+      const body = {
+        role: ROLES.COURSE_COORDINATOR
+      };
+
+      const res: any = await Models.users.list(body);
+      const dropdown = res?.map((item) => ({
+        label: `${item.first_name} (${item.last_name})`,
+        value: item?.id
+      }));
+      setState({ coordinatorList: dropdown });
+
+      console.log('✌️res --->', dropdown);
+
+    } catch (error) {
+      console.log('✌️error --->', error);
+    }
+  };
+
+
+  const getCourseInstructor = async () => {
+    try {
+      const body = {
+        role: ROLES.COURSE_INSTRUCTOR
+      };
+
+      const res: any = await Models.users.list(body);
+      const dropdown = res?.map((item) => ({
+        label: `${item.first_name} (${item.last_name})`,
+        value: item?.id
+      }));
+      setState({ instructorList: dropdown });
+
+      console.log('✌️res --->', dropdown);
+
+    } catch (error) {
+      console.log('✌️error --->', error);
+    }
+  };
+
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.code.trim()) {
+    if (!state.code.trim()) {
       Failure("Please enter course code");
       return;
     }
-    if (!form.title.trim()) {
+    if (!state.title.trim()) {
       Failure("Please enter course title");
       return;
     }
-    if (!form.department?.value) {
+    if (!state.department?.value) {
       Failure("Please select a department");
       return;
     }
+    if (!state.coordinator?.value) {
+      Failure("Please select a course coordinator");
+      return;
+    }
 
-    onSubmit({
-      department_id: Number(form.department.value) || 0,
-      course_code: form.code.trim(),
-      course_title: form.title.trim(),
-      status: form.status?.value || "Active",
-      lecture_hours: Number(form.lecture) || 0,
-      tutorial_hours: Number(form.tutorial) || 0,
-      practical_hours: Number(form.practical) || 0,
-      credits: Number(form.credits) || 0,
-      total_theory_hours: Number(form.theoryHours) || 0,
-      total_lab_hours: Number(form.labHours) || 0,
-      syllabus_file: "",
-      regulation: form.regulation || "R2023",
-      is_active: (form.status?.value || "Active").toLowerCase() === "active",
+    const payload: CourseFormData = {
+      department_id: Number(state.department.value) || 0,
+      course_code: state.code.trim(),
+      course_title: state.title.trim(),
+      status: state.status?.value || "Active",
+      lecture_hours: Number(state.lecture) || 0,
+      tutorial_hours: Number(state.tutorial) || 0,
+      practical_hours: Number(state.practical) || 0,
+      credits: Number(state.credits) || 0,
+      total_theory_hours: Number(state.theoryHours) || 0,
+      total_lab_hours: Number(state.labHours) || 0,
+      regulation: state.regulation || "R2023",
+      is_active: (state.status?.value || "Active").toLowerCase() === "active",
+      syllabus_file: state.syllabusFile ?? null,
+      coordinator: state.coordinator ?? null,
+      instructors: state.instructor || [],
+    };
+
+    onSubmit(payload);
+  };
+
+  const toggleInstructor = (item: any) => {
+    const selected: any[] = state.instructor || [];
+    const exists = selected.some((i) => i.value === item.value);
+    setState({
+      instructor: exists
+        ? selected.filter((i) => i.value !== item.value)
+        : [...selected, item],
     });
   };
 
@@ -287,29 +369,29 @@ export const CreateCourseModal = ({
             title="Course Code"
             required
             placeholder="e.g. CS301"
-            value={form.code}
-            onChange={(e) => set("code", e.target.value)}
+            value={state.code}
+            onChange={(e) => setState({ code: e.target.value })}
           />
           <TextInput
             title="Course Title"
             required
             placeholder="e.g. Data Structures"
-            value={form.title}
-            onChange={(e) => set("title", e.target.value)}
+            value={state.title}
+            onChange={(e) => setState({ title: e.target.value })}
           />
           <CustomSelect
             title="Department"
             required
             options={deptOpts}
-            value={form.department}
-            onChange={(v) => set("department", v)}
+            value={state.department}
+            onChange={(v) => setState({ department: v })}
             placeholder="Select Department"
           />
           <CustomSelect
             title="Status"
             options={STATUS_OPTS}
-            value={form.status}
-            onChange={(v) => set("status", v)}
+            value={state.status}
+            onChange={(v) => setState({ status: v })}
             placeholder="Active"
           />
         </div>
@@ -318,8 +400,8 @@ export const CreateCourseModal = ({
           <TextInput
             title="Regulation"
             placeholder="e.g. R2023"
-            value={form.regulation}
-            onChange={(e) => set("regulation", e.target.value)}
+            value={state.regulation}
+            onChange={(e) => setState({ regulation: e.target.value })}
           />
           <div></div>
         </div>
@@ -330,33 +412,33 @@ export const CreateCourseModal = ({
               L-T-P-C Breakdown (Weekly Hours &amp; Credits)
             </p>
             <span className="text-color2 ml-2 cursor-pointer text-xs font-bold">
-              Credits : {form.credits}
+              Credits : {state.credits}
             </span>
           </div>
           <div className="grid grid-cols-4 gap-3">
             <TextInput
               title="Lecture (L)"
               type="number"
-              value={form.lecture}
-              onChange={(e) => set("lecture", e.target.value)}
+              value={state.lecture}
+              onChange={(e) => setState({ lecture: e.target.value })}
             />
             <TextInput
               title="Tutorial (T)"
               type="number"
-              value={form.tutorial}
-              onChange={(e) => set("tutorial", e.target.value)}
+              value={state.tutorial}
+              onChange={(e) => setState({ tutorial: e.target.value })}
             />
             <TextInput
               title="Practical (P)"
               type="number"
-              value={form.practical}
-              onChange={(e) => set("practical", e.target.value)}
+              value={state.practical}
+              onChange={(e) => setState({ practical: e.target.value })}
             />
             <TextInput
               title="Credits (C)"
               type="number"
-              value={form.credits}
-              onChange={(e) => set("credits", e.target.value)}
+              value={state.credits}
+              onChange={(e) => setState({ credits: e.target.value })}
               className="border-[#7c3aed] bg-[#ede9fe] text-center font-bold text-color2"
             />
           </div>
@@ -367,15 +449,68 @@ export const CreateCourseModal = ({
             title="Total Theory Hours"
             type="number"
             placeholder="45"
-            value={form.theoryHours}
-            onChange={(e) => set("theoryHours", e.target.value)}
+            value={state.theoryHours}
+            onChange={(e) => setState({ theoryHours: e.target.value })}
           />
           <TextInput
             title="Total Lab Hours"
             type="number"
             placeholder="30"
-            value={form.labHours}
-            onChange={(e) => set("labHours", e.target.value)}
+            value={state.labHours}
+            onChange={(e) => setState({ labHours: e.target.value })}
+          />
+
+        </div>
+
+        <div className="mt-4 rounded-xl border border-[#ede9fe] bg-[#faf8ff] p-4 dark:border-purple-800 dark:bg-purple-900/10">
+          <CustomSelect
+            title="Assigned Course Coordinator"
+            required
+            options={state.coordinatorList}
+            value={state.coordinator}
+            onChange={(v) => setState({ coordinator: v })}
+            placeholder="Arun Kumar (FAC-CSE-018)"
+          />
+        </div>
+        <div className="mt-4">
+          <p className="mt-4 mb-2 text-sm font-bold text-[#000] dark:text-gray-300">
+            Additional Course Instructor(s)
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+
+            {state.instructorList?.map((name) => {
+            const checked = state.instructor.some((i: any) => i.value === name.value);
+              return (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => toggleInstructor(name)}
+                  className={`flex items-center gap-2 rounded-lg border px-3 py-2.5 text-left text-sm transition-colors ${checked
+                      ? "border-[#7c3aed] bg-[#ede9fe] text-color2"
+                      : "border-gray-200 bg-white text-[#000] hover:border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
+                    }`}
+                >
+                  <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${checked ? "border-[#7c3aed] bg-[#7c3aed]" : "border-gray-300"}`}>
+                    {checked && (
+                      <svg className="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </span>
+                  {name?.label}
+                  {/* {name === "Arun Kumar" && <span className="ml-auto text-yellow-400">☆</span>} */}
+                </button>
+              );
+            })}
+          </div>
+
+        </div>
+
+        <div className="mt-4">
+          <PDFUploadDropzone
+            label="Course Syllabus (PDF)"
+            existingFileUrl={initialData?.syllabus_file || null}
+            onFileSelect={(file) => setState({ syllabusFile: file })}
           />
         </div>
 
@@ -429,8 +564,9 @@ export const CreateDepartmentModal = ({
   onSubmit,
   submitting = false,
 }: DeptModalProps) => {
+  console.log("initialData",initialData)
   const isEdit = !!initialData;
-  const [form, setForm] = useState({
+  const [state, setState] = useSetState({
     code: "",
     name: "",
     status: { value: "Active", label: "Active" } as any,
@@ -438,33 +574,31 @@ export const CreateDepartmentModal = ({
 
   useEffect(() => {
     if (initialData) {
-      setForm({
+      setState({
         code: initialData.department_short_name ?? initialData.code ?? "",
         name: initialData.department_name ?? initialData.name ?? "",
         status: toOpt(initialData.status?.toLowerCase() === "inactive" ? "Inactive" : "Active"),
       });
     } else {
-      setForm({ code: "", name: "", status: { value: "Active", label: "Active" } });
+      setState({ code: "", name: "", status: { value: "Active", label: "Active" } });
     }
   }, [initialData, open]);
 
-  const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name?.trim()) {
+    if (!state.name?.trim()) {
       Failure("Please enter department name");
       return;
     }
-    if (!form.code?.trim()) {
+    if (!state.code?.trim()) {
       Failure("Please enter department short name / code");
       return;
     }
 
     onSubmit({
-      department_name: form.name.trim(),
-      department_short_name: form.code.trim(),
-      status: (form.status?.value ?? "Active").toLowerCase(),
+      department_name: state.name.trim(),
+      department_short_name: state.code.trim(),
+      status: (state.status?.value ?? "Active").toLowerCase(),
     });
   };
 
@@ -481,22 +615,22 @@ export const CreateDepartmentModal = ({
             title="Department Name"
             required
             placeholder="e.g. Computer Science & Engineering"
-            value={form.name}
-            onChange={(e) => set("name", e.target.value)}
+            value={state.name}
+            onChange={(e) => setState({ name: e.target.value })}
           />
           <div className="grid grid-cols-2 gap-4">
             <TextInput
               title="Department Code"
               required
               placeholder="e.g. CSE"
-              value={form.code}
-              onChange={(e) => set("code", e.target.value)}
+              value={state.code}
+              onChange={(e) => setState({ code: e.target.value })}
             />
             <CustomSelect
               title="Status"
               options={STATUS_OPTS}
-              value={form.status}
-              onChange={(v) => set("status", v)}
+              value={state.status}
+              onChange={(v) => setState({ status: v })}
               placeholder="Active"
             />
           </div>
@@ -558,7 +692,7 @@ export const CreateProgrammeModal = ({
   const isEdit = !!initialData;
   const deptOpts = departmentOptions ;
 
-  const [form, setForm] = useState({
+  const [state, setState] = useSetState({
     name: "",
     short_name: "",
     department: null as any,
@@ -574,7 +708,7 @@ export const CreateProgrammeModal = ({
           d.label === initialData.department_name ||
           d.label === initialData.department
       );
-      setForm({
+      setState({
         name: initialData.programme_name ?? initialData.name ?? "",
         short_name: initialData.short_name ?? initialData.code ?? "",
         department: foundDept ?? toOpt(initialData.department_name || initialData.department),
@@ -582,7 +716,7 @@ export const CreateProgrammeModal = ({
         status: toOpt(initialData.status?.toLowerCase() === "inactive" ? "Inactive" : "Active"),
       });
     } else {
-      setForm({
+      setState({
         name: "",
         short_name: "",
         department: null,
@@ -592,29 +726,27 @@ export const CreateProgrammeModal = ({
     }
   }, [initialData, open, deptOpts]);
 
-  const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim()) {
+    if (!state.name.trim()) {
       Failure("Please enter programme name");
       return;
     }
-    if (!form.short_name.trim()) {
+    if (!state.short_name.trim()) {
       Failure("Please enter short name");
       return;
     }
-    if (!form.department?.value) {
+    if (!state.department?.value) {
       Failure("Please select an associated department");
       return;
     }
 
     onSubmit({
-      department_id: Number(form.department.value) || 0,
-      programme_name: form.name.trim(),
-      short_name: form.short_name.trim(),
-      degree_level: form.degree_level?.value || "UG",
-      status: form.status?.value || "Active",
+      department_id: Number(state.department.value) || 0,
+      programme_name: state.name.trim(),
+      short_name: state.short_name.trim(),
+      degree_level: state.degree_level?.value || "UG",
+      status: state.status?.value || "Active",
     });
   };
 
@@ -636,39 +768,39 @@ export const CreateProgrammeModal = ({
           title="Programme Name"
           required
           placeholder="e.g. B.Tech Computer Science"
-          value={form.name}
-          onChange={(e) => set("name", e.target.value)}
+          value={state.name}
+          onChange={(e) => setState({ name: e.target.value })}
         />
         <div className="mt-4 grid grid-cols-2 gap-4">
           <TextInput
             title="Short Name"
             required
             placeholder="e.g. BTECH-CSE"
-            value={form.short_name}
-            onChange={(e) => set("short_name", e.target.value)}
+            value={state.short_name}
+            onChange={(e) => setState({ short_name: e.target.value })}
           />
 
           <CustomSelect
             title="Associated Department"
             required
             options={deptOpts}
-            value={form.department}
-            onChange={(v) => set("department", v)}
+            value={state.department}
+            onChange={(v) => setState({ department: v })}
             placeholder="Select Department"
           />
           <CustomSelect
             title="Degree Level"
             required
             options={TYPE_OPTS}
-            value={form.degree_level}
-            onChange={(v) => set("degree_level", v)}
+            value={state.degree_level}
+            onChange={(v) => setState({ degree_level: v })}
             placeholder="UG / PG"
           />
           <CustomSelect
             title="Status"
             options={STATUS_OPTS}
-            value={form.status}
-            onChange={(v) => set("status", v)}
+            value={state.status}
+            onChange={(v) => setState({ status: v })}
             placeholder="Active"
           />
         </div>
@@ -730,7 +862,7 @@ export const CreateBatchModal = ({
   const isEdit = !!initialData;
   const progOpts = programmeOptions ;
 
-  const [form, setForm] = useState({
+  const [state, setState] = useSetState({
     name: "",
     programme: null as any,
     start_year: "",
@@ -746,7 +878,7 @@ export const CreateBatchModal = ({
           p.label === initialData.programme_name ||
           p.label === initialData.programme
       );
-      setForm({
+      setState({
         name: initialData.name ?? initialData.batch ?? "",
         programme: foundProg ?? toOpt(initialData.programme_name || initialData.programme),
         start_year: String(initialData.start_year ?? initialData.startYear ?? ""),
@@ -754,7 +886,7 @@ export const CreateBatchModal = ({
         status: toOpt(initialData.status),
       });
     } else {
-      setForm({
+      setState({
         name: "",
         programme: null,
         start_year: "",
@@ -764,34 +896,32 @@ export const CreateBatchModal = ({
     }
   }, [initialData, open, progOpts]);
 
-  const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim()) {
+    if (!state.name.trim()) {
       Failure("Please enter batch name");
       return;
     }
-    if (!form.programme?.value) {
+    if (!state.programme?.value) {
       Failure("Please select a programme");
       return;
     }
-    if (!form.start_year) {
+    if (!state.start_year) {
       Failure("Please enter start year");
       return;
     }
-    if (!form.end_year) {
+    if (!state.end_year) {
       Failure("Please enter end year");
       return;
     }
 
     onSubmit({
-      name: form.name.trim(),
-      programme_id: Number(form.programme.value) || 0,
-      start_year: Number(form.start_year) || 0,
-      end_year: Number(form.end_year) || 0,
-      status: form.status?.value ,
-      is_active: (form.status?.value ).toLowerCase() === "active",
+      name: state.name.trim(),
+      programme_id: Number(state.programme.value) || 0,
+      start_year: Number(state.start_year) || 0,
+      end_year: Number(state.end_year) || 0,
+      status: state.status?.value || "Draft",
+      is_active: (state.status?.value || "Draft").toLowerCase() === "active",
     });
   };
 
@@ -814,15 +944,15 @@ export const CreateBatchModal = ({
             title="Batch Name"
             required
             placeholder="e.g. Batch 2024-2028"
-            value={form.name}
-            onChange={(e) => set("name", e.target.value)}
+            value={state.name}
+            onChange={(e) => setState({ name: e.target.value })}
           />
           <CustomSelect
             title="Programme"
             required
             options={progOpts}
-            value={form.programme}
-            onChange={(v) => set("programme", v)}
+            value={state.programme}
+            onChange={(v) => setState({ programme: v })}
             placeholder="Select Programme"
           />
           <TextInput
@@ -830,23 +960,23 @@ export const CreateBatchModal = ({
             required
             type="number"
             placeholder="e.g. 2024"
-            value={form.start_year}
-            onChange={(e) => set("start_year", e.target.value)}
+            value={state.start_year}
+            onChange={(e) => setState({ start_year: e.target.value })}
           />
           <TextInput
             title="End Year"
             required
             type="number"
             placeholder="e.g. 2028"
-            value={form.end_year}
-            onChange={(e) => set("end_year", e.target.value)}
+            value={state.end_year}
+            onChange={(e) => setState({ end_year: e.target.value })}
           />
         </div>
         <CustomSelect
           title="Status"
           options={BATCH_STATUS_OPTS}
-          value={form.status}
-          onChange={(v) => set("status", v)}
+          value={state.status}
+          onChange={(v) => setState({ status: v })}
           placeholder="Select Status"
           className="mt-4"
         />
@@ -891,7 +1021,7 @@ export const CreatePSOModal = ({
   initialData,
 }: PSOModalProps) => {
   const isEdit = !!initialData;
-  const [form, setForm] = useState({
+  const [state, setState] = useSetState({
     code: "",
     programme: null as any,
     description: "",
@@ -901,7 +1031,7 @@ export const CreatePSOModal = ({
 
   useEffect(() => {
     if (initialData) {
-      setForm({
+      setState({
         code: initialData.code ?? "",
         programme: toOpt(initialData.programme),
         description: initialData.description ?? "",
@@ -909,7 +1039,7 @@ export const CreatePSOModal = ({
         version: initialData.version ?? "",
       });
     } else {
-      setForm({
+      setState({
         code: "",
         programme: null,
         description: "",
@@ -918,8 +1048,6 @@ export const CreatePSOModal = ({
       });
     }
   }, [initialData, open]);
-
-  const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
 
   return (
     <ModalShell
@@ -945,15 +1073,15 @@ export const CreatePSOModal = ({
             title="PSO Code"
             required
             placeholder="e.g. PSO1"
-            value={form.code}
-            onChange={(e) => set("code", e.target.value)}
+            value={state.code}
+            onChange={(e) => setState({ code: e.target.value })}
           />
           <CustomSelect
             title="Programme"
             required
             options={PROG_OPTS}
-            value={form.programme}
-            onChange={(v) => set("programme", v)}
+            value={state.programme}
+            onChange={(v) => setState({ programme: v })}
             placeholder="Select Programme"
           />
         </div>
@@ -963,8 +1091,8 @@ export const CreatePSOModal = ({
             required
             rows={3}
             placeholder="e.g. Apply knowledge of computing..."
-            value={form.description}
-            onChange={(e) => set("description", e.target.value)}
+            value={state.description}
+            onChange={(e) => setState({ description: e.target.value })}
           />
         </div>
         <div className="mt-3 grid grid-cols-2 gap-4">
@@ -972,14 +1100,14 @@ export const CreatePSOModal = ({
             title="Version"
             required
             placeholder="e.g. v1.04"
-            value={form.version}
-            onChange={(e) => set("version", e.target.value)}
+            value={state.version}
+            onChange={(e) => setState({ version: e.target.value })}
           />
           <CustomSelect
             title="Status"
             options={STATUS_OPTS}
-            value={form.status}
-            onChange={(v) => set("status", v)}
+            value={state.status}
+            onChange={(v) => setState({ status: v })}
             placeholder="Active"
           />
         </div>
@@ -1020,15 +1148,22 @@ export const EnrollStudentsModal = ({
   availableStudents = [],
   onEnroll,
 }: EnrollStudentsModalProps) => {
-  const [search, setSearch] = useState("");
-  const [selectedIds, setSelectedIds] = useState<Set<string | number>>(new Set());
+  const [state, setState] = useSetState({
+    search: "",
+    selectedIds: new Set<string | number>(),
+  });
 
   useEffect(() => {
-    if (!open) { setSearch(""); setSelectedIds(new Set()); }
+    if (!open) {
+      setState({
+        search: "",
+        selectedIds: new Set(),
+      });
+    }
   }, [open]);
 
   const filtered = availableStudents.filter((s) => {
-    const q = search.toLowerCase();
+    const q = state.search.toLowerCase();
     return (
       !q ||
       s.regNo.toLowerCase().includes(q) ||
@@ -1038,20 +1173,22 @@ export const EnrollStudentsModal = ({
   });
 
   const toggle = (id: string | number) => {
-    setSelectedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
-      return next;
-    });
+    const next = new Set(state.selectedIds);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
+    setState({ selectedIds: next });
   };
 
   const handleEnroll = () => {
-    const selected = availableStudents.filter((s) => selectedIds.has(s.id));
+    const selected = availableStudents.filter((s) => state.selectedIds.has(s.id));
     onEnroll?.(selected);
     onClose();
   };
 
-  const count = selectedIds.size;
+  const count = state.selectedIds.size;
 
   return (
     <ModalShell
@@ -1067,8 +1204,8 @@ export const EnrollStudentsModal = ({
         <input
           type="text"
           placeholder="Search students..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={state.search}
+          onChange={(e) => setState({ search: e.target.value })}
           className="w-full rounded-lg border border-gray-200 py-2 pl-9 pr-4 text-sm outline-none focus:border-color2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
         />
       </div>
@@ -1084,23 +1221,21 @@ export const EnrollStudentsModal = ({
           <p className="py-6 text-center text-sm text-[#000]">No students found.</p>
         ) : (
           filtered.map((student) => {
-            const isSelected = selectedIds.has(student.id);
+            const isSelected = state.selectedIds.has(student.id);
             return (
               <button
                 key={student.id}
                 type="button"
                 onClick={() => toggle(student.id)}
-                className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all ${
-                  isSelected
-                    ? "border-color2 bg-color2-l"
-                    : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800"
-                }`}
+                className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all ${isSelected
+                  ? "border-color2 bg-color2-l"
+                  : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800"
+                  }`}
               >
                 {/* checkbox */}
                 <span
-                  className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border-2 transition-all ${
-                    isSelected ? "border-color2 bg-color2" : "border-gray-300"
-                  }`}
+                  className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border-2 transition-all ${isSelected ? "border-color2 bg-color2" : "border-gray-300"
+                    }`}
                 >
                   {isSelected && <Check className="h-2.5 w-2.5 text-white" />}
                 </span>
@@ -1144,11 +1279,10 @@ export const EnrollStudentsModal = ({
             type="button"
             disabled={count === 0}
             onClick={handleEnroll}
-            className={`rounded-lg px-5 py-2 text-sm font-semibold text-white transition-all ${
-              count === 0
-                ? "cursor-not-allowed bg-color2/40"
-                : "bg-color2 hover:opacity-90"
-            }`}
+            className={`rounded-lg px-5 py-2 text-sm font-semibold text-white transition-all ${count === 0
+              ? "cursor-not-allowed bg-color2/40"
+              : "bg-color2 hover:opacity-90"
+              }`}
           >
             Enroll {count > 0 ? `${count} Student${count > 1 ? "s" : ""}` : "Student"}
           </button>

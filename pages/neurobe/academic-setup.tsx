@@ -366,31 +366,84 @@ const AcademicSetup = () => {
   };
 
   const handleSaveCourse = async (formData: any) => {
+    console.log("formData", formData)
     try {
       setState({ submitting: true });
 
-      const body = {
-        organization_id: getOrganizationId(),
-        department_id: formData.department_id,
-        course_code: formData.course_code,
-        course_title: formData.course_title,
-        status: formData.status || "Active",
-        lecture_hours: formData.lecture_hours ?? 0,
-        tutorial_hours: formData.tutorial_hours ?? 0,
-        practical_hours: formData.practical_hours ?? 0,
-        credits: formData.credits ?? 0,
-        total_theory_hours: formData.total_theory_hours ?? 0,
-        total_lab_hours: formData.total_lab_hours ?? 0,
-        syllabus_file: formData.syllabus_file || "",
-        regulation: formData.regulation || "R2023",
-        is_active: formData.is_active !== undefined ? formData.is_active : true,
-      };
+      const body = new FormData();
+      body.append("organization_id", String(getOrganizationId()));
+      body.append("department_id", String(formData.department_id));
+      body.append("course_code", formData.course_code);
+      body.append("course_title", formData.course_title);
+      body.append("status", formData.status || "Active");
+      body.append("lecture_hours", String(formData.lecture_hours ?? 0));
+      body.append("tutorial_hours", String(formData.tutorial_hours ?? 0));
+      body.append("practical_hours", String(formData.practical_hours ?? 0));
+      body.append("credits", String(formData.credits ?? 0));
+      body.append("total_theory_hours", String(formData.total_theory_hours ?? 0));
+      body.append("total_lab_hours", String(formData.total_lab_hours ?? 0));
+      body.append("regulation", formData.regulation || "R2023");
+      body.append("is_active", String(formData.is_active !== undefined ? formData.is_active : true));
+
+      // only include syllabus_file if a new File was selected
+      if (formData.syllabus_file instanceof File) {
+        body.append("syllabus_file", formData.syllabus_file);
+      }
+      console.log("org/api/v1/", body)
 
       if (state.editRow?.id) {
-        await Models.course.update(state.editRow.id, body);
+        const res:any = await Models.course.update(state.editRow.id, body);
+        console.log("editRow", res)
+
+        if (formData?.coordinator?.value) {
+          await Models.course.create_course_coordinators({
+            course_id: res?.id,
+            organization_id: res?.organization_id,
+            coordinator_id: formData.coordinator.value,
+          });
+        }
+
+        // assign each instructor
+        if (formData?.instructors?.length) {
+          await Promise.all(
+            formData.instructors.map((instructor: any) =>
+              Models.course.create_course_instructors({
+                course_id: res?.id,
+                organization_id: res?.organization_id,
+                instructor_id: instructor.value,
+              })
+            )
+          );
+        }
+
         Success("Course updated successfully");
       } else {
-        await Models.course.create(body);
+        const res: any = await Models.course.create(body);
+        console.log("res", res)
+
+        // assign coordinator
+        if (formData?.coordinator?.value) {
+          await Models.course.create_course_coordinators({
+            course_id: res?.id,
+            organization_id: res?.organization_id,
+            coordinator_id: formData.coordinator.value,
+          });
+        }
+
+        // assign each instructor
+        if (formData?.instructors?.length) {
+          await Promise.all(
+            formData.instructors.map((instructor: any) =>
+              Models.course.create_course_instructors({
+                course_id: res?.id,
+                organization_id: res?.organization_id,
+                instructor_id: instructor.value,
+              })
+            )
+          );
+        }
+
+
         Success("Course created successfully");
       }
 
@@ -419,7 +472,7 @@ const AcademicSetup = () => {
           setState({ loading: false });
         }
       },
-      () => {},
+      () => { },
       `Delete ${row.department_name || row.name || "Department"}?`
     );
   };
@@ -438,7 +491,7 @@ const AcademicSetup = () => {
           setState({ loading: false });
         }
       },
-      () => {},
+      () => { },
       `Delete ${row.programme_name || row.name || "Programme"}?`
     );
   };
@@ -457,7 +510,7 @@ const AcademicSetup = () => {
           setState({ loading: false });
         }
       },
-      () => {},
+      () => { },
       `Delete ${row.name || row.batch || "Batch"}?`
     );
   };
@@ -476,7 +529,7 @@ const AcademicSetup = () => {
           setState({ loading: false });
         }
       },
-      () => {},
+      () => { },
       `Delete ${row.course_title || row.title || row.course_code || "Course"}?`
     );
   };
@@ -549,7 +602,7 @@ const AcademicSetup = () => {
       records: MOCK_PSOS.filter(
         (r: any) => bySearch(r, ["code", "programme", "description"]) && byStatus(r)
       ),
-      columns: makePSOColumns(openEdit, () => {}),
+      columns: makePSOColumns(openEdit, () => { }),
       noRecordsText: "No PSOs found",
     },
   };

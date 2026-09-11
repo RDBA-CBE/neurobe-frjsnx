@@ -13,14 +13,12 @@ export const CALENDAR_CLIENT_ID =
 export const CAPTCHA_SITE_KEY = "6LeEe9gsAAAAAKddSPmwNUF4J-v7zaz8CgeKZ7n3";
 
 export const ROLES = {
- SUPER_ADMIN : "Super Admin",
-    ERP_ADMIN : "ERP Admin",
-    COURSE_COORDINATOR : "Course Coordinator",
-    COURSE_INSTRUCTOR : "Course Instructor",
-    STUDENT : "Student"
+  SUPER_ADMIN: "Super Admin",
+  ERP_ADMIN: "ERP Admin",
+  COURSE_COORDINATOR: "Course Coordinator",
+  COURSE_INSTRUCTOR: "Course Instructor",
+  STUDENT: "Student",
 };
-
-
 
 export const DROPDOWN_ROLES = [
   {
@@ -64,7 +62,7 @@ export const DROPDOWN_INSTITUTION_ADMIN = [
     label: "Course Coordinator",
   },
   {
-    value: ROLES.COURSE_INSTRUCTOR,  
+    value: ROLES.COURSE_INSTRUCTOR,
     label: "Instructor",
   },
   {
@@ -72,8 +70,6 @@ export const DROPDOWN_INSTITUTION_ADMIN = [
     label: "Student",
   },
 ];
-
-
 
 export const OwnmenuConfig = {
   ERP_ADMIN: [
@@ -216,9 +212,6 @@ export const OwnmenuConfig = {
       href: "/neurobe/cia-question-paper",
     },
 
-
-
-
     {
       type: "heading",
       label: "INSTRUCTOR FUNCTIONS",
@@ -315,7 +308,6 @@ export const OwnmenuConfig = {
       icon: "IconMenuNotes",
       label: "Results & Analysis",
       href: "/neurobe/ins-result-analysis",
-
     },
 
     {
@@ -324,8 +316,6 @@ export const OwnmenuConfig = {
       label: "Marks Extraction & Verification",
       href: "/neurobe/audit-trial",
     },
-
-
   ],
 };
 
@@ -369,9 +359,7 @@ export const getMenuByRole = (role) => {
   }
 
   return (
-    OwnmenuConfig[role] ||
-    OwnmenuConfig[normalized] ||
-    OwnmenuConfig.ERP_ADMIN
+    OwnmenuConfig[role] || OwnmenuConfig[normalized] || OwnmenuConfig.ERP_ADMIN
   );
 };
 
@@ -384,14 +372,10 @@ export const getDefaultRouteByRole = (role) => {
     .toUpperCase()
     .replace(/\s+/g, "_");
 
-  if (
-    normalized === "COURSE_COORDINATOR" ||
-    normalized === "COORDINATOR"  ) {
+  if (normalized === "COURSE_COORDINATOR" || normalized === "COORDINATOR") {
     return "/neurobe/my-assigned-courses";
   }
-  if (
-    normalized === "COURSE_INSTRUCTOR" ||
-    normalized === "INSTRUCTOR") {
+  if (normalized === "COURSE_INSTRUCTOR" || normalized === "INSTRUCTOR") {
     return "/neurobe/ins-my-assigned-courses";
   }
 
@@ -419,7 +403,7 @@ export const QUS_TABS = [
   { key: "unit-1", label: "All", count: 18 },
   { key: "unit-2", label: "Approved", count: 12 },
   { key: "unit-3", label: "Reviewed", count: 3 },
-  { key: "unit-4", label: "Draft", count: 3 }
+  { key: "unit-4", label: "Draft", count: 3 },
 ];
 
 export const UNIT_LIST = [
@@ -429,25 +413,27 @@ export const UNIT_LIST = [
     count: 5,
     topics: [
       {
-        name: "Network Models & Layered Architecture", count: 2, subtopics: [
+        name: "Network Models & Layered Architecture",
+        count: 2,
+        subtopics: [
           { name: "OSI vs TCP/IP Model", count: 1 },
           { name: "Protocol Layering Concepts", count: 1 },
-        ]
+        ],
       },
       {
-        name: "Physical Layer & Transmission Media", count: 1, subtopics: [
-          { name: "Guided & Unguided Media", count: 1 },
-        ]
+        name: "Physical Layer & Transmission Media",
+        count: 1,
+        subtopics: [{ name: "Guided & Unguided Media", count: 1 }],
       },
       {
-        name: "Network Topologies & Switching Techniques", count: 1, subtopics: [
-          { name: "Circuit vs Packet Switching", count: 1 },
-        ]
+        name: "Network Topologies & Switching Techniques",
+        count: 1,
+        subtopics: [{ name: "Circuit vs Packet Switching", count: 1 }],
       },
       {
-        name: "Network Performance Metrics", count: 1, subtopics: [
-          { name: "Propagation vs Transmission Delay", count: 1 },
-        ]
+        name: "Network Performance Metrics",
+        count: 1,
+        subtopics: [{ name: "Propagation vs Transmission Delay", count: 1 }],
       },
     ],
   },
@@ -484,8 +470,7 @@ export const UNIT_LIST = [
       { name: "TCP Congestion Control Algorithms", count: 1 },
     ],
   },
-]
-
+];
 
 export const propertyType = [
   { value: 1, label: "Sale" },
