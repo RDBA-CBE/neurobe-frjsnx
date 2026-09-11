@@ -6,8 +6,9 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   icon?: React.ReactNode; 
   rightIcon?: React.ReactNode;
-  rightIconOnlick?:any
-  parentClassName?: any
+  rightIconOnlick?: any;
+  rightIconOnClick?: any;
+  parentClassName?: any;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -23,9 +24,18 @@ const TextInput: React.FC<TextInputProps> = ({
   icon,
   rightIcon,
   rightIconOnlick,
+  rightIconOnClick,
   parentClassName = "",
   ...rest
 }) => {
+  const handleRightIconClick = () => {
+    if (typeof rightIconOnlick === "function") {
+      rightIconOnlick();
+    } else if (typeof rightIconOnClick === "function") {
+      rightIconOnClick();
+    }
+  };
+
   return (
     <div className={`${parentClassName  || "w-full"}`}>
       {title && (
@@ -61,7 +71,10 @@ const TextInput: React.FC<TextInputProps> = ({
         />
 
         {rightIcon && (
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#000] cursor-pointer" onClick={()=>rightIconOnlick()}>
+          <span
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#000] cursor-pointer"
+            onClick={handleRightIconClick}
+          >
             {rightIcon}
           </span>
         )}

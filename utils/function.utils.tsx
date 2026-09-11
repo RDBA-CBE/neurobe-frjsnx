@@ -11,6 +11,27 @@ export const useSetState = (initialState: any) => {
   return [state, newSetState];
 };
 
+export const getOrganizationId = (): number => {
+  if (typeof window !== "undefined") {
+    try {
+      const directOrgId = localStorage.getItem("organization_id");
+      if (directOrgId !== null && directOrgId !== undefined && directOrgId !== "") {
+        return Number(directOrgId);
+      }
+      const userStr = localStorage.getItem("user");
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        if (user?.organization_id !== undefined && user?.organization_id !== null) {
+          return Number(user.organization_id);
+        }
+      }
+    } catch (e) {
+      console.error("Failed to parse organization_id", e);
+    }
+  }
+  return 3;
+};
+
 export const Success = (message: string) => {
   const toast = Swal.mixin({
     toast: true,
@@ -144,9 +165,16 @@ export const capitalizeFLetter = (string = "") => {
 };
 
 export const Dropdown = (arr: any, label: string) => {
-  const array = arr?.filter(Boolean).map((item: any) => ({
+  if (!Array.isArray(arr)) return [];
+  const array = arr.filter(Boolean).map((item: any) => ({
     value: item?.id,
-    label: item?.[label] || "",
+    label:
+      item?.[label] ||
+      item?.name ||
+      item?.department_name ||
+      item?.programme_name ||
+      (item?.start_year && item?.end_year ? `${item.start_year} - ${item.end_year}` : "") ||
+      "",
   }));
   return array;
 };

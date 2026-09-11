@@ -24,14 +24,24 @@ export const ROLES = {
 
 export const DROPDOWN_ROLES = [
   {
+    value: ROLES.ERP_ADMIN,
+    label: "ERP Admin",
+  },
+  {
     value: ROLES.COURSE_COORDINATOR,
     label: "Course Coordinator",
   },
   {
     value: ROLES.COURSE_INSTRUCTOR,
-    label: "Instructor",
+    label: "Course Instructor",
+  },
+  {
+    value: ROLES.STUDENT,
+    label: "Student",
   },
 ];
+
+export const DROPDOWN_USER_ROLES = DROPDOWN_ROLES;
 
 export const DROPDOWN_JOB_ROLES = [
   {

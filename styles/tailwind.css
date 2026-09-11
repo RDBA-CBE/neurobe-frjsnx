@@ -1372,6 +1372,9 @@ pre.hljs {
   .create-btn {
     @apply bg-color2 text-white px-5 py-2 text-sm rounded-full shadow hover:opacity-90 flex shrink-0 items-center gap-2;
   }
+  .create-btn-p-outline{
+     @apply bg-transparent text-color2 border border-color2 px-5 py-2 text-sm font-semibold rounded-full shadow hover:opacity-90 flex shrink-0 items-center gap-2;
+  }
 
   .create-btn-sec {
     @apply rounded-full bg-gray-200 px-4 py-2 text-sm font-medium text-[#000] hover:bg-gray-100 flex items-center gap-2;

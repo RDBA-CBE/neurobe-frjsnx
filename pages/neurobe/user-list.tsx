@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Upload, Users } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
-import { useSetState, Success, Failure, showDeleteAlert } from "@/utils/function.utils";
+import { useSetState, Success, Failure, showDeleteAlert, getOrganizationId, Dropdown } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
 import IconPlus from "@/components/Icon/IconPlus";
 import {
@@ -19,17 +19,20 @@ import TextInput from "@/components/FormFields/TextInput.component";
 import Models from "@/imports/models.import";
 import useDebounce from "@/hook/useDebounce";
 import { useRouter } from "next/router";
+import { DROPDOWN_ROLES } from "@/utils/constant.utils";
 
 const ROLE_OPTIONS = [
   { value: "All Roles", label: "All Roles" },
-  { value: "ERP Admin", label: "ERP Admin" },
-  { value: "Course Coordinator", label: "Course Coordinator" },
-  { value: "Course Instructor", label: "Course Instructor" },
-  { value: "Student", label: "Student" },
+  ...DROPDOWN_ROLES,
 ];
 
 const STATUS_OPTIONS = [
   { value: "All Status", label: "All Status" },
+  { value: "Active", label: "Active" },
+  { value: "Inactive", label: "Inactive" },
+];
+
+const MODAL_STATUS_OPTIONS = [
   { value: "Active", label: "Active" },
   { value: "Inactive", label: "Inactive" },
 ];
@@ -59,31 +62,24 @@ const UserList = () => {
 
   const debouncedSearch = useDebounce(state.search, 500);
 
-  const openCreate = () => setState({ showModal: true, editRow: null });
-  const openEdit = (row: any) => setState({ showModal: true, editRow: row });
-  const closeModal = () => setState({ showModal: false, editRow: null });
-
-  const getOrganizationId = (): number => {
-    if (typeof window !== "undefined") {
-      try {
-        const userStr = localStorage.getItem("user");
-        if (userStr) {
-          const user = JSON.parse(userStr);
-          if (user?.organization_id !== undefined && user?.organization_id !== null) {
-            return Number(user.organization_id);
-          }
-        }
-      } catch (e) {
-        console.error("Failed to parse user organization_id", e);
-      }
-    }
-    return 3;
+  const openCreate = () => {
+    getDepartmentList();
+    getProgrammeList();
+    getBatchList();
+    setState({ showModal: true, editRow: null });
   };
+  const openEdit = (row: any) => {
+    getDepartmentList();
+    getProgrammeList();
+    getBatchList();
+    setState({ showModal: true, editRow: row });
+  };
+  const closeModal = () => setState({ showModal: false, editRow: null });
 
   // ── Pre-load Master Lists ──────────────────────────────────────────────────
   const getDepartmentList = async () => {
     try {
-      const res: any = await Models.department.list({}, 1);
+      const res: any = await Models.department.list({ organization_id: getOrganizationId() }, 1);
       const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
       setState({ departmentList: list });
     } catch (error) {
@@ -93,7 +89,7 @@ const UserList = () => {
 
   const getProgrammeList = async () => {
     try {
-      const res: any = await Models.programme.list({}, 1);
+      const res: any = await Models.programme.list({ organization_id: getOrganizationId() }, 1);
       const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
       setState({ programmeList: list });
     } catch (error) {
@@ -103,7 +99,7 @@ const UserList = () => {
 
   const getBatchList = async () => {
     try {
-      const res: any = await Models.batch.list({}, 1);
+      const res: any = await Models.batch.list({ organization_id: getOrganizationId() }, 1);
       const list = Array.isArray(res) ? res : res?.data ?? res?.results ?? [];
       setState({ batchList: list });
     } catch (error) {
@@ -111,49 +107,31 @@ const UserList = () => {
     }
   };
 
-  // ── Dynamic Options ────────────────────────────────────────────────────────
+  // ── Dynamic Options via Dropdown helper ────────────────────────────────────
+  const modalDepartmentOptions = Dropdown(state.departmentList, "department_name");
+  const modalProgrammeOptions = Dropdown(state.programmeList, "programme_name");
+  const modalBatchOptions = Dropdown(state.batchList, "name");
+
   const departmentOptions = [
     { value: "All Departments", label: "All Departments" },
-    ...(state.departmentList ?? []).map((d: any) => ({
-      value: d.id,
-      label: d.department_name || d.name || d.department_short_name || `Department ${d.id}`,
-    })),
+    ...modalDepartmentOptions,
   ];
 
   const programmeOptions = [
     { value: "All Programmes", label: "All Programmes" },
-    ...(state.programmeList ?? []).map((p: any) => ({
-      value: p.id,
-      label: p.programme_name || p.name || p.short_name || `Programme ${p.id}`,
-    })),
+    ...modalProgrammeOptions,
   ];
 
   const batchOptions = [
     { value: "All Batches", label: "All Batches" },
-    ...(state.batchList ?? []).map((b: any) => ({
-      value: b.id,
-      label: b.name || (b.start_year && b.end_year ? `${b.start_year} - ${b.end_year}` : `Batch ${b.id}`),
-    })),
+    ...modalBatchOptions,
   ];
-
-  const modalDepartmentOptions = (state.departmentList ?? []).map((d: any) => ({
-    value: d.id,
-    label: d.department_name || d.name || d.department_short_name || `Department ${d.id}`,
-  }));
-
-  const modalProgrammeOptions = (state.programmeList ?? []).map((p: any) => ({
-    value: p.id,
-    label: p.programme_name || p.name || p.short_name || `Programme ${p.id}`,
-  }));
-
-  const modalBatchOptions = (state.batchList ?? []).map((b: any) => ({
-    value: b.id,
-    label: b.name || (b.start_year && b.end_year ? `${b.start_year} - ${b.end_year}` : `Batch ${b.id}`),
-  }));
 
   // ── Body Params for List API ───────────────────────────────────────────────
   const bodyData = (searchVal = debouncedSearch) => {
-    let body: any = {};
+    let body: any = {
+      organization_id: getOrganizationId(),
+    };
     if (searchVal) {
       body.search = searchVal;
     }
@@ -437,6 +415,8 @@ const UserList = () => {
         departmentOptions={modalDepartmentOptions}
         programmeOptions={modalProgrammeOptions}
         batchOptions={modalBatchOptions}
+        roleOptions={DROPDOWN_ROLES}
+        statusOptions={MODAL_STATUS_OPTIONS}
       />
       <BulkImportModal
         open={state.showBulkModal}

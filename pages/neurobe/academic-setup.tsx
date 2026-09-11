@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 import { Settings, Home } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
-import { useSetState, Success, Failure, showDeleteAlert } from "@/utils/function.utils";
+import { useSetState, Success, Failure, showDeleteAlert, getOrganizationId } from "@/utils/function.utils";
 import IconSearch from "@/components/Icon/IconSearch";
 import IconPlus from "@/components/Icon/IconPlus";
 import PageBanner from "@/components/common-components/PageBanner";
@@ -72,6 +73,7 @@ const ADD_LABELS: Record<string, string> = {
 
 const AcademicSetup = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [state, setState] = useSetState({
     activeTab: "departments",
@@ -90,6 +92,15 @@ const AcademicSetup = () => {
   });
 
   const debouncedSearch = useDebounce(state.search, 500);
+
+  useEffect(() => {
+    if (router.isReady && router.query.tab && typeof router.query.tab === "string") {
+      const validTabs = ["departments", "programmes", "batches", "courses", "psos"];
+      if (validTabs.includes(router.query.tab)) {
+        setState({ activeTab: router.query.tab });
+      }
+    }
+  }, [router.isReady, router.query.tab]);
 
   useEffect(() => {
     dispatch(setPageTitle("Academic Setup"));
@@ -150,26 +161,11 @@ const AcademicSetup = () => {
     label: p.programme_name || p.name || p.short_name || p.code || `Programme ${p.id}`,
   }));
 
-  // ── API Integration ────────────────────────────────────────────────────────
-  const getOrganizationId = (): number => {
-    if (typeof window !== "undefined") {
-      try {
-        const userStr = localStorage.getItem("user");
-        if (userStr) {
-          const user = JSON.parse(userStr);
-          if (user?.organization_id !== undefined && user?.organization_id !== null) {
-            return Number(user.organization_id);
-          }
-        }
-      } catch (e) {
-        console.error("Failed to parse user organization_id", e);
-      }
-    }
-    return 0;
-  };
 
   const bodyData = (searchVal = debouncedSearch) => {
-    let body: any = {};
+    let body: any = {
+      organization_id: getOrganizationId(),
+    };
     if (searchVal) {
       body.search = searchVal;
     }
@@ -182,18 +178,16 @@ const AcademicSetup = () => {
 
   // ── GET Lists ──────────────────────────────────────────────────────────────
 
-  const statCount = async () =>{
+  const statCount = async () => {
     try {
-      const res = await Models.stats.academic_setup()
+      const res = await Models.stats.academic_setup(getOrganizationId());
       setState({
-        statCount : res
-      })
-      
+        statCount: res,
+      });
     } catch (error) {
       console.log("stat count error", error);
-      
     }
-  }
+  };
 
 
   const getDepartmentList = async (searchVal?: string) => {
@@ -349,7 +343,7 @@ const AcademicSetup = () => {
         programme_id: formData.programme_id,
         start_year: formData.start_year,
         end_year: formData.end_year,
-        status: formData.status || "Draft",
+        status: formData.status,
         is_active: formData.is_active !== undefined ? formData.is_active : true,
       };
 

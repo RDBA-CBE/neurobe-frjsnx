@@ -1,4 +1,4 @@
-import { ArrowRightIcon } from "lucide-react";
+import { TrendingUp, Check, ArrowRight } from "lucide-react";
 
 export type StepStatus = "active" | "completed" | "pending";
 
@@ -28,26 +28,15 @@ const getStepStatus = (stepNumber: number, currentStep: number): StepStatus => {
 const StepCircle = ({ step, status }: { step: Step; status: StepStatus }) => {
   if (status === "completed") {
     return (
-      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-color2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4 text-white"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fillRule="evenodd"
-            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-            clipRule="evenodd"
-          />
-        </svg>
+      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#00ba88]">
+        <Check className="h-3.5 w-3.5 text-white stroke-[3]" />
       </div>
     );
   }
 
   if (status === "active") {
     return (
-      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-color2 text-sm font-bold text-white">
+      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#5925dc] text-xs font-bold text-white">
         {step.number}
       </div>
     );
@@ -55,7 +44,7 @@ const StepCircle = ({ step, status }: { step: Step; status: StepStatus }) => {
 
   // pending
   return (
-    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-gray-300 text-sm font-semibold text-[#000] dark:border-gray-600 dark:text-[#000]">
+    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-gray-300 text-xs font-semibold text-gray-400 dark:border-gray-600 dark:text-gray-500">
       {step.number}
     </div>
   );
@@ -65,68 +54,72 @@ const ImportProgressStepper = ({
   currentStep = 1,
   statusLabel = "Awaiting Upload",
 }: ImportProgressStepperProps) => {
+  const isComplete = currentStep === 4;
+
   return (
     <div className="panel mb-5 px-6 py-4">
       {/* Header row */}
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          {/* trend icon */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-color2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-          </svg>
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#000] dark:text-[#000]">
-            Import Progress
+          <TrendingUp className="h-4 w-4 text-[#5925dc]" />
+          <span className="text-xs font-bold uppercase tracking-wider text-[#1e293b] dark:text-white">
+            IMPORT PROGRESS
           </span>
         </div>
-        <span className="rounded-lg bg-sec px-3 py-1 text-xs font-medium text-pri ">
-          {statusLabel}
+
+        {/* Status Badge */}
+        <span
+          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
+            isComplete
+              ? "border border-[#a7f3d0] bg-[#ecfdf5] text-[#027a48] dark:border-green-800 dark:bg-green-900/20 dark:text-green-300"
+              : "border border-[#d9d6fe] bg-[#f4f3ff] text-[#5925dc] dark:border-purple-800 dark:bg-purple-900/20 dark:text-purple-300"
+          }`}
+        >
+          <span
+            className={`h-1.5 w-1.5 rounded-full ${
+              isComplete ? "bg-[#12b76a]" : "bg-[#5925dc]"
+            }`}
+          />
+          <span>{statusLabel}</span>
         </span>
       </div>
 
-      {/* Steps row */}
-      <div className="flex items-center">
+      {/* Steps Row with connector arrows */}
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
         {STEPS.map((step, index) => {
           const status = getStepStatus(step.number, currentStep);
           const isLast = index === STEPS.length - 1;
 
           return (
-            <div key={step.number} className="flex flex-1 items-center">
-              {/* Step item */}
-              <div className="flex flex-1 items-center gap-2.5 border border-gray-100 rounded-lg p-2 bg-sec">
+            <div key={step.number} className="flex flex-1 items-center gap-3">
+              {/* Step Card */}
+              <div
+                className={`flex flex-1 items-center gap-2.5 rounded-xl px-4 py-3 border transition-all duration-200 ${
+                  status === "completed"
+                    ? "border-[#a7f3d0] bg-[#ecfdf5] text-[#027a48] dark:border-green-800 dark:bg-green-900/20 dark:text-green-300"
+                    : status === "active"
+                    ? "border-[#d9d6fe] bg-[#f4f3ff] text-[#5925dc] dark:border-purple-800 dark:bg-purple-900/20 dark:text-purple-300 shadow-sm"
+                    : "border-gray-200 bg-gray-50/70 text-gray-400 dark:border-gray-700 dark:bg-gray-800/40 dark:text-gray-500"
+                }`}
+              >
                 <StepCircle step={step} status={status} />
                 <span
-                  className={`text-sm font-medium whitespace-nowrap ${
-                    status === "pending"
-                      ? "text-[#000] dark:text-[#000]"
-                      : "text-[#000] dark:text-white"
+                  className={`text-xs sm:text-sm font-bold truncate ${
+                    status === "completed"
+                      ? "text-[#027a48] dark:text-green-300"
+                      : status === "active"
+                      ? "text-[#5925dc] dark:text-purple-300"
+                      : "text-gray-400 dark:text-gray-500 font-medium"
                   }`}
                 >
-                  {step.label}
+                  {step.number}. {step.label}
                 </span>
               </div>
 
               {/* Connector arrow — not after last step */}
               {!isLast && (
-                <div className="mx-3 flex items-center">
-                  {/* <div className="h-px flex-1 border-t border-dashed border-gray-300 dark:border-gray-600" /> */}
-                  {/* <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 shrink-0 text-[#000]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg> */}
-                  <ArrowRightIcon className="w-4 h-4"/>
+                <div className="flex shrink-0 items-center justify-center text-gray-400 dark:text-gray-500">
+                  <ArrowRight className="h-4 w-4 rotate-90 lg:rotate-0" />
                 </div>
               )}
             </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Edit, Info, PlusIcon, X } from "lucide-react";
+import { Edit, Info, PlusIcon, X, Eye, EyeOff } from "lucide-react";
 import TextInput from "@/components/FormFields/TextInput.component";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import { Failure } from "@/utils/function.utils";
@@ -64,11 +64,11 @@ const AddUserModal = ({
 }: Props) => {
   const isEdit = !!initialData;
 
-  const deptOpts = departmentOptions && departmentOptions.length > 0 ? departmentOptions : DEPT_OPTS;
-  const progOpts = programmeOptions && programmeOptions.length > 0 ? programmeOptions : PROG_OPTS;
-  const batchOpts = batchOptions && batchOptions.length > 0 ? batchOptions : BATCH_OPTS;
-  const roleOpts = roleOptions && roleOptions.length > 0 ? roleOptions : ROLE_OPTS;
-  const statusOpts = statusOptions && statusOptions.length > 0 ? statusOptions : STATUS_OPTS;
+  const deptOpts = departmentOptions || [];
+  const progOpts = programmeOptions || [];
+  const batchOpts = batchOptions || [];
+  const roleOpts = roleOptions || [];
+  const statusOpts = statusOptions || [];
 
   const [form, setForm] = useState({
     firstName: "",
@@ -82,6 +82,13 @@ const AddUserModal = ({
     batch: null as any,
     status: { value: "Active", label: "Active" } as any,
   });
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      setShowPassword(false);
+    }
+  }, [open]);
 
   useEffect(() => {
     if (initialData) {
@@ -131,7 +138,7 @@ const AddUserModal = ({
         firstName: "",
         lastName: "",
         email: "",
-        password: "erp@123",
+        password: "",
         regNo: "",
         role: null,
         department: null,
@@ -140,7 +147,7 @@ const AddUserModal = ({
         status: { value: "Active", label: "Active" }
       });
     }
-  }, [initialData, open, departmentOptions, programmeOptions, batchOptions]);
+  }, [initialData, open, departmentOptions, programmeOptions, batchOptions, roleOptions, statusOptions]);
 
   const set = (key: string, val: any) => setForm((p) => ({ ...p, [key]: val }));
 
@@ -248,10 +255,18 @@ const AddUserModal = ({
               <TextInput
                 title={isEdit ? "Password (leave blank to keep current)" : "Password"}
                 required={!isEdit}
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="e.g. erp@123"
                 value={form.password}
                 onChange={(e) => set("password", e.target.value)}
+                rightIcon={
+                  showPassword ? (
+                    <EyeOff className="h-4 w-4 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" />
+                  ) : (
+                    <Eye className="h-4 w-4 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" />
+                  )
+                }
+                rightIconOnlick={() => setShowPassword((prev) => !prev)}
               />
 
               <TextInput title="Registry / Employee Number" placeholder="e.g. FAC-CSE-038 / 24C0068" value={form.regNo} onChange={(e) => set("regNo", e.target.value)} />

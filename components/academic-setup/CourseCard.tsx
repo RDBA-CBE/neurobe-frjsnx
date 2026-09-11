@@ -189,10 +189,10 @@ export default function CourseCard({
         <p className="text-xs text-pri">{instructors}</p>
         <button
           onClick={() => onAction?.()}
-          className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all ${
+          className={` ${
             hasProgress
-              ? "border border-purple-600 text-purple-600 hover:bg-purple-50"
-              : "bg-purple-600 text-white hover:bg-purple-700"
+              ? "create-btn-p-outline"
+              : "create-btn"
           }`}
         >
           {actionLabel} →

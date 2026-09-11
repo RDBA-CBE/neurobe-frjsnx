@@ -1,17 +1,28 @@
-import { useRef, useState, DragEvent, ChangeEvent } from "react";
+import { useRef, useState, useEffect, DragEvent, ChangeEvent } from "react";
 
 interface FileUploadDropzoneProps {
-  onFileSelect?: (file: File) => void;
+  onFileSelect?: (file: File | null) => void;
   Validate?: () => void;
+  loading?: boolean;
+  file?: File | null;
 }
 
 const ACCEPTED_EXTENSIONS = [".xlsx", ".xls", ".csv"];
 const ACCEPT_ATTR = ".xlsx,.xls,.csv";
 
-const FileUploadDropzone = ({ onFileSelect, Validate }: FileUploadDropzoneProps) => {
+const FileUploadDropzone = ({
+  onFileSelect,
+  Validate,
+  loading = false,
+  file,
+}: FileUploadDropzoneProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(file ?? null);
+
+  useEffect(() => {
+    setSelectedFile(file ?? null);
+  }, [file]);
 
   const handleFile = (file: File) => {
     const ext = "." + file.name.split(".").pop()?.toLowerCase();
@@ -43,6 +54,7 @@ const FileUploadDropzone = ({ onFileSelect, Validate }: FileUploadDropzoneProps)
 
   const removeFile = () => {
     setSelectedFile(null);
+    onFileSelect?.(null);
   };
 
   return (
@@ -54,12 +66,17 @@ const FileUploadDropzone = ({ onFileSelect, Validate }: FileUploadDropzoneProps)
             2
           </span>
           <h3 className="text-sm font-semibold text-[#000] dark:text-white">
-            Upload Excel or CSV File (Excel (.xlsx, .xls) and CSV (.csv))
+            Upload Excel or CSV File <span className="text-xs  text-gray"> (Excel (.xlsx, .xls) and CSV (.csv))</span>
           </h3>
         </div>
-        <span className="create-btn cursor-pointer" onClick={Validate}>
-          Validate
-        </span>
+        <button
+          type="button"
+          disabled={!selectedFile || loading}
+          className="create-btn cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+          onClick={Validate}
+        >
+          {loading ? "Validating..." : "Validate"}
+        </button>
       </div>
 
       {/* Drop zone */}

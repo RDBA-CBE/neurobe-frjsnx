@@ -165,15 +165,16 @@ const Header = () => {
 
   const onLogOut = async () => {
     try {
+      setShowLogoutModal(false);
       setLoggingOut(true);
       const reFreshToken = localStorage.getItem("refresh");
-      if (reFreshToken) {
-        try {
-          await Models.auth.logout({ refresh: reFreshToken });
-        } catch (apiErr) {
-          console.warn("Logout API warning:", apiErr);
-        }
+      try {
+        await Models.auth.logout(reFreshToken ? { refresh: reFreshToken } : {});
+      } catch (apiErr) {
+        console.warn("Logout API warning:", apiErr);
       }
+      // Brief graceful delay so the page loader smoothly transitions
+      await new Promise((resolve) => setTimeout(resolve, 600));
     } catch (error) {
       console.error("Logout error: ", error);
     } finally {
@@ -183,11 +184,10 @@ const Header = () => {
       localStorage.removeItem("role");
       localStorage.removeItem("group");
       localStorage.removeItem("user");
+      localStorage.removeItem("organization_id");
       sessionStorage.clear();
       dispatch(userData(null));
       Success("Logged out successfully");
-      setShowLogoutModal(false);
-      setLoggingOut(false);
       router.replace("/auth/signin");
     }
   };
@@ -200,6 +200,7 @@ const Header = () => {
   };
 
   const checkValidToken = async () => {
+    setLoggingOut(true);
     localStorage.clear();
     sessionStorage.clear();
     router.replace("/auth/signin");
@@ -958,6 +959,50 @@ const Header = () => {
                   "Sign Out"
                 )}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Full Page Loader on Logout */}
+      {loggingOut && (
+        <div className="screen_loader animate__animated animate__fadeIn fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#fafafa]/95 dark:bg-[#060818]/95 backdrop-blur-sm">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <svg
+              width="64"
+              height="64"
+              viewBox="0 0 135 135"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#5C28CA"
+            >
+              <path d="M67.447 58c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm9.448 9.447c0 5.523 4.477 10 10 10 5.522 0 10-4.477 10-10s-4.478-10-10-10c-5.523 0-10 4.477-10 10zm-9.448 9.448c-5.523 0-10 4.477-10 10 0 5.522 4.477 10 10 10s10-4.478 10-10c0-5.523-4.477-10-10-10zM58 67.447c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10z">
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 67 67"
+                  to="-360 67 67"
+                  dur="2.5s"
+                  repeatCount="indefinite"
+                />
+              </path>
+              <path d="M28.19 40.31c6.627 0 12-5.374 12-12 0-6.628-5.373-12-12-12-6.628 0-12 5.372-12 12 0 6.626 5.372 12 12 12zm30.72-19.825c4.686 4.687 12.284 4.687 16.97 0 4.686-4.686 4.686-12.284 0-16.97-4.686-4.687-12.284-4.687-16.97 0-4.687 4.686-4.687 12.284 0 16.97zm35.74 7.705c0 6.627 5.37 12 12 12 6.626 0 12-5.373 12-12 0-6.628-5.374-12-12-12-6.63 0-12 5.372-12 12zm19.822 30.72c-4.686 4.686-4.686 12.284 0 16.97 4.687 4.686 12.285 4.686 16.97 0 4.687-4.686 4.687-12.284 0-16.97-4.685-4.687-12.283-4.687-16.97 0zm-7.704 35.74c-6.627 0-12 5.37-12 12 0 6.626 5.373 12 12 12s12-5.374 12-12c0-6.63-5.373-12-12-12zm-30.72 19.822c-4.686-4.686-12.284-4.686-16.97 0-4.686 4.687-4.686 12.285 0 16.97 4.686 4.687 12.284 4.687 16.97 0 4.687-4.685 4.687-12.283 0-16.97zm-35.74-7.704c0-6.627-5.372-12-12-12-6.626 0-12 5.373-12 12s5.374 12 12 12c6.628 0 12-5.373 12-12zm-19.823-30.72c4.687-4.686 4.687-12.284 0-16.97-4.686-4.686-12.284-4.686-16.97 0-4.687 4.686-4.687 12.284 0 16.97 4.686 4.687 12.284 4.687 16.97 0z">
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 67 67"
+                  to="360 67 67"
+                  dur="8s"
+                  repeatCount="indefinite"
+                />
+              </path>
+            </svg>
+            <div className="space-y-1">
+              <p className="text-base font-bold text-gray-800 dark:text-white">
+                Signing out...
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Please wait while we end your session
+              </p>
             </div>
           </div>
         </div>

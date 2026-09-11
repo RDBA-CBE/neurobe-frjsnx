@@ -22,7 +22,7 @@ const auth = {
 
     logout: (data?: any) => {
         let promise = new Promise((resolve, reject) => {
-            let url = `auth/logout/`;
+            let url = `auth/logout`;
             instance()
                 .post(url, data || {})
                 .then((res) => {
@@ -30,7 +30,7 @@ const auth = {
                 })
                 .catch((error) => {
                     if (error.response) {
-                        reject(error.response.data.message || error.response.data);
+                        reject(error.response.data?.message || error.response.data?.error || error.response.data);
                     } else {
                         reject(error);
                     }

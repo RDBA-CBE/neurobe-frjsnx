@@ -1,9 +1,11 @@
 import instance from '@/utils/axios.utils';
+import { getOrganizationId } from '@/utils/function.utils';
 
 const stats = {
-    academic_setup: () => {
+    academic_setup: (orgId?: any) => {
         let promise = new Promise((resolve, reject) => {
-            let url = `stats`;    
+            const organizationId = orgId || getOrganizationId();
+            let url = `stats/?organization_id=${organizationId}`;    
             instance()
                 .get(url)
                 .then((res) => {

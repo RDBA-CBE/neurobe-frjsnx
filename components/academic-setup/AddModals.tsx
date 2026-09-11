@@ -143,7 +143,7 @@ const DEPT_OPTS = toOpts([
 const STATUS_OPTS = toOpts(["Active", "Inactive"]);
 const PROG_OPTS = toOpts(["BTECH-CSE", "BTECH-ECE", "MTECH-AI", "MBA"]);
 const TYPE_OPTS = toOpts(["UG", "PG", "Diploma", "PhD"]);
-const BATCH_STATUS_OPTS = toOpts(["Active", "Draft", "Inactive"]);
+const BATCH_STATUS_OPTS = toOpts(["Active", "Inactive"]);
 
 // ─── CREATE / EDIT COURSE MODAL ───────────────────────────────────────────────
 export interface CourseFormData {
@@ -180,7 +180,7 @@ export const CreateCourseModal = ({
   departmentOptions,
 }: CourseModalProps) => {
   const isEdit = !!initialData;
-  const deptOpts = departmentOptions && departmentOptions.length > 0 ? departmentOptions : DEPT_OPTS;
+  const deptOpts = departmentOptions ;
 
   const [form, setForm] = useState({
     code: "",
@@ -556,7 +556,7 @@ export const CreateProgrammeModal = ({
   departmentOptions,
 }: ProgModalProps) => {
   const isEdit = !!initialData;
-  const deptOpts = departmentOptions && departmentOptions.length > 0 ? departmentOptions : DEPT_OPTS;
+  const deptOpts = departmentOptions ;
 
   const [form, setForm] = useState({
     name: "",
@@ -728,14 +728,14 @@ export const CreateBatchModal = ({
   programmeOptions,
 }: BatchModalProps) => {
   const isEdit = !!initialData;
-  const progOpts = programmeOptions && programmeOptions.length > 0 ? programmeOptions : PROG_OPTS;
+  const progOpts = programmeOptions ;
 
   const [form, setForm] = useState({
     name: "",
     programme: null as any,
     start_year: "",
     end_year: "",
-    status: { value: "Draft", label: "Draft" } as any,
+    status: null as any,
   });
 
   useEffect(() => {
@@ -751,7 +751,7 @@ export const CreateBatchModal = ({
         programme: foundProg ?? toOpt(initialData.programme_name || initialData.programme),
         start_year: String(initialData.start_year ?? initialData.startYear ?? ""),
         end_year: String(initialData.end_year ?? initialData.endYear ?? ""),
-        status: toOpt(initialData.status ?? "Draft"),
+        status: toOpt(initialData.status),
       });
     } else {
       setForm({
@@ -759,7 +759,7 @@ export const CreateBatchModal = ({
         programme: null,
         start_year: "",
         end_year: "",
-        status: { value: "Draft", label: "Draft" },
+        status: null,
       });
     }
   }, [initialData, open, progOpts]);
@@ -790,8 +790,8 @@ export const CreateBatchModal = ({
       programme_id: Number(form.programme.value) || 0,
       start_year: Number(form.start_year) || 0,
       end_year: Number(form.end_year) || 0,
-      status: form.status?.value || "Draft",
-      is_active: (form.status?.value || "Draft").toLowerCase() === "active",
+      status: form.status?.value ,
+      is_active: (form.status?.value ).toLowerCase() === "active",
     });
   };
 

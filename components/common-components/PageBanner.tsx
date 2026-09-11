@@ -92,7 +92,7 @@ const PageBanner = ({
                     : "px-5 sm:px-6"
                 } text-center`}
               >
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-[#000] sm:text-[11px]">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-[#000] sm:text-[11px] text-white/90 ">
                   {stat.label}
                 </p>
                 <p
