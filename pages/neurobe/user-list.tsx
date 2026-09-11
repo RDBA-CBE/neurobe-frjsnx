@@ -18,6 +18,7 @@ import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import TextInput from "@/components/FormFields/TextInput.component";
 import Models from "@/imports/models.import";
 import useDebounce from "@/hook/useDebounce";
+import { useRouter } from "next/router";
 
 const ROLE_OPTIONS = [
   { value: "All Roles", label: "All Roles" },
@@ -34,6 +35,7 @@ const STATUS_OPTIONS = [
 ];
 
 const UserList = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const [state, setState] = useSetState({
@@ -351,7 +353,8 @@ const UserList = () => {
         actionBtn2={{
           label: "Bulk Import",
           icon: <Upload className="h-4 w-4" />,
-          onClick: () => setState({ showBulkModal: true }),
+          // onClick: () => setState({ showBulkModal: true }),
+          onClick: () => {router.push("/neurobe/bulk-import")}
         }}
         records={`${records.length} Records`}
       />

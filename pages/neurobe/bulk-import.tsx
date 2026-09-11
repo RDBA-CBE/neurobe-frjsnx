@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setPageTitle } from "@/store/themeConfigSlice";
-import { useSetState } from "@/utils/function.utils";
+import { useSetState, Success, Failure } from "@/utils/function.utils";
 import PrivateRouter from "@/hook/privateRouter";
 
 import BulkImportBanner from "@/components/bulk-import/BulkImportBanner";
@@ -11,6 +11,7 @@ import FileUploadDropzone from "@/components/bulk-import/FileUploadDropzone";
 import TableComponent from "@/components/common-components/TableComponent";
 import IconEdit from "@/components/Icon/IconEdit";
 import IconTrash from "@/components/Icon/IconTrash";
+import Models from "@/imports/models.import";
 
 type ImportType = "user" | "course";
 
@@ -28,6 +29,7 @@ const BulkImport = () => {
     importType: "user" as ImportType,
     currentStep: 1,
     selectedFile: null as File | null,
+    isDownloading: false,
   });
 
   useEffect(() => {
@@ -41,12 +43,122 @@ const BulkImport = () => {
   console.log("selectedFile", state.selectedFile);
 
   const handleDownload = () => {
-    // placeholder — wire up real download URL when API is ready
-    const filename =
-      state.importType === "user"
-        ? "user_import_template.xlsx"
-        : "course_import_template.xlsx";
-    console.log("Downloading template:", filename);
+    if (state.importType === "user") {
+      UserTemplate();
+    } else {
+      CourseTemplate();
+    }
+  };
+
+  // API integrations
+
+  const UserTemplate = async () => {
+    try {
+      setState({ isDownloading: true });
+      const response: any = await Models.user_import.downloadTemplate();
+      setState({ userTemplate: response });
+
+      let filename = "users_bulk_import_template.csv";
+      const disposition = response?.headers?.["content-disposition"];
+      if (disposition) {
+        const filenameMatch = disposition.match(
+          /filename\*?=['"]?(?:UTF-\d['"])?([^;\r\n"']*)['"]?/i
+        );
+        if (filenameMatch && filenameMatch[1]) {
+          filename = decodeURIComponent(filenameMatch[1].trim());
+        }
+      }
+
+      const blobData =
+        response?.data instanceof Blob
+          ? response.data
+          : response instanceof Blob
+          ? response
+          : new Blob([response?.data || response], {
+              type: response?.headers?.["content-type"] || "text/csv;charset=utf-8;",
+            });
+
+      const url = window.URL.createObjectURL(blobData);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+
+      Success("User template downloaded successfully");
+    } catch (error: any) {
+      console.error("Error downloading user template:", error);
+      Failure(typeof error === "string" ? error : "Failed to download user template");
+    } finally {
+      setState({ isDownloading: false });
+    }
+  };
+
+  const CourseTemplate = async () => {
+    try {
+      setState({ isDownloading: true });
+      const response: any = await Models.course_import.downloadTemplate();
+      setState({ courseTemplate: response });
+
+      let filename = "courses_bulk_import_template.csv";
+      const disposition = response?.headers?.["content-disposition"];
+      if (disposition) {
+        const filenameMatch = disposition.match(
+          /filename\*?=['"]?(?:UTF-\d['"])?([^;\r\n"']*)['"]?/i
+        );
+        if (filenameMatch && filenameMatch[1]) {
+          filename = decodeURIComponent(filenameMatch[1].trim());
+        }
+      }
+
+      const blobData =
+        response?.data instanceof Blob
+          ? response.data
+          : response instanceof Blob
+          ? response
+          : new Blob([response?.data || response], {
+              type: response?.headers?.["content-type"] || "text/csv;charset=utf-8;",
+            });
+
+      const url = window.URL.createObjectURL(blobData);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+
+      Success("Course template downloaded successfully");
+    } catch (error: any) {
+      console.error("Error downloading course template:", error);
+      Failure(typeof error === "string" ? error : "Failed to download course template");
+    } finally {
+      setState({ isDownloading: false });
+    }
+  };
+  
+
+  const importFile = async () => {
+    try {
+      if (state.selectedFile) {
+        if (state.importType === "user") {
+          const response: any = await Models.user_import.import(state.selectedFile);
+          Success("User imported successfully");
+          console.log("response", response);
+        } else {
+          const response: any = await Models.course_import.import(state.selectedFile);
+          Success("Course imported successfully");
+          console.log("response", response);
+        }
+      } else {
+        Failure("Please select a file");
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   const tabledata = [
@@ -118,19 +230,6 @@ const BulkImport = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Breadcrumb */}
-      {/* <ul className="mb-1 flex space-x-2 text-xs font-medium text-[#000] dark:text-[#000]">
-        <li>Karpagam Institutions</li>
-        <li className="text-color2 uppercase before:mx-1.5 before:content-['>']">
-          Bulk Import
-        </li>
-      </ul> */}
-
-      {/* Page title */}
-      {/* <h1 className="mb-5 text-2xl font-bold text-[#000] dark:text-white">
-        Bulk Import
-      </h1> */}
-
       {/* Banner — import type toggle */}
       <BulkImportBanner
         importType={state.importType}
@@ -152,60 +251,58 @@ const BulkImport = () => {
           <DownloadTemplate
             importType={state.importType}
             onDownload={handleDownload}
+            loading={state.isDownloading}
           />
         </div>
 
         {/* File upload */}
         <div className="panel px-6 py-6">
-          <FileUploadDropzone onFileSelect={handleFileSelect} />
+          <FileUploadDropzone onFileSelect={handleFileSelect} Validate={importFile} />
         </div>
       </div>
 
       {state.selectedFile && (
         <>
-         <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-3">
-          <div
-            className={`dark:text-white" flex cursor-pointer space-y-2 flex-col justify-between rounded-2xl border border-gray-200 bg-white p-5 text-[#000] transition-all duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800
-      `}
-          >
-            <p className={"text-md font-semibold dark:text-white "}>
-              Total Rows
-            </p>
-            <span
-              className={"text-3xl font-bold  text-[#000] dark:text-white"}
+          <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-3">
+            <div
+              className={`dark:text-white" flex cursor-pointer space-y-2 flex-col justify-between rounded-2xl border border-gray-200 bg-white p-5 text-[#000] transition-all duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800`}
             >
-              10
-            </span>
-            <p className={"text-pri text-xs"}>Rows in Uploaded File</p>
-          </div>
-          <div
-            className={`dark:text-white" flex cursor-pointer  flex-col justify-between rounded-2xl border border-gray-200 bg-white p-5 text-[#000] transition-all duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800
-      `}
-          >
-            <p className={" text-md font-semibold text-green-500 dark:text-white "}>
-             Ready to Move
-            </p>
-            <span
-              className={"text-3xl font-bold   dark:text-white"}
+              <p className={"text-md font-semibold dark:text-white "}>
+                Total Rows
+              </p>
+              <span
+                className={"text-3xl font-bold  text-[#000] dark:text-white"}
+              >
+                10
+              </span>
+              <p className={"text-pri text-xs"}>Rows in Uploaded File</p>
+            </div>
+            <div
+              className={`dark:text-white" flex cursor-pointer  flex-col justify-between rounded-2xl border border-gray-200 bg-white p-5 text-[#000] transition-all duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800`}
             >
-              10
-            </span>
-            <p className={"text-pri text-xs"}>Ready for import</p>
-          </div>
-          <div
-            className={`dark:text-white" flex cursor-pointer  flex-col justify-between rounded-2xl border border-gray-200 bg-white p-5 text-[#000] transition-all duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800
-      `}
-          >
-            <p className={" text-md font-semibold text-red-500 dark:text-white "}>
-              Rows with error
-            </p>
-            <span
-              className={"text-3xl font-bold  text-[#000] dark:text-white"}
+              <p className={" text-md font-semibold text-green-500 dark:text-white "}>
+                Ready to Move
+              </p>
+              <span
+                className={"text-3xl font-bold   dark:text-white"}
+              >
+                10
+              </span>
+              <p className={"text-pri text-xs"}>Ready for import</p>
+            </div>
+            <div
+              className={`dark:text-white" flex cursor-pointer  flex-col justify-between rounded-2xl border border-gray-200 bg-white p-5 text-[#000] transition-all duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800`}
             >
-              10
-            </span>
-            <p className={"text-pri text-xs"}>Require Corrections</p>
-          </div>
+              <p className={" text-md font-semibold text-red-500 dark:text-white "}>
+                Rows with error
+              </p>
+              <span
+                className={"text-3xl font-bold  text-[#000] dark:text-white"}
+              >
+                10
+              </span>
+              <p className={"text-pri text-xs"}>Require Corrections</p>
+            </div>
           </div>
 
           <div className="panel">

@@ -2,12 +2,13 @@ import { useRef, useState, DragEvent, ChangeEvent } from "react";
 
 interface FileUploadDropzoneProps {
   onFileSelect?: (file: File) => void;
+  Validate?: () => void;
 }
 
 const ACCEPTED_EXTENSIONS = [".xlsx", ".xls", ".csv"];
 const ACCEPT_ATTR = ".xlsx,.xls,.csv";
 
-const FileUploadDropzone = ({ onFileSelect }: FileUploadDropzoneProps) => {
+const FileUploadDropzone = ({ onFileSelect, Validate }: FileUploadDropzoneProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -40,7 +41,9 @@ const FileUploadDropzone = ({ onFileSelect }: FileUploadDropzoneProps) => {
     e.target.value = "";
   };
 
-  const removeFile = () => setSelectedFile(null);
+  const removeFile = () => {
+    setSelectedFile(null);
+  };
 
   return (
     <div className="flex h-full flex-col">
@@ -51,11 +54,11 @@ const FileUploadDropzone = ({ onFileSelect }: FileUploadDropzoneProps) => {
             2
           </span>
           <h3 className="text-sm font-semibold text-[#000] dark:text-white">
-            Upload Excel or CSV File
+            Upload Excel or CSV File (Excel (.xlsx, .xls) and CSV (.csv))
           </h3>
         </div>
-        <span className="text-xs text-[#000] dark:text-[#000]">
-          Excel (.xlsx, .xls) and CSV (.csv)
+        <span className="create-btn cursor-pointer" onClick={Validate}>
+          Validate
         </span>
       </div>
 

@@ -3,6 +3,7 @@ type ImportType = "user" | "course";
 interface DownloadTemplateProps {
   importType: ImportType;
   onDownload?: () => void;
+  loading?: boolean;
 }
 
 const TEMPLATE_META: Record<
@@ -12,16 +13,20 @@ const TEMPLATE_META: Record<
   user: {
     required: ["Email", "Register Number", "First Name", "Programme", "Department", "Batch"],
     optional: ["Last Name"],
-    filename: "user_import_template.xlsx",
+    filename: "users_bulk_import_template.csv",
   },
   course: {
     required: ["Course Code", "Course Title", "Department", "Programme", "Semester"],
     optional: ["Credits", "Description"],
-    filename: "course_import_template.xlsx",
+    filename: "courses_bulk_import_template.csv",
   },
 };
 
-const DownloadTemplate = ({ importType, onDownload }: DownloadTemplateProps) => {
+const DownloadTemplate = ({
+  importType,
+  onDownload,
+  loading = false,
+}: DownloadTemplateProps) => {
   const meta = TEMPLATE_META[importType];
 
   return (
@@ -55,24 +60,32 @@ const DownloadTemplate = ({ importType, onDownload }: DownloadTemplateProps) => 
 
       {/* Download button */}
       <button
+        type="button"
         onClick={onDownload}
-        className="flex w-full items-center justify-center gap-2 rounded-lg border border-color2 bg-white py-2.5 text-sm font-medium text-color2 transition-colors duration-200 hover:bg-color2-l dark:bg-transparent dark:hover:bg-color2/10"
+        disabled={loading}
+        className="flex w-full items-center justify-center gap-2 rounded-lg border border-color2 bg-white py-2.5 text-sm font-medium text-color2 transition-colors duration-200 hover:bg-color2-l dark:bg-transparent dark:hover:bg-color2/10 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 4v12m0 0l-4-4m4 4l4-4"
-          />
-        </svg>
-        Download {importType === "user" ? "User" : "Course"} Template
+        {loading ? (
+          <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-color2 border-t-transparent" />
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 4v12m0 0l-4-4m4 4l4-4"
+            />
+          </svg>
+        )}
+        {loading
+          ? "Downloading..."
+          : `Download ${importType === "user" ? "User" : "Course"} Template`}
       </button>
     </div>
   );

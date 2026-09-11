@@ -1,0 +1,54 @@
+import instance from '@/utils/axios.utils';
+
+const user_import = {
+    downloadTemplate: () => {
+        let promise = new Promise((resolve, reject) => {
+            let url = `bulk-import/users/template`;
+            instance()
+                .get(url, { responseType: 'blob' })
+                .then((res) => {
+                    resolve(res);
+                })
+                .catch(async (error) => {
+                    if (error.response?.data instanceof Blob) {
+                        try {
+                            const text = await error.response.data.text();
+                            const json = JSON.parse(text);
+                            reject(json.message || json.error || text);
+                            return;
+                        } catch {
+                            // Non-JSON blob error
+                        }
+                    }
+                    if (error.response) {
+                        reject(error.response.data?.message || error.response.data?.error || error.response.data);
+                    } else {
+                        reject(error?.message || error);
+                    }
+                });
+        });
+        return promise;
+    },
+
+    import: (data: any) => {
+        let promise = new Promise((resolve, reject) => {
+            let url = `bulk-import/users?organization_id=3`;
+            const payload = data instanceof File ? (() => { const fd = new FormData(); fd.append("file", data); return fd; })() : data;
+            instance()
+                .post(url, payload)
+                .then((res) => {
+                    resolve(res.data);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        reject(error.response.data?.message || error.response.data);
+                    } else {
+                        reject(error);
+                    }
+                });
+        });
+        return promise;
+    },
+};
+
+export default user_import;
