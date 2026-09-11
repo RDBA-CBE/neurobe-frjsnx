@@ -4,6 +4,7 @@ import { FileText, X } from "lucide-react";
 interface PDFUploadDropzoneProps {
   onFileSelect?: (file: File) => void;
   label?: string;
+  existingFileUrl?: string | null;
 }
 
 const ACCEPTED_EXTENSIONS = [".pdf"];
@@ -12,12 +13,18 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
 const PDFUploadDropzone = ({ 
   onFileSelect, 
-  label = "Upload PDF Syllabus" 
+  label = "Upload PDF Syllabus",
+  existingFileUrl = null,
 }: PDFUploadDropzoneProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // derive display name from the existing URL (e.g. "uploads/syllabi/57b6ac45_sample.pdf" → "57b6ac45_sample.pdf")
+  const existingFileName = existingFileUrl
+    ? existingFileUrl.split("/").pop() || existingFileUrl
+    : null;
 
   const handleFile = (file: File) => {
     setError(null);
@@ -72,14 +79,14 @@ const PDFUploadDropzone = ({
 
       {/* Drop zone */}
       <div
-        onClick={() => !selectedFile && inputRef.current?.click()}
+        onClick={() => inputRef.current?.click()}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
         className={`relative flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 py-8 text-center transition-colors duration-200 ${
           isDragging
             ? "border-color2 bg-color2-l dark:bg-color2/10"
-            : selectedFile
+            : selectedFile || existingFileName
             ? "border-green-400 bg-green-50 dark:border-green-600 dark:bg-green-900/10"
             : error
             ? "border-red-400 bg-red-50 dark:border-red-600 dark:bg-red-900/10"
@@ -95,7 +102,7 @@ const PDFUploadDropzone = ({
         />
 
         {selectedFile ? (
-          /* ── File selected state ── */
+          /* ── New file selected ── */
           <div className="flex flex-col items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
               <FileText className="h-6 w-6 text-green-600 dark:text-green-400" />
@@ -118,6 +125,21 @@ const PDFUploadDropzone = ({
               <X className="h-3 w-3" />
               Remove
             </button>
+          </div>
+        ) : existingFileName ? (
+          /* ── Existing file from server ── */
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+              <FileText className="h-6 w-6 text-green-600 dark:text-green-400" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-[#000] dark:text-white">
+                {existingFileName}
+              </p>
+              <p className="mt-0.5 text-xs text-[#000] dark:text-[#000]">
+                Click to replace
+              </p>
+            </div>
           </div>
         ) : error ? (
           /* ── Error state ── */

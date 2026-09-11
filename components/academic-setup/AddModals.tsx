@@ -162,9 +162,11 @@ export interface CourseFormData {
   credits: number;
   total_theory_hours: number;
   total_lab_hours: number;
-  syllabus_file?: string;
+  syllabus_file?: File | null;
   regulation?: string;
   is_active?: boolean;
+  coordinator?: { value: number | string; label: string } | null;
+  instructors?: { value: number | string; label: string }[];
 }
 
 interface CourseModalProps {
@@ -211,6 +213,49 @@ export const CreateCourseModal = ({
     getCourseCoordinator();
     getCourseInstructor();
   }, [open]);
+
+  useEffect(() => {
+    if (open && initialData) {
+      setState({
+        code: initialData.course_code || "",
+        title: initialData.course_title || "",
+        department: initialData.department_id
+          ? { value: initialData.department_id, label: initialData.department_name || String(initialData.department_id) }
+          : null,
+        status: initialData.status
+          ? { value: initialData.status, label: initialData.status }
+          : { value: "Active", label: "Active" },
+        regulation: initialData.regulation || "R2023",
+        lecture: String(initialData.lecture_hours ?? "3"),
+        tutorial: String(initialData.tutorial_hours ?? "0"),
+        practical: String(initialData.practical_hours ?? "0"),
+        credits: String(initialData.credits ?? "0"),
+        theoryHours: String(initialData.total_theory_hours ?? "45"),
+        labHours: String(initialData.total_lab_hours ?? "0"),
+        coordinator: initialData.coordinator_id
+          ? { value: initialData.coordinator_id, label: initialData.coordinator_name || String(initialData.coordinator_id) }
+          : null,
+        syllabusFile: null,
+      });
+    } else if (open && !initialData) {
+      setState({
+        code: "",
+        title: "",
+        department: null,
+        status: { value: "Active", label: "Active" },
+        regulation: "R2023",
+        lecture: "3",
+        tutorial: "0",
+        practical: "0",
+        credits: "0",
+        theoryHours: "45",
+        labHours: "0",
+        coordinator: null,
+        instructor: [],
+        syllabusFile: null,
+      });
+    }
+  }, [open, initialData]);
 
   const getCourseCoordinator = async () => {
     try {
@@ -269,33 +314,39 @@ export const CreateCourseModal = ({
       Failure("Please select a department");
       return;
     }
-
-    const formData = new FormData();
-    formData.append("department_id", String(Number(state.department.value) || 0));
-    formData.append("course_code", state.code.trim());
-    formData.append("course_title", state.title.trim());
-    formData.append("status", state.status?.value || "Active");
-    formData.append("lecture_hours", String(Number(state.lecture) || 0));
-    formData.append("tutorial_hours", String(Number(state.tutorial) || 0));
-    formData.append("practical_hours", String(Number(state.practical) || 0));
-    formData.append("credits", String(Number(state.credits) || 0));
-    formData.append("total_theory_hours", String(Number(state.theoryHours) || 0));
-    formData.append("total_lab_hours", String(Number(state.labHours) || 0));
-    formData.append("regulation", state.regulation || "R2023");
-    formData.append("is_active", String((state.status?.value || "Active").toLowerCase() === "active"));
-
-    if (state.syllabusFile) {
-      formData.append("syllabus_file", state.syllabusFile);
+    if (!state.coordinator?.value) {
+      Failure("Please select a course coordinator");
+      return;
     }
 
-    onSubmit(formData as any);
+    const payload: CourseFormData = {
+      department_id: Number(state.department.value) || 0,
+      course_code: state.code.trim(),
+      course_title: state.title.trim(),
+      status: state.status?.value || "Active",
+      lecture_hours: Number(state.lecture) || 0,
+      tutorial_hours: Number(state.tutorial) || 0,
+      practical_hours: Number(state.practical) || 0,
+      credits: Number(state.credits) || 0,
+      total_theory_hours: Number(state.theoryHours) || 0,
+      total_lab_hours: Number(state.labHours) || 0,
+      regulation: state.regulation || "R2023",
+      is_active: (state.status?.value || "Active").toLowerCase() === "active",
+      syllabus_file: state.syllabusFile ?? null,
+      coordinator: state.coordinator ?? null,
+      instructors: state.instructor || [],
+    };
+
+    onSubmit(payload);
   };
 
-  const toggleInstructor = (name: string) => {
+  const toggleInstructor = (item: any) => {
+    const selected: any[] = state.instructor || [];
+    const exists = selected.some((i) => i.value === item.value);
     setState({
-      instructorList: (state.instructorList || []).includes(name)
-        ? (state.instructorList || []).filter((i) => i !== name)
-        : [...(state.instructorList || []), name],
+      instructor: exists
+        ? selected.filter((i) => i.value !== item.value)
+        : [...selected, item],
     });
   };
 
@@ -428,7 +479,7 @@ export const CreateCourseModal = ({
           <div className="grid grid-cols-2 gap-2">
 
             {state.instructorList?.map((name) => {
-              const checked = state.instructor.includes(name);
+            const checked = state.instructor.some((i: any) => i.value === name.value);
               return (
                 <button
                   key={name}
@@ -458,6 +509,7 @@ export const CreateCourseModal = ({
         <div className="mt-4">
           <PDFUploadDropzone
             label="Course Syllabus (PDF)"
+            existingFileUrl={initialData?.syllabus_file || null}
             onFileSelect={(file) => setState({ syllabusFile: file })}
           />
         </div>
@@ -512,6 +564,7 @@ export const CreateDepartmentModal = ({
   onSubmit,
   submitting = false,
 }: DeptModalProps) => {
+  console.log("initialData",initialData)
   const isEdit = !!initialData;
   const [state, setState] = useSetState({
     code: "",

@@ -3,7 +3,7 @@ import instance from '@/utils/axios.utils';
 const stats = {
     academic_setup: () => {
         let promise = new Promise((resolve, reject) => {
-            let url = `stats`;    
+            let url = `org/stats/stats`;    
             instance()
                 .get(url)
                 .then((res) => {

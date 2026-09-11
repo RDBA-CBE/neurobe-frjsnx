@@ -6,6 +6,7 @@ import course from "@/models/course.model";
 import test from "@/models/test.model";
 import stats from "@/models/stat.models";
 import users from "@/models/users.model";
+import course_instance from "@/models/course_instance.model";
 
 export const Models = {
   test,
@@ -16,6 +17,7 @@ export const Models = {
   batch: batches,
   batches,
   course,
+  course_instance,
   stats,
   users
 };
