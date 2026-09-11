@@ -185,6 +185,8 @@ const AcademicSetup = () => {
   const statCount = async () =>{
     try {
       const res = await Models.stats.academic_setup()
+      
+      console.log("res",res)
       setState({
         statCount : res
       })
@@ -372,6 +374,7 @@ const AcademicSetup = () => {
   };
 
   const handleSaveCourse = async (formData: any) => {
+    console.log("formData",formData)
     try {
       setState({ submitting: true });
 
@@ -392,13 +395,13 @@ const AcademicSetup = () => {
         is_active: formData.is_active !== undefined ? formData.is_active : true,
       };
 
-      if (state.editRow?.id) {
-        await Models.course.update(state.editRow.id, body);
-        Success("Course updated successfully");
-      } else {
-        await Models.course.create(body);
-        Success("Course created successfully");
-      }
+      // if (state.editRow?.id) {
+      //   await Models.course.update(state.editRow.id, body);
+      //   Success("Course updated successfully");
+      // } else {
+      //   await Models.course.create(body);
+      //   Success("Course created successfully");
+      // }
 
       closeModal();
       getCourseList();
