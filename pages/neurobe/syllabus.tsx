@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { setPageTitle } from "@/store/themeConfigSlice";
-import { Dropdown, useSetState } from "@/utils/function.utils";
+import { Dropdown, Success, useSetState } from "@/utils/function.utils";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import PrivateRouter from "@/hook/privateRouter";
 import CourseBanner from "@/components/academic-setup/CourseBanner";
@@ -33,8 +33,9 @@ const Syllabus = () => {
   const searchParams = useSearchParams();
   const course_id = searchParams.get("course_id");
 
-  const stepKey = `syllabus_step_${course_id ?? "default"}`;
-  const jobKey = `syllabus_job_${course_id ?? "default"}`;
+  const stepKey     = `syllabus_step_${course_id ?? "default"}`;
+  const jobKey      = `syllabus_job_${course_id ?? "default"}`;
+  const syllabusKey = `syllabus_id_${course_id ?? "default"}`;
 
   const getSavedStep = () => {
     try {
@@ -49,10 +50,26 @@ const Syllabus = () => {
     try { return sessionStorage.getItem(jobKey) || null; } catch { return null; }
   };
 
+  const getSavedSyllabusId = () => {
+    try { return sessionStorage.getItem(syllabusKey) || null; } catch { return null; }
+  };
+
   const setStep = (step: number) => {
     try { sessionStorage.setItem(stepKey, String(step)); } catch { }
     setState({ currentStep: step });
   };
+
+  const pollRef = useRef<NodeJS.Timeout | null>(null);
+
+  const stopPolling = () => {
+    if (pollRef.current) {
+      clearInterval(pollRef.current);
+      pollRef.current = null;
+    }
+  };
+
+  // clear poll on unmount
+  useEffect(() => () => stopPolling(), []);
 
   const [state, setState] = useSetState({
     importType: "user" as ImportType,
@@ -62,6 +79,7 @@ const Syllabus = () => {
     activeTab: "coordinator",
     courseData: null as any,
     jobData: null as any,
+    syllabusData: null as any,
     course_list: [],
     keep_file: false
   });
@@ -79,6 +97,17 @@ const Syllabus = () => {
       if (savedJobId && getSavedStep() >= 3) {
         job_Data(savedJobId);
       }
+      // restore syllabus detail on refresh if step >= 3
+      const savedSyllabusId = getSavedSyllabusId();
+      if (savedSyllabusId && getSavedStep() >= 3) {
+        syllabus_detail(savedSyllabusId);
+
+      }
+      console.log("savedSyllabusId →", savedSyllabusId);
+
+      if(savedSyllabusId){
+        syllabus_status(savedSyllabusId)
+      }
     }
   }, [course_id]);
 
@@ -91,6 +120,8 @@ const Syllabus = () => {
       console.log("error", error);
     }
   };
+
+  
 
   const coordinator_course_data = async () => {
     try {
@@ -148,8 +179,13 @@ const Syllabus = () => {
 
       const res: any = await Models.syllabus.create(formData)
       console.log("res", res);
+      
       if (res?.job_id) {
         try { sessionStorage.setItem(jobKey, String(res.job_id)); } catch { }
+        // persist syllabus_id from the create response
+        if (res?.syllabus_id) {
+          try { sessionStorage.setItem(syllabusKey, String(res.syllabus_id)); } catch { }
+        }
         job_Data(res.job_id);
       }
 
@@ -162,16 +198,81 @@ const Syllabus = () => {
   }
 
   const job_Data = async (id: string | number) => {
+    // stop any existing poll before starting a new one
+    stopPolling();
+
+    const fetchOnce = async () => {
+      try {
+        const res: any = await Models.job.detail(id);
+        console.log("job_Data", res);
+        setState({ jobData: res });
+        setStep(3);
+
+        const status = res?.status ?? res?.state?.live_redis_status;
+        if (status === "complete" || status === "completed" || status === "failed") {
+          stopPolling();
+        }
+      } catch (error) {
+        console.log("job_Data error", error);
+        stopPolling();
+      }
+    };
+
+    // call immediately, then every 3 seconds
+    await fetchOnce();
+    pollRef.current = setInterval(fetchOnce, 3000);
+  };
+
+  const syllabus_detail = async (id: string | number) => {
     try {
-      const res = await Models.job.detail(id);
-      console.log("job_Data", res);
-      setState({ jobData: res });
-      setStep(3);
+      const res: any = await Models.syllabus.detail(id);
+      console.log("syllabus_detail →", res);
+      setState({ syllabusData: res });
     } catch (error) {
-      console.log("error", error);
+      console.log("syllabus_detail error", error);
     }
   };
 
+  const handleAddTopic = async (unitNumber: number, body: { topic_code: string; topic_name: string,learning_sequence:6 }) => {
+    try {
+      console.log("unitNumber →", unitNumber);
+
+      const res = await Models.syllabus.create_unit_topic(unitNumber, body);
+      console.log('res', res);
+      Success("Topics added");
+      console.log("create_unit_topic →", res);
+      const savedJobId = getSavedJobId();
+      if (savedJobId) job_Data(savedJobId);
+    } catch (error: any) {
+      console.log("create_unit_topic error", error);
+      throw error;
+    }
+  };
+
+
+  
+
+   const onDeleteTopic = async (id: string | number) => {
+    try {
+      const res = await Models.syllabus.delete_unit_topic(id);
+      Success("Topics deleted")
+
+      console.log("syllabus_status →", res);
+    } catch (error) {
+      console.log("syllabus_detail error", error);
+    }
+  };
+
+    const syllabus_status = async (id: string | number) => {
+    try {
+      const res: any = await Models.syllabus.status(id);
+      console.log("syllabus_status →", res);
+    } catch (error) {
+      console.log("syllabus_detail error", error);
+    }
+  };
+
+  
   return (
     <div className="min-h-screen">
       <CourseBanner
@@ -247,7 +348,11 @@ const Syllabus = () => {
             {!state.showReview ? (
               <ExtractionComplete
                 fileName={state.selectedFile?.name}
-                onReview={() => setState({ showReview: true })}
+                onReview={() => {
+                  const savedSyllabusId = getSavedSyllabusId();
+                  if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+                  setState({ showReview: true });
+                }}
                 progress={50}
               />
             ) : (
@@ -279,7 +384,7 @@ const Syllabus = () => {
                     />
                   </div>
                   <div className="min-h-0 overflow-hidden">
-                    <ExtractedDataPanel />
+                    <ExtractedDataPanel data={state.jobData?.result} courseData={state.courseData} onAddTopic={handleAddTopic}  onDeleteTopic={onDeleteTopic}/>
                   </div>
                 </div>
               </>

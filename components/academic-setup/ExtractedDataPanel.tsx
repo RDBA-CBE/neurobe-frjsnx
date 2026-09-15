@@ -16,7 +16,10 @@ const KNOWLEDGE_OPTIONS = [
   { value: "K6", label: "K6 Create" },
 ];
 
-const ExtractedDataPanel = () => {
+const ExtractedDataPanel = (props) => {
+  const { data, courseData, onAddTopic,onDeleteTopic } = props;
+  console.log('data',data)
+
   const [activeTab, setActiveTab] = useState("All Fields");
   const [courseCode, setCourseCode] = useState("CS309");
   const [courseTitle, setCourseTitle] = useState("Computer Networks");
@@ -91,20 +94,20 @@ const ExtractedDataPanel = () => {
           <div className="mb-4 grid grid-cols-2 gap-4">
             <div>
               <label className="mb-1 block text-xs text-pri">Course Code:</label>
-              <input value={courseCode} onChange={(e) => setCourseCode(e.target.value)}
+              <input value={courseData?.course_code} onChange={(e) => setCourseCode(e.target.value)}
               disabled
                 className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
             </div>
             <div>
               <label className="mb-1 block text-xs text-pri">Course Title:</label>
               <input
-              disabled value={courseTitle} onChange={(e) => setCourseTitle(e.target.value)}
+              disabled value={courseData?.course_title} onChange={(e) => setCourseTitle(e.target.value)}
                 className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
             </div>
           </div>
 
           <div className="mb-4 grid grid-cols-4 gap-3">
-            {[["Lecture (L):", L, setL], ["Tutorial (T):", T, setT], ["Practical (P):", P, setP], ["Credits (C):", C, setC]].map(([label, val, setter]: any) => (
+            {[["Lecture (L):", courseData?.lecture_hours, setL], ["Tutorial (T):", courseData?.tutorial_hours, setT], ["Practical (P):", courseData?.practical_hours, setP], ["Credits (C):", courseData?.credits, setC]].map(([label, val, setter]: any) => (
               <div key={label}>
                 <label className="mb-1 block text-xs text-pri">{label}</label>
                 <input disabled value={val} onChange={(e) => setter(e.target.value)}
@@ -114,8 +117,10 @@ const ExtractedDataPanel = () => {
           </div>
 
           <div className="flex items-center justify-between text-sm text-pri">
-            <span>Theory Hours: <strong className="text-[#000] dark:text-gray-200">45 hrs</strong> (45 periods) &nbsp; Lab Hours: <strong className="text-[#000] dark:text-gray-200">30 hrs</strong> (30 periods)</span>
-            <span className="text-md font-bold text-color2">Total Contact: 75 hrs</span>
+            <span>Theory Hours: <strong className="text-[#000] dark:text-gray-200">{courseData?.total_theory_hours} hrs
+              </strong>
+               &nbsp; Lab Hours: <strong className="text-[#000] dark:text-gray-200">{courseData?.total_lab_hours} hrs</strong></span>
+            <span className="text-md font-bold text-color2">Total Contact: {data?.course_data?.totalHours} hrs</span>
           </div>
         </div>
 
@@ -126,7 +131,7 @@ const ExtractedDataPanel = () => {
 
         {/* Section 3 — Unit Titles, Hours & Topics */}
         <div ref={sectionRefs["Units & Topics"]}>
-          <UnitTopics />
+          <UnitTopics data={data?.course_data?.units} onAddTopic={onAddTopic} onDeleteTopic={onDeleteTopic} />
         </div>
 
         {/* Section 4 — Lab Experiments */}
@@ -135,7 +140,7 @@ const ExtractedDataPanel = () => {
         </div>
 
         {/* Section 5 — Prescribed Textbooks */}
-        <PrescribedTextbooks />
+        <PrescribedTextbooks textBooks={data?.course_data?.textBooks} reference={data?.course_data?.references} />
 
       </div>
     </div>

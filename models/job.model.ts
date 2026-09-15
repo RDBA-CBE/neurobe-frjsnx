@@ -1,11 +1,11 @@
-import instance from '@/utils/axios.utils';
+import {commonInstance} from '@/utils/axios.utils';
 
 const job = {
     
     detail: (id: any) => {
         let promise = new Promise((resolve, reject) => {
-            let url = `jobs/${id}`;
-            instance()
+            let url = `course/syllabi/jobs/${id}`;
+            commonInstance()
                 .get(url)
                 .then((res) => {
                     resolve(res.data);
@@ -22,7 +22,6 @@ const job = {
     },
 
    
-
 
 
 

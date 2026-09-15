@@ -10,7 +10,7 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
-import { Success, useSetState } from "@/utils/function.utils";
+import { Dropdown, Success, useSetState } from "@/utils/function.utils";
 import TableComponent from "@/components/common-components/TableComponent";
 import PrivateRouter from "@/hook/privateRouter";
 import CourseBanner from "@/components/academic-setup/CourseBanner";
@@ -34,6 +34,7 @@ import AIGenerateModal from "@/components/common-components/AIGenerateModal";
 import TextArea from "@/components/FormFields/TextArea.component";
 import CheckboxInput from "@/components/FormFields/CheckBoxInput.component";
 import PageHeader from "@/components/common-components/PageHeader";
+import Models from "@/imports/models.import";
 
 const STAT_TABS = [
   {
@@ -313,6 +314,75 @@ const LearningMeterials = () => {
     dispatch(setPageTitle("Lesson Plan"));
   }, [dispatch]);
 
+    useEffect(() => {
+    material_data()
+    course_data()
+    coordinator_course_data()
+  }, []);
+
+
+   const material_data = async () => {
+      try {
+  
+        const res:any = await Models.learning_material.detail(9, 1);
+        const data = [{
+          key: "total-topics",
+          label: " Total Topics",
+          count: res?.metrics?.topics?.value,
+          subLabel: "Approved curriculum count",
+          icon: <Check className="h-5 w-5" />,
+        },
+        {
+          key: "total-hours",
+          label: "Total Hours",
+          subLabel: "Allocated semester teaching time",
+          count: res?.metrics?.contact_hours?.value,
+  
+          icon: <Hourglass className="h-5 w-5" />,
+        },
+        {
+          key: "reviewed",
+          label: "Reviewed",
+          subLabel: "Lesson Plan Review",
+          count: res?.metrics?.lesson_plan_review?.reviewed_count,
+  
+          icon: <ClipboardCheck className="h-5 w-5" />,
+        }]
+        setState({ lession_data: res,matrix:data });
+  
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+  
+      const course_data = async () => {
+        try {
+          const res = await Models.course.detail(48);
+          setState({ courseData: res });
+          console.log("course detail →", res);
+        } catch (error) {
+          console.log("error", error);
+        }
+      };
+    
+      const coordinator_course_data = async () => {
+        try {
+          const user = localStorage.getItem("user")
+          const u = JSON.parse(user);
+          const body = {
+            coordinator_id: u?.id
+          }
+          const res = await Models.course.list(body);
+          const dropdown = Dropdown(res, "course_code")
+          // setState({ courseData: res });
+          console.log("coordinator_course_data detail →", dropdown);
+          setState({ course_list: dropdown })
+        } catch (error) {
+          console.log("error", error);
+        }
+      };
+  
+
   const raw = RAW_UNIT_DATA[state.activeTab];
 
   // modal state
@@ -530,28 +600,26 @@ const LearningMeterials = () => {
 
   return (
     <div className="min-h-screen">
-      <CourseBanner
-        courseCode="CS301"
-        courseTitle="Computer Networks"
-        description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
-        programme="B.Tech CSE"
-        batch="2025–2029"
-        academicYear="2026–2027 / Semester 3"
-        students="40 Students"
-        selectedCourse="CS309"
-        courseOptions={[
-          { value: "CS309", label: "Course: CS309" },
-          { value: "CS301", label: "Course: CS301" },
-        ]}
-        onCourseChange={(val) => console.log("course", val)}
-        activeView={state.activeBannerTab}
-        onBack={() => console.log("back")}
-        onViewChange={(view) => setState({ activeBannerTab: view })}
-      />
+       <CourseBanner
+         courseCode={state.courseData?.course_code || ""}
+           courseTitle={state.courseData?.course_title || ""}
+           description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
+           programme={state.courseData?.programme || ""}
+           batch={state.courseData?.batch_name || ""}
+           academicYear={state.courseData?.academic_year || ""}
+           students={`${state.courseData?.students_count ?? 0} Students`}
+           selectedCourse={state.courseData?.course_code || ""}
+           courseOptions={state.course_list}
+           onCourseChange={(val) => console.log("course", val)}
+           activeView={state.activeTab}
+           onBack={() => router.back()}
+           onViewChange={(view) => setState({ activeTab: view })}
+         />
 
       <PageHeader
          title="Learning Materials"
-        records="CS309 — Computer Networks"
+               records={`${state.courseData?.course_code} - ${state.courseData?.course_title}`}
+
         subtitle={`Generate, review, edit, and approve learning materials for approved course topics.`}
        
         icon={<GraduationCap className="h-5 w-5 text-color2" />}

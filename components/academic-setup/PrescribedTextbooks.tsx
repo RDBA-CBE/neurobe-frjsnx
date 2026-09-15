@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Trash2, Plus, X } from "lucide-react";
 
 interface Book {
@@ -7,19 +7,28 @@ interface Book {
   authors: string;
   edition: string;
   publisher: string;
+  publicationYear?: number;
 }
 
+interface ApiBook {
+  id: number;
+  title: string;
+  authors: string | string[];
+  edition?: string;
+  publisher?: string;
+  publicationYear?: number;
+}
+
+const toBook = (b: ApiBook): Book => ({
+  id: b.id,
+  title: b.title || "",
+  authors: Array.isArray(b.authors) ? b.authors.join(", ") : (b.authors || ""),
+  edition: b.edition || "",
+  publisher: b.publisher || "",
+  publicationYear: b.publicationYear,
+});
+
 const EMPTY_BOOK = { title: "", authors: "", edition: "", publisher: "" };
-
-const INITIAL_TEXTBOOKS: Book[] = [
-  { id: 1, title: "Computer Networks", authors: "Andrew S. Tanenbaum, David J. Wetherall", edition: "5th Edition", publisher: "Pearson Education, 2013" },
-  { id: 2, title: "Computer Networking: A Top-Down Approach", authors: "James F. Kurose, Keith W. Ross", edition: "7th Edition", publisher: "Pearson, 2017" },
-];
-
-const INITIAL_REFERENCES: Book[] = [
-  { id: 1, title: "Data Communications and Networking", authors: "Behrouz A. Forouzan", edition: "", publisher: "" },
-  { id: 2, title: "TCP/IP Illustrated, Volume 1: The Protocols", authors: "W. Richard Stevens, Kevin R. Fall", edition: "", publisher: "" },
-];
 
 const TEXTBOOK_FIELDS = [
   { key: "title" as const, label: "Title" },
@@ -84,7 +93,7 @@ const BookCard = ({
       <span className={`rounded-md px-2.5 py-0.5 text-sm font-semibold ${labelClass}`}>{label}</span>
       <button onClick={onDelete} className="text-gray-400 hover:text-red-500"><Trash2 className="h-4 w-4" /></button>
     </div>
-    <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3">
       <div>
         <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#000]">Title</label>
         <input value={book.title} onChange={(e) => onChange("title", e.target.value)}
@@ -99,7 +108,7 @@ const BookCard = ({
         <>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#000]">Edition / Year</label>
-            <input value={book.edition} onChange={(e) => onChange("edition", e.target.value)}
+            <input value={book.edition ? `${book.edition}${book.publicationYear ? ` (${book.publicationYear})` : ""}` : ""} onChange={(e) => onChange("edition", e.target.value)}
               className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-[#000] outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
           </div>
           <div>
@@ -113,18 +122,30 @@ const BookCard = ({
   </div>
 );
 
-const PrescribedTextbooks = () => {
-  const [textbooks, setTextbooks] = useState<Book[]>(INITIAL_TEXTBOOKS);
-  const [references, setReferences] = useState<Book[]>(INITIAL_REFERENCES);
+const PrescribedTextbooks = (props) => {
+  const { textBooks, reference,onDeleteBook,onAddBook,onAddReference,onDeleteReference } = props;
+
+  const [textbooks, setTextbooks] = useState<Book[]>([]);
+  const [references, setReferences] = useState<Book[]>([]);
   const [showTextbookModal, setShowTextbookModal] = useState(false);
   const [showRefModal, setShowRefModal] = useState(false);
   const [form, setForm] = useState({ ...EMPTY_BOOK });
 
+  useEffect(() => {
+    if (textBooks?.length) setTextbooks(textBooks.map(toBook));
+  }, [textBooks]);
+
+  useEffect(() => {
+    if (reference?.length) setReferences(reference.map(toBook));
+  }, [reference]);
+
   const updateBook = (list: Book[], setList: any, id: number, field: keyof Book, value: string) =>
     setList(list.map((b: Book) => (b.id === id ? { ...b, [field]: value } : b)));
 
-  const deleteBook = (list: Book[], setList: any, id: number) =>
+  const deleteBook = (list: Book[], setList: any, id: number) =>{
+    onDeleteBook(id)
     setList(list.filter((b: Book) => b.id !== id));
+    }
 
   const openModal = (type: "textbook" | "ref") => {
     setForm({ ...EMPTY_BOOK });
@@ -132,11 +153,14 @@ const PrescribedTextbooks = () => {
   };
 
   const submitTextbook = () => {
+    onAddBook(form)
     setTextbooks((prev) => [...prev, { id: prev.length + 1, ...form }]);
     setShowTextbookModal(false);
   };
 
   const submitReference = () => {
+    onAddReference(form)
+
     setReferences((prev) => [...prev, { id: prev.length + 1, ...form }]);
     setShowRefModal(false);
   };
