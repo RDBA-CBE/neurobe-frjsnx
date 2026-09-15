@@ -14,9 +14,18 @@ import {
   Sparkles,
 } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
-import { useSetState, Success } from "@/utils/function.utils";
+import { useSetState, Success, Failure, Dropdown } from "@/utils/function.utils";
 import PrivateRouter from "@/hook/privateRouter";
 import CourseBanner from "@/components/academic-setup/CourseBanner";
+
+const getErrorMessage = (error: any, fallback: string) => {
+  if (!error) return fallback;
+  if (typeof error === "string") return error;
+  if (typeof error?.message === "string") return error.message;
+  if (typeof error?.detail === "string") return error.detail;
+  if (typeof error?.error === "string") return error.error;
+  return fallback;
+};
 import StepHeader from "@/components/academic-setup/StepHeader";
 import StatTabCard from "@/components/academic-setup/StatTabCard";
 import TableTitle from "@/components/common-components/TableTitle";
@@ -24,9 +33,10 @@ import GenericTabs from "@/components/common-components/GenericTabs";
 import AccordiansStyle from "@/components/common-components/AccordiansStyle";
 import PageFooter from "@/components/common-components/PageFooter";
 import AddTopicModal from "@/components/academic-setup/AddTopicModal";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { UNIT_TABS } from "@/utils/constant.utils";
 import PageHeader from "@/components/common-components/PageHeader";
+import Models from "@/imports/models.import";
 
 // ─── Raw unit data ─────────────────────────────────────────────────────────────
 
@@ -248,11 +258,11 @@ const GENERATE_STEPS = [
   },
 ];
 
-const totalTopics = UNIT_TABS.reduce((a, b) => a + b.count, 0);
-const totalUnits = UNIT_TABS.length;
+const fallbackTotalTopics = UNIT_TABS.reduce((a, b) => a + b.count, 0);
+const fallbackTotalUnits = UNIT_TABS.length;
 
 // count all subtopics across all units
-const totalSubtopics = Object.values(RAW_UNIT_DATA).reduce(
+const fallbackTotalSubtopics = Object.values(RAW_UNIT_DATA).reduce(
   (s, u) => s + u.topics.reduce((ts, t) => ts + t.subtopics.length, 0),
   0,
 );
@@ -265,12 +275,26 @@ const Topics = () => {
 
   const [state, setState] = useSetState({
     activeTab: "unit-1",
+    activeUnitNumber: 1,
+    activeStatTab: "total-topics",
     topicsGenerated: false,
     approvedCount: 0,
     topicsApproved: false,
     showGenerateModal: false,
     activeBannerTab: "coordinator",
+    selectedCourse: null,
+    courseDetail: null as any,
+    courseList: [] as any[],
+    organization_id: "",
+    coordinator_id: "",
+    isCourseCoordinator: false,
+    unitsList: [] as any[],
+    unitDetailsMap: {} as Record<number, any>,
+    loadingUnits: false,
+    loadingUnitDetail: false,
   });
+
+  const course_id = useSearchParams().get("course_id");
 
   // per-unit accepted (approved) subtopic IDs
   const [approvedMap, setApprovedMap] = useState<Record<string, Set<string>>>(() =>
@@ -292,12 +316,247 @@ const Topics = () => {
     dispatch(setPageTitle("Topics"));
   }, [dispatch]);
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (user?.role === "course_coordinator") {
+      setState({
+        isCourseCoordinator: true,
+        coordinator_id: user.id,
+      });
+    }
+    setState({
+      organization_id: user?.organization_id,
+    });
+    if (user?.organization_id) {
+      getAllCourse(user.organization_id);
+    } else {
+      getAllCourse();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (course_id) {
+      getCourseDetails();
+    } else {
+      getUnits(1);
+    }
+  }, [course_id]);
+
+  // "API Integration"
+  const getAllCourse = async (orgId?: any) => {
+    try {
+      const targetOrg = orgId || state?.organization_id;
+      const res: any = await Models.course.list(targetOrg ? { organization_id: targetOrg } : {});
+      const dropdown = Dropdown(res, "course_title");
+      setState({
+        courseList: dropdown,
+      });
+      if (!course_id && res && res.length > 0) {
+        const firstCourse = res[0];
+        getCourseDetails(firstCourse.id);
+      }
+    } catch (error: any) {
+      console.log("error fetching course list", error);
+      Failure(getErrorMessage(error, "Failed to fetch course list"));
+    }
+  };
+
+  const getCourseDetails = async (targetCourseId?: any) => {
+    const cid = targetCourseId || course_id;
+    if (!cid) return;
+    try {
+      const res: any = await Models.course.detail(cid);
+      setState({
+        courseDetail: res,
+        selectedCourse: res ? { value: res.id, label: `${res.course_code} - ${res.course_title}` } : null,
+      });
+      const sid = res?.syllabus_id || res?.syllabus?.id || 1;
+      getUnits(sid);
+    } catch (error: any) {
+      console.log("error fetching course detail", error);
+      Failure(getErrorMessage(error, "Failed to fetch course detail"));
+      getUnits(1);
+    }
+  };
+
+  const getUnits = async (syllabusId?: any) => {
+    const sid = syllabusId || state.courseDetail?.syllabus_id || 1;
+    try {
+      setState({ loadingUnits: true });
+      const res: any = await Models.topics.units(sid);
+      const unitsData = Array.isArray(res) ? res : res?.data || [];
+      if (unitsData && unitsData.length > 0) {
+        const initialUnit = unitsData[0];
+        const initialUnitNum = initialUnit.unit_number || 1;
+        const initialTabKey = `unit-${initialUnitNum}`;
+
+        setState({
+          unitsList: unitsData,
+          activeTab: initialTabKey,
+          activeUnitNumber: initialUnitNum,
+          loadingUnits: false,
+        });
+
+        getUnitDetail(sid, initialUnitNum);
+      } else {
+        setState({ loadingUnits: false });
+        getUnitDetail(sid, 1);
+      }
+    } catch (error: any) {
+      console.log("error fetching units", error);
+      setState({ loadingUnits: false });
+      Failure(getErrorMessage(error, "Failed to fetch syllabus units"));
+    }
+  };
+
+  const getUnitDetail = async (syllabusId?: any, unitNumber?: any) => {
+    const sid = syllabusId || state.courseDetail?.syllabus_id || state.unitsList?.[0]?.syllabus_id || 1;
+    const uNum = unitNumber ?? state.activeUnitNumber ?? 1;
+    try {
+      setState({ loadingUnitDetail: true });
+      const res: any = await Models.topics.unit_detail(sid, uNum);
+      const data = res?.data || res;
+      setState((prev: any) => ({
+        loadingUnitDetail: false,
+        unitDetailsMap: {
+          ...(prev.unitDetailsMap || {}),
+          [uNum]: data,
+        },
+      }));
+    } catch (error: any) {
+      console.log("error fetching unit detail", error);
+      setState({ loadingUnitDetail: false });
+      Failure(getErrorMessage(error, `Failed to fetch Unit ${uNum} details`));
+    }
+  };
+
+  const handleTabChange = (tabKey: string | number) => {
+    const keyStr = String(tabKey);
+    const selectedUnit = state.unitsList?.find(
+      (u: any) => `unit-${u.unit_number}` === keyStr || String(u.unit_number) === keyStr
+    );
+    const unitNum = selectedUnit?.unit_number ?? (Number(keyStr.replace("unit-", "")) || 1);
+
+    setState({
+      activeTab: keyStr,
+      activeUnitNumber: unitNum,
+    });
+
+    const sid = state.courseDetail?.syllabus_id || state.unitsList?.[0]?.syllabus_id || 1;
+    getUnitDetail(sid, unitNum);
+  };
+
+  const unitsList = state.unitsList && state.unitsList.length > 0 ? state.unitsList : [];
+  const totalUnits = unitsList.length > 0 ? unitsList.length : fallbackTotalUnits;
+  const totalTopics = unitsList.length > 0
+    ? unitsList.reduce((acc: number, u: any) => acc + (u.topics?.length || 0), 0)
+    : fallbackTotalTopics;
+
+  const unitTabs = unitsList.map((u: any) => {
+        const detailTopics = state.unitDetailsMap?.[u.unit_number]?.topics;
+        const count = Array.isArray(detailTopics)
+          ? detailTopics.length
+          : (u.topics?.length || 0);
+        return {
+          key: `unit-${u.unit_number}`,
+          label: `Unit ${u.unit_number}`,
+          count,
+        };
+      })
+    ;
+
+  const totalContactHours =
+    unitsList.length > 0
+      ? unitsList.reduce((acc: number, u: any) => acc + (u.theory_hours || 0) + (u.lab_hours || 0), 0)
+      : 45;
+
+  const activeUnitNum = state.activeUnitNumber || Number(String(state.activeTab).replace("unit-", "")) || 1;
+
+  const activeUnitFromList = state.unitsList?.find(
+    (u: any) => u.unit_number === activeUnitNum || `unit-${u.unit_number}` === state.activeTab
+  );
+
+  const activeUnitDetail = state.unitDetailsMap?.[activeUnitNum];
+
   const raw = RAW_UNIT_DATA[state.activeTab];
 
-  const approvedInUnit = approvedMap[state.activeTab] ?? new Set<string>();
+  const getUnitTitleText = () => {
+    const rawTitle =
+      activeUnitDetail?.unit_title ||
+      activeUnitDetail?.title ||
+      activeUnitDetail?.unit?.unit_title ||
+      activeUnitFromList?.unit_title;
 
+    if (!rawTitle) return raw?.title || `Unit ${activeUnitNum}`;
+    if (rawTitle.toLowerCase().startsWith("unit")) {
+      return rawTitle;
+    }
+    return `Unit ${activeUnitNum} — ${rawTitle}`;
+  };
+
+  const currentUnitTitle = getUnitTitleText();
+
+  let apiTopics: any[] | null = null;
+  if (activeUnitDetail) {
+    if (Array.isArray(activeUnitDetail)) {
+      apiTopics = activeUnitDetail;
+    } else if (Array.isArray(activeUnitDetail.topics)) {
+      apiTopics = activeUnitDetail.topics;
+    } else if (Array.isArray(activeUnitDetail.data?.topics)) {
+      apiTopics = activeUnitDetail.data.topics;
+    } else if (Array.isArray(activeUnitDetail.data)) {
+      apiTopics = activeUnitDetail.data;
+    } else if (Array.isArray(activeUnitDetail.workspace?.topics)) {
+      apiTopics = activeUnitDetail.workspace.topics;
+    }
+  }
+  if (!apiTopics || apiTopics.length === 0) {
+    if (Array.isArray(activeUnitFromList?.topics) && activeUnitFromList.topics.length > 0) {
+      apiTopics = activeUnitFromList.topics;
+    }
+  }
+
+  const computedTotalSubtopics =  unitsList.reduce((acc: number, u: any) => {
+        const topicsArr = state.unitDetailsMap?.[u.unit_number]?.topics || u.topics || [];
+        const subsCount = topicsArr.reduce((sAcc: number, t: any) => sAcc + (t.subtopics?.length || 2), 0);
+        return acc + subsCount;
+      }, 0)
+    
+
+  const approvedInUnit = approvedMap[state.activeTab] ?? new Set<string>();
   const totalApproved = Object.values(approvedMap).reduce((s, set) => s + set.size, 0);
-  const allApproved = totalApproved >= totalSubtopics;
+  const allApproved = totalApproved >= computedTotalSubtopics;
+
+  const statTabs = [
+    {
+      key: "total-topics",
+      label: "Total Topics",
+      subLabel: "Across all units",
+      count: totalTopics,
+      icon: <BookOpen className="h-5 w-5" />,
+    },
+    {
+      key: "approved",
+      label: "Approved Topics",
+      subLabel: "Ready for lesson plan",
+      count: totalApproved,
+      icon: <CheckCircle2 className="h-5 w-5" />,
+    },
+    {
+      key: "needs-review",
+      label: "Needs Review",
+      subLabel: "Pending approval",
+      count: Math.max(0, computedTotalSubtopics - totalApproved),
+      icon: <Hourglass className="h-5 w-5" />,
+    },
+    {
+      key: "contact-hours",
+      label: "Contact Hours",
+      subLabel: "Total teaching hours",
+      count: totalContactHours,
+      icon: <Clock className="h-5 w-5" />,
+    },
+  ];
 
   const toggleApprove = (unitKey: string, subId: string) => {
     setApprovedMap((prev) => {
@@ -312,34 +571,90 @@ const Topics = () => {
 
   // ── Pre-generate: plain topic rows with level + hours badges ─────────────────
   const buildInitialTopics = () => {
-    if (!raw) return [];
-    return raw.topics.map((topic) => ({
-      id: `${state.activeTab}-${topic.id}`,
-      title: topic.title,
-      collapsedBadge: [
-        { label: topic.level, className: "bg-color2-l text-color2 font-bold" },
-        { label: topic.hours, className: "bg-gray-200 text-pri font-bold" },
-      ],
-      items: [],
-    }));
+    if (apiTopics && apiTopics.length > 0) {
+      return apiTopics.map((topic: any, idx: number) => {
+        const topicId = topic.id || topic.topic_code || `${idx + 1}`;
+        const topicName = topic.topic_name || topic.title || topic.topic_description || "Topic";
+        const displayTitle = topic.topic_code && !topicName.startsWith(topic.topic_code)
+          ? `${topic.topic_code} — ${topicName}`
+          : topicName;
+
+        const levelBadge =
+          topic.level ||
+          (topic.knowledge_level ? `Knowledge Level ${topic.knowledge_level}` : null) ||
+          (topic.learning_sequence ? `Sequence: ${topic.learning_sequence}` : "Knowledge Level K2");
+
+        const avgHours = activeUnitFromList?.theory_hours
+          ? `${Math.round((activeUnitFromList.theory_hours / (apiTopics?.length || 1)) * 10) / 10} Hours`
+          : "2 Hours";
+        const hoursBadge = topic.hours || (topic.theory_hours ? `${topic.theory_hours} Hours` : avgHours);
+
+        return {
+          id: `${state.activeTab}-${topicId}`,
+          title: displayTitle,
+          collapsedBadge: [
+            { label: levelBadge, className: "bg-color2-l text-color2 font-bold" },
+            { label: hoursBadge, className: "bg-gray-200 text-pri font-bold" },
+          ],
+          items: [],
+        };
+      });
+    }
+
+    // if (apiTopics.length <== 0) return [];
+    // return raw.topics.map((topic) => ({
+    //   id: `${state.activeTab}-${topic.id}`,
+    //   title: topic.title,
+    //   collapsedBadge: [
+    //     { label: topic.level, className: "bg-color2-l text-color2 font-bold" },
+    //     { label: topic.hours, className: "bg-gray-200 text-pri font-bold" },
+    //   ],
+    //   items: [],
+    // }));
   };
 
   // ── Post-generate: expandable topics with subtopic items ─────────────────────
   const buildGeneratedTopics = () => {
-    if (!raw) return [];
-    return raw.topics.map((topic) => {
-      const items = topic.subtopics.map((sub, idx) => {
-        const isApproved = approvedInUnit.has(sub.id);
+    const sourceTopics =  apiTopics ;
+    return sourceTopics.map((topic: any, tIdx: number) => {
+      const topicId = topic.id || topic.topic_code || `${tIdx + 1}`;
+      const topicName = topic.topic_name || topic.title || topic.topic_description || `Topic ${tIdx + 1}`;
+      const topicTitle = topic.topic_code && !topicName.startsWith(topic.topic_code)
+        ? `${topic.topic_code} — ${topicName}`
+        : topicName;
+
+      const subtopicsList = (topic.subtopics && topic.subtopics.length > 0)
+        ? topic.subtopics
+        : (raw?.topics?.[tIdx]?.subtopics || [
+            {
+              id: `${topicId}.1`,
+              title: `${topicName} — Foundations & Core Principles`,
+              hours: "2",
+              level: "K2",
+              status: "Approved",
+            },
+            {
+              id: `${topicId}.2`,
+              title: `${topicName} — Applications & Evaluation`,
+              hours: "2",
+              level: "K3",
+              status: "Needs Review",
+            },
+          ]);
+
+      const items = subtopicsList.map((sub: any, idx: number) => {
+        const subId = String(sub.id || `${topicId}.${idx + 1}`);
+        const isApproved = approvedInUnit.has(subId) || sub.status === "Approved";
         const actions = [
           {
             key: "level",
-            label: sub.level,
+            label: sub.level || (sub.knowledge_level ? `K${sub.knowledge_level}` : "K2"),
             asTag: true as const,
             className: "rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-600",
           },
           {
             key: "hours",
-            label: `${sub.hours} Hours`,
+            label: `${sub.hours || sub.theory_hours || 2} Hours`,
             asTag: true as const,
             className: "rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-[#000]",
           },
@@ -356,7 +671,7 @@ const Topics = () => {
                 asTag: false as const,
                 className:
                   "inline-flex items-center rounded-full border border-orange-300 bg-orange-50 px-2.5 py-0.5 text-xs font-semibold text-orange-500 hover:border-orange-400 hover:bg-orange-100 cursor-pointer",
-                onClick: () => toggleApprove(state.activeTab, sub.id),
+                onClick: () => toggleApprove(state.activeTab, subId),
               },
           {
             key: "edit",
@@ -368,31 +683,33 @@ const Topics = () => {
         ];
 
         return {
-          id: sub.id,
+          id: subId,
           index: idx + 1,
-          title: `Topic ${sub.id} — ${sub.title}`,
+          title: sub.subtopic_name || sub.title || `Topic ${subId}`,
           highlighted: isApproved,
           actions,
         };
       });
 
-      const approvedCount = topic.subtopics.filter((s) => approvedInUnit.has(s.id)).length;
+      const approvedCount = subtopicsList.filter((s: any) =>
+        approvedInUnit.has(String(s.id)) || s.status === "Approved"
+      ).length;
 
       return {
-        id: `${state.activeTab}-${topic.id}`,
-        title: topic.title,
-        meta: `${topic.level} · ${topic.hours}`,
+        id: `${state.activeTab}-${topicId}`,
+        title: topicTitle,
+        meta: `${topic.level || (topic.knowledge_level ? `Knowledge Level ${topic.knowledge_level}` : null) || "Knowledge Level K2"} · ${topic.hours || (topic.theory_hours ? `${topic.theory_hours} Hours` : "2 Hours")}`,
         collapsedBadge: {
-          label: `${approvedCount}/${topic.subtopics.length} Approved`,
+          label: `${approvedCount}/${subtopicsList.length} Approved`,
           className:
-            approvedCount === topic.subtopics.length
+            approvedCount === subtopicsList.length && subtopicsList.length > 0
               ? "border border-green-200 bg-green-50 text-green-700"
               : "border border-orange-200 bg-orange-50 text-orange-600",
         },
         expandedBadge: {
-          label: `${approvedCount}/${topic.subtopics.length} Approved`,
+          label: `${approvedCount}/${subtopicsList.length} Approved`,
           className:
-            approvedCount === topic.subtopics.length
+            approvedCount === subtopicsList.length && subtopicsList.length > 0
               ? "border border-green-200 bg-green-50 text-green-700"
               : "border border-orange-200 bg-orange-50 text-orange-600",
         },
@@ -405,46 +722,48 @@ const Topics = () => {
     <div className="min-h-screen">
       {/* ── Course banner ── */}
       <CourseBanner
-        courseCode="CS301"
-        courseTitle="Computer Networks"
+        courseCode={state?.courseDetail?.course_code}
+        courseTitle={state?.courseDetail?.course_title}
         description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
-        programme="B.Tech CSE"
-        batch="2025–2029"
-        academicYear="2026–2027 / Semester 3"
-        students="40 Students"
-        selectedCourse="CS309"
-        courseOptions={[
-          { value: "CS309", label: "Course: CS309" },
-          { value: "CS301", label: "Course: CS301" },
-        ]}
-        onCourseChange={(val) => console.log("course", val)}
+        programme={state?.courseDetail?.programme}
+        batch={state?.courseDetail?.batch_name}
+        academicYear={`${state?.courseDetail?.batch_name} / Semester 3`}
+        students={state?.courseDetail?.students_count}
+        selectedCourse={state.selectedCourse}
+        courseOptions={state.courseList}
+        onCourseChange={(val) => {
+          setState({ selectedCourse: val });
+          router.push(`/neurobe/topics?course_id=${val.value}`);
+        }}
         activeView={state.activeBannerTab}
-        onBack={() => console.log("back")}
+        onBack={() => router.back()}
         onViewChange={(view) => setState({ activeBannerTab: view })}
       />
 
       {/* ── Step header ── */}
-      
-
       <PageHeader
-         title="Topics"
-        records="CS309 — Computer Networks"
-        subtitle={`Create a detailed topic structure from the approved syllabus.`}
+        title="Topics"
+        records={
+          state.courseDetail
+            ? `${state.courseDetail.course_code} — ${state.courseDetail.course_title}`
+            : "CS309 — Computer Networks"
+        }
+        subtitle="Create a detailed topic structure from the approved syllabus."
         icon={<BookOpenCheck className="h-5 w-5 text-color2" />}
-        
       />
 
       {/* ── Stat cards — hidden after generation ── */}
       {!state.topicsGenerated && (
         <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-          {STAT_TABS.map((tab) => (
+          {statTabs.map((tab) => (
             <StatTabCard
               key={tab.key}
               icon={tab.icon}
               label={tab.label}
               subLabel={tab.subLabel}
               count={tab.count}
-              active={state.activeTab === tab.key}
+              active={state.activeStatTab === tab.key}
+              onClick={() => setState({ activeStatTab: tab.key })}
             />
           ))}
         </div>
@@ -456,16 +775,16 @@ const Topics = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-bold text-[#000] dark:text-white">Topic Approval Progress</p>
-              <p className="mt-0.5 text-xs text-pri">{totalApproved}/{totalSubtopics} Topics Approved</p>
+              <p className="mt-0.5 text-xs text-pri">{totalApproved}/{computedTotalSubtopics} Topics Approved</p>
             </div>
             <span className="text-xs font-semibold text-color2">
-              {totalSubtopics > 0 ? Math.round((totalApproved / totalSubtopics) * 100) : 0}% Complete
+              {computedTotalSubtopics > 0 ? Math.round((totalApproved / computedTotalSubtopics) * 100) : 0}% Complete
             </span>
           </div>
           <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
             <div
               className="h-full rounded-full bg-color2 transition-all duration-500"
-              style={{ width: `${totalSubtopics > 0 ? (totalApproved / totalSubtopics) * 100 : 0}%` }}
+              style={{ width: `${computedTotalSubtopics > 0 ? (totalApproved / computedTotalSubtopics) * 100 : 0}%` }}
             />
           </div>
         </div>
@@ -481,20 +800,28 @@ const Topics = () => {
       {/* ── Unit tabs + accordion ── */}
       <div className="mt-4">
         <GenericTabs
-          tabs={UNIT_TABS}
+          tabs={unitTabs}
           activeKey={state.activeTab}
-          onChange={(unit) => setState({ activeTab: unit as string })}
+          onChange={(unit) => handleTabChange(unit)}
+          rightContent={
+            (state.loadingUnits || state.loadingUnitDetail) ? (
+              <div className="flex items-center gap-1.5 text-xs text-color2 font-semibold">
+                <RefreshCw className="h-3.5 w-3.5 animate-spin" /> Loading unit details...
+              </div>
+            ) : null
+          }
         />
 
         <AccordiansStyle
           expandable={state.topicsGenerated}
           topics={state.topicsGenerated ? buildGeneratedTopics() : buildInitialTopics()}
-          title={raw?.title}
+          title={currentUnitTitle}
           subtitle={
             state.topicsGenerated
               ? "Click a topic to expand and review subtopics."
-              : "Syllabus topics ready for NEURO AI generation."
+              : (activeUnitDetail?.unit_overview || activeUnitFromList?.unit_overview || "Syllabus topics ready for NEURO AI generation.")
           }
+          topicCount={apiTopics?.length || (state.topicsGenerated ? buildGeneratedTopics()?.length : buildInitialTopics()?.length)}
           expandedSectionLabel={
             <><BookOpen className="h-3.5 w-3.5" /> Subtopics</>
           }
@@ -510,15 +837,22 @@ const Topics = () => {
         {/* ── Footer ── */}
         {state.topicsGenerated ? (
           <PageFooter
-            content1={`Approved: ${totalApproved}/${totalSubtopics} Topics`}
-            content2="Course: CS309 — Computer Networks"
+            content1={`Approved: ${totalApproved}/${computedTotalSubtopics} Topics`}
+            content2={
+              state.courseDetail
+                ? `Course: ${state.courseDetail.course_code} — ${state.courseDetail.course_title}`
+                : "Course: CS309 — Computer Networks"
+            }
             batch
             actionBtn1={
               state.topicsApproved
                 ? {
                     label: "Next: Pedagogy",
                     icon: <Check className="h-4 w-4" />,
-                    onClick: () => router.push("/neurobe/pedagogy"),
+                    onClick: () => {
+                      const cid = course_id || state.selectedCourse?.value || state.courseDetail?.id;
+                      router.push(cid ? `/neurobe/pedagogy?course_id=${cid}` : "/neurobe/pedagogy");
+                    },
                     className: "create-btn",
                   }
                 : {
@@ -539,8 +873,12 @@ const Topics = () => {
           />
         ) : (
           <PageFooter
-            content1="Course: CS309 — Computer Networks"
-            content2="45 Contact Hours · 5 Units"
+            content1={
+              state.courseDetail
+                ? `Course: ${state.courseDetail.course_code} — ${state.courseDetail.course_title}`
+                : "Course: CS309 — Computer Networks"
+            }
+            content2={`${totalContactHours} Contact Hours · ${totalUnits} Units`}
             actionBtn1={{
               label: "Generate Topics with NEURO AI",
               icon: <Sparkles className="h-4 w-4" />,
@@ -576,7 +914,11 @@ const Topics = () => {
               </span>
               <div>
                 <p className="text-sm font-bold text-white">Generate Topics with NEURO AI</p>
-                <p className="text-xs text-white/60">CS309 — Computer Networks</p>
+                <p className="text-xs text-white/60">
+                  {state.courseDetail
+                    ? `${state.courseDetail.course_code} — ${state.courseDetail.course_title}`
+                    : "CS309 — Computer Networks"}
+                </p>
               </div>
             </div>
 
