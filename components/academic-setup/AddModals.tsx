@@ -216,6 +216,8 @@ export const CreateCourseModal = ({
 
   useEffect(() => {
     if (open && initialData) {
+      get_instructor(initialData)
+      console.log("initialData",initialData)
       setState({
         code: initialData.course_code || "",
         title: initialData.course_title || "",
@@ -257,6 +259,22 @@ export const CreateCourseModal = ({
     }
   }, [open, initialData]);
 
+  const get_instructor = async (data) => {
+    try {
+      const body = {
+        course_id: data?.id
+      };
+
+      const res: any = await Models.course_instructor.list(body);
+      console.log("res",res)
+
+
+    } catch (error) {
+      console.log('✌️error --->', error);
+    }
+  };
+
+
   const getCourseCoordinator = async () => {
     try {
       const body = {
@@ -285,6 +303,8 @@ export const CreateCourseModal = ({
       };
 
       const res: any = await Models.users.list(body);
+      console.log("getCourseInstructor",res)
+
       const dropdown = res?.map((item) => ({
         label: `${item.first_name} (${item.last_name})`,
         value: item?.id
