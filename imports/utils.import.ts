@@ -10,6 +10,7 @@ export const Utils = {
   CustomSelect,
   NumberInput,
   Validation,
+  
 };
 
 export default Utils;

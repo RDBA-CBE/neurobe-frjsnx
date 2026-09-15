@@ -13,7 +13,7 @@ type CourseBannerProps = {
   batch: string;
   academicYear: string;
   students: string;
-  selectedCourse?: string;
+  selectedCourse?: { value: string; label: string };
   courseOptions?: { value: string; label: string }[];
   onCourseChange?: (val: any) => void;
   /** Accepted for backward compat — view highlight is driven by Redux, this value is ignored */
@@ -70,7 +70,7 @@ export default function CourseBanner({
 
         <CustomSelect
           options={courseOptions}
-          value={courseOptions.find((o) => o.value === selectedCourse) || null}
+          value={ selectedCourse || null}
           onChange={onCourseChange}
           placeholder={`Course: ${selectedCourse || courseCode}`}
           isSearchable={false}

@@ -12,6 +12,8 @@ import course_instance from "@/models/course_instance.model";
 import course_instructor from "@/models/course_instructor.model";
 import syllabus from "@/models/syllabus.model";
 import job from "@/models/job.model";
+import COPOMap from "@/models/copo_map.models";
+import topics from "@/models/topics.models";
 
 export const Models = {
   test,
@@ -29,7 +31,9 @@ export const Models = {
   course_import,
   course_instructor,
   syllabus,
-  job
+  job,
+  COPOMap,
+  topics,
 };
 
 export default Models;

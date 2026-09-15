@@ -6,7 +6,10 @@ export const useSetState = (initialState: any) => {
   const [state, setState] = useState(initialState);
 
   const newSetState = (newState: any) => {
-    setState((prevState: any) => ({ ...prevState, ...newState }));
+    setState((prevState: any) => {
+      const patch = typeof newState === "function" ? newState(prevState) : newState;
+      return { ...prevState, ...patch };
+    });
   };
   return [state, newSetState];
 };

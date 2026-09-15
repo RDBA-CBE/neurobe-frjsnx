@@ -1,6 +1,7 @@
 interface MappingMatrixHeaderProps {
   title?: string;
   version?: string;
+  status?: string;
 }
 
 const LEGEND = [
@@ -13,15 +14,23 @@ const LEGEND = [
 const MappingMatrixHeader = ({
   title = "CO1–CO6 × PO1–PO12 Mapping Matrix",
   version = "PO 2025 v1",
+  status,
 }: MappingMatrixHeaderProps) => (
   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 px-5 py-4 dark:border-gray-700">
-    {/* Title + version badge */}
-    <h3 className="text-sm font-bold text-[#000] dark:text-white">
-      {title}
-      <span className="text-color2 ml-2 rounded-full bg-[#ede9fe] px-2 py-0.5 text-xs font-semibold">
+    {/* Title + version badge + status */}
+    <div className="flex flex-wrap items-center gap-2">
+      <h3 className="text-sm font-bold text-[#000] dark:text-white">
+        {title}
+      </h3>
+      <span className="text-color2 rounded-full bg-[#ede9fe] px-2.5 py-0.5 text-xs font-semibold">
         {version}
       </span>
-    </h3>
+      {status && (
+        <span className="rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700 border border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800">
+          {status}
+        </span>
+      )}
+    </div>
 
     {/* Legend */}
     <div className="flex flex-wrap items-center gap-3 text-xs text-[#000]">
