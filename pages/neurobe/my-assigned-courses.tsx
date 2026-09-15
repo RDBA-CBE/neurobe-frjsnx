@@ -9,6 +9,8 @@ import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import PrivateRouter from "@/hook/privateRouter";
 import { BookOpen, User2Icon } from "lucide-react";
 import CourseCard from "@/components/academic-setup/CourseCard";
+import Models from "@/imports/models.import";
+import { useRouter } from "next/navigation";
 
 const MOCK_ASSIGNED_COURSES = [
   {
@@ -132,6 +134,7 @@ const MOCK_CARDS = [
 
 const MyAssignedCourses = () => {
   const dispatch = useDispatch();
+  const router=useRouter()
 
   const [state, setState] = useSetState({
     search: "",
@@ -139,11 +142,36 @@ const MyAssignedCourses = () => {
     programmeFilter: "all",
     loading: false,
     type: "all_semester",
+    data:null
+    
   });
 
   useEffect(() => {
     dispatch(setPageTitle("My Assigned Courses"));
   }, [dispatch]);
+
+  useEffect(() => {
+    dashboard_view()
+  }, []);
+
+  const dashboard_view = async () => {
+    try {
+      const user = localStorage.getItem("user")
+      const u = JSON.parse(user);
+      const body = {
+        coordinator_id: u?.id
+      }
+      const res = await Models.course.coordinator_dashboard_overview(body)
+      console.log("res", res)
+setState({data:res})
+
+    } catch (error) {
+      console.log('error', error)
+
+    }
+  }
+
+
 
   const filteredRecords = MOCK_ASSIGNED_COURSES.filter((row) => {
     const s = state.search.toLowerCase();
@@ -220,16 +248,14 @@ const MyAssignedCourses = () => {
       title: "STATUS",
       render: ({ status }: any) => (
         <span
-          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
-            status === "Active"
+          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${status === "Active"
               ? "bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300"
               : "bg-gray-100 text-[#000] dark:bg-gray-700 dark:text-gray-300"
-          }`}
+            }`}
         >
           <span
-            className={`h-1.5 w-1.5 rounded-full ${
-              status === "Active" ? "bg-green-500" : "bg-gray-400"
-            }`}
+            className={`h-1.5 w-1.5 rounded-full ${status === "Active" ? "bg-green-500" : "bg-gray-400"
+              }`}
           />
           {status}
         </span>
@@ -252,9 +278,9 @@ const MyAssignedCourses = () => {
     },
   ];
 
-  const onAction=(data)=>{
+  const onAction = (data) => {
+    router.push(`/neurobe/syllabus?course_id=${data?.id}`)
     console.log("onAction", data)
-    
   }
 
   return (
@@ -275,13 +301,13 @@ const MyAssignedCourses = () => {
         title="My Assigned Courses"
         description="Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and classroom execution."
         stats={[
-          { label: "COURSES", value: 2 },
+          { label: "COURSES", value: state?.data?.summary?.courses_count },
           {
             label: "AVG READINESS",
-            value: "80.5%",
+            value: state?.data?.summary?.avg_readiness_percentage,
             valueColor: "text-[#10b981]",
           },
-          { label: "ENROLLED STUDENTS", value: 84 },
+          { label: "ENROLLED STUDENTS", value: state?.data?.summary?.enrolled_students_count },
         ]}
       />
 
@@ -303,17 +329,16 @@ const MyAssignedCourses = () => {
           <p>Semester : </p>
 
           <div className="bg-sec-dark flex shrink-0 items-center gap-2 rounded-lg px-1 py-1">
-            {semester.map((sem) => (
+            {state?.data?.semesters.map((sem) => (
               <button
                 key={sem.value}
-                onClick={() => setState({ type: sem.value })}
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                  state.type === sem.value
+                onClick={() => setState({ type: sem })}
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 ${state.type === sem.value
                     ? "text-color2 rounded-lg bg-[#fff] shadow-sm"
                     : "hover:text-pri text-[#000] dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
-                }`}
+                  }`}
               >
-                {sem.label}
+                Semester {sem}
               </button>
             ))}
           </div>
@@ -322,9 +347,10 @@ const MyAssignedCourses = () => {
 
       {/* Cards */}
       <div className="">
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          {MOCK_CARDS.map((card) => (
-            <CourseCard key={card.code} {...card} onAction={()=>onAction(card)} />
+       
+         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          {state.data?.courses.map((card) => (
+            <CourseCard data={card} key={card.id} {...card} onAction={() => onAction(card)} />
           ))}
         </div>
       </div>

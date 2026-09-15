@@ -24,6 +24,9 @@ const course = {
             if (page) {
                 params.append("page", page);
             }
+             if (body?.coordinator_id) {
+                params.append("coordinator_id", body?.coordinator_id);
+            }
 
             if (params.toString()) {
                 url += `?${params.toString()}`;
@@ -89,7 +92,7 @@ const course = {
         let promise = new Promise((resolve, reject) => {
             let url = `courses/${id}`;
             instance()
-                .patch(url, data,{
+                .patch(url, data, {
                     headers: { "Content-Type": "multipart/form-data" },
 
                 })
@@ -130,7 +133,7 @@ const course = {
         let promise = new Promise((resolve, reject) => {
             let url = `course-coordinators/`;
             instance()
-                .post(url,data)
+                .post(url, data)
                 .then((res) => {
                     resolve(res.data);
                 })
@@ -150,7 +153,7 @@ const course = {
         let promise = new Promise((resolve, reject) => {
             let url = `course-instructors/`;
             instance()
-                .post(url,data)
+                .post(url, data)
                 .then((res) => {
                     resolve(res.data);
                 })
@@ -165,9 +168,34 @@ const course = {
         return promise;
     },
 
-     
+    coordinator_dashboard_overview: (data: any) => {
+        let promise = new Promise((resolve, reject) => {
+            let url = `course-coordinators/dashboard-overview`;
+            if (data.coordinator_id) {
+                url += `?coordinator_id=${encodeURIComponent(data.coordinator_id)}`;
+            }
 
-    
+            instance()
+                .get(url, data)
+                .then((res) => {
+                    resolve(res.data);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        reject(error.response.data?.message || error.response.data);
+                    } else {
+                        reject(error);
+                    }
+                });
+        });
+        return promise;
+    },
+
+
+
+
+
+
 };
 
 export default course;

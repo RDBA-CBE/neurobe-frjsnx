@@ -1,12 +1,13 @@
 import axios, {
   AxiosInstance,
-  AxiosRequestConfig,
   AxiosError,
   InternalAxiosRequestConfig,
 } from "axios";
 import { BACKEND_URL } from "./constant.utils";
 
 let api: AxiosInstance | null = null;
+let courseApi: AxiosInstance | null = null;
+
 let isRefreshing = false;
 let failedQueue: any[] = [];
 
@@ -18,27 +19,10 @@ const processQueue = (error: any, token: string | null = null) => {
       prom.resolve(token);
     }
   });
-
   failedQueue = [];
 };
 
 let isSessionExpiredHandled = false;
-
-// const showTokenExpiredAlert = () => {
-//   const userConfirmed = window.confirm(
-//     "Your token has expired. Click OK to log in again."
-//   );
-
-//   if (userConfirmed) {
-//     localStorage.clear();
-//     window.location.href = "/auth/signin";
-//   } else {
-//     setTimeout(() => {
-//       localStorage.clear();
-//       window.location.href = "/auth/signin";
-//     }, 1000);
-//   }
-// };
 
 const showTokenExpiredAlert = () => {
   if (isSessionExpiredHandled) return;
@@ -60,14 +44,10 @@ const showTokenExpiredAlert = () => {
   }
 };
 
-export const instance = (): AxiosInstance => {
-  if (api) return api;
-
-  api = axios.create({
-    baseURL: BACKEND_URL,
-  });
-
-  api.interceptors.request.use(
+// ─── Shared interceptor setup ─────────────────────────────────────────────────
+const attachInterceptors = (axiosInstance: AxiosInstance) => {
+  // Request: attach bearer token
+  axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
       const accessToken = localStorage.getItem("token");
       if (accessToken && config.headers) {
@@ -78,7 +58,8 @@ export const instance = (): AxiosInstance => {
     (error: AxiosError) => Promise.reject(error),
   );
 
-  api.interceptors.response.use(
+  // Response: handle 401 with refresh token logic
+  axiosInstance.interceptors.response.use(
     (response) => response,
     async (error: AxiosError | any) => {
       const originalRequest: any = error.config;
@@ -101,7 +82,7 @@ export const instance = (): AxiosInstance => {
             failedQueue.push({
               resolve: (token: string) => {
                 originalRequest.headers["Authorization"] = "Bearer " + token;
-                resolve(api(originalRequest));
+                resolve(axiosInstance(originalRequest));
               },
               reject: (err: any) => reject(err),
             });
@@ -114,21 +95,20 @@ export const instance = (): AxiosInstance => {
           try {
             const response = await axios.post(
               `${BACKEND_URL}auth/jwt/token/refresh/`,
-              {
-                refresh: refreshToken,
-              },
+              { refresh: refreshToken },
             );
 
             const { access, refresh } = response.data;
             localStorage.setItem("token", access);
             localStorage.setItem("refresh", refresh);
 
-            api!.defaults.headers.common["Authorization"] = "Bearer " + access;
+            axiosInstance.defaults.headers.common["Authorization"] =
+              "Bearer " + access;
             originalRequest.headers["Authorization"] = "Bearer " + access;
 
             processQueue(null, access);
-            resolve(api!(originalRequest));
-          } catch (err) {
+            resolve(axiosInstance(originalRequest));
+          } catch (err: any) {
             if (
               err.response?.data?.error === "authorization header missing" ||
               err.response?.data?.error === "invalid or expired token"
@@ -150,8 +130,30 @@ export const instance = (): AxiosInstance => {
       return Promise.reject(error);
     },
   );
+};
 
+// ─── Main instance → /org/api/v1/ ────────────────────────────────────────────
+export const instance = (): AxiosInstance => {
+  if (api) return api;
+
+  api = axios.create({
+    baseURL: `${BACKEND_URL}org/api/v1/`,
+  });
+
+  attachInterceptors(api);
   return api;
+};
+
+// ─── Course instance → /course/ ──────────────────────────────────────────────
+export const commonInstance = (): AxiosInstance => {
+  if (courseApi) return courseApi;
+
+  courseApi = axios.create({
+    baseURL: `${BACKEND_URL}/`,
+  });
+
+  attachInterceptors(courseApi);
+  return courseApi;
 };
 
 export default instance;

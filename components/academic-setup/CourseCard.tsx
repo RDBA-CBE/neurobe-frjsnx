@@ -54,53 +54,67 @@ const STATUS_CONFIG = {
   },
 };
 
-export default function CourseCard({
-  isNew,
-  code,
-  credits,
-  role,
-  title,
-  readiness,
-  programme,
-  batch,
-  term,
-  students,
-  prepItems,
-  nextAction,
-  instructors,
-  actionLabel,
-  onAction,
-}: CourseCardProps) {
-  const hasProgress = prepItems.some((p) => p.status !== "not_started");
+export default function CourseCard(props) {
+  const {
+    isNew,
+    code,
+    credits,
+    role,
+    title,
+    readiness,
+    programme,
+    batch,
+    term,
+    students,
+    prepItems,
+    nextAction,
+    instructors,
+    actionLabel,
+    onAction,
+    data
+  } = props
+
+  const preparations=[
+      { label: "SYLLABUS", status: data?.academic_preparation?.syllabus?.status,state: data?.academic_preparation?.syllabus?.state,},
+      { label: "CO-PO MAPPING", status: data?.academic_preparation?.copo_mapping?.status,state: data?.academic_preparation?.copo_mapping?.state},
+      { label: "TOPICS", status: data?.academic_preparation?.topics?.status,state: data?.academic_preparation?.topics?.state},
+      { label: "PEDAGOGY", status: data?.academic_preparation?.pedagogy?.status,state: data?.academic_preparation?.pedagogy?.state},
+      { label: "LESSON PLAN", status: data?.academic_preparation?.lesson_plan?.status,state: data?.academic_preparation?.lesson_plan?.state},
+      { label: "LEARNING MATERIALS", status: data?.academic_preparation?.learning_materials?.status, state: data?.academic_preparation?.learning_materials?.state},
+      { label: "QUESTION BANK", status: data?.academic_preparation?.question_bank?.status,extra:`${data?.academic_preparation?.question_bank?.count} Questions`,state: data?.academic_preparation?.question_bank?.state},
+      { label: "CIA QUESTION PAPER", status: data?.academic_preparation?.cia_question_paper?.status,state: data?.academic_preparation?.cia_question_paper?.state},
+    ]
+  const hasProgress = preparations?.some((p) => p.status !== "Not started");
 
   return (
     <div className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          {isNew && (
+          {data?.is_new ? (
             <span className="rounded-md bg-[#F3F4F6] px-2.5 py-0.5 text-md font-bold text-primary">
               NEW
             </span>
-          )}
-          <span className="rounded-md bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-[#000] dark:bg-gray-700 dark:text-gray-200">
-            {code}
-          </span>
-          <span className="text-xs text-pri">{credits}</span>
+          ) :
+            <span className="rounded-md bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-[#000] dark:bg-gray-700 dark:text-gray-200">
+              {data?.course_code}
+            </span>
+          }
+          <span className="text-xs text-pri">{data?.formatted_credits}</span>
         </div>
         <span className="rounded-full border border-purple-300 px-3 py-1 text-xs font-medium text-purple-700">
-          {role}
+          {data?.role_badge}
         </span>
       </div>
 
       {/* Title */}
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-bold text-[#000] dark:text-white">
-          {title}
+          {data?.course_title}
         </h3>
-        {readiness && (
+        {data?.readiness_status && (
           <span className="flex items-center gap-1 text-sm font-semibold text-primary">
-            <TrendingUp className="h-4 w-4" /> {readiness} Ready
+            <TrendingUp className="h-4 w-4" /> {data?.readiness_status} 
           </span>
         )}
       </div>
@@ -108,10 +122,10 @@ export default function CourseCard({
       {/* Meta */}
       <div className="grid grid-cols-4 gap-2 border-t border-gray-100 pt-3 dark:border-gray-700">
         {[
-          { label: "PROGRAMME", value: programme },
-          { label: "BATCH", value: batch },
-          { label: "TERM", value: term },
-          { label: "STUDENTS", value: students },
+          { label: "PROGRAMME", value: data?.programme },
+          { label: "BATCH", value: data?.batch_name },
+          { label: "TERM", value: data?.term },
+          { label: "STUDENTS", value: `${data?.students_count} Students` },
         ].map((m) => (
           <div key={m.label}>
             <p className="text-[10px] font-medium uppercase tracking-wide text-[#000]">
@@ -128,19 +142,19 @@ export default function CourseCard({
       <div>
         <div className="mb-2 flex items-center justify-between border-t border-gray-100 pt-3">
           <p className="text-sm font-bold text-[#000] dark:text-gray-200">
-            {hasProgress
-              ? "Academic Preparation Progress"
+            {data?.readiness_percentage != 0 ?
+              "Academic Preparation Progress"
               : "Academic Preparation"}
           </p>
-          {!hasProgress && (
+          {data?.readiness_percentage == 0 && (
             <span className="text-xs font-medium text-red-400">
               Preparation not started
             </span>
           )}
         </div>
         <div className="grid grid-cols-2 gap-2">
-          {prepItems.map((item) => {
-            const cfg = STATUS_CONFIG[item.status];
+          {preparations?.map((item) => {
+            const cfg = STATUS_CONFIG[item.state];
             return (
               <div
                 key={item.label}
@@ -148,16 +162,17 @@ export default function CourseCard({
               >
                 <div>
                   <p className="text-[12px] font-medium uppercase tracking-wide text-[#000]">
-                    {item.label}
+                    {item.label }
                   </p>
                   <p className="text-sm font-bold text-[#000] dark:text-gray-200">
                     {cfg.label}
                     {item.extra && (
                       <span className="ml-1 text-xs text-pri">
-                        {item.extra}
+                        {`${item.extra} `} 
                       </span>
                     )}
                   </p>
+                  
                 </div>
                 {cfg.icon}
               </div>
@@ -168,11 +183,10 @@ export default function CourseCard({
 
       {/* Next Action */}
       <div
-        className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${
-          hasProgress
-            ? "border border-yellow-200 bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20"
-            : "bg-gray-50 text-[#000] dark:bg-gray-800"
-        }`}
+        className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${hasProgress
+          ? "border border-yellow-200 bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20"
+          : "bg-gray-50 text-[#000] dark:bg-gray-800"
+          }`}
       >
         {hasProgress ? (
           <AlertCircle className="h-4 w-4 shrink-0" />
@@ -180,22 +194,30 @@ export default function CourseCard({
           <Bell className="h-4 w-4 shrink-0 text-purple-600 font-bold" />
         )}
         <span>
-          <span className="font-semibold">Next Action:</span> {nextAction}
+          <span className="font-semibold">Next Action:</span> {data?.next_action}
         </span>
       </div>
 
       {/* Footer */}
       <div className="flex items-center justify-between border-t border-gray-100 pt-3 dark:border-gray-700">
-        <p className="text-xs text-pri">{instructors}</p>
+        {data?.instructors?.length > 0 && (
+          <p className="text-xs text-gray-500">
+            <span className="font-medium">Instructors: </span>
+            {data.instructors.map((item: any, i: number) => (
+              <span key={i}>
+                {item?.name} ({item?.role}){i < data.instructors.length - 1 ? ", " : ""}
+              </span>
+            ))}
+          </p>
+        )}
         <button
           onClick={() => onAction?.()}
-          className={` ${
-            hasProgress
-              ? "create-btn-p-outline"
-              : "create-btn"
-          }`}
+          className={` ${hasProgress
+            ? "create-btn-p-outline"
+            : "create-btn"
+            }`}
         >
-          {actionLabel} →
+          {data?.primary_action_label} 
         </button>
       </div>
     </div>

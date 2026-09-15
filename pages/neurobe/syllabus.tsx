@@ -1,13 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setPageTitle } from "@/store/themeConfigSlice";
-import { useSetState } from "@/utils/function.utils";
-import IconSearch from "@/components/Icon/IconSearch";
-import IconPlus from "@/components/Icon/IconPlus";
+import { Dropdown, useSetState } from "@/utils/function.utils";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import PrivateRouter from "@/hook/privateRouter";
 import CourseBanner from "@/components/academic-setup/CourseBanner";
-
 import SyllabusStepper from "@/components/academic-setup/SyllabusStepper";
 import StepHeader from "@/components/academic-setup/StepHeader";
 import SyllabusUpload from "@/components/academic-setup/SyllabusUpload";
@@ -19,59 +16,177 @@ import PDFViewer from "@/components/academic-setup/PDFViewer";
 import ExtractedDataPanel from "@/components/academic-setup/ExtractedDataPanel";
 import SyllabusApprovedBanner from "@/components/academic-setup/SyllabusApprovedBanner";
 import SyllabusApprovedSummary from "@/components/academic-setup/SyllabusApprovedSummary";
-import ImportProgressStepper from "@/components/bulk-import/ImportProgressStepper";
-import DownloadTemplate from "@/components/bulk-import/DownloadTemplate";
-import FileUploadDropzone from "@/components/bulk-import/FileUploadDropzone";
 import IconEdit from "@/components/Icon/IconEdit";
 import IconTrash from "@/components/Icon/IconTrash";
 import TableComponent from "@/components/common-components/TableComponent";
 import PrimaryButton from "@/components/FormFields/PrimaryButton.component";
 import { Check, Sparkles } from "lucide-react";
 import CourseOutcomes from "@/components/academic-setup/CourseOutcomes";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import Models from "@/imports/models.import";
 
 type ImportType = "user" | "course";
 
 const Syllabus = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const course_id = searchParams.get("course_id");
+
+  const stepKey = `syllabus_step_${course_id ?? "default"}`;
+  const jobKey = `syllabus_job_${course_id ?? "default"}`;
+
+  const getSavedStep = () => {
+    try {
+      const saved = sessionStorage.getItem(stepKey);
+      return saved ? Number(saved) : 1;
+    } catch {
+      return 1;
+    }
+  };
+
+  const getSavedJobId = () => {
+    try { return sessionStorage.getItem(jobKey) || null; } catch { return null; }
+  };
+
+  const setStep = (step: number) => {
+    try { sessionStorage.setItem(stepKey, String(step)); } catch { }
+    setState({ currentStep: step });
+  };
 
   const [state, setState] = useSetState({
     importType: "user" as ImportType,
-    currentStep: 1,
+    currentStep: getSavedStep(),
     selectedFile: null as File | null,
     showReview: false,
     activeTab: "coordinator",
+    courseData: null as any,
+    jobData: null as any,
+    course_list: [],
+    keep_file: false
   });
 
   useEffect(() => {
     dispatch(setPageTitle("Syllabus"));
   }, []);
 
+  useEffect(() => {
+    if (course_id) {
+      course_data(course_id);
+      coordinator_course_data();
+      // restore job data on refresh if step >= 3
+      const savedJobId = getSavedJobId();
+      if (savedJobId && getSavedStep() >= 3) {
+        job_Data(savedJobId);
+      }
+    }
+  }, [course_id]);
+
+  const course_data = async (id: string) => {
+    try {
+      const res = await Models.course.detail(id);
+      setState({ courseData: res });
+      console.log("course detail →", res);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const coordinator_course_data = async () => {
+    try {
+      const user = localStorage.getItem("user")
+      const u = JSON.parse(user);
+      const body = {
+        coordinator_id: u?.id
+      }
+      const res = await Models.course.list(body);
+      const dropdown = Dropdown(res, "course_code")
+      // setState({ courseData: res });
+      console.log("coordinator_course_data detail →", dropdown);
+      setState({ course_list: dropdown })
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
   const onKeep = () => {
+    setState({ keep_file: true })
     console.log("Keep file");
   };
 
-  const onDiscard = () => { };
+  const onDiscard = () => {
+    setState({ keep_file: false })
+
+  };
+
+  const startAIExtraction = async () => {
+    try {
+      const body = {
+        file: state.selectedFile,
+        course_id: course_id,
+        keep_permanently: state.keep_file
+
+      }
+      console.log("body", body);
+
+      const formData = new FormData();
+      formData.append("file", state.selectedFile);
+      formData.append("course_id", course_id);
+      formData.append("regulation", state.courseData?.regulation);
+      formData.append("programme", state.courseData?.
+        programme_id
+      );
+      formData.append("academic_year", state.courseData?.
+        academic_year
+      );
+
+
+
+      formData.append("keep_permanently", state.keep_file);
+
+
+
+      const res: any = await Models.syllabus.create(formData)
+      console.log("res", res);
+      if (res?.job_id) {
+        try { sessionStorage.setItem(jobKey, String(res.job_id)); } catch { }
+        job_Data(res.job_id);
+      }
+
+
+    } catch (error) {
+      console.log("error", error);
+
+
+    }
+  }
+
+  const job_Data = async (id: string | number) => {
+    try {
+      const res = await Models.job.detail(id);
+      console.log("job_Data", res);
+      setState({ jobData: res });
+      setStep(3);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   return (
     <div className="min-h-screen">
       <CourseBanner
-        courseCode="CS301"
-        courseTitle="Computer Networks"
+        courseCode={state.courseData?.course_code || ""}
+        courseTitle={state.courseData?.course_title || ""}
         description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
-        programme="B.Tech CSE"
-        batch="2025–2029"
-        academicYear="2026–2027 / Semester 3"
-        students="40 Students"
-        selectedCourse="CS309"
-        courseOptions={[
-          { value: "CS309", label: "Course: CS309" },
-          { value: "CS301", label: "Course: CS301" },
-        ]}
+        programme={state.courseData?.programme || ""}
+        batch={state.courseData?.batch_name || ""}
+        academicYear={state.courseData?.academic_year || ""}
+        students={`${state.courseData?.students_count ?? 0} Students`}
+        selectedCourse={state.courseData?.course_code || ""}
+        courseOptions={state.course_list}
         onCourseChange={(val) => console.log("course", val)}
         activeView={state.activeTab}
-        onBack={() => console.log("back")}
+        onBack={() => router.back()}
         onViewChange={(view) => setState({ activeTab: view })}
       />
       <div className="">
@@ -121,7 +236,7 @@ const Syllabus = () => {
                 text="Start AI Extraction"
                 className="bg-color2 hover:bg-color2"
                 icon={<Sparkles className="h-4 w-4" />}
-                onClick={() => setState({ currentStep: 3 })}
+                onClick={() => startAIExtraction()}
               />
             </div>
           </div>
@@ -139,7 +254,7 @@ const Syllabus = () => {
               <>
                 <ReviewModeBar
                   onSaveDraft={() => console.log("save draft")}
-                  onContinue={() => setState({ currentStep: 4 })}
+                  onContinue={() => setStep(4)}
                 />
                 <div
                   className="grid gap-5"
@@ -185,7 +300,7 @@ const Syllabus = () => {
               labHours={30}
               credits={4}
               ltpc="3 — 0 — 2 — 4"
-              onRevise={() => setState({ currentStep: 3, showReview: true })}
+              onRevise={() => { setStep(3); setState({ showReview: true }); }}
               onProceed={() => router.push("/neurobe/co-po-mapping")}
             />
           </div>

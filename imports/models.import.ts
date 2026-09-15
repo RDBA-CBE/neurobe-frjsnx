@@ -10,6 +10,8 @@ import user_import from "@/models/user_import.models";
 import course_import from "@/models/course_import.models";
 import course_instance from "@/models/course_instance.model";
 import course_instructor from "@/models/course_instructor.model";
+import syllabus from "@/models/syllabus.model";
+import job from "@/models/job.model";
 
 export const Models = {
   test,
@@ -25,7 +27,9 @@ export const Models = {
   users,
   user_import,
   course_import,
-  course_instructor
+  course_instructor,
+  syllabus,
+  job
 };
 
 export default Models;
