@@ -13,7 +13,7 @@ import course_instructor from "@/models/course_instructor.model";
 import syllabus from "@/models/syllabus.model";
 import job from "@/models/job.model";
 import lession_plan from "@/models/lession_plan.model";
-import learning_material from "@/models/learning_material";
+import learning_material from "@/models/learning_material.model";
 import COPOMap from "@/models/copo_map.models";
 import topics from "@/models/topics.models";
 

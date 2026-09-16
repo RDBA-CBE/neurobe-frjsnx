@@ -1,54 +1,103 @@
 import { BookMarked } from "lucide-react";
 
-interface Book { id: number; label: string; title: string; citation: string; }
-
-interface TextbooksSummaryProps {
-  textbooks?: Book[];
-  references?: Book[];
+interface Book {
+  id: number;
+  title: string;
+  authors: string[];
+  publisher: string;
+  edition: string;
+  publication_year: number;
+  syllabus_id?: number;
 }
 
-const DEFAULT_TEXTBOOKS: Book[] = [
-  { id: 1, label: "Textbook 01", title: "Computer Networks", citation: "Andrew S. Tanenbaum, David J. Wetherall, 5th Edition, Pearson Education (2013)." },
-  { id: 2, label: "Textbook 02", title: "Computer Networking: A Top-Down Approach", citation: "James F. Kurose, Keith W. Ross, 7th Edition, Pearson (2017)." },
-];
+interface TextbooksSummaryProps {
+  textbook?: Book[];
+  reference?: Book[];
+}
 
-const DEFAULT_REFERENCES: Book[] = [
-  { id: 1, label: "Reference 01", title: "Data Communications and Networking", citation: "Behrouz A. Forouzan, 5th Edition, McGraw Hill (2012)." },
-  { id: 2, label: "Reference 02", title: "TCP/IP Illustrated, Volume 1: The Protocols", citation: "W. Richard Stevens, Kevin R. Fall, 2nd Edition, Addison-Wesley (2011)." },
-];
+const BookCard = ({ book, type }: { book: Book; type: "textbook" | "reference" }) => (
+  <div className="rounded-xl border border-gray-200 p-4 dark:border-gray-700 bg-white dark:bg-gray-800">
+    <div className="mb-3 flex items-center justify-between">
+      <span className={`inline-block rounded-md px-2.5 py-0.5 text-xs font-bold ${
+        type === "textbook"
+          ? "bg-purple-50 text-color2 dark:bg-purple-900/20"
+          : "bg-blue-50 text-blue-600 dark:bg-blue-900/20"
+      }`}>
+        {type === "textbook" ? "Textbook" : "Reference"}
+      </span>
+      <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+        {book.publication_year}
+      </span>
+    </div>
 
-const BookCard = ({ book }: { book: Book }) => (
-  <div className="rounded-xl border border-gray-200 p-4 dark:border-gray-700">
-    <span className="mb-2 inline-block rounded-md bg-color2-l px-2.5 py-0.5 text-xs font-bold text-color2 dark:bg-purple-900/20">
-      {book.label}
-    </span>
-    <p className="text-lg font-bold text-[#000] dark:text-white">{book.title}</p>
-    <p className="mt-1 text-sm text-pri">{book.citation}</p>
+    <p className="font-bold text-[#000] dark:text-white text-sm mb-1">{book.title}</p>
+
+    <div className="space-y-1 text-xs text-gray-600 dark:text-gray-300">
+      <p>
+        <span className="font-semibold text-gray-700 dark:text-gray-200">Author(s):</span>{" "}
+        {Array.isArray(book.authors) ? book.authors.join(", ") : book.authors}
+      </p>
+      <p>
+        <span className="font-semibold text-gray-700 dark:text-gray-200">Publisher:</span>{" "}
+        {book.publisher}
+      </p>
+      <p>
+        <span className="font-semibold text-gray-700 dark:text-gray-200">Edition:</span>{" "}
+        {book.edition}
+      </p>
+    </div>
   </div>
 );
 
 const TextbooksSummary = ({
-  textbooks = DEFAULT_TEXTBOOKS,
-  references = DEFAULT_REFERENCES,
-}: TextbooksSummaryProps) => (
-  <div className="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
-    <div className="mb-4 flex items-center gap-2">
-      <div className="bg-color2-l flex h-8 w-8 items-center justify-center rounded-lg dark:bg-purple-900/20">
+  textbook = [],
+  reference = [],
+}: TextbooksSummaryProps) => {
+  return (
+    <div className="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
+      <div className="mb-4 flex items-center gap-2">
+        <div className="bg-color2-l flex h-8 w-8 items-center justify-center rounded-lg dark:bg-purple-900/20">
           <BookMarked className="text-color2 h-4.5 w-4.5" />
         </div>
-      <h3 className="text-lg font-bold text-color  dark:text-white">Textbooks & Reference Books</h3>
-    </div>
+        <h3 className="text-lg font-bold text-color dark:text-white">Textbooks & Reference Books</h3>
+      </div>
 
-    <p className="mb-2 text-xs font-bold uppercase tracking-wide text-pri">Textbooks</p>
-    <div className="mb-4 grid grid-cols-2 gap-3">
-      {textbooks.map((b) => <BookCard key={b.id} book={b} />)}
-    </div>
+      {/* Textbooks Section */}
+      {textbook.length > 0 && (
+        <>
+          <p className="mb-3 text-sm font-bold uppercase tracking-wide text-color2">
+            Textbooks ({textbook.length})
+          </p>
+          <div className="mb-6 grid grid-cols-2 gap-3">
+            {textbook.map((b) => (
+              <BookCard key={b.id} book={b} type="textbook" />
+            ))}
+          </div>
+        </>
+      )}
 
-    <p className="mb-2 text-xs font-bold uppercase tracking-wide text-pri">Reference Books</p>
-    <div className="grid grid-cols-2 gap-3">
-      {references.map((b) => <BookCard key={b.id} book={b} />)}
+      {/* Reference Books Section */}
+      {reference.length > 0 && (
+        <>
+          <p className="mb-3 text-sm font-bold uppercase tracking-wide text-blue-600 dark:text-blue-400">
+            Reference Books ({reference.length})
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            {reference.map((b) => (
+              <BookCard key={b.id} book={b} type="reference" />
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Empty State */}
+      {textbook.length === 0 && reference.length === 0 && (
+        <p className="py-8 text-center text-gray-500 dark:text-gray-400">
+          No textbooks or reference books available
+        </p>
+      )}
     </div>
-  </div>
-);
+  );
+};
 
 export default TextbooksSummary;

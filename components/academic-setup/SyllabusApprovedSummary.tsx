@@ -13,6 +13,7 @@ interface SyllabusApprovedSummaryProps {
   ltpc?: string;
   onRevise?: () => void;
   onProceed?: () => void;
+  data?: any
 }
 
 const SyllabusApprovedSummary = ({
@@ -24,6 +25,7 @@ const SyllabusApprovedSummary = ({
   ltpc = "3 — 0 — 2 — 4",
   onRevise,
   onProceed,
+  data
 }: SyllabusApprovedSummaryProps) => (
   <div className="space-y-4">
     {/* Status + Actions card */}
@@ -67,7 +69,7 @@ const SyllabusApprovedSummary = ({
     <div className="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
       <div className="mb-4 flex items-center gap-2">
         <div className="bg-color2-l flex h-8 w-8 items-center justify-center rounded-lg dark:bg-purple-900/20">
-        <BookOpen className="h-4.5 w-4.5 text-color2" />
+          <BookOpen className="h-4.5 w-4.5 text-color2" />
         </div>
         <h3 className="text-lg font-bold text-color dark:text-white">Course Details</h3>
       </div>
@@ -86,10 +88,10 @@ const SyllabusApprovedSummary = ({
       </div>
     </div>
 
-    <CourseOutcomesSummary />
-    <UnitTopicsSummary />
+    <CourseOutcomesSummary outcomes={data?.outcomes} />
+    <UnitTopicsSummary units={data?.units} />
     <LabExperimentsSummary />
-    <TextbooksSummary />
+    <TextbooksSummary textbook={data?.textbooks} reference={data?.reference_books} />
   </div>
 );
 

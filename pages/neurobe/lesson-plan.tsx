@@ -28,6 +28,7 @@ import { UNIT_TABS } from "@/utils/constant.utils";
 import PageHeader from "@/components/common-components/PageHeader";
 import { useSearchParams } from "next/navigation";
 import Models from "@/imports/models.import";
+import GenericTabsData from "@/components/common-components/GenericTabsData";
 
 const MOCK_LESSON_PLANS = [
   {
@@ -351,7 +352,9 @@ const LessonPlan = () => {
     activeTab: "unit-1",
     activeBannerTab: "coordinator",
     lession_data: null,
-    matrix:[]
+    matrix: [],
+    generateLoading: false,
+    generatedResponse: null,
   });
 
   useEffect(() => {
@@ -359,15 +362,14 @@ const LessonPlan = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    lession_data()
     course_data()
     coordinator_course_data()
-  }, []);
+  }, [course_id]);
 
-  const lession_data = async () => {
+  const lession_data = async (syllabus_id,unit) => {
     try {
 
-      const res:any = await Models.lession_plan.detail(9, 1);
+      const res: any = await Models.lession_plan.detail(syllabus_id, unit);
       const data = [{
         key: "total-topics",
         label: " Total Topics",
@@ -391,39 +393,42 @@ const LessonPlan = () => {
 
         icon: <ClipboardCheck className="h-5 w-5" />,
       }]
-      setState({ lession_data: res,matrix:data });
+      setState({ lession_data: res, matrix: data });
 
     } catch (error) {
       console.log("error", error);
     }
   };
 
-    const course_data = async () => {
-      try {
-        const res = await Models.course.detail(48);
-        setState({ courseData: res });
-        console.log("course detail →", res);
-      } catch (error) {
-        console.log("error", error);
+  const course_data = async () => {
+    try {
+      const res: any = await Models.course.detail(course_id);
+      setState({ courseData: res });
+      console.log("course detail →", res);
+      lession_data(res?.latest_syllabus?.id,1)
+
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+ 
+
+  const coordinator_course_data = async () => {
+    try {
+      const user = localStorage.getItem("user")
+      const u = JSON.parse(user);
+      const body = {
+        coordinator_id: u?.id
       }
-    };
-  
-    const coordinator_course_data = async () => {
-      try {
-        const user = localStorage.getItem("user")
-        const u = JSON.parse(user);
-        const body = {
-          coordinator_id: u?.id
-        }
-        const res = await Models.course.list(body);
-        const dropdown = Dropdown(res, "course_code")
-        // setState({ courseData: res });
-        console.log("coordinator_course_data detail →", dropdown);
-        setState({ course_list: dropdown })
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
+      const res = await Models.course.list(body);
+      const dropdown = Dropdown(res, "course_code")
+      // setState({ courseData: res });
+      console.log("coordinator_course_data detail →", dropdown);
+      setState({ course_list: dropdown })
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
 
   const raw = RAW_UNIT_DATA[state.activeTab];
@@ -479,13 +484,13 @@ const LessonPlan = () => {
 
   // ── Pre-generate: topics list for the accordion (level + hours badges only) ──
   const buildInitialTopics = () => {
-    if (!raw) return [];
-    return raw.topics.map((topic) => ({
-      id: topic.id,
-      title: `Topic ${topic.id} — ${topic.title}`,
+    if (!state?.lession_data?.selected_unit?.sessions) return [];
+    return state?.lession_data?.selected_unit?.sessions.map((session: any) => ({
+      id: session.slot_id,
+      title: `Topic ${session.topic_code} — ${session.topic_name}`,
       collapsedBadge: [
-        { label: `Knowledge Level ${topic.level}`, className: "bg-color2-l text-color2 font-bold" },
-        { label: topic.hours, className: "bg-gray-200 text-pri font-bold" },
+        { label: `Knowledge Level ${session.level}`, className: "bg-color2-l text-color2 font-bold" },
+        { label: session.hours_display, className: "bg-gray-200 text-pri font-bold" },
       ],
       items: [],
     }));
@@ -604,10 +609,77 @@ const LessonPlan = () => {
     },
   ];
 
+  const generateLessionPlan = async () => {
+    try {
+      setState({ generateLoading: true });
+      
+      // Poll until status is "complete"
+      let retries = 0;
+      const maxRetries = 100; // Max 30 retries (about 1 minute with 2s interval)
+      const pollInterval = 2000; // 2 seconds
+      
+      const pollJob = async () => {
+        try {
+          const res: any = await Models.lession_plan.generate_teating_timeline(
+            state.courseData?.latest_syllabus?.id
+          );
+          
+          console.log('Poll response:', res);
+          
+          // Check if status is "complete" in the response
+          const isComplete = 
+            // res?.status === "complete" || 
+            res?.status === "queued" || 
+
+            res?.result?.status === "complete";
+          
+          if (isComplete) {
+            // Job completed - store the response and show modal
+            setState({ 
+              generatedResponse: res,
+              generateLoading: false,
+              recommendationsGenerated: false  // Keep accordion view until user reviews
+            });
+            setGenerateModal(true);
+          } else if (retries < maxRetries) {
+            // Keep polling
+            retries++;
+            setTimeout(pollJob, pollInterval);
+          } else {
+            // Max retries reached
+            console.log("Max retries reached after", retries, "attempts");
+            Success("Lesson plan generation completed!");
+            setState({ 
+              generateLoading: false,
+              generatedResponse: res
+            });
+            setGenerateModal(true);
+          }
+        } catch (error) {
+          console.log("Poll error:", error);
+          if (retries < maxRetries) {
+            retries++;
+            setTimeout(pollJob, pollInterval);
+          } else {
+            setState({ generateLoading: false });
+            console.log("Polling failed after max retries");
+          }
+        }
+      };
+      
+      // Start polling
+      pollJob();
+      
+    } catch (error) {
+      console.log("Generate error:", error);
+      setState({ generateLoading: false });
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <CourseBanner
-      courseCode={state.courseData?.course_code || ""}
+        courseCode={state.courseData?.course_code || ""}
         courseTitle={state.courseData?.course_title || ""}
         description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
         programme={state.courseData?.programme || ""}
@@ -646,59 +718,85 @@ const LessonPlan = () => {
 
       <TableTitle
         title="Approved topcis"
-        label={`${totalUnits} Units`}
-        subLabel={`${totalTopics} Topics`}
+        label={`${state?.lession_data?.unit_tabs?.length} Units`}
+        subLabel={`${state?.lession_data?.selected_unit?.topics_count} Topics`}
       />
 
       <div className="mt-4">
-        <GenericTabs
-          tabs={UNIT_TABS}
+        <GenericTabsData
+          tabs={
+            state?.lession_data?.unit_tabs?.map((unit: any) => ({
+              key: `unit-${unit.unit_number}`,
+              label: `${unit.unit_number}`,
+            })) || []
+          }
           activeKey={state.activeTab}
-          onChange={(unit) => setState({ activeTab: unit as string })}
+          onChange={(unit) => {
+            setState({ activeTab: unit as string });
+            // Extract unit number from key (e.g., "unit-1" -> 1)
+            const unitNumber = parseInt((unit as string).split('-')[1], 10);
+            lession_data(state?.courseData?.latest_syllabus?.id, unitNumber);
+          }}
         />
 
-        {state.recommendationsGenerated ? (
-          /* ── Generated: flat table with header ── */
-          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900 mb-5">
-            {/* dark header */}
-            <div className="flex items-center justify-between bg-[#111238] px-4 py-3 text-white">
-              <div>
-                <h3 className="text-lg font-bold">{raw?.title}</h3>
-                <p className="mt-0.5 text-sm text-white/70">
-                  Approved topic sequencing and teaching methods
-                </p>
-              </div>
-              <span className="rounded bg-white/15 px-4 py-1 text-sm font-semibold">
-                {raw?.totalHours} Hours
-              </span>
-            </div>
-            <TableComponent
-              records={raw?.topics ?? []}
-              columns={lessonPlanColumns}
-            />
-          </div>
-        ) : (
-          /* ── Pre-generate: accordion with level/hours badges ── */
-          <AccordiansStyle
+        {!state.recommendationsGenerated ? (
+
+           <AccordiansStyle
             expandable={false}
             topics={buildInitialTopics()}
-            title={raw?.title}
-            subtitle="Approved syllabus topics ready for lesson plan generation."
+            title={state?.lession_data?.selected_unit?.unit_title}
+            subtitle={state?.lession_data?.selected_unit?.subtitle}
+            topicCount={state?.lession_data?.selected_unit?.topics_count}
             footerContent={
               <>
-                <Sparkles className="h-4 w-4" /> NEURO AI will sequence all 22
-                topics, assign textbook chapters, calibrate session hours, and
+                <Sparkles className="h-4 w-4" /> NEURO AI will sequence all topics,
+                assign textbook chapters, calibrate session hours, and
                 link pedagogy methods.
               </>
             }
           />
+          /* ── Generated: flat table with header ── */
+          
+        ) : (
+          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900 mb-5">
+            {/* dark header */}
+            <div className="flex items-center justify-between bg-[#111238] px-4 py-3 text-white">
+              <div>
+                <h3 className="text-lg font-bold">{state?.lession_data?.selected_unit?.unit_title}</h3>
+                <p className="mt-0.5 text-sm text-white/70">
+                  {state?.lession_data?.selected_unit?.subtitle}
+                </p>
+              </div>
+              <span className="rounded bg-white/15 px-4 py-1 text-sm font-semibold">
+                {state?.lession_data?.selected_unit?.hours_badge}
+              </span>
+            </div>
+            <TableComponent
+              records={state?.lession_data?.selected_unit?.sessions?.map((session: any) => ({
+                id: session.slot_id,
+                seq: session.seq,
+                title: session.topic_name,
+                level: session.level,
+                textbook: session.textbook,
+                reference: session.reference_book,
+                hours: session.hours_display,
+                pedagogy: session.pedagogy,
+                status: session.status_display,
+                status_badge: session.status_badge,
+              })) ?? []}
+              columns={lessonPlanColumns}
+            />
+          </div>
+          /* ── Pre-generate: accordion with level/hours badges ── */
+         
         )}
       </div>
 
       {state.recommendationsGenerated ? (
         <PageFooter
-          content1={`Reviewed: ${totalReviewedCount}/${totalTopicCount} Topics`}
-          content2="Course: CS309 — Computer Networks"
+          content1={`Reviewed: ${totalReviewedCount}/${state?.lession_data?.selected_unit?.topics_count} Topics`}
+          // content2="Course: CS309 — Computer Networks"
+            content2={`Course: ${state.courseData?.course_code} - ${state.courseData?.course_title}`}
           batch
           actionBtn1={
             state.lessonApproved
@@ -709,11 +807,16 @@ const LessonPlan = () => {
                 className: "create-btn",
               }
               : {
-                label: "Complete Lesson Plan Review",
+                label: "Approve Lesson Plan Review",
                 icon: <Check className="h-4 w-4" />,
-                onClick: () => {
-                  Success("Lesson plan review completed successfully");
-                  setState({ lessonApproved: true });
+                onClick: async () => {
+                  try {
+                    await Models.lession_plan.approve(state.courseData?.latest_syllabus?.id);
+                    Success("Lesson plan review completed successfully");
+                    setState({ lessonApproved: true });
+                  } catch (error) {
+                    console.log("Approve error:", error);
+                  }
                 },
                 // disabled: !allReviewed,
               }
@@ -721,17 +824,26 @@ const LessonPlan = () => {
           actionBtn2={{
             label: "Save Draft",
             icon: <Save className="h-4 w-4" />,
-            onClick: () => { },
+            onClick: async () => {
+              try {
+                const res:any=await Models.lession_plan.draft(state.courseData?.latest_syllabus?.id);
+                console.log("res",res)
+                Success(res?.message);
+              } catch (error) {
+                console.log("Draft save error:", error);
+              }
+            },
           }}
         />
       ) : (
         <PageFooter
           content1="Ready to synthesize the 22-session Lesson Plan?"
           actionBtn1={{
-            label: "Generate Lesson Plan with NEURO AI",
-            icon: <Sparkles className="h-4 w-4" />,
-            onClick: () => setGenerateModal(true),
+            label: state.generateLoading ? "Generating..." : "Generate Lesson Plan with NEURO AI",
+            icon: state.generateLoading ? null : <Sparkles className="h-4 w-4" />,
+            onClick: () => generateLessionPlan(),
             className: "create-btn",
+            disabled: state.generateLoading,
           }}
         />
       )}
@@ -739,15 +851,43 @@ const LessonPlan = () => {
       <GenerateLessonPlanModal
         open={generateModal}
         onClose={() => setGenerateModal(false)}
-        courseLabel="CS309 — Computer Networks"
-        stats={{ topics: 22, units: 5, hours: 45 }}
-        onReview={() => setState({ recommendationsGenerated: true })}
+        courseLabel={`${state.courseData?.course_code} — ${state.courseData?.course_title}`}
+        stats={{ 
+          topics: state.generatedResponse?.result?.total_topics ?? 22, 
+          units: state.generatedResponse?.result?.total_units ?? 5, 
+          hours: state.generatedResponse?.result?.total_hours ?? 45 
+        }}
+        response={state.generatedResponse}
+        onReview={() => {
+          setState({ recommendationsGenerated: true });
+          setGenerateModal(false);
+          course_data();
+        }}
       />
 
       <EditLessonPlanModal
         open={editModal.open}
         onClose={() => setEditModal((p) => ({ ...p, open: false }))}
         data={editModal.data}
+        onSave={async (updated) => {
+          try {
+            await Models.lession_plan.update_topics(updated.id, {
+              topic_name: updated.title,
+              seq: updated.seq,
+              level: updated.level,
+              hours: updated.hours.replace(" Hours", ""),
+              status: updated.status,
+              textbook: updated.textbook,
+              reference_book: updated.reference,
+              pedagogy: updated.pedagogy,
+            });
+            Success("Lesson plan item updated successfully!");
+            // Refresh the data
+            lession_data(state?.courseData?.latest_syllabus?.id, parseInt(state.activeTab.split('-')[1], 10));
+          } catch (error) {
+            console.log("Update topic error:", error);
+          }
+        }}
       />
 
       <ReviewLessonItemModal

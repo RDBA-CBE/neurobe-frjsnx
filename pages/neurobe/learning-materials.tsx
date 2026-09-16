@@ -35,6 +35,7 @@ import TextArea from "@/components/FormFields/TextArea.component";
 import CheckboxInput from "@/components/FormFields/CheckBoxInput.component";
 import PageHeader from "@/components/common-components/PageHeader";
 import Models from "@/imports/models.import";
+import { useSearchParams } from "next/navigation";
 
 const STAT_TABS = [
   {
@@ -300,6 +301,8 @@ const totalRecs = Object.values(RAW_UNIT_DATA).reduce(
 const LearningMeterials = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+    const searchParams = useSearchParams();
+    const course_id = searchParams.get("course_id");
 
   const [state, setState] = useSetState({
     search: "",
@@ -312,20 +315,21 @@ const LearningMeterials = () => {
 
   useEffect(() => {
     dispatch(setPageTitle("Lesson Plan"));
+    coordinator_course_data();
+
   }, [dispatch]);
 
-    useEffect(() => {
-    material_data()
-    course_data()
-    coordinator_course_data()
-  }, []);
+  useEffect(() => {
+    course_data();
+  }, [course_id]);
 
+  const material_data = async (syllabus_id) => {
+    try {
+      const res: any = await Models.learning_material.detail(syllabus_id, 1);
+      console.log('material_data --->', res);
 
-   const material_data = async () => {
-      try {
-  
-        const res:any = await Models.learning_material.detail(9, 1);
-        const data = [{
+      const data = [
+        {
           key: "total-topics",
           label: " Total Topics",
           count: res?.metrics?.topics?.value,
@@ -337,7 +341,7 @@ const LearningMeterials = () => {
           label: "Total Hours",
           subLabel: "Allocated semester teaching time",
           count: res?.metrics?.contact_hours?.value,
-  
+
           icon: <Hourglass className="h-5 w-5" />,
         },
         {
@@ -345,43 +349,44 @@ const LearningMeterials = () => {
           label: "Reviewed",
           subLabel: "Lesson Plan Review",
           count: res?.metrics?.lesson_plan_review?.reviewed_count,
-  
+
           icon: <ClipboardCheck className="h-5 w-5" />,
-        }]
-        setState({ lession_data: res,matrix:data });
-  
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
-  
-      const course_data = async () => {
-        try {
-          const res = await Models.course.detail(48);
-          setState({ courseData: res });
-          console.log("course detail →", res);
-        } catch (error) {
-          console.log("error", error);
-        }
+        },
+      ];
+      setState({ lession_data: res, matrix: data });
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const course_data = async () => {
+    try {
+      const res: any = await Models.course.detail(48);
+      setState({ courseData: res });
+      material_data(res?.latest_syllabus?.id);
+
+      console.log("course detail →", res);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const coordinator_course_data = async () => {
+    try {
+      const user = localStorage.getItem("user");
+      const u = JSON.parse(user);
+      const body = {
+        coordinator_id: u?.id,
       };
-    
-      const coordinator_course_data = async () => {
-        try {
-          const user = localStorage.getItem("user")
-          const u = JSON.parse(user);
-          const body = {
-            coordinator_id: u?.id
-          }
-          const res = await Models.course.list(body);
-          const dropdown = Dropdown(res, "course_code")
-          // setState({ courseData: res });
-          console.log("coordinator_course_data detail →", dropdown);
-          setState({ course_list: dropdown })
-        } catch (error) {
-          console.log("error", error);
-        }
-      };
-  
+      const res = await Models.course.list(body);
+      const dropdown = Dropdown(res, "course_code");
+      // setState({ courseData: res });
+      console.log("coordinator_course_data detail →", dropdown);
+      setState({ course_list: dropdown });
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   const raw = RAW_UNIT_DATA[state.activeTab];
 
@@ -590,7 +595,7 @@ const LearningMeterials = () => {
               },
             })
           }
-          className="hover:text-color2 flex items-center gap-1 text-xs font-semibold text-pri"
+          className="hover:text-color2 text-pri flex items-center gap-1 text-xs font-semibold"
         >
           <EditIcon className="h-3.5 w-3.5" /> Edit
         </button>
@@ -600,33 +605,29 @@ const LearningMeterials = () => {
 
   return (
     <div className="min-h-screen">
-       <CourseBanner
-         courseCode={state.courseData?.course_code || ""}
-           courseTitle={state.courseData?.course_title || ""}
-           description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
-           programme={state.courseData?.programme || ""}
-           batch={state.courseData?.batch_name || ""}
-           academicYear={state.courseData?.academic_year || ""}
-           students={`${state.courseData?.students_count ?? 0} Students`}
-           selectedCourse={state.courseData?.course_code || ""}
-           courseOptions={state.course_list}
-           onCourseChange={(val) => console.log("course", val)}
-           activeView={state.activeTab}
-           onBack={() => router.back()}
-           onViewChange={(view) => setState({ activeTab: view })}
-         />
-
-      <PageHeader
-         title="Learning Materials"
-               records={`${state.courseData?.course_code} - ${state.courseData?.course_title}`}
-
-        subtitle={`Generate, review, edit, and approve learning materials for approved course topics.`}
-       
-        icon={<GraduationCap className="h-5 w-5 text-color2" />}
-        
+      <CourseBanner
+        courseCode={state.courseData?.course_code || ""}
+        courseTitle={state.courseData?.course_title || ""}
+        description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
+        programme={state.courseData?.programme || ""}
+        batch={state.courseData?.batch_name || ""}
+        academicYear={state.courseData?.academic_year || ""}
+        students={`${state.courseData?.students_count ?? 0} Students`}
+        selectedCourse={state.courseData?.course_code || ""}
+        courseOptions={state.course_list}
+        onCourseChange={(val) => console.log("course", val)}
+        activeView={state.activeTab}
+        onBack={() => router.back()}
+        onViewChange={(view) => setState({ activeTab: view })}
       />
 
-    
+      <PageHeader
+        title="Learning Materials"
+        records={`${state.courseData?.course_code} - ${state.courseData?.course_title}`}
+        subtitle={`Generate, review, edit, and approve learning materials for approved course topics.`}
+        icon={<GraduationCap className="text-color2 h-5 w-5" />}
+      />
+
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
         {STAT_TABS.map((tab) => (
           <StatTabCard
@@ -680,30 +681,36 @@ const LearningMeterials = () => {
             topics={buildInitialTopics()}
             title={raw?.title}
             subtitle="4 Approved Topics"
-            btnOnClick={(data: any) => setState({ showGenerateModal: true, selectedTopic: data })}
+            btnOnClick={(data: any) =>
+              setState({ showGenerateModal: true, selectedTopic: data })
+            }
           />
         )}
       </div>
       <AIGenerateModal
-        subtitle={state.selectedTopic?.title?.replace(/^Topic [\d.]+ — /, "") ?? ""}
+        subtitle={
+          state.selectedTopic?.title?.replace(/^Topic [\d.]+ — /, "") ?? ""
+        }
         title="Generate Learning Material"
-        onClose={() => setState({ showGenerateModal: false, selectedTopic: null })}
-        open={state.showGenerateModal}
-        
-        onAction={() => {
+        onClose={() =>
           setState({ showGenerateModal: false, selectedTopic: null })
-          router.push("/neurobe/view-learning-materials")}}
+        }
+        open={state.showGenerateModal}
+        onAction={() => {
+          setState({ showGenerateModal: false, selectedTopic: null });
+          router.push("/neurobe/view-learning-materials");
+        }}
         actionIcon={<Sparkles className="h-4 w-4" />}
         actionLabel="Generate with NEURO AI"
         render={() => (
           <div className="space-y-5 bg-white p-5">
             {/* Selected Topic */}
             <div className="rounded-xl bg-purple-50 p-4">
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-color2">
+              <p className="text-color2 mb-2 text-xs font-bold uppercase tracking-wide">
                 Selected Topic
               </p>
               <div className="flex items-center gap-3">
-                <span className="rounded-lg bg-purple-100 px-3 py-1 text-sm font-bold text-color2">
+                <span className="text-color2 rounded-lg bg-purple-100 px-3 py-1 text-sm font-bold">
                   Topic {state.selectedTopic?.id}
                 </span>
                 <span className="text-base font-semibold text-[#000]">
