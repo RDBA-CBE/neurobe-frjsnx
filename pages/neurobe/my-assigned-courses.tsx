@@ -7,6 +7,7 @@ import PageBanner from "@/components/common-components/PageBanner";
 import TableComponent from "@/components/common-components/TableComponent";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import PrivateRouter from "@/hook/privateRouter";
+import useDebounce from "@/hook/useDebounce";
 import { BookOpen, User2Icon } from "lucide-react";
 import CourseCard from "@/components/academic-setup/CourseCard";
 import Models from "@/imports/models.import";
@@ -134,7 +135,7 @@ const MOCK_CARDS = [
 
 const MyAssignedCourses = () => {
   const dispatch = useDispatch();
-  const router=useRouter()
+  const router = useRouter()
 
   const [state, setState] = useSetState({
     search: "",
@@ -142,9 +143,11 @@ const MyAssignedCourses = () => {
     programmeFilter: "all",
     loading: false,
     type: "all_semester",
-    data:null
-    
+    data: null
+
   });
+
+  const debouncedSearch = useDebounce(state.search, 500);
 
   useEffect(() => {
     dispatch(setPageTitle("My Assigned Courses"));
@@ -154,16 +157,28 @@ const MyAssignedCourses = () => {
     dashboard_view()
   }, []);
 
-  const dashboard_view = async () => {
+  useEffect(() => {
+    if (state.type !== "all_semester") {
+      dashboard_view(state.type?.id || state.type)
+    }
+  }, [state.type]);
+
+  useEffect(() => {
+    dashboard_view(state.type?.id || state.type, debouncedSearch);
+  }, [debouncedSearch, state.type]);
+
+  const dashboard_view = async (semesterId?: any, searchQuery?: string) => {
     try {
       const user = localStorage.getItem("user")
       const u = JSON.parse(user);
       const body = {
-        coordinator_id: u?.id
+        coordinator_id: u?.id,
+        ...(semesterId && semesterId !== "all_semester" && { semester: semesterId }),
+        ...(searchQuery && { search: searchQuery })
       }
       const res = await Models.course.coordinator_dashboard_overview(body)
       console.log("res", res)
-setState({data:res})
+      setState({ data: res })
 
     } catch (error) {
       console.log('error', error)
@@ -173,113 +188,16 @@ setState({data:res})
 
 
 
-  const filteredRecords = MOCK_ASSIGNED_COURSES.filter((row) => {
-    const s = state.search.toLowerCase();
-    const matchSearch =
-      !s ||
-      row.code.toLowerCase().includes(s) ||
-      row.title.toLowerCase().includes(s) ||
-      row.programme.toLowerCase().includes(s);
-    const matchStatus =
-      state.statusFilter === "all" || row.status === state.statusFilter;
-    const matchProg =
-      state.programmeFilter === "all" ||
-      row.programme === state.programmeFilter;
-    return matchSearch && matchStatus && matchProg;
-  });
-
-  const columns = [
-    {
-      accessor: "code",
-      title: "COURSE CODE",
-      render: ({ code }: any) => (
-        <span className="font-semibold text-color2">{code}</span>
-      ),
-    },
-    {
-      accessor: "title",
-      title: "COURSE TITLE",
-      render: ({ title, programme }: any) => (
-        <div>
-          <p className="font-medium text-[#000] dark:text-white">{title}</p>
-          <p className="text-xs text-pri">{programme}</p>
-        </div>
-      ),
-    },
-    {
-      accessor: "batch",
-      title: "BATCH & SEMESTER",
-      render: ({ batch, semester }: any) => (
-        <div>
-          <p className="text-sm text-[#000] dark:text-gray-200">{batch}</p>
-          <span className="text-xs text-[#000]">{semester}</span>
-        </div>
-      ),
-    },
-    {
-      accessor: "credits",
-      title: "CREDITS",
-      render: ({ credits }: any) => (
-        <span className="inline-flex rounded-md bg-purple-50 px-2.5 py-1 text-xs font-semibold text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
-          {credits} Credits
-        </span>
-      ),
-    },
-    {
-      accessor: "studentsCount",
-      title: "STUDENTS",
-      render: ({ studentsCount }: any) => (
-        <span className="font-medium text-[#000] dark:text-gray-300">
-          {studentsCount} Enrolled
-        </span>
-      ),
-    },
-    {
-      accessor: "role",
-      title: "MY ROLE",
-      render: ({ role }: any) => (
-        <span className="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-          {role}
-        </span>
-      ),
-    },
-    {
-      accessor: "status",
-      title: "STATUS",
-      render: ({ status }: any) => (
-        <span
-          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${status === "Active"
-              ? "bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-              : "bg-gray-100 text-[#000] dark:bg-gray-700 dark:text-gray-300"
-            }`}
-        >
-          <span
-            className={`h-1.5 w-1.5 rounded-full ${status === "Active" ? "bg-green-500" : "bg-gray-400"
-              }`}
-          />
-          {status}
-        </span>
-      ),
-    },
-  ];
-
-  const semester = [
-    {
-      label: "All Semsters",
-      value: "all_semester",
-    },
-    {
-      label: "Semester 3",
-      value: "semester_3",
-    },
-    {
-      label: "Semester 4",
-      value: "semester_4",
-    },
-  ];
 
   const onAction = (data) => {
-    router.push(`/neurobe/syllabus?course_id=${data?.id}`)
+    const jobId = data?.job_ids?.extraction_job_id;
+    const queryParams = new URLSearchParams({
+      course_id: data?.id
+    });
+    if (jobId) {
+      queryParams.append("job_id", jobId);
+    }
+    router.push(`/neurobe/syllabus?${queryParams.toString()}`)
     console.log("onAction", data)
   }
 
@@ -329,13 +247,25 @@ setState({data:res})
           <p>Semester : </p>
 
           <div className="bg-sec-dark flex shrink-0 items-center gap-2 rounded-lg px-1 py-1">
+            <button
+              onClick={() => {
+                setState({ type: "all_semester" });
+                dashboard_view();
+              }}
+              className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 ${state.type === "all_semester"
+                ? "text-color2 rounded-lg bg-[#fff] shadow-sm"
+                : "hover:text-pri text-[#000] dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
+                }`}
+            >
+              All Semesters
+            </button>
             {state?.data?.semesters.map((sem) => (
               <button
-                key={sem.value}
+                key={sem.id}
                 onClick={() => setState({ type: sem })}
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 ${state.type === sem.value
-                    ? "text-color2 rounded-lg bg-[#fff] shadow-sm"
-                    : "hover:text-pri text-[#000] dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 ${state.type?.id === sem.id
+                  ? "text-color2 rounded-lg bg-[#fff] shadow-sm"
+                  : "hover:text-pri text-[#000] dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
                   }`}
               >
                 Semester {sem}
@@ -347,8 +277,8 @@ setState({data:res})
 
       {/* Cards */}
       <div className="">
-       
-         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           {state.data?.courses.map((card) => (
             <CourseCard data={card} key={card.id} {...card} onAction={() => onAction(card)} />
           ))}

@@ -12,9 +12,9 @@ const course_instructor = {
             if (body?.status && body.status !== "All Statuses" && body.status !== "all_status") {
                 params.append("status", body.status);
             }
-            // if (body?.course_id) {
-            //     params.append("course_id", body.course_id);
-            // }
+            if (body?.course_id) {
+                params.append("course_id", body.course_id);
+            }
             if (page) {
                 params.append("page", page);
             }

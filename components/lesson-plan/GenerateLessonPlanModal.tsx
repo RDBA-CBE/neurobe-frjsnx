@@ -13,6 +13,20 @@ interface GenerateLessonPlanModalProps {
     units: number;
     hours: number;
   };
+  response?: {
+    job_id: string;
+    status: string;
+    result?: {
+      timeline_id: number;
+      syllabus_id: string;
+      course_id: string;
+      total_hours: number;
+      total_units: number;
+      total_topics: number;
+      stages_completed?: string[];
+      progress_percentage?: number;
+    };
+  } | null;
   onReview?: () => void;
 }
 
@@ -44,8 +58,15 @@ const GenerateLessonPlanModal = ({
   onClose,
   courseLabel = "CS309 — Computer Networks",
   stats = { topics: 22, units: 5, hours: 45 },
+  response = null,
   onReview,
 }: GenerateLessonPlanModalProps) => {
+  // Use response data if available, otherwise use static GENERATION_STEPS
+  const stepsToDisplay = response?.result?.stages_completed || GENERATION_STEPS.map(s => s.title);
+  const progressPercentage = response?.result?.progress_percentage ?? 100;
+  const totalTopics = response?.result?.total_topics ?? stats.topics;
+  const totalUnits = response?.result?.total_units ?? stats.units;
+  const totalHours = response?.result?.total_hours ?? stats.hours;
   return (
     <ModalShell
       title="Generate Lesson Plan with NEURO AI"
@@ -65,29 +86,40 @@ const GenerateLessonPlanModal = ({
                 Lesson Plan Generated Successfully
               </span>
             </div>
-            <span className="text-sm font-bold text-green-700">100%</span>
+            <span className="text-sm font-bold text-green-700">{progressPercentage}%</span>
           </div>
           <div className="h-1.5 w-full bg-green-100">
-            <div className="h-full w-full rounded-full bg-green-500" />
+            <div 
+              className="h-full rounded-full bg-green-500 transition-all" 
+              style={{ width: `${progressPercentage}%` }}
+            />
           </div>
         </div>
 
         {/* ── Generation steps ── */}
         <div className="space-y-2">
-          {GENERATION_STEPS.map((step) => (
-            <div
-              key={step.title}
-              className="flex items-start gap-3 rounded-xl border border-gray-100 bg-white px-4 py-3"
-            >
-              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-500">
-                <Check className="h-3 w-3 text-white" strokeWidth={3} />
-              </span>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-[#000]">{step.title}</p>
-                <p className="mt-0.5 text-xs text-pri">{step.description}</p>
+          {stepsToDisplay.map((step, index) => {
+            const stepData = typeof step === 'string' 
+              ? { title: step, description: '' }
+              : step;
+            
+            return (
+              <div
+                key={stepData.title}
+                className="flex items-start gap-3 rounded-xl border border-gray-100 bg-white px-4 py-3"
+              >
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-500">
+                  <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-[#000]">{stepData.title}</p>
+                  {stepData.description && (
+                    <p className="mt-0.5 text-xs text-pri">{stepData.description}</p>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* ── Stats row ── */}
@@ -97,7 +129,7 @@ const GenerateLessonPlanModal = ({
               Topics
             </span>
             <span className="mt-1 text-base font-bold text-[#000]">
-              {stats.topics} Topics
+              {totalTopics} Topics
             </span>
           </div>
           <div className="flex flex-col items-center py-3">
@@ -105,7 +137,7 @@ const GenerateLessonPlanModal = ({
               Units
             </span>
             <span className="mt-1 text-base font-bold text-[#000]">
-              {stats.units} Units
+              {totalUnits} Units
             </span>
           </div>
           <div className="flex flex-col items-center py-3">
@@ -113,7 +145,7 @@ const GenerateLessonPlanModal = ({
               Hours
             </span>
             <span className="mt-1 text-base font-bold text-color2">
-              {stats.hours} Hours
+              {totalHours} Hours
             </span>
           </div>
         </div>

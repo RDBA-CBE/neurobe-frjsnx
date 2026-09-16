@@ -238,6 +238,7 @@ export const CreateCourseModal = ({
           ? { value: initialData.coordinator_id, label: initialData.coordinator_name || String(initialData.coordinator_id) }
           : null,
         syllabusFile: null,
+        // Don't reset instructor here - let get_instructor set it
       });
     } else if (open && !initialData) {
       setState({
@@ -266,9 +267,17 @@ export const CreateCourseModal = ({
       };
 
       const res: any = await Models.course_instructor.list(body);
-      console.log("res",res)
+      console.log("get_instructor response:", res);
 
-
+      if (res && Array.isArray(res) && res.length > 0) {
+        const instructorList = res.map((item: any) => ({
+          value: item.id,
+          label: item.instructor_name,
+        }));
+        
+        console.log("Setting instructors:", instructorList);
+        setState({ instructor: instructorList });
+      }
     } catch (error) {
       console.log('✌️error --->', error);
     }
@@ -299,14 +308,12 @@ export const CreateCourseModal = ({
   const getCourseInstructor = async () => {
     try {
       const body = {
-        role: ROLES.COURSE_INSTRUCTOR
       };
 
-      const res: any = await Models.users.list(body);
-      console.log("getCourseInstructor",res)
+      const res: any = await Models.course_instructor.list(body);
 
       const dropdown = res?.map((item) => ({
-        label: `${item.first_name} (${item.last_name})`,
+        label: `${item.instructor_name}`,
         value: item?.id
       }));
       setState({ instructorList: dropdown });

@@ -1,6 +1,6 @@
 import { commonInstance } from '@/utils/axios.utils';
 
-const lession_plan = {
+const learning_material = {
 
     generate_teating_timeline: (syllabus_id) => {
         let promise = new Promise((resolve, reject) => {
@@ -22,7 +22,7 @@ const lession_plan = {
     },
     detail: (syllabus_id: string | number,unit: string | number,) => {
         let promise = new Promise((resolve, reject) => {
-            let url = `course/syllabi/${syllabus_id}/lesson-plan-workspace?unit_number=${unit}`;
+            let url = `course/syllabi/${syllabus_id}/learning-materials-workspace?unit_number=${unit}`;
             
             commonInstance()
                 .get(url)
@@ -107,4 +107,4 @@ const lession_plan = {
     
 };
 
-export default lession_plan;
+export default learning_material;

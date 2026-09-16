@@ -32,9 +32,10 @@ const Syllabus = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const course_id = searchParams.get("course_id");
+  const job_id = searchParams.get("job_id");
 
-  const stepKey     = `syllabus_step_${course_id ?? "default"}`;
-  const jobKey      = `syllabus_job_${course_id ?? "default"}`;
+  const stepKey = `syllabus_step_${course_id ?? "default"}`;
+  const jobKey = `syllabus_job_${course_id ?? "default"}`;
   const syllabusKey = `syllabus_id_${course_id ?? "default"}`;
 
   const getSavedStep = () => {
@@ -47,15 +48,25 @@ const Syllabus = () => {
   };
 
   const getSavedJobId = () => {
-    try { return sessionStorage.getItem(jobKey) || null; } catch { return null; }
+    try {
+      return sessionStorage.getItem(jobKey) || null;
+    } catch {
+      return null;
+    }
   };
 
   const getSavedSyllabusId = () => {
-    try { return sessionStorage.getItem(syllabusKey) || null; } catch { return null; }
+    try {
+      return sessionStorage.getItem(syllabusKey) || null;
+    } catch {
+      return null;
+    }
   };
 
   const setStep = (step: number) => {
-    try { sessionStorage.setItem(stepKey, String(step)); } catch { }
+    try {
+      sessionStorage.setItem(stepKey, String(step));
+    } catch { }
     setState({ currentStep: step });
   };
 
@@ -81,7 +92,11 @@ const Syllabus = () => {
     jobData: null as any,
     syllabusData: null as any,
     course_list: [],
-    keep_file: false
+    keep_file: false,
+    showKeepFilePrompt: true,
+    isJobLoading: false,
+    pdfBlobUrl: null as string | null,
+    lastLoadedSyllabusId: null as string | number | null,
   });
 
   useEffect(() => {
@@ -92,24 +107,43 @@ const Syllabus = () => {
     if (course_id) {
       course_data(course_id);
       coordinator_course_data();
-      // restore job data on refresh if step >= 3
-      const savedJobId = getSavedJobId();
-      if (savedJobId && getSavedStep() >= 3) {
-        job_Data(savedJobId);
+
+      // If job_id is passed from dashboard, use it directly
+      if (job_id) {
+        try {
+          sessionStorage.setItem(jobKey, String(job_id));
+        } catch { }
+        job_Data(job_id);
+      } else {
+        // Otherwise restore from sessionStorage
+        const savedJobId = getSavedJobId();
+        if (savedJobId && getSavedStep() >= 3) {
+          job_Data(savedJobId);
+        }
       }
+
       // restore syllabus detail on refresh if step >= 3
       const savedSyllabusId = getSavedSyllabusId();
       if (savedSyllabusId && getSavedStep() >= 3) {
         syllabus_detail(savedSyllabusId);
-
       }
       console.log("savedSyllabusId →", savedSyllabusId);
 
-      if(savedSyllabusId){
-        syllabus_status(savedSyllabusId)
+
+    }
+  }, [course_id, job_id]);
+
+  // When step 4 is reached, refresh course and syllabus data
+  useEffect(() => {
+    if (state.currentStep === 4 && course_id) {
+      console.log("Step 4 reached, refreshing data...");
+      course_data(course_id);
+      const savedSyllabusId = getSavedSyllabusId();
+      if (savedSyllabusId) {
+        syllabus_detail(savedSyllabusId);
       }
     }
-  }, [course_id]);
+  }, [state.currentStep]);
 
   const course_data = async (id: string) => {
     try {
@@ -121,33 +155,30 @@ const Syllabus = () => {
     }
   };
 
-  
-
   const coordinator_course_data = async () => {
     try {
-      const user = localStorage.getItem("user")
+      const user = localStorage.getItem("user");
       const u = JSON.parse(user);
       const body = {
-        coordinator_id: u?.id
-      }
+        coordinator_id: u?.id,
+      };
       const res = await Models.course.list(body);
-      const dropdown = Dropdown(res, "course_code")
+      const dropdown = Dropdown(res, "course_code");
       // setState({ courseData: res });
       console.log("coordinator_course_data detail →", dropdown);
-      setState({ course_list: dropdown })
+      setState({ course_list: dropdown });
     } catch (error) {
       console.log("error", error);
     }
   };
 
   const onKeep = () => {
-    setState({ keep_file: true })
+    setState({ keep_file: true, showKeepFilePrompt: false });
     console.log("Keep file");
   };
 
   const onDiscard = () => {
-    setState({ keep_file: false })
-
+    setState({ keep_file: false, showKeepFilePrompt: false });
   };
 
   const startAIExtraction = async () => {
@@ -155,65 +186,68 @@ const Syllabus = () => {
       const body = {
         file: state.selectedFile,
         course_id: course_id,
-        keep_permanently: state.keep_file
-
-      }
+        keep_permanently: state.keep_file,
+      };
       console.log("body", body);
 
       const formData = new FormData();
       formData.append("file", state.selectedFile);
       formData.append("course_id", course_id);
       formData.append("regulation", state.courseData?.regulation);
-      formData.append("programme", state.courseData?.
-        programme_id
-      );
-      formData.append("academic_year", state.courseData?.
-        academic_year
-      );
-
-
+      formData.append("programme", state.courseData?.programme_id);
+      formData.append("academic_year", state.courseData?.academic_year);
 
       formData.append("keep_permanently", state.keep_file);
 
-
-
-      const res: any = await Models.syllabus.create(formData)
+      const res: any = await Models.syllabus.create(formData);
       console.log("res", res);
-      
+
       if (res?.job_id) {
-        try { sessionStorage.setItem(jobKey, String(res.job_id)); } catch { }
+        try {
+          sessionStorage.setItem(jobKey, String(res.job_id));
+        } catch { }
         // persist syllabus_id from the create response
         if (res?.syllabus_id) {
-          try { sessionStorage.setItem(syllabusKey, String(res.syllabus_id)); } catch { }
+          try {
+            sessionStorage.setItem(syllabusKey, String(res.syllabus_id));
+          } catch { }
         }
         job_Data(res.job_id);
       }
-
-
     } catch (error) {
       console.log("error", error);
-
-
     }
-  }
+  };
 
   const job_Data = async (id: string | number) => {
     // stop any existing poll before starting a new one
     stopPolling();
+    setState({ isJobLoading: true });
 
     const fetchOnce = async () => {
       try {
         const res: any = await Models.job.detail(id);
-        console.log("job_Data", res);
-        setState({ jobData: res });
         setStep(3);
 
         const status = res?.status ?? res?.state?.live_redis_status;
-        if (status === "complete" || status === "completed" || status === "failed") {
+        if (
+          status === "complete" ||
+          status === "completed" ||
+          status === "failed"
+        ) {
+          // Save syllabus_id to sessionStorage for persistence
+          if (res?.syllabus_id) {
+            try {
+              sessionStorage.setItem(syllabusKey, String(res.syllabus_id));
+            } catch { }
+          }
+          setState({ isJobLoading: false });
+          syllabus_detail(res?.result?.syllabus_id);
           stopPolling();
         }
       } catch (error) {
         console.log("job_Data error", error);
+        setState({ isJobLoading: false });
         stopPolling();
       }
     };
@@ -227,35 +261,69 @@ const Syllabus = () => {
     try {
       const res: any = await Models.syllabus.detail(id);
       console.log("syllabus_detail →", res);
-      setState({ syllabusData: res });
+
+      // Only load uploaded file if we have a syllabus_id and haven't loaded it yet
+      if (res?.id && res?.id !== state.lastLoadedSyllabusId) {
+        uploded_file(res?.id);
+        setState({ lastLoadedSyllabusId: res?.id });
+      }
+      setState({ jobData: res });
     } catch (error) {
       console.log("syllabus_detail error", error);
     }
   };
 
-  const handleAddTopic = async (unitNumber: number, body: { topic_code: string; topic_name: string,learning_sequence:6 }) => {
+  const uploded_file = async (id: string | number) => {
     try {
-      console.log("unitNumber →", unitNumber);
+      const res: any = await Models.syllabus.uploded_file(id);
+      console.log("uploded_file response →", res);
+      console.log("uploded_file response type →", typeof res);
+      console.log("uploded_file is Blob? →", res instanceof Blob);
+      console.log("uploded_file is ArrayBuffer? →", res instanceof ArrayBuffer);
 
-      const res = await Models.syllabus.create_unit_topic(unitNumber, body);
-      console.log('res', res);
+      // API should return a Blob (due to responseType: 'blob')
+      if (res instanceof Blob) {
+        console.log("Creating blob URL from Blob");
+        const pdfBlobUrl = URL.createObjectURL(res);
+        console.log("Blob URL created:", pdfBlobUrl);
+        setState({ pdfBlobUrl });
+      } else if (typeof res === "string") {
+        console.log("Using response as string URL");
+        // Fallback: if it's a URL string, use directly
+        setState({ pdfBlobUrl: res });
+      } else {
+        console.log("Unknown response type, attempting to create blob");
+        // Try to convert to blob as last resort
+        const blob = new Blob([res], { type: "application/pdf" });
+        const pdfBlobUrl = URL.createObjectURL(blob);
+        setState({ pdfBlobUrl });
+      }
+    } catch (error) {
+      console.log("uploded_file error", error);
+    }
+  };
+
+  const handleAddTopic = async (
+    unitId: number,
+    body: { topic_code: string; topic_name: string; learning_sequence: number }
+  ) => {
+    try {
+      const res = await Models.syllabus.create_unit_topic(unitId, body);
       Success("Topics added");
-      console.log("create_unit_topic →", res);
-      const savedJobId = getSavedJobId();
-      if (savedJobId) job_Data(savedJobId);
+      const savedSyllabusId = getSavedSyllabusId();
+      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
     } catch (error: any) {
       console.log("create_unit_topic error", error);
       throw error;
     }
   };
 
-
-  
-
-   const onDeleteTopic = async (id: string | number) => {
+  const onDeleteTopic = async (id: string | number) => {
     try {
       const res = await Models.syllabus.delete_unit_topic(id);
-      Success("Topics deleted")
+      Success("Topics deleted");
+      const savedSyllabusId = getSavedSyllabusId();
+      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
 
       console.log("syllabus_status →", res);
     } catch (error) {
@@ -263,16 +331,162 @@ const Syllabus = () => {
     }
   };
 
-    const syllabus_status = async (id: string | number) => {
+  const handleAddTextbook = async (body: {
+    syllabus_id: number;
+    title: string;
+    authors: string[];
+    edition: string;
+    publisher: string;
+    publication_year: number;
+  }) => {
     try {
-      const res: any = await Models.syllabus.status(id);
+      const res = await Models.syllabus.create_unit_textbook(body.syllabus_id, {
+        title: body.title,
+        authors: body.authors,
+        edition: body.edition,
+        publisher: body.publisher,
+        publication_year: body.publication_year,
+      });
+      Success("Textbook added");
+      if (body.syllabus_id) syllabus_detail(body.syllabus_id);
+    } catch (error: any) {
+      console.log("create_unit_textbook error", error);
+      throw error;
+    }
+  };
+
+  const handleAddReference = async (body: {
+    syllabus_id: number;
+    title: string;
+    authors: string[];
+    edition: string;
+    publisher: string;
+    publication_year: number;
+  }) => {
+    console.log("✌️reference body --->", body);
+
+    try {
+      const res = await Models.syllabus.create_unit_reference_book(
+        body.syllabus_id,
+        {
+          title: body.title,
+          authors: body.authors,
+          edition: body.edition,
+          publisher: body.publisher,
+          publication_year: body.publication_year,
+        }
+      );
+      Success("Reference book added");
+      if (body.syllabus_id) syllabus_detail(body.syllabus_id);
+    } catch (error: any) {
+      console.log("create_unit_reference_book error", error);
+      throw error;
+    }
+  };
+
+  const onDeleteTextbook = async (id: string | number) => {
+    try {
+      const res = await Models.syllabus.delete_unit_textbook(id);
+      Success("Textbook deleted");
+      const savedSyllabusId = getSavedSyllabusId();
+      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+    } catch (error) {
+      console.log("delete_unit_textbook error", error);
+    }
+  };
+
+  const onDeleteReference = async (id: string | number) => {
+    try {
+      const res = await Models.syllabus.delete_unit_reference_book(id);
+      Success("Reference book deleted");
+      const savedSyllabusId = getSavedSyllabusId();
+      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+    } catch (error) {
+      console.log("delete_unit_reference_book error", error);
+    }
+  };
+
+  const handleSaveOutcome = async (id: number, description: string, co_code: string) => {
+    try {
+      const res = await Models.syllabus.edit_unit_outcome(id, {
+        co_code: co_code,
+        description: description.trim(),
+      });
+      Success("Outcome updated");
+      const savedSyllabusId = getSavedSyllabusId();
+      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+    } catch (error: any) {
+      console.log("edit_unit_outcome error", error);
+      throw error;
+    }
+  };
+
+  const handleAcceptOutcome = async (id: number) => {
+    try {
+      const res = await Models.syllabus.accept_outcome(id);
+      Success("Outcome accepted");
+      const savedSyllabusId = getSavedSyllabusId();
+      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+    } catch (error: any) {
+      console.log("accept_outcome error", error);
+      throw error;
+    }
+  };
+
+  const handleKnowledgeLevelChange = async (id: number, value: string) => {
+    try {
+      const res = await Models.syllabus.update_knw_level_outcome(id, {
+        knowledge_level: value,
+      });
+      Success("Knowledge level updated");
+      const savedSyllabusId = getSavedSyllabusId();
+      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+    } catch (error: any) {
+      console.log("edit_unit_outcome error", error);
+      throw error;
+    }
+  };
+
+  const syllabus_status = async () => {
+    try {
+      const body = {
+        approval_status: "approved_by_bos",
+      };
+      const savedSyllabusId = getSavedSyllabusId();
+
+      const res: any = await Models.syllabus.status(savedSyllabusId, body);
+      console.log("syllabus_status →", res);
+      setStep(4)
+    } catch (error) {
+      console.log("syllabus_detail error", error);
+    }
+  };
+  console.log('✌️state.course_data --->', state.courseData);
+
+
+  const handleSaveDraft = async () => {
+    try {
+      const savedSyllabusId = getSavedSyllabusId();
+      const body = {
+        credits: state?.jobData?.credits,
+        lecture_hours: state?.jobData?.lecture_hours,
+        tutorial_hours: state?.jobData?.tutorial_hours,
+        practical_hours: state?.jobData?.practical_hours,
+        regulation: state?.jobData?.regulation,
+        programme: state?.jobData?.programme,
+      };
+
+      const res: any = await Models.syllabus.update_syllabus(
+        savedSyllabusId,
+        body
+      );
+      Success("Draft changes saved successfully.");
       console.log("syllabus_status →", res);
     } catch (error) {
       console.log("syllabus_detail error", error);
     }
   };
 
-  
   return (
     <div className="min-h-screen">
       <CourseBanner
@@ -318,18 +532,20 @@ const Syllabus = () => {
             <SyllabusUpload
               onFileSelect={(file) => setState({ selectedFile: file })}
             />
-            <KeepFilePrompt
-              title="Keep the source syllabus file permanently?"
-              subTitle=" Choose whether the uploaded source syllabus should be retained permanently."
-              actionBtn1={{
-                label: "Yes, keep file",
-                onClick: onKeep,
-              }}
-              actionBtn2={{
-                label: "No, do not keep file",
-                onClick: onDiscard,
-              }}
-            />
+            {state.showKeepFilePrompt !== false && (
+              <KeepFilePrompt
+                title="Keep the source syllabus file permanently?"
+                subTitle=" Choose whether the uploaded source syllabus should be retained permanently."
+                actionBtn1={{
+                  label: "Yes, keep file",
+                  onClick: onKeep,
+                }}
+                actionBtn2={{
+                  label: "No, do not keep file",
+                  onClick: onDiscard,
+                }}
+              />
+            )}
             <NeuroAIInfo />
             <div className="mt-4 flex justify-end">
               <PrimaryButton
@@ -348,18 +564,21 @@ const Syllabus = () => {
             {!state.showReview ? (
               <ExtractionComplete
                 fileName={state.selectedFile?.name}
+                isLoading={state.isJobLoading}
                 onReview={() => {
                   const savedSyllabusId = getSavedSyllabusId();
                   if (savedSyllabusId) syllabus_detail(savedSyllabusId);
                   setState({ showReview: true });
                 }}
-                progress={50}
+                progress={state.isJobLoading ? 75 : 100}
               />
             ) : (
               <>
                 <ReviewModeBar
-                  onSaveDraft={() => console.log("save draft")}
-                  onContinue={() => setStep(4)}
+                  onSaveDraft={() => handleSaveDraft()}
+                  onContinue={() => {
+                    syllabus_status()
+                  }}
                 />
                 <div
                   className="grid gap-5"
@@ -370,21 +589,43 @@ const Syllabus = () => {
                   }}
                 >
                   <div className="min-h-0 overflow-hidden">
-                    <PDFViewer
-                      file={state.selectedFile}
-                      fileName={state.selectedFile?.name}
-                      fileSize={
-                        state.selectedFile
-                          ? `${(
-                            state.selectedFile.size /
-                            (1024 * 1024)
-                          ).toFixed(1)} MB`
-                          : ""
-                      }
-                    />
+                    {state.pdfBlobUrl ? (
+                      // Use iframe for blob URL or direct URL
+                      <iframe
+                        src={state.pdfBlobUrl}
+                        className="h-full w-full rounded-xl border border-gray-200 dark:border-gray-700"
+                        title="PDF Viewer"
+                      />
+                    ) : (
+                      <PDFViewer
+                        file={state.selectedFile}
+                        fileName={state.selectedFile?.name}
+                        fileSize={
+                          state.selectedFile
+                            ? `${(
+                              state.selectedFile.size /
+                              (1024 * 1024)
+                            ).toFixed(1)} MB`
+                            : ""
+                        }
+                      />
+                    )}
                   </div>
                   <div className="min-h-0 overflow-hidden">
-                    <ExtractedDataPanel data={state.jobData?.result} courseData={state.courseData} onAddTopic={handleAddTopic}  onDeleteTopic={onDeleteTopic}/>
+                    <ExtractedDataPanel
+                      data={state.jobData}
+                      courseData={state.courseData}
+                      onAddTopic={handleAddTopic}
+                      onDeleteTopic={onDeleteTopic}
+                      handleAddTextbook={handleAddTextbook}
+                      onDeleteTextbook={onDeleteTextbook}
+                      handleAddReference={handleAddReference}
+                      onDeleteReference={onDeleteReference}
+                      handleSaveOutcome={handleSaveOutcome}
+                      handleAcceptOutcome={handleAcceptOutcome}
+                      handleKnowledgeLevelChange={handleKnowledgeLevelChange}
+                      syllabusId={getSavedSyllabusId()}
+                    />
                   </div>
                 </div>
               </>
@@ -395,18 +636,37 @@ const Syllabus = () => {
         {state.currentStep === 4 && (
           <div className=" py-3 pt-4">
             <SyllabusApprovedBanner
-              courseCode="CS309"
-              onProceed={() => router.push("/neurobe/co-po-mapping")}
+              courseCode={state.courseData?.course_code}
+              onProceed={() => router.push(`/neurobe/co-po-mapping?course_id=${course_id}`)}
             />
             <SyllabusApprovedSummary
-              courseCode="CS309"
-              courseTitle="Computer Networks"
-              theoryHours={45}
-              labHours={30}
-              credits={4}
-              ltpc="3 — 0 — 2 — 4"
-              onRevise={() => { setStep(3); setState({ showReview: true }); }}
-              onProceed={() => router.push("/neurobe/co-po-mapping")}
+            data={state.courseData?.latest_syllabus}
+              courseCode={state.courseData?.course_code}
+              courseTitle={state.courseData?.
+                course_title
+              }
+              theoryHours={Number(state.courseData?.total_theory_hours)}
+              labHours={state.courseData?.
+                total_lab_hours}
+              credits={state.courseData?.credits}
+              ltpc={`${state.courseData?.
+                lecture_hours}-${state.courseData?.
+                  tutorial_hours
+                }-${state.courseData?.
+
+                  practical_hours
+                }-${state.courseData?.
+
+                  credits
+                }
+                
+`}
+              onRevise={() => {
+                setStep(3);
+
+                setState({ showReview: true });
+              }}
+              onProceed={() => router.push(`/neurobe/co-po-mapping?course_id=${course_id}`)}
             />
           </div>
         )}

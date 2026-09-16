@@ -174,6 +174,13 @@ const course = {
             if (data.coordinator_id) {
                 url += `?coordinator_id=${encodeURIComponent(data.coordinator_id)}`;
             }
+             if (data.semester) {
+                url += `&semester=${encodeURIComponent(data.semester)}`;
+            }
+
+              if (data.search) {
+                url += `&search=${encodeURIComponent(data.search)}`;
+            }
 
             instance()
                 .get(url, data)

@@ -5,7 +5,13 @@ import UnitTopics from "@/components/academic-setup/UnitTopics";
 import LabExperiments from "@/components/academic-setup/LabExperiments";
 import PrescribedTextbooks from "@/components/academic-setup/PrescribedTextbooks";
 
-const TABS = ["All Fields", "Course Details", "COs & Knowledge Levels", "Units & Topics", "Lab Experiments"];
+const TABS = [
+  "All Fields",
+  "Course Details",
+  "COs & Knowledge Levels",
+  "Units & Topics",
+  "Lab Experiments",
+];
 
 const KNOWLEDGE_OPTIONS = [
   { value: "K1", label: "K1 Remember" },
@@ -17,8 +23,21 @@ const KNOWLEDGE_OPTIONS = [
 ];
 
 const ExtractedDataPanel = (props) => {
-  const { data, courseData, onAddTopic,onDeleteTopic } = props;
-  console.log('data',data)
+  const {
+    data,
+    courseData,
+    onAddTopic,
+    onDeleteTopic,
+    handleAddTextbook,
+    onDeleteTextbook,
+    handleAddReference,
+    onDeleteReference,
+    handleSaveOutcome,
+    handleAcceptOutcome,
+    handleKnowledgeLevelChange,
+    syllabusId,
+  } = props;
+  console.log("data", data);
 
   const [activeTab, setActiveTab] = useState("All Fields");
   const [courseCode, setCourseCode] = useState("CS309");
@@ -46,7 +65,8 @@ const ExtractedDataPanel = (props) => {
     if (ref?.current && scrollRef.current) {
       const containerTop = scrollRef.current.getBoundingClientRect().top;
       const sectionTop = ref.current.getBoundingClientRect().top;
-      const offset = scrollRef.current.scrollTop + (sectionTop - containerTop) - 8;
+      const offset =
+        scrollRef.current.scrollTop + (sectionTop - containerTop) - 8;
       scrollRef.current.scrollTo({ top: offset, behavior: "smooth" });
     }
   };
@@ -71,67 +91,116 @@ const ExtractedDataPanel = (props) => {
       </div>
 
       {/* Textbooks accept row */}
-      <div className="mb-3 flex items-center gap-2 text-sm text-pri">
+      <div className="text-pri mb-3 flex items-center gap-2 text-sm">
         <span>Textbooks:</span>
-        <button className="flex items-center gap-1 rounded-md bg-primary2 px-3 py-1 text-color2 font-semibold hover:bg-color2/20">
+        <button className="bg-primary2 text-color2 hover:bg-color2/20 flex items-center gap-1 rounded-md px-3 py-1 font-semibold">
           <CheckCircle2 className="h-4 w-4" /> Accept All Inferred Levels
         </button>
       </div>
 
       {/* Scrollable content */}
-      <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto" style={{ scrollbarWidth: "none" }}>
-
+      <div
+        ref={scrollRef}
+        className="flex-1 space-y-4 overflow-y-auto"
+        style={{ scrollbarWidth: "none" }}
+      >
         {/* Section 1 — Course Identification */}
-        <div ref={sectionRefs["Course Details"]} className="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
+        <div
+          ref={sectionRefs["Course Details"]}
+          className="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900"
+        >
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary2 text-xs font-bold text-color2 dark:bg-gray-100 dark:text-[#000]">1</span>
-              <h3 className="text-sm font-extrabold uppercase tracking-wide text-[#000] dark:text-white">Course Identification & L-T-P-C Structure</h3>
+              <span className="bg-primary2 text-color2 flex h-6 w-6 items-center justify-center rounded-md text-xs font-bold dark:bg-gray-100 dark:text-[#000]">
+                1
+              </span>
+              <h3 className="text-sm font-extrabold uppercase tracking-wide text-[#000] dark:text-white">
+                Course Identification & L-T-P-C Structure
+              </h3>
             </div>
-            <span className="text-xs text-[#000]">Editable extracted fields</span>
+            <span className="text-xs text-[#000]">
+              Editable extracted fields
+            </span>
           </div>
 
           <div className="mb-4 grid grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-xs text-pri">Course Code:</label>
-              <input value={courseData?.course_code} onChange={(e) => setCourseCode(e.target.value)}
-              disabled
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
+              <label className="text-pri mb-1 block text-xs">
+                Course Code:
+              </label>
+              <input
+                value={courseData?.course_code}
+                onChange={(e) => setCourseCode(e.target.value)}
+                disabled
+                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+              />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-pri">Course Title:</label>
+              <label className="text-pri mb-1 block text-xs">
+                Course Title:
+              </label>
               <input
-              disabled value={courseData?.course_title} onChange={(e) => setCourseTitle(e.target.value)}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
+                disabled
+                value={courseData?.course_title}
+                onChange={(e) => setCourseTitle(e.target.value)}
+                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+              />
             </div>
           </div>
 
           <div className="mb-4 grid grid-cols-4 gap-3">
-            {[["Lecture (L):", courseData?.lecture_hours, setL], ["Tutorial (T):", courseData?.tutorial_hours, setT], ["Practical (P):", courseData?.practical_hours, setP], ["Credits (C):", courseData?.credits, setC]].map(([label, val, setter]: any) => (
+            {[
+              ["Lecture (L):", courseData?.lecture_hours, setL],
+              ["Tutorial (T):", courseData?.tutorial_hours, setT],
+              ["Practical (P):", courseData?.practical_hours, setP],
+              ["Credits (C):", courseData?.credits, setC],
+            ].map(([label, val, setter]: any) => (
               <div key={label}>
-                <label className="mb-1 block text-xs text-pri">{label}</label>
-                <input disabled value={val} onChange={(e) => setter(e.target.value)}
-                  className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
+                <label className="text-pri mb-1 block text-xs">{label}</label>
+                <input
+                  disabled
+                  value={val}
+                  onChange={(e) => setter(e.target.value)}
+                  className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                />
               </div>
             ))}
           </div>
 
-          <div className="flex items-center justify-between text-sm text-pri">
-            <span>Theory Hours: <strong className="text-[#000] dark:text-gray-200">{courseData?.total_theory_hours} hrs
+          <div className="text-pri flex items-center justify-between text-sm">
+            <span>
+              Theory Hours:{" "}
+              <strong className="text-[#000] dark:text-gray-200">
+                {courseData?.total_theory_hours} hrs
               </strong>
-               &nbsp; Lab Hours: <strong className="text-[#000] dark:text-gray-200">{courseData?.total_lab_hours} hrs</strong></span>
-            <span className="text-md font-bold text-color2">Total Contact: {data?.course_data?.totalHours} hrs</span>
+              &nbsp; Lab Hours:{" "}
+              <strong className="text-[#000] dark:text-gray-200">
+                {courseData?.total_lab_hours} hrs
+              </strong>
+            </span>
+            <span className="text-md text-color2 font-bold">
+              Total Contact: {data?.course_data?.totalHours} hrs
+            </span>
           </div>
         </div>
 
         {/* Section 2 — Course Outcomes */}
         <div ref={sectionRefs["COs & Knowledge Levels"]}>
-          <CourseOutcomes />
+          <CourseOutcomes 
+            outcomes={data?.outcomes}
+            onSaveOutcome={handleSaveOutcome}
+            onAcceptOutcome={handleAcceptOutcome}
+            onKnowledgeLevelChange={handleKnowledgeLevelChange}
+          />
         </div>
 
         {/* Section 3 — Unit Titles, Hours & Topics */}
         <div ref={sectionRefs["Units & Topics"]}>
-          <UnitTopics data={data?.course_data?.units} onAddTopic={onAddTopic} onDeleteTopic={onDeleteTopic} />
+          <UnitTopics
+            data={data?.units}
+            onAddTopic={onAddTopic}
+            onDeleteTopic={onDeleteTopic}
+          />
         </div>
 
         {/* Section 4 — Lab Experiments */}
@@ -140,8 +209,15 @@ const ExtractedDataPanel = (props) => {
         </div>
 
         {/* Section 5 — Prescribed Textbooks */}
-        <PrescribedTextbooks textBooks={data?.course_data?.textBooks} reference={data?.course_data?.references} />
-
+        <PrescribedTextbooks
+          textBooks={data?.textbooks}
+          reference={data?.reference_books}
+          onDeleteBook={onDeleteTextbook}
+          onAddBook={handleAddTextbook}
+          syllabusId={syllabusId}
+          onAddReference={handleAddReference}
+          onDeleteReference={onDeleteReference}
+        />
       </div>
     </div>
   );
