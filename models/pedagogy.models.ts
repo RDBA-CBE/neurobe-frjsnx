@@ -1,9 +1,11 @@
-import  { commonInstance } from '@/utils/axios.utils';
+import { commonInstance } from '@/utils/axios.utils';
 
-const COPOMap = {
-copo_map: (syllabus_id?: any) => {
+const pedagogy = {
+    
+
+     unit_detail : (syllabus_id?: any,unit_number?: any) => {
         let promise = new Promise((resolve, reject) => {
-            let url = `course/syllabi/${syllabus_id}/copo-matrix`;
+            let url = `course/syllabi/${ syllabus_id }/pedagogy-workspace?unit_number=${unit_number}`;
 
             commonInstance()
                 .get(url)
@@ -20,9 +22,61 @@ copo_map: (syllabus_id?: any) => {
         });
         return promise;
     },
-    copo_update: (syllabus_id?: any, body?: any) => { 
+
+    create : (unit_id?: any, body?: any) => { 
         let promise = new Promise((resolve, reject) => {
-            let url = `course/syllabi/${syllabus_id}/copo-matrix/cell`;
+            let url = `course/units/${unit_id}/topics`;
+
+            const config: any = {};
+            if (body instanceof FormData) {
+                config.headers = { "Content-Type": "multipart/form-data" };
+            }
+
+            commonInstance()
+                 .post(url, body || {}, config)
+                .then((res) => {
+                    resolve(res.data);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        reject(error.response.data?.message || error.response.data?.detail || error.response.data);
+                    } else {
+                        reject(error?.message || error);
+                    }
+                });
+        });
+        return promise;
+    },
+
+
+    generate : (syllabus_id?: any, body?: any) => { 
+        let promise = new Promise((resolve, reject) => {
+            let url = `course/syllabi/${syllabus_id}/generate-pedagogies`;
+
+            const config: any = {};
+            if (body instanceof FormData) {
+                config.headers = { "Content-Type": "multipart/form-data" };
+            }
+
+            commonInstance()
+                 .post(url, body || {}, config)
+                .then((res) => {
+                    resolve(res.data);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        reject(error.response.data?.message || error.response.data?.detail || error.response.data);
+                    } else {
+                        reject(error?.message || error);
+                    }
+                });
+        });
+        return promise;
+    },
+
+    update: (topic_id?: any, body?: any) => { 
+        let promise = new Promise((resolve, reject) => {
+            let url = `course/topics/${topic_id}`;
 
             commonInstance()
                 .put(url, body)
@@ -40,37 +94,12 @@ copo_map: (syllabus_id?: any) => {
         return promise;
     },
 
-    get_cell_detail : (syllabus_id?: any, body?: any) => { 
+    subTopics_update: (topic_id?: any, body?: any) => { 
         let promise = new Promise((resolve, reject) => {
-            let url = `course/syllabi/${syllabus_id}/copo-matrix/cell`;
+            let url = `course/topics/${topic_id}/subtopics`;
 
             commonInstance()
-                .get(url, { params: body })
-                .then((res) => {
-                    resolve(res.data);
-                })
-                .catch((error) => {
-                    if (error.response) {
-                        reject(error.response.data?.message || error.response.data?.detail || error.response.data);
-                    } else {
-                        reject(error?.message || error);
-                    }
-                });
-        });
-        return promise;
-    },
-
-    accept_map : (syllabus_id?: any, body?: any) => { 
-        let promise = new Promise((resolve, reject) => {
-            let url = `course/syllabi/${syllabus_id}/copo-matrix/cell/accept`;
-
-            const config: any = {};
-            if (body instanceof FormData) {
-                config.headers = { "Content-Type": "multipart/form-data" };
-            }
-
-            commonInstance()
-                 .post(url, body || {}, config)
+                .post(url, body)
                 .then((res) => {
                     resolve(res.data);
                 })
@@ -87,10 +116,10 @@ copo_map: (syllabus_id?: any) => {
 
     save_draft: (syllabus_id?: any, body?: any) => { 
         let promise = new Promise((resolve, reject) => {
-            let url = `course/syllabi/${syllabus_id}/copo-matrix/draft`;
+            let url = `course/syllabi/${syllabus_id}/topics/draft`;
 
             commonInstance()
-                .put(url, body)
+                .post(url, body)
                 .then((res) => {
                     resolve(res.data);
                 })
@@ -105,17 +134,12 @@ copo_map: (syllabus_id?: any) => {
         return promise;
     },
 
-    approve_map : (syllabus_id?: any, body?: any) => { 
+    approve_topics: (syllabus_id?: any, body?: any) => { 
         let promise = new Promise((resolve, reject) => {
-            let url = `course/syllabi/${syllabus_id}/copo-matrix/approve`;
-
-            const config: any = {};
-            if (body instanceof FormData) {
-                config.headers = { "Content-Type": "multipart/form-data" };
-            }
+            let url = `course/syllabi/${syllabus_id || 9}/topics/approve`;
 
             commonInstance()
-                 .post(url, body || {}, config)
+                .post(url, body)
                 .then((res) => {
                     resolve(res.data);
                 })
@@ -129,7 +153,28 @@ copo_map: (syllabus_id?: any) => {
         });
         return promise;
     },
+
+    jobStatus: (job_id?: any) => {
+        let promise = new Promise((resolve, reject) => {
+            let url = `course/syllabi/jobs/${job_id}`;
+
+            commonInstance()
+                .get(url)
+                .then((res) => {
+                    resolve(res.data);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        reject(error.response.data?.message || error.response.data?.detail || error.response.data);
+                    } else {
+                        reject(error?.message || error);
+                    }
+                });
+        });
+        return promise;
+    },
+
 
 }
 
-export default COPOMap;
+export default pedagogy;

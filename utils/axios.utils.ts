@@ -149,7 +149,7 @@ export const commonInstance = (): AxiosInstance => {
   if (courseApi) return courseApi;
 
   courseApi = axios.create({
-    baseURL: `${BACKEND_URL}/course/`,
+    baseURL: `${BACKEND_URL}`,
   });
 
   attachInterceptors(courseApi);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Check, Tablet, XCircle } from "lucide-react";
+import { Check, BookOpen, XCircle, RefreshCw } from "lucide-react";
 import CustomSelect from "@/components/FormFields/CustomSelect.component";
 import { Dropdown } from "@/utils/function.utils";
 
@@ -15,61 +15,81 @@ const RAW_KNOWLEDGE_LEVELS = [
 ];
 
 const RAW_STATUS = [
-  { id: "Needs Review", name: "Needs Review" },
   { id: "Approved", name: "Approved" },
+  { id: "Needs Review", name: "Needs Review" },
 ];
 
 const DEFAULT_UNITS = [
-  { id: 1, unit_number: 1, name: "Unit 1: Network Fundamentals" },
-  { id: 2, unit_number: 2, name: "Unit 2: Data Link Layer & Error Control" },
-  { id: 3, unit_number: 3, name: "Unit 3: Network Layer & Routing" },
-  { id: 4, unit_number: 4, name: "Unit 4: Transport Layer & TCP/UDP" },
-  { id: 5, unit_number: 5, name: "Unit 5: Application Layer & Security" },
+  { id: 2, unit_id: 2, unit_number: 1, name: "Unit 1: Network Fundamentals" },
+  { id: 3, unit_id: 3, unit_number: 2, name: "Unit 2: Data Link Layer & Error Control" },
+  { id: 4, unit_id: 4, unit_number: 3, name: "Unit 3: Network Layer & Routing" },
+  { id: 5, unit_id: 5, unit_number: 4, name: "Unit 4: Transport Layer & TCP/UDP" },
+  { id: 6, unit_id: 6, unit_number: 5, name: "Unit 5: Application Layer & Security" },
 ];
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
-interface AddTopicModalProps {
+interface EditTopicModalProps {
   open: boolean;
   onClose: () => void;
+  topic?: any;
   defaultUnit?: string;
   activeUnitNumber?: number;
   courseCode?: string;
   courseTitle?: string;
   units?: any[];
-  onAdd?: (topic: {
-    title: string;
-    unit: string;
-    unitNumber: number;
-    level: string;
-    hours: string;
+  initialStatus?: "Approved" | "Needs Review";
+  loading?: boolean;
+  onUpdate?: (payload: {
+    topic_id: any;
+    parent_topic_id?: any;
+    is_subtopic?: boolean;
+    subtopic_id?: any;
+    subtopic_code?: string;
+    micro_topics?: any[];
+    topic_name: string;
+    unit_id: number;
+    estimated_hours: number;
+    knowledge_level: string;
     status: string;
   }) => void;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-const AddTopicModal = ({
+const EditTopicModal = ({
   open,
   onClose,
+  topic,
   defaultUnit = "unit-1",
   activeUnitNumber = 1,
   courseCode = "CS309",
   courseTitle = "Computer Networks",
   units = [],
-  onAdd,
-}: AddTopicModalProps) => {
-  // Transform raw options into { value, label } key-value pairs using the Dropdown function
+  initialStatus = "Approved",
+  loading = false,
+  onUpdate,
+}: EditTopicModalProps) => {
+  // Transform raw options into { value, label } key-value pairs using the Dropdown utility
   const rawUnits =
     units && units.length > 0
       ? units.map((u: any, idx: number) => {
           const num = u.unit_number ?? (u.id ?? idx + 1);
+          const fallbackDefault = DEFAULT_UNITS.find((d: any) => d.unit_number === num);
+          const realId =
+            u.unit_id ||
+            u.id ||
+            fallbackDefault?.unit_id ||
+            fallbackDefault?.id ||
+            (num === 1 ? 2 : num + 1);
           const rawTitle = u.unit_title || u.title || u.name || `Unit ${num}`;
           const displayTitle = rawTitle.toLowerCase().startsWith("unit")
             ? rawTitle
             : `Unit ${num}: ${rawTitle}`;
           return {
-            id: num,
+            id: realId,
+            unit_id: realId,
+            unit_number: num,
             name: displayTitle,
           };
         })
@@ -83,42 +103,85 @@ const AddTopicModal = ({
   const [selectedLevel, setSelectedLevel] = useState<any>(null);
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
   const [topicName, setTopicName] = useState("");
-  const [hours, setHours] = useState("1.5");
+  const [hours, setHours] = useState("2");
   const [error, setError] = useState("");
 
-  // Sync state on open
+  // Clean raw topic/subtopic name by stripping leading "Topic/Subtopic X.Y — "
+  const getCleanTopicName = (t: any) => {
+    const raw = t?.subtopic_name || t?.topic_name || t?.title || "";
+    return raw.replace(/^(Topic|Subtopic)?\s*[\d.]+\s*[—–-]\s*/i, "").trim() || raw;
+  };
+
+  // Sync state on open or topic change
   useEffect(() => {
     if (open) {
-      const initialUnitNum =
-        activeUnitNumber ||
-        (typeof defaultUnit === "string" ? Number(defaultUnit.replace("unit-", "")) : 1) ||
-        1;
+      const cleanName = getCleanTopicName(topic) || "Physical Layer & Transmission Media";
 
-      const matchedUnit =
-        unitOptions.find(
-          (opt: any) =>
-            opt.value === initialUnitNum ||
-            Number(opt.value) === Number(initialUnitNum)
-        ) ||
-        unitOptions[0] ||
-        null;
+      const parsedDefault = typeof defaultUnit === "string" ? Number(defaultUnit.replace("unit-", "")) : 1;
+      const targetUnitId = topic?.unit_id;
+      const targetUnitNum = topic?.unit_number ?? activeUnitNumber ?? parsedDefault ?? 1;
 
-      const defaultLevel =
+      // 1. Match by real database unit_id
+      let matchedUnit = targetUnitId
+        ? unitOptions.find(
+            (opt: any) => opt.value === targetUnitId || Number(opt.value) === Number(targetUnitId)
+          )
+        : null;
+
+      // 2. If not matched, match by unit_number
+      if (!matchedUnit) {
+        matchedUnit = unitOptions.find((opt: any) => {
+          const rawItem = rawUnits.find((ru: any) => ru.id === opt.value || ru.unit_id === opt.value);
+          return (
+            rawItem?.unit_number === targetUnitNum ||
+            Number(rawItem?.unit_number) === Number(targetUnitNum)
+          );
+        });
+      }
+
+      // 3. Fallback to first available option
+      if (!matchedUnit) {
+        matchedUnit = unitOptions[0] || null;
+      }
+
+      // Match Knowledge Level
+      const rawKLevel = String(topic?.knowledge_level || topic?.level || "K2").toUpperCase();
+      const matchedLevel =
+        knowledgeLevelOptions.find((opt: any) => {
+          const optVal = String(opt.value).toUpperCase();
+          if (rawKLevel.includes("K1") || rawKLevel === "1") return optVal.includes("K1");
+          if (rawKLevel.includes("K2") || rawKLevel === "2") return optVal.includes("K2");
+          if (rawKLevel.includes("K3") || rawKLevel === "3") return optVal.includes("K3");
+          if (rawKLevel.includes("K4") || rawKLevel === "4") return optVal.includes("K4");
+          if (rawKLevel.includes("K5") || rawKLevel === "5") return optVal.includes("K5");
+          if (rawKLevel.includes("K6") || rawKLevel === "6") return optVal.includes("K6");
+          return optVal === rawKLevel;
+        }) ||
         knowledgeLevelOptions.find((opt: any) => opt.value === "K2 — Understand") ||
         knowledgeLevelOptions[1] ||
         knowledgeLevelOptions[0] ||
         null;
 
-      const defaultStatus =
-        statusOptions.find((opt: any) => opt.value === "Needs Review") ||
+      // Pre-select status ("Approved" by default as in screenshot)
+      const targetStatus =
+        initialStatus ??
+        (topic?.status === "Needs Review" ? "Needs Review" : "Approved");
+      const matchedStatus =
+        statusOptions.find((opt: any) => opt.value === targetStatus) ||
         statusOptions[0] ||
         null;
 
-      setTopicName("");
+      const initHours =
+        topic?.estimated_hours ??
+        topic?.theory_hours ??
+        topic?.hours ??
+        2;
+
+      setTopicName(cleanName);
       setSelectedUnit(matchedUnit);
-      setSelectedLevel(defaultLevel);
-      setSelectedStatus(defaultStatus);
-      setHours("1.5");
+      setSelectedLevel(matchedLevel);
+      setSelectedStatus(matchedStatus);
+      setHours(String(initHours));
       setError("");
       document.body.style.overflow = "hidden";
     } else {
@@ -127,7 +190,7 @@ const AddTopicModal = ({
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open, defaultUnit, activeUnitNumber, units]);
+  }, [open, topic, defaultUnit, activeUnitNumber, initialStatus, units]);
 
   // Handle escape key
   useEffect(() => {
@@ -144,24 +207,39 @@ const AddTopicModal = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const finalTitle = topicName.trim() || "Transmission Impairments & Noise Analysis";
+    const finalTitle = topicName.trim() || getCleanTopicName(topic) || "Physical Layer & Transmission Media";
 
-    const unitNum = Number(selectedUnit?.value) || activeUnitNumber || 1;
-    const unitLabel = selectedUnit?.label || `Unit ${unitNum}`;
+    const selectedRaw = rawUnits.find(
+      (ru: any) => ru.id === selectedUnit?.value || ru.unit_id === selectedUnit?.value
+    );
+    const resolvedUnitId =
+      Number(selectedUnit?.value) ||
+      selectedRaw?.unit_id ||
+      selectedRaw?.id ||
+      topic?.unit_id ||
+      (activeUnitNumber === 1 ? 2 : activeUnitNumber + 1);
 
-    onAdd?.({
-      title: finalTitle,
-      unit: unitLabel,
-      unitNumber: unitNum,
-      level: selectedLevel?.value ? String(selectedLevel.value) : "K2 — Understand",
-      hours: hours || "1.5",
-      status: selectedStatus?.value ? String(selectedStatus.value) : "Needs Review",
+    onUpdate?.({
+      topic_id: topic?.id || topic?.topic_id || topic?.topic_code || 1,
+      parent_topic_id: topic?.parent_topic_id,
+      is_subtopic: Boolean(topic?.is_subtopic),
+      subtopic_id: topic?.subtopic_id || topic?.id,
+      subtopic_code: topic?.subtopic_code,
+      micro_topics: topic?.micro_topics,
+      topic_name: finalTitle,
+      unit_id: resolvedUnitId,
+      estimated_hours: parseFloat(hours) || 2.0,
+      knowledge_level: selectedLevel?.value ? String(selectedLevel.value) : "K2 — Understand",
+      status: selectedStatus?.value ? String(selectedStatus.value) : "Approved",
     });
-    onClose();
   };
 
+  const selectedRawItem = rawUnits.find(
+    (ru: any) => ru.id === selectedUnit?.value || ru.unit_id === selectedUnit?.value
+  );
   const displayUnitNum =
-    Number(selectedUnit?.value) ||
+    selectedRawItem?.unit_number ||
+    topic?.unit_number ||
     activeUnitNumber ||
     1;
 
@@ -183,14 +261,14 @@ const AddTopicModal = ({
         {/* ───────────────── HEADER ───────────────── */}
         <div className="flex items-center justify-between bg-[#191242] px-6 py-4.5 text-white">
           <div className="flex items-center gap-3.5">
-            {/* Outlined Tablet Icon */}
+            {/* Outlined BookOpen Icon */}
             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white">
-              <Tablet className="h-6 w-6 stroke-[1.8]" />
+              <BookOpen className="h-6 w-6 stroke-[1.8]" />
             </div>
 
             <div>
               <h2 className="text-xl font-bold leading-tight text-white">
-                Add Topic
+                {topic?.is_subtopic ? "Edit Subtopic" : "Edit Topic"}
               </h2>
               <p className="mt-0.5 text-xs font-normal text-white/70">
                 Unit {displayUnitNum} • {displayCourseName}
@@ -212,15 +290,15 @@ const AddTopicModal = ({
         {/* ───────────────── BODY / FORM ───────────────── */}
         <form onSubmit={handleSubmit} className="p-6">
           <div className="space-y-4">
-            {/* Topic Name */}
+            {/* Topic / Subtopic Name */}
             <div>
               <label className="mb-1 block text-sm font-bold text-[#000] dark:text-gray-200">
-                Topic Name <span className="text-red-500">*</span>
+                {topic?.is_subtopic ? "Subtopic Name" : "Topic Name"} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 autoFocus
-                placeholder="e.g. Transmission Impairments & Noise Analysis"
+                placeholder="Physical Layer & Transmission Media"
                 value={topicName}
                 onChange={(e) => {
                   setTopicName(e.target.value);
@@ -256,7 +334,7 @@ const AddTopicModal = ({
                   type="number"
                   min="0.5"
                   step="0.5"
-                  placeholder="1.5"
+                  placeholder="2"
                   value={hours}
                   onChange={(e) => setHours(e.target.value)}
                   className="h-[38px] w-full rounded-md border border-[#d1d5db] bg-white px-3 text-sm font-semibold text-gray-800 placeholder-gray-400 outline-none transition-all focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] dark:border-gray-700 dark:bg-gray-800 dark:text-white"
@@ -300,10 +378,17 @@ const AddTopicModal = ({
             </button>
             <button
               type="submit"
-              className="flex items-center gap-2 rounded-xl bg-[#5C28CA] px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-[#4d20b0] active:scale-[0.98]"
+              disabled={loading}
+              className="flex items-center gap-2 rounded-xl bg-[#16a34a] px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-[#15803d] active:scale-[0.98] disabled:opacity-60"
             >
-              <Check className="h-4 w-4 stroke-[2.5]" />
-              Save Topic
+              {loading ? (
+                <RefreshCw className="h-4 w-4 animate-spin" />
+              ) : (
+                <Check className="h-4 w-4 stroke-[2.5]" />
+              )}
+              {selectedStatus?.value === "Needs Review"
+                ? (topic?.is_subtopic ? "Update Subtopic" : "Update Topic")
+                : (topic?.is_subtopic ? "Approval Subtopic" : "Approval Topic")}
             </button>
           </div>
         </form>
@@ -312,4 +397,4 @@ const AddTopicModal = ({
   );
 };
 
-export default AddTopicModal;
+export default EditTopicModal;

@@ -1,18 +1,37 @@
 import { useState } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, Plus, RefreshCw } from "lucide-react";
+
+interface AccordiansStyleProps {
+  topics?: any[];
+  title?: string;
+  subtitle?: string;
+  topicCount?: number;
+  topicCountLabel?: string;
+  expandable?: boolean;
+  expandedSectionLabel?: React.ReactNode;
+  btnOnClick?: (topic: any) => void;
+  footerContent?: React.ReactNode;
+  loading?: boolean;
+  loadingMessage?: string;
+  onAddTopic?: () => void;
+  renderModals?: () => React.ReactNode;
+}
 
 const AccordiansStyle = ({
-  expandable = false,
   topics = [],
-  title,
+  title = "Topics",
   subtitle,
   topicCount,
   topicCountLabel = "Topics",
+  expandable = true,
   expandedSectionLabel,
-  footerContent,
-  renderModals,
   btnOnClick,
-}: any) => {
+  footerContent,
+  loading = false,
+  loadingMessage = "Generating with NEURO AI...",
+  onAddTopic,
+  renderModals,
+}: AccordiansStyleProps) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const count = topicCount ?? topics.length;
@@ -38,14 +57,57 @@ const AccordiansStyle = ({
             )}
           </div>
 
-          <span className="rounded bg-white/15 px-4 py-1 text-sm font-semibold">
-            {count} {topicCountLabel}
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="rounded bg-white/15 px-4 py-1 text-sm font-semibold">
+              {count} {topicCountLabel}
+            </span>
+            {onAddTopic && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAddTopic();
+                }}
+                className="flex items-center gap-1.5 rounded-lg bg-color2 px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 active:scale-95 transition-all cursor-pointer"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                Add Topic
+              </button>
+            )}
+          </div>
         </div>
 
         {/* ───────────────── TOPIC ROWS ───────────────── */}
-        <div className="divide-y divide-gray-200 dark:divide-gray-800">
-          {topics.map((topic: any) => {
+        {loading ? (
+          <div className="p-6">
+            <div className="flex items-center justify-center gap-2.5 pb-6 text-sm font-semibold text-color2">
+              <RefreshCw className="h-4 w-4 animate-spin text-color2" />
+              <span>{loadingMessage}</span>
+            </div>
+            <div className="space-y-3">
+              {[1, 2, 3, 4, 5].map((idx) => (
+                <div
+                  key={idx}
+                  className="flex animate-pulse items-center justify-between rounded-xl border border-gray-100 bg-gray-50/70 px-5 py-4 dark:border-gray-800 dark:bg-gray-800/50"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="h-4 w-4 rounded-full bg-gray-200 dark:bg-gray-700" />
+                    <div className="space-y-1.5">
+                      <div className="h-4 w-64 rounded bg-gray-200 dark:bg-gray-700" />
+                      <div className="h-3 w-32 rounded bg-gray-200 dark:bg-gray-700" />
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="h-6 w-24 rounded-lg bg-gray-200 dark:bg-gray-700" />
+                    <div className="h-6 w-16 rounded-lg bg-gray-200 dark:bg-gray-700" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="divide-y divide-gray-200 dark:divide-gray-800">
+            {topics.map((topic: any) => {
             const isOpen = expandedId === topic.id;
 
             return (
@@ -65,33 +127,28 @@ const AccordiansStyle = ({
                     aria-expanded={expandable ? isOpen : undefined}
                   >
                     {/* Chevron */}
-                    {expandable &&
+                    {(topic.items.length > 0 && expandable) &&
                       (isOpen ? (
                         <ChevronDown className="mt-0.5 h-3.5 w-3.5 shrink-0 text-pri" />
                       ) : (
-                        <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#000]" />
+                        <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-pri" />
                       ))}
 
                     {/* Title + Meta */}
-                    <span
-                      className={`min-w-0 flex-1 font-bold ${
-                        expandable ? "" : "py-1"
-                      }`}
-                    >
-                      {topic.title}
+                    <span className="min-w-0 flex-1">
+                      {/* Topic Title */}
+                      <span className="font-semibold text-color1">
+                        {topic.title}
+                      </span>
 
-                      {/* Verified Status */}
-                      {topic.verified && (
-                        <div className="mt-1 flex items-center gap-2">
-                          <span className="block text-sm font-normal text-pri">
-                            Status:
-                          </span>
-
+                      {/* Verified Status badge if present */}
+                      {topic?.verified_status && (
+                        <div className="mt-1">
                           <span
-                            className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${
-                              topic?.verified_status === "Approved"
-                                ? "border border-green-400 bg-green-50 text-green-600"
-                                : "border border-orange-200 bg-orange-50 text-orange-600"
+                            className={`rounded px-1.5 py-0.5 text-xs font-semibold ${
+                              topic.verified_status === "Needs Review"
+                                ? "border border-amber-300 bg-amber-50 text-amber-600"
+                                : "border border-emerald-300 bg-emerald-50 text-emerald-600"
                             }`}
                           >
                             {topic?.verified_status}
@@ -100,7 +157,7 @@ const AccordiansStyle = ({
                       )}
 
                       {/* Meta */}
-                      {expandable && topic.meta && (
+                      {expandable && topic.meta && !topic.actions?.length && (
                         <span className="text-pri mt-0.5 block text-xs font-normal">
                           {topic.meta}
                         </span>
@@ -109,59 +166,97 @@ const AccordiansStyle = ({
                   </button>
 
                   {/* ───────────── RIGHT SIDE ───────────── */}
-
-                  {/* Expandable Badge */}
-                  {expandable ? (
-                    (() => {
-                      const badge = isOpen
-                        ? topic.expandedBadge
-                        : topic.collapsedBadge;
-
-                      return badge ? (
+                  <div className="flex shrink-0 items-center gap-2">
+                    {/* Topic Actions (Hours, Knowledge Level, Status badge/button, Edit icon) */}
+                    {topic.actions?.map((action: any) =>
+                      action.asTag ? (
                         <span
-                          className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${
-                            badge.className ??
-                            "border border-orange-200 bg-orange-50 text-orange-600"
-                          }`}
+                          key={action.key}
+                          className={action.className}
                         >
-                          {badge.label}
+                          {action.icon}
+                          {action.label}
                         </span>
-                      ) : null;
-                    })()
-                  ) : topic?.button ? (
-                    /* ───────────── CREATE BUTTON ───────────── */
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        btnOnClick?.(topic);
-                      }}
-                      className="create-btn cursor-pointer"
-                    >
-                      {topic?.button?.icon}
-                      {topic?.button?.label}
-                    </button>
-                  ) : (
-                    /* ───────────── COLLAPSED BADGES ───────────── */
-                    topic?.collapsedBadge &&
-                    topic.collapsedBadge.map(
-                      (item: any, index: number) => (
-                        <span
-                          key={item.id ?? index}
-                          className={`h-fit shrink-0 rounded px-2 py-1 text-xs font-bold ${
-                            item.className ??
-                            "bg-color2-l text-color2"
-                          }`}
+                      ) : (
+                        <button
+                          key={action.key}
+                          type="button"
+                          className={
+                            action.className ??
+                            "text-pri flex items-center gap-1.5 rounded-full border border-gray-400 px-3 py-1 text-xs font-semibold hover:border-[#000] hover:text-[#000]"
+                          }
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            action.onClick?.(topic);
+                          }}
                         >
-                          {item.label}
-                        </span>
+                          {action.icon}
+                          {action.label}
+                        </button>
                       )
-                    )
-                  )}
+                    )}
+
+                    {/* Expandable Badge */}
+                    {expandable && !topic.actions?.length ? (
+                      (() => {
+                        const badge = isOpen
+                          ? topic.expandedBadge
+                          : topic.collapsedBadge;
+
+                        return badge ? (
+                          <span
+                            className={`h-fit shrink-0 rounded-lg px-2 py-1 text-xs font-semibold ${
+                              badge.className ??
+                              "border border-orange-200 bg-orange-50 text-orange-600"
+                            }`}
+                          >
+                            {badge.label}
+                          </span>
+                        ) : null;
+                      })()
+                    ) : !topic.actions ? (
+                      topic?.button ? (
+                        /* ───────────── CREATE BUTTON ───────────── */
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            btnOnClick?.(topic);
+                          }}
+                          className="create-btn cursor-pointer"
+                        >
+                          {topic?.button?.icon}
+                          {topic?.button?.label}
+                        </button>
+                      ) : (
+                        /* ───────────── COLLAPSED BADGES ───────────── */
+                        topic?.collapsedBadge &&
+                        topic.collapsedBadge.map(
+                          (item: any, index: number) => (
+                            <span
+                              key={item.id ?? index}
+                              onClick={(e) => {
+                                if (item.onClick) {
+                                  e.stopPropagation();
+                                  item.onClick();
+                                }
+                              }}
+                              className={`h-fit shrink-0 rounded px-2 py-1 text-xs font-bold ${
+                                item.className ??
+                                "bg-color2-l text-color2"
+                              } ${item.onClick ? "cursor-pointer select-none transition hover:opacity-80 active:scale-95" : ""}`}
+                            >
+                              {item.label}
+                            </span>
+                          )
+                        )
+                      )
+                    ) : null}
+                  </div>
                 </div>
 
                 {/* ───────────────── EXPANDED ITEMS ───────────────── */}
-                {expandable && isOpen && (
+                {topic.items.length > 0 && expandable && isOpen && (
                   <div className="mx-4 mb-3 rounded-xl border bg-violet-50 p-3">
                     {/* Expanded Section Label */}
                     {expandedSectionLabel && (
@@ -255,6 +350,7 @@ const AccordiansStyle = ({
             );
           })}
         </div>
+      )}
 
         {/* ───────────────── FOOTER ───────────────── */}
         {footerContent && (

@@ -47,7 +47,7 @@ const COPOMapping = () => {
     activeTab: "coordinator",
     approvedMappings: [] as string[],
     mappingApproved: false,
-    copoMatrix: DEFAULT_COPO_MATRIX as COPOMatrixResponse,
+    copoMatrix: [],
     courseDetail: null as any,
     courseList: [] as any[],
     organization_id: "",
@@ -99,8 +99,7 @@ const COPOMapping = () => {
   useEffect(() => {
     if (course_id) {
       getCourseDetails();
-    } else {
-      getCOPOMatrix(1);
+      // getCOPOMatrix();
     }
   }, [course_id]);
 
@@ -126,19 +125,19 @@ const COPOMapping = () => {
         courseDetail: res,
         selectedCourse: res ? { value: res.id, label: `${res.course_code} - ${res.course_title}` } : null,
       });
-      const sid = res?.syllabus_id || res?.syllabus?.id || 1;
+      const sid = res?.syllabus_id || res?.latest_syllabus?.id ;
       getCOPOMatrix(sid);
     } catch (error: any) {
       console.log("error fetching course detail", error);
       Failure(getErrorMessage(error, "Failed to fetch course detail"));
-      getCOPOMatrix(1);
+      getCOPOMatrix();
     }
   };
 
   const getCOPOMatrix = async (syllabusId?: any) => {
     try {
       setState({ loading: true });
-      const sid = syllabusId || state.courseDetail?.syllabus_id || 1;
+      const sid = syllabusId || state.courseDetail?.latest_syllabus?.id;
       const res: any = await Models.COPOMap.copo_map(sid);
       if (res && (res.matrix || res.data?.matrix)) {
         const matrixObj = res.matrix ? res : res.data;
@@ -159,16 +158,11 @@ const COPOMapping = () => {
   };
 
   // Matrix data resolution
-  const matrixData: COPOMatrixResponse = state.copoMatrix || DEFAULT_COPO_MATRIX;
+  const matrixData: COPOMatrixResponse = state.copoMatrix;
   const programOutcomes = matrixData?.program_outcomes || [];
   const courseOutcomes = matrixData?.course_outcomes || [];
   const matrix = matrixData?.matrix || {};
-  const summary = matrixData?.summary || {
-    course_outcomes_count: courseOutcomes.length,
-    program_outcomes_count: programOutcomes.length,
-    ai_suggestions_count: 56,
-    mappings_need_review_count: 56,
-  };
+  const summary = matrixData?.summary ;
 
   const isApproved = state.mappingApproved || matrixData?.mapping_status === "Approved";
   const allMapped = state.approvedMappings.length > 0;
@@ -199,7 +193,7 @@ const COPOMapping = () => {
       },
     });
 
-    const sid = state.courseDetail?.syllabus_id || state.copoMatrix?.syllabus_id || 1;
+    const sid = state.courseDetail?.latest_syllabus?.id || state.copoMatrix?.syllabus_id ;
     try {
       const res: any = await Models.COPOMap.get_cell_detail(sid, {
         co_code,
@@ -256,7 +250,7 @@ const COPOMapping = () => {
   }) => {
     try {
       setState({ updatingCell: true });
-      const sid = state.courseDetail?.syllabus_id || state.copoMatrix?.syllabus_id || 1;
+      const sid = state.courseDetail?.latest_syllabus?.id || state.copoMatrix?.syllabus_id ;
 
       console.log("Calling copo_update with syllabus_id:", sid, "payload:", payload);
       await Models.COPOMap.copo_update(sid, payload);
@@ -316,7 +310,7 @@ const COPOMapping = () => {
   }) => {
     try {
       setState({ updatingCell: true });
-      const sid = state.courseDetail?.syllabus_id || state.copoMatrix?.syllabus_id || 1;
+      const sid = state.courseDetail?.latest_syllabus?.id || state.copoMatrix?.syllabus_id ;
 
       console.log("Calling accept_map with syllabus_id:", sid, "payload:", payload);
       await Models.COPOMap.accept_map(sid, payload);
@@ -367,7 +361,7 @@ const COPOMapping = () => {
   const handleApproveMapping = async () => {
     try {
       setState({ approvingMap: true });
-      const sid = state.courseDetail?.syllabus_id || state.copoMatrix?.syllabus_id || 1;
+      const sid = state.courseDetail?.latest_syllabus?.id || state.copoMatrix?.syllabus_id ;
 
       // Construct dynamic comments based on logged in user / course coordinator
       const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -399,7 +393,7 @@ const COPOMapping = () => {
   const handleSaveDraft = async () => {
     try {
       setState({ savingDraft: true });
-      const sid = state.courseDetail?.syllabus_id || state.copoMatrix?.syllabus_id || 1;
+      const sid = state.courseDetail?.latest_syllabus?.id || state.copoMatrix?.syllabus_id ;
 
       const formattedMatrix: Record<string, Record<string, number>> = {};
       const formattedJustifications: Record<string, Record<string, string>> = {};
@@ -474,21 +468,21 @@ const COPOMapping = () => {
   const verifiedCount = state.approvedMappings.length;
   const needReviewCount = Math.max(
     0,
-    (summary.mappings_need_review_count ?? summary.ai_suggestions_count ?? 56) - verifiedCount
+    (summary?.mappings_need_review_count ?? summary?.ai_suggestions_count ?? 56) - verifiedCount
   );
 
   const TABS = [
     {
       key: "course_outcome",
       label: "Course Outcome",
-      count: summary.course_outcomes_count ?? courseOutcomes.length,
+      count: summary?.course_outcomes_count ?? courseOutcomes.length,
       subLabel: "Course outcomes to map",
       icon: <Lightbulb className="h-5 w-5" />,
     },
     {
       key: "program_outcome",
       label: "Program Outcome",
-      count: summary.program_outcomes_count ?? programOutcomes.length,
+      count: summary?.program_outcomes_count ?? programOutcomes.length,
       subLabel: matrixData.po_version || "PO 2025 v1",
       icon: <GraduationCap className="h-5 w-5" />,
     },
@@ -496,7 +490,7 @@ const COPOMapping = () => {
       key: "ai_suggestions",
       label: "AI Generated Mapping Suggestions",
       subLabel: "Mappings Need Review",
-      count: needReviewCount,
+      count: summary?.ai_suggestions_count,
       icon: <GitCompare className="h-5 w-5" />,
     },
     {
@@ -516,7 +510,7 @@ const COPOMapping = () => {
         description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
         programme={state?.courseDetail?.programme}
         batch={state?.courseDetail?.batch_name}
-        academicYear={`${state?.courseDetail?.batch_name} / Semester 3`}
+        academicYear={`${state?.courseDetail?.batch_name}`}
         students={state?.courseDetail?.students_count}
         selectedCourse={state.selectedCourse}
         courseOptions={state.courseList}
@@ -531,7 +525,7 @@ const COPOMapping = () => {
 
       <PageHeader
         title="CO–PO Mapping"
-        records={`PO Version: ${matrixData.po_version || "PO 2025 v1"}`}
+        records={`PO Version: ${matrixData.po_version}`}
         subtitle="AI-assisted mapping between approved Course Outcomes and the selected Program Outcome version. Review each suggested mapping and rationale before approval."
         icon={<Cable className="h-5 w-5 text-color2" />}
       />
