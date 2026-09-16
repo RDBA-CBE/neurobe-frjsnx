@@ -613,9 +613,8 @@ const LessonPlan = () => {
     try {
       setState({ generateLoading: true });
       
-      // Poll until status is "complete"
-      let retries = 0;
-      const maxRetries = 100; // Max 30 retries (about 1 minute with 2s interval)
+      // Poll until status is "complete" (infinite polling until complete)
+      let pollAttempt = 0;
       const pollInterval = 2000; // 2 seconds
       
       const pollJob = async () => {
@@ -627,43 +626,29 @@ const LessonPlan = () => {
           console.log('Poll response:', res);
           
           // Check if status is "complete" in the response
-          const isComplete = 
-            // res?.status === "complete" || 
-            res?.status === "queued" || 
-
-            res?.result?.status === "complete";
+          const status = res?.status || res?.result?.status || "";
+          const isComplete = status.toLowerCase() === "complete";
           
           if (isComplete) {
             // Job completed - store the response and show modal
+            console.log("Lesson plan generation completed!");
             setState({ 
               generatedResponse: res,
               generateLoading: false,
               recommendationsGenerated: false  // Keep accordion view until user reviews
             });
             setGenerateModal(true);
-          } else if (retries < maxRetries) {
-            // Keep polling
-            retries++;
-            setTimeout(pollJob, pollInterval);
           } else {
-            // Max retries reached
-            console.log("Max retries reached after", retries, "attempts");
-            Success("Lesson plan generation completed!");
-            setState({ 
-              generateLoading: false,
-              generatedResponse: res
-            });
-            setGenerateModal(true);
+            // Keep polling indefinitely until complete
+            pollAttempt++;
+            console.log(`Status: ${status}, polling... (attempt ${pollAttempt})`);
+            setTimeout(pollJob, pollInterval);
           }
         } catch (error) {
           console.log("Poll error:", error);
-          if (retries < maxRetries) {
-            retries++;
-            setTimeout(pollJob, pollInterval);
-          } else {
-            setState({ generateLoading: false });
-            console.log("Polling failed after max retries");
-          }
+          // Retry even on error
+          pollAttempt++;
+          setTimeout(pollJob, pollInterval);
         }
       };
       

@@ -25,6 +25,7 @@ interface AIGenerateModalProps {
   onAction: () => void;
   render: () => React.ReactNode;
   actionIcon?: React.ReactNode;
+  actionLoading?: boolean;
 }
 
 const AIGenerateModal = ({
@@ -42,6 +43,7 @@ const AIGenerateModal = ({
   onAction,
   render,
   actionIcon,
+  actionLoading = false,
 }: AIGenerateModalProps) => {
   React.useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
@@ -73,7 +75,7 @@ const AIGenerateModal = ({
             onClick={onClose}
             className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-600 text-[#000] hover:text-white"
           >
-            <X className="h-4 w-4" />
+            <X className="h-4 w-4 text-white" />
           </button>
         </div>
 
@@ -91,10 +93,11 @@ const AIGenerateModal = ({
           <button
             type="button"
             onClick={(e) => onAction()}
-            className="create-btn cursor-pointer"
+            disabled={actionLoading}
+            className={`create-btn cursor-pointer ${actionLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             {actionIcon}
-            {actionLabel}
+            {actionLoading ? "Generating..." : actionLabel}
           </button>
           {/* <button
             onClick={onAction}

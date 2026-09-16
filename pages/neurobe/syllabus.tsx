@@ -123,11 +123,10 @@ const Syllabus = () => {
       }
 
       // restore syllabus detail on refresh if step >= 3
-      const savedSyllabusId = getSavedSyllabusId();
-      if (savedSyllabusId && getSavedStep() >= 3) {
-        syllabus_detail(savedSyllabusId);
+      if (state.courseData?.latest_syllabus?.id && getSavedStep() >= 3) {
+        syllabus_detail(state.courseData.latest_syllabus.id);
       }
-      console.log("savedSyllabusId →", savedSyllabusId);
+      console.log("syllabus_id →", state.courseData?.latest_syllabus?.id);
 
 
     }
@@ -138,12 +137,37 @@ const Syllabus = () => {
     if (state.currentStep === 4 && course_id) {
       console.log("Step 4 reached, refreshing data...");
       course_data(course_id);
-      const savedSyllabusId = getSavedSyllabusId();
-      if (savedSyllabusId) {
-        syllabus_detail(savedSyllabusId);
+      if (state.courseData?.latest_syllabus?.id) {
+        syllabus_detail(state.courseData.latest_syllabus.id);
       }
     }
   }, [state.currentStep]);
+
+  // Check if course has latest_syllabus.id - if yes, go to review/edit, if no, start AI extraction
+  useEffect(() => {
+    if (state.courseData && course_id && state.currentStep < 3) {
+      console.log("courseData updated:", state.courseData);
+      
+      if (state.courseData?.latest_syllabus?.id) {
+        // Syllabus already exists and we're still on upload step, go to review and edit
+        console.log("Latest syllabus found:", state.courseData.latest_syllabus.id);
+        
+        // Stop any ongoing polling
+        stopPolling();
+        
+        try {
+          sessionStorage.setItem(syllabusKey, String(state.courseData.latest_syllabus.id));
+        } catch { }
+        setStep(3);
+        syllabus_detail(state.courseData.latest_syllabus.id);
+      }
+    } else if (state.courseData && course_id && state.currentStep >= 3) {
+      // On step 3 or 4, just stop polling if syllabus exists
+      if (state.courseData?.latest_syllabus?.id) {
+        stopPolling();
+      }
+    }
+  }, [state.courseData, course_id, state.currentStep]);
 
   const course_data = async (id: string) => {
     try {
@@ -224,9 +248,14 @@ const Syllabus = () => {
     stopPolling();
     setState({ isJobLoading: true });
 
+    let retries = 0;
+    const maxRetries = 30; // Max 30 retries (about 1.5 minutes with 3s interval)
+    const pollInterval = 3000; // 3 seconds
+
     const fetchOnce = async () => {
       try {
         const res: any = await Models.job.detail(id);
+        console.log("job_Data response:", res);
         setStep(3);
 
         const status = res?.status ?? res?.state?.live_redis_status;
@@ -244,17 +273,38 @@ const Syllabus = () => {
           setState({ isJobLoading: false });
           syllabus_detail(res?.result?.syllabus_id);
           stopPolling();
+        } else {
+          // Job still processing, continue polling
+          console.log(`Job status: ${status}, continuing to poll...`);
         }
-      } catch (error) {
-        console.log("job_Data error", error);
-        setState({ isJobLoading: false });
-        stopPolling();
+      } catch (error: any) {
+        console.log("job_Data error:", error);
+        
+        // Check if error is "job not found" - this means job is not yet in queue
+        const errorMsg = error?.message || error?.detail || String(error);
+        const isJobNotFound = errorMsg.includes("not found");
+        
+        if (isJobNotFound && retries < maxRetries) {
+          // Job not yet in queue, keep retrying
+          console.log(`Job not found, retrying... (${retries + 1}/${maxRetries})`);
+          retries++;
+          // Continue polling in the interval
+        } else if (retries >= maxRetries) {
+          // Max retries reached
+          console.log("Max retries reached for job polling");
+          setState({ isJobLoading: false });
+          stopPolling();
+        } else {
+          // Other error - stop polling
+          setState({ isJobLoading: false });
+          stopPolling();
+        }
       }
     };
 
     // call immediately, then every 3 seconds
     await fetchOnce();
-    pollRef.current = setInterval(fetchOnce, 3000);
+    pollRef.current = setInterval(fetchOnce, pollInterval);
   };
 
   const syllabus_detail = async (id: string | number) => {
@@ -310,8 +360,7 @@ const Syllabus = () => {
     try {
       const res = await Models.syllabus.create_unit_topic(unitId, body);
       Success("Topics added");
-      const savedSyllabusId = getSavedSyllabusId();
-      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+      if (state.courseData?.latest_syllabus?.id) syllabus_detail(state.courseData.latest_syllabus.id);
     } catch (error: any) {
       console.log("create_unit_topic error", error);
       throw error;
@@ -322,8 +371,7 @@ const Syllabus = () => {
     try {
       const res = await Models.syllabus.delete_unit_topic(id);
       Success("Topics deleted");
-      const savedSyllabusId = getSavedSyllabusId();
-      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+      if (state.courseData?.latest_syllabus?.id) syllabus_detail(state.courseData.latest_syllabus.id);
 
       console.log("syllabus_status →", res);
     } catch (error) {
@@ -388,8 +436,7 @@ const Syllabus = () => {
     try {
       const res = await Models.syllabus.delete_unit_textbook(id);
       Success("Textbook deleted");
-      const savedSyllabusId = getSavedSyllabusId();
-      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+      if (state.courseData?.latest_syllabus?.id) syllabus_detail(state.courseData.latest_syllabus.id);
     } catch (error) {
       console.log("delete_unit_textbook error", error);
     }
@@ -399,8 +446,7 @@ const Syllabus = () => {
     try {
       const res = await Models.syllabus.delete_unit_reference_book(id);
       Success("Reference book deleted");
-      const savedSyllabusId = getSavedSyllabusId();
-      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+      if (state.courseData?.latest_syllabus?.id) syllabus_detail(state.courseData.latest_syllabus.id);
     } catch (error) {
       console.log("delete_unit_reference_book error", error);
     }
@@ -413,8 +459,7 @@ const Syllabus = () => {
         description: description.trim(),
       });
       Success("Outcome updated");
-      const savedSyllabusId = getSavedSyllabusId();
-      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+      if (state.courseData?.latest_syllabus?.id) syllabus_detail(state.courseData.latest_syllabus.id);
     } catch (error: any) {
       console.log("edit_unit_outcome error", error);
       throw error;
@@ -425,8 +470,7 @@ const Syllabus = () => {
     try {
       const res = await Models.syllabus.accept_outcome(id);
       Success("Outcome accepted");
-      const savedSyllabusId = getSavedSyllabusId();
-      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+      if (state.courseData?.latest_syllabus?.id) syllabus_detail(state.courseData.latest_syllabus.id);
     } catch (error: any) {
       console.log("accept_outcome error", error);
       throw error;
@@ -439,8 +483,7 @@ const Syllabus = () => {
         knowledge_level: value,
       });
       Success("Knowledge level updated");
-      const savedSyllabusId = getSavedSyllabusId();
-      if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+      if (state.courseData?.latest_syllabus?.id) syllabus_detail(state.courseData.latest_syllabus.id);
     } catch (error: any) {
       console.log("edit_unit_outcome error", error);
       throw error;
@@ -452,9 +495,8 @@ const Syllabus = () => {
       const body = {
         approval_status: "approved_by_bos",
       };
-      const savedSyllabusId = getSavedSyllabusId();
 
-      const res: any = await Models.syllabus.status(savedSyllabusId, body);
+      const res: any = await Models.syllabus.status(state.courseData?.latest_syllabus?.id, body);
       console.log("syllabus_status →", res);
       setStep(4)
     } catch (error) {
@@ -466,7 +508,6 @@ const Syllabus = () => {
 
   const handleSaveDraft = async () => {
     try {
-      const savedSyllabusId = getSavedSyllabusId();
       const body = {
         credits: state?.jobData?.credits,
         lecture_hours: state?.jobData?.lecture_hours,
@@ -477,7 +518,7 @@ const Syllabus = () => {
       };
 
       const res: any = await Models.syllabus.update_syllabus(
-        savedSyllabusId,
+        state.courseData?.latest_syllabus?.id,
         body
       );
       Success("Draft changes saved successfully.");
@@ -566,8 +607,7 @@ const Syllabus = () => {
                 fileName={state.selectedFile?.name}
                 isLoading={state.isJobLoading}
                 onReview={() => {
-                  const savedSyllabusId = getSavedSyllabusId();
-                  if (savedSyllabusId) syllabus_detail(savedSyllabusId);
+                  if (state.courseData?.latest_syllabus?.id) syllabus_detail(state.courseData.latest_syllabus.id);
                   setState({ showReview: true });
                 }}
                 progress={state.isJobLoading ? 75 : 100}
@@ -624,7 +664,7 @@ const Syllabus = () => {
                       handleSaveOutcome={handleSaveOutcome}
                       handleAcceptOutcome={handleAcceptOutcome}
                       handleKnowledgeLevelChange={handleKnowledgeLevelChange}
-                      syllabusId={getSavedSyllabusId()}
+                      syllabusId={state.courseData?.latest_syllabus?.id}
                     />
                   </div>
                 </div>

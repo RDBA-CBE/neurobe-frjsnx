@@ -81,6 +81,7 @@ const AccordiansStyleEditor = ({
   actionBtn3?: { label: string; icon?: React.ReactNode; onClick: () => void };
   actionBtn4?: { label: string; icon?: React.ReactNode; onClick: () => void };
   final?: { label: string; icon?: React.ReactNode; onClick: () => void };
+  final2?: { label: string; icon?: React.ReactNode; onClick: () => void };
   saveChanges?: boolean;
   finalValue?: boolean;
 }) => {
@@ -235,39 +236,49 @@ const AccordiansStyleEditor = ({
           </div>
 
           {/* Read footer */}
-          {!finalValue?
-          <div className="mt-4 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={onBack}
-              className="flex items-center gap-1.5 text-sm font-semibold text-[#000] hover:text-[#000]"
-            >
-              ← Back to Learning Materials
-            </button>
-            <div className="flex items-center gap-2">
-              {actionBtn2 && (
-                <button onClick={actionBtn2.onClick} className="create-btn-sec">
-                  {actionBtn2.icon}
-                  {actionBtn2.label}
-                </button>
-              )}
-              {actionBtn1 && (
-                <button onClick={actionBtn1.onClick} className="create-btn">
-                  {actionBtn1.icon}
-                  {actionBtn1.label}
-                </button>
-              )}
-            </div>
-          </div>:
+          {!finalValue ?
+            <div className="mt-4 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={onBack}
+                className="flex items-center gap-1.5 text-sm font-semibold text-[#000] hover:text-[#000]"
+              >
+                ← Back to Learning Materials
+              </button>
+              <div className="flex items-center gap-2">
+                {actionBtn2 && (
+                  <button onClick={actionBtn2.onClick} className="create-btn-sec">
+                    {actionBtn2.icon}
+                    {actionBtn2.label}
+                  </button>
+                )}
+                {actionBtn1 && (
+                  <button onClick={actionBtn1.onClick} className="create-btn">
+                    {actionBtn1.icon}
+                    {actionBtn1.label}
+                  </button>
+                )}
+              </div>
+            </div> :
 
-<div className="mt-4 flex items-center justify-end">
-
-          <button onClick={final.onClick} className="create-btn">
-                  {final.icon}
-                  {final.label}
-
-                </button>
-          </div>}
+            <div className="mt-4 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={onBack}
+                className="flex items-center gap-1.5 text-sm font-semibold text-[#000] hover:text-[#000]"
+              >
+                ← Back to Learning Materials
+              </button>
+              <div className="flex items-center gap-2">
+               
+                {final &&
+                  <button onClick={final.onClick} className="create-btn">
+                    {final.icon}
+                    {final.label}
+                  </button>
+                }
+              </div>
+            </div>}
         </>
       )}
     </section>

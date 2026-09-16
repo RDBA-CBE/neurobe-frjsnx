@@ -40,12 +40,12 @@ const learning_material = {
         return promise;
     },
 
-    draft: (syllabus_id: string | number) => {
+    generate: (topic_id: string | number,data) => {
         let promise = new Promise((resolve, reject) => {
-            let url = `course/syllabi/${syllabus_id}/lesson-plan/draft`;
+            let url = `course/topics/${topic_id}/learning-materials/generate`;
             
             commonInstance()
-                .post(url)
+                .post(url,data)
                 .then((res) => {
                     resolve(res.data);
                 })
@@ -60,11 +60,11 @@ const learning_material = {
         return promise;
     },
 
-     approve: (syllabus_id: string | number) => {
+     get_topics: (topic_id: string | number) => {
         let promise = new Promise((resolve, reject) => {
-            let url = `course/syllabi/${syllabus_id}/lesson-plan/approve`;
+            let url = `course/topics/${topic_id}/learning-materials`;
             commonInstance()
-                .post(url)
+                .get(url)
                 .then((res) => {
                     resolve(res.data);
                 })
@@ -97,6 +97,45 @@ const learning_material = {
         });
         return promise;
     },
+
+     update_material: (topic_id: string | number,data) => {
+        let promise = new Promise((resolve, reject) => {
+            let url = `course/topics/${topic_id}/learning-materials`;
+            commonInstance()
+                .put(url,data)
+                .then((res) => {
+                    resolve(res.data);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        reject(error.response.data?.message || error.response.data);
+                    } else {
+                        reject(error);
+                    }
+                });
+        });
+        return promise;
+    },
+
+      approve_material: (topic_id: string | number) => {
+        let promise = new Promise((resolve, reject) => {
+            let url = `course/topics/${topic_id}/learning-materials/approve`;
+            commonInstance()
+                .post(url)
+                .then((res) => {
+                    resolve(res.data);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        reject(error.response.data?.message || error.response.data);
+                    } else {
+                        reject(error);
+                    }
+                });
+        });
+        return promise;
+    },
+
 
 
     
