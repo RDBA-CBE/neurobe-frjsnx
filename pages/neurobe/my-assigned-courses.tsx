@@ -190,14 +190,44 @@ const MyAssignedCourses = () => {
 
 
   const onAction = (data) => {
+    console.log('data', data)
+    
+    const nextAction = data?.next_action?.toLowerCase() || "";
+    const courseId = data?.id;
     const jobId = data?.job_ids?.extraction_job_id;
-    const queryParams = new URLSearchParams({
-      course_id: data?.id
-    });
-    if (jobId) {
-      queryParams.append("job_id", jobId);
+    
+    // Build query params - course_id for all, job_id only for syllabus
+    const buildQueryString = (includeJobId = false) => {
+      const params = new URLSearchParams({
+        course_id: courseId
+      });
+      if (includeJobId && jobId) {
+        params.append("job_id", jobId);
+      }
+      return `?${params.toString()}`;
+    };
+    
+    // Route based on next_action keyword matching
+    if (nextAction.includes("co-po")) {
+      router.push(`/neurobe/co-po-mapping${buildQueryString()}`);
+    } else if (nextAction.includes("cia")) {
+      router.push(`/neurobe/cia-question-paper${buildQueryString()}`);
+    } else if (nextAction.includes("bank")) {
+      router.push(`/neurobe/question-bank${buildQueryString()}`);
+    } else if (nextAction.includes("pedagogy")) {
+      router.push(`/neurobe/pedagogy${buildQueryString()}`);
+    } else if (nextAction.includes("lesson")) {
+      router.push(`/neurobe/lesson-plan${buildQueryString()}`);
+    } else if (nextAction.includes("topics")) {
+      // Only syllabus gets job_id
+      router.push(`/neurobe/syllabus${buildQueryString(true)}`);
+    } else if (nextAction.includes("learning")) {
+      router.push(`/neurobe/learning-materials${buildQueryString()}`);
+    } else {
+      // Default: go to syllabus with job_id
+      router.push(`/neurobe/syllabus${buildQueryString(true)}`);
     }
-    router.push(`/neurobe/syllabus?${queryParams.toString()}`)
+    
     console.log("onAction", data)
   }
 

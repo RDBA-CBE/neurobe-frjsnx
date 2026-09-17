@@ -26,6 +26,10 @@ export interface QuestionCardProps {
   onEdit?: () => void;
   onApprove?: () => void;
   onMarkAsReviewed?: () => void;
+  question_code?: string;
+  unit_title?: string;
+  course_outcome?: string;
+  isApprovingLoading?: boolean;
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = (props) => {

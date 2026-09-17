@@ -23,6 +23,10 @@ export interface QuestionDetailCardProps {
   onEdit?: () => void;
   onMarkAsReviewed?: () => void;
   onApprove?: () => void;
+  question_code?: string;
+  unit_title?: string;
+  course_outcome?: string;
+  isApprovingLoading?: boolean;
 }
 
 const QuestionDetailCard: React.FC<QuestionDetailCardProps> = ({
@@ -38,6 +42,10 @@ const QuestionDetailCard: React.FC<QuestionDetailCardProps> = ({
   onEdit,
   onMarkAsReviewed,
   onApprove,
+  question_code,
+  unit_title,
+  course_outcome,
+  isApprovingLoading = false,
 }) => {
   // Derive default special tag if not explicitly passed
   const effectiveSpecialTag: SpecialTag = specialTag || (
@@ -52,7 +60,7 @@ const QuestionDetailCard: React.FC<QuestionDetailCardProps> = ({
     <div className="rounded-[20px] border border-gray-200/80 bg-white p-5 shadow-xs transition-shadow hover:shadow-md">
       {/* Top Header */}
       <div className="flex items-center justify-between">
-        <h4 className="text-base font-bold text-[#000] tracking-tight">{id}</h4>
+        <h4 className="text-base font-bold text-[#000] tracking-tight">{question_code}</h4>
         
         {/* Status Badge */}
         {status === "draft" && (
@@ -85,7 +93,7 @@ const QuestionDetailCard: React.FC<QuestionDetailCardProps> = ({
       {/* Unit & Topic Metadata */}
       <div className="mt-3.5 space-y-0.5">
         <div className="flex items-center gap-1 text-xs font-semibold text-[#000]">
-          <span>{unit} · {topic}</span>
+          <span>{unit_title} · {topic}</span>
           <ChevronRight className="h-3.5 w-3.5 text-[#000]" />
         </div>
         {subtopic && (
@@ -97,6 +105,13 @@ const QuestionDetailCard: React.FC<QuestionDetailCardProps> = ({
       <div className="mt-5 flex flex-wrap items-center justify-between gap-3 pt-1">
         {/* Tags List */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Course Outcome Tag */}
+          {course_outcome && (
+            <span className="rounded-lg bg-[#F3F4F6] px-3 py-1 text-xs font-semibold text-[#4B5563]">
+              {course_outcome}
+            </span>
+          )}
+          
           {tags.map((tag, idx) => {
             const label = typeof tag === "string" ? tag : tag.label;
             return (
@@ -138,11 +153,19 @@ const QuestionDetailCard: React.FC<QuestionDetailCardProps> = ({
               </button>
               <button
                 type="button"
+                onClick={onApprove}
+                disabled={isApprovingLoading}
+                className="rounded-xl bg-color2 px-4.5 py-1.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isApprovingLoading ? "Approving..." : "Approve"}
+              </button>
+              {/* <button
+                type="button"
                 onClick={onMarkAsReviewed}
                 className="rounded-xl bg-color2-l px-4.5 py-1.5 text-sm font-semibold text-color2 transition-opacity hover:opacity-90 active:scale-98"
               >
                 Mark as Reviewed
-              </button>
+              </button> */}
             </>
           )}
 

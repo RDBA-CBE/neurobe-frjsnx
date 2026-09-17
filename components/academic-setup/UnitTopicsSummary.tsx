@@ -166,9 +166,9 @@ const UnitTopicsSummary = ({ units = [] }: UnitTopicsSummaryProps) => {
                       </div>
                     </div>
                   </div>
-                  <ChevronDown
+                  {/* <ChevronDown
                     className={`h-4 w-4 text-gray-400 transition-transform ${isExpanded ? "rotate-180" : ""}`}
-                  />
+                  /> */}
                 </button>
 
                 {/* Subtopics Expanded */}

@@ -9,10 +9,12 @@ import {
   Search,
 } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
-import { useSetState } from "@/utils/function.utils";
+import { Success, useSetState } from "@/utils/function.utils";
 import PrivateRouter from "@/hook/privateRouter";
 import CourseBanner from "@/components/academic-setup/CourseBanner";
 import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import Models from "@/imports/models.import";
 import PageHeader from "@/components/common-components/PageHeader";
 import QuestionBankFilter, {
   FilterValues,
@@ -243,37 +245,218 @@ const SET_QUESTIONS: QuestionCardProps[] = [
 const QuestionBank = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const course_id = searchParams.get("course_id");
 
   const [state, setState] = useSetState({
     activeTab: "unit-1",
     isEditing: false,
     isGenerating: false,
-    viewQuestion: null as QuestionCardProps | null,
+    viewQuestion: null as any,
     activeQTab: "all-questions" as "all-questions" | "question-sets",
     appliedFilters: null as FilterValues | null,
     isSyllabusOpen: false,
     selectedSetId: null as string | null,
     activeBannerTab: "coordinator",
+    courseData: null as any,
+    loading: false,
+    questions: [] as any[],
+    approvingId: null as string | null,
+    editingQuestion: null as any,
+    editingLoading: false,
+    viewingQuestion: null as any,
+    viewingLoading: false,
   });
 
   useEffect(() => {
-    dispatch(setPageTitle("View Learning Material"));
+    dispatch(setPageTitle("Question Bank"));
   }, [dispatch]);
+
+  // ── Get course data by course_id ──
+
+
+  useEffect(() => {
+    if (course_id) {
+      get_course_data();
+      question_list()
+    }
+  }, [course_id]);
+
+  const get_course_data = async () => {
+    try {
+      if (!course_id) return;
+
+      const response = await Models.course.detail(course_id);
+      console.log('✌️Course data --->', response);
+
+      setState({ courseData: response });
+    } catch (error: any) {
+      console.error('✌️Get course error --->', error);
+    }
+  };
+
+  const question_list = async () => {
+    try {
+      const response: any = await Models.question_bank.question_list({});
+      console.log('✌️question_list --->', response);
+
+      // Transform API response to QuestionCardProps format
+      const transformedQuestions = (response?.items || []).map((q: any) => ({
+        id: q.id,
+        question: q.text,
+        unit: `Unit ${q.unit_number || '-'}`,
+        topic: q.topic,
+        subtopic: q.subtopic,
+        question_code: q.question_code,
+        unit_title: q.unit_title,
+        course_outcome: q.course_outcome,
+        tags: [
+          { label: q.knowledge_level },
+          { label: "MCQ" },
+          { label: `${q.marks || 2} Marks` },
+          { label: q.difficulty?.charAt(0).toUpperCase() + q.difficulty?.slice(1) },
+        ],
+        specialTag:
+          q.status === "Approved"
+            ? { label: "Eligible for MCQ Tests", color: "green" }
+            : q.status === "Draft"
+              ? { label: "Pending Review", color: "gray" }
+              : { label: "Under Review", color: "orange" },
+        status: q.status?.toLowerCase() || "draft",
+      }));
+
+      setState({ questions: transformedQuestions });
+    } catch (error: any) {
+      console.error('✌️Get course error --->', error);
+    }
+  };
+
+  const genrerate_question = async (data) => {
+    try {
+
+      const response = await Models.question_bank.generate(data);
+      console.log('genrerate_question --->', response);
+
+      question_list()
+      // setState({ courseData: response });
+    } catch (error: any) {
+      console.error('✌️Get course error --->', error);
+    }
+  };
+
+  const handleApprove = async (data) => {
+    try {
+      setState({ approvingId: data?.id });
+
+      const body = {
+        "status": "Approved",
+      }
+      const response = await Models.question_bank.approve_question(data?.id, body);
+      console.log('approve_question --->', response);
+
+      await question_list();
+
+      setState({ approvingId: null });
+    } catch (error: any) {
+      console.error('✌️Approve error --->', error);
+      setState({ approvingId: null });
+    }
+  };
+
+  const handleEdit = async (data) => {
+    try {
+      setState({ editingLoading: true });
+
+      const response = await Models.question_bank.detail(data?.id);
+      console.log('✌️Question detail --->', response);
+
+      setState({
+        editingQuestion: response,
+        isEditing: true,
+        editingLoading: false,
+      });
+    } catch (error: any) {
+      console.error('✌️Edit error --->', error);
+      setState({ editingLoading: false });
+    }
+  };
+
+  const handleEditData = async (data) => {
+    {
+      try {
+        const response = await Models.question_bank.update(state.editingQuestion?.id, data);
+        console.log('✌️Question updated --->', response);
+        await question_list();
+        Success("Question updated")
+      } catch (error) {
+        console.error('✌️Update error --->', error);
+        throw error;
+      }
+    }
+
+  };
+
+  const handleView = async (question: any) => {
+    try {
+      setState({ viewingLoading: true });
+
+      const response = await Models.question_bank.detail(question?.id);
+      console.log('✌️Question detail for view --->', response);
+      
+      // Transform API response to ViewQuestionModal props format
+      const correctAnswerLetter = response.options?.findIndex((o: any) => o.is_correct) >= 0
+        ? String.fromCharCode(65 + response.options.findIndex((o: any) => o.is_correct))
+        : null;
+
+      const transformedQuestion = {
+        id: response.question_code,
+        status: response.status?.toLowerCase() || "draft",
+        unit: `Unit ${response.unit_number}`,
+        topic: response.topic,
+        subtopic: response.subtopic,
+        co: response.course_outcome,
+        level: response.knowledge_level,
+        marks: response.marks,
+        difficulty: response.difficulty?.charAt(0).toUpperCase() + response.difficulty?.slice(1),
+        question: response.text,
+        optionA: response.options?.[0]?.text || "",
+        optionB: response.options?.[1]?.text || "",
+        optionC: response.options?.[2]?.text || "",
+        optionD: response.options?.[3]?.text || "",
+        correctAnswer: correctAnswerLetter,
+        explanation: response.explanation,
+        approvedBy: response.approved_by,
+        approvedDate: response.approved_at ? new Date(response.approved_at).toLocaleDateString() : undefined,
+      };
+
+      setState({ 
+        viewingQuestion: transformedQuestion,
+        viewingLoading: false,
+      });
+    } catch (error: any) {
+      console.error('✌️View error --->', error);
+      setState({ viewingLoading: false });
+    }
+  };
+
+
+
+
+
 
   return (
     <div className="min-h-screen">
       <CourseBanner
-        courseCode="CS301"
-        courseTitle="Computer Networks"
+        courseCode={state.courseData?.course_code || ""}
+        courseTitle={state.courseData?.course_title || ""}
         description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
-        programme="B.Tech CSE"
-        batch="2025–2029"
-        academicYear="2026–2027 / Semester 3"
-        students="40 Students"
-        selectedCourse="CS309"
+        programme={state.courseData?.programme || ""}
+        batch={state.courseData?.batch_name || ""}
+        academicYear={state.courseData?.academic_year || ""}
+        students={`${state.courseData?.students_count ?? 0} Students`}
+        selectedCourse={state.courseData?.course_code || ""}
         courseOptions={[
-          { value: "CS309", label: "Course: CS309" },
-          { value: "CS301", label: "Course: CS301" },
+          { value: state.courseData?.id, label: `Course: ${state.courseData?.course_code}` },
         ]}
         onCourseChange={(val) => console.log("course", val)}
         activeView={state.activeBannerTab}
@@ -283,7 +466,7 @@ const QuestionBank = () => {
 
       <PageHeader
         title="Question Bank"
-        records="CS309 — Computer Networks"
+        records={`${state.courseData?.course_code} — ${state.courseData?.course_title}` || "Question Bank"}
         subtitle={`Create, review, approve, and reuse questions across the course.`}
         icon={<Users className="h-5 w-5 text-color2" />}
         actionBtn4={
@@ -343,13 +526,14 @@ const QuestionBank = () => {
             />
           </div>
           <div className="space-y-3">
-            {SAMPLE_QUESTIONS.map((q) => (
+            {state.questions.map((q) => (
               <QuestionCard
                 key={q.id}
                 {...q}
-                onView={() => setState({ viewQuestion: q })}
-                onEdit={() => setState({ isEditing: true })}
-                onApprove={() => console.log("approve", q.id)}
+                isApprovingLoading={state.approvingId === q.id}
+                onView={() => handleView(q)}
+                onEdit={() => handleEdit(q)}
+                onApprove={() => handleApprove(q)}
               />
             ))}
           </div>
@@ -433,64 +617,31 @@ const QuestionBank = () => {
       <GenerateQuestionsModal
         open={state.isGenerating}
         onClose={() => setState({ isGenerating: false })}
-        courseCode="CS2304 — Computer Networks"
-        onSubmit={(data) => console.log("Generate:", data)}
+        courseCode={`${state.courseData?.course_code} — ${state.courseData?.course_title}`}
+        courseId={state.courseData?.course_code}
+        units={state.courseData?.latest_syllabus?.units || []}
+        outcomes={state.courseData?.latest_syllabus?.outcomes || []}
+        onSubmit={(data) => genrerate_question(data)}
       />
 
       <EditQuestionModal
         open={state.isEditing}
-        onClose={() => setState({ isEditing: false })}
-        topicLabel={"CS309 — Computer Networks"}
-        code={"Q-CN-003"}
+        onClose={() => setState({ isEditing: false, editingQuestion: null })}
+        topicLabel={`${state.courseData?.course_code} — ${state.courseData?.course_title}`}
+        code={state.editingQuestion?.question_code}
+        questionData={state.editingQuestion}
+        outcomes={state.courseData?.latest_syllabus?.outcomes || []}
+        onSave={async (data) => handleEditData(data)}
       />
 
       <ViewQuestionModal
-        open={!!state.viewQuestion}
-        onClose={() => setState({ viewQuestion: null })}
-        question={
-          state.viewQuestion
-            ? {
-              id: state.viewQuestion.id,
-              status: state.viewQuestion.status,
-              aiVersion: "NEUROBE AI · v1.0",
-              unit: state.viewQuestion.unit,
-              topic: state.viewQuestion.topic,
-              subtopic: state.viewQuestion.subtopic,
-              co: state.viewQuestion.tags?.find((t) =>
-                t.label.startsWith("CO")
-              )?.label,
-              level: state.viewQuestion.tags?.find((t) =>
-                t.label.startsWith("K")
-              )?.label,
-              questionType: state.viewQuestion.tags?.find((t) =>
-                [
-                  "MCQ",
-                  "Short Answer",
-                  "Long Answer",
-                  "Fill in the Blank",
-                ].includes(t.label)
-              )?.label,
-              marks: state.viewQuestion.tags?.find((t) =>
-                t.label.includes("Marks")
-              )?.label,
-              difficulty: state.viewQuestion.tags?.find((t) =>
-                ["Easy", "Medium", "Hard"].includes(t.label)
-              )?.label,
-              question: state.viewQuestion.question,
-              optionA: "IEEE 802.1Q",
-              optionB: "IEEE 802.1D Spanning Tree Protocol",
-              optionC: "IEEE 802.3ad",
-              optionD: "IEEE 802.1X",
-              correctAnswer: "B",
-              explanation:
-                "STP (Spanning Tree Protocol) builds an acyclic tree covering all switches, blocking redundant backup ports until an active link fails, thereby ensuring loop-free Layer-2 environments.",
-              course: "CS309 — Computer Networks",
-              approvedBy: "Dr. Arun Kumar",
-              approvedDate: "2025-08-21",
-            }
-            : { id: "", status: "approved", unit: "", topic: "", question: "" }
-        }
-        onCreateDraft={() => console.log("create draft")}
+        open={!!state.viewingQuestion}
+        onClose={() => setState({ viewingQuestion: null })}
+        question={state.viewingQuestion || {
+          id: "",
+          status: "draft",
+          question: "",
+        }}
       />
     </div>
   );

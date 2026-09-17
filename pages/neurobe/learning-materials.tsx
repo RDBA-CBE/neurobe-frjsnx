@@ -36,23 +36,8 @@ import CheckboxInput from "@/components/FormFields/CheckBoxInput.component";
 import PageHeader from "@/components/common-components/PageHeader";
 import Models from "@/imports/models.import";
 import { useSearchParams } from "next/navigation";
+import GenericTabsData from "@/components/common-components/GenericTabsData";
 
-const STAT_TABS = [
-  {
-    key: "approve-topics",
-    label: "Approved Topics",
-    count: 22,
-    subLabel: "Approved topics count",
-    icon: <Check className="h-5 w-5" />,
-  },
-  {
-    key: "approved-material-hours",
-    label: "Approved Materials",
-    subLabel: "Approved Material Count",
-    count: "0 / 22",
-    icon: <Hourglass className="h-5 w-5" />,
-  },
-];
 
 const RAW_UNIT_DATA: Record<
   string,
@@ -301,16 +286,20 @@ const totalRecs = Object.values(RAW_UNIT_DATA).reduce(
 const LearningMeterials = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-    const searchParams = useSearchParams();
-    const course_id = searchParams.get("course_id");
+  const searchParams = useSearchParams();
+  const course_id = searchParams.get("course_id");
 
   const [state, setState] = useSetState({
     search: "",
     unitFilter: "all",
     statusFilter: "all",
     loading: false,
-    activeTab: "unit-1",
+    activeTab: "",
     activeBannerTab: "coordinator",
+    materialInstructions: "",
+    includeExamples: true,
+    includeExercises: true,
+    generateLoading: false,
   });
 
   useEffect(() => {
@@ -323,47 +312,54 @@ const LearningMeterials = () => {
     course_data();
   }, [course_id]);
 
-  const material_data = async (syllabus_id) => {
+  const material_data = async (syllabus_id, unit) => {
     try {
-      const res: any = await Models.learning_material.detail(syllabus_id, 1);
+      console.log('✌️syllabus_id,unit --->', syllabus_id, unit);
+
+      const res: any = await Models.learning_material.detail(syllabus_id, unit);
+
       console.log('material_data --->', res);
 
-      const data = [
+
+
+      const matrix = [
         {
-          key: "total-topics",
-          label: " Total Topics",
-          count: res?.metrics?.topics?.value,
-          subLabel: "Approved curriculum count",
+          key: "approve-topics",
+          label: "Approved Topics",
+          count: res?.metrics?.approved_topics?.display,
+          subLabel: "Approved topics count",
           icon: <Check className="h-5 w-5" />,
         },
         {
-          key: "total-hours",
-          label: "Total Hours",
-          subLabel: "Allocated semester teaching time",
-          count: res?.metrics?.contact_hours?.value,
+          key: "approved-material-hours",
+          label: "Approved Materials",
+          subLabel: "Approved Material Count",
+          count: res?.metrics?.approved_materials?.display,
 
           icon: <Hourglass className="h-5 w-5" />,
         },
-        {
-          key: "reviewed",
-          label: "Reviewed",
-          subLabel: "Lesson Plan Review",
-          count: res?.metrics?.lesson_plan_review?.reviewed_count,
+      ]
 
-          icon: <ClipboardCheck className="h-5 w-5" />,
-        },
-      ];
-      setState({ lession_data: res, matrix: data });
+      console.log('✌️matrix --->', matrix);
+
+      setState({ material_data: res, matrix: matrix });
+
     } catch (error) {
       console.log("error", error);
     }
   };
+  console.log('✌️activeTab --->', state.activeTab);
 
   const course_data = async () => {
     try {
       const res: any = await Models.course.detail(48);
-      setState({ courseData: res });
-      material_data(res?.latest_syllabus?.id);
+      console.log('course_data --->', res);
+
+      // setState({ courseData: res });
+      setState({ courseData: res, activeTab: `unit-${res?.latest_syllabus?.units?.[0]?.unit_number}` });
+
+
+      material_data(res?.latest_syllabus?.id, res?.latest_syllabus?.units?.[0]?.unit_number);
 
       console.log("course detail →", res);
     } catch (error) {
@@ -419,37 +415,53 @@ const LearningMeterials = () => {
       )
   );
 
-  const totalTopicCount = Object.values(RAW_UNIT_DATA).reduce(
-    (s, u) => s + u.topics.length,
-    0
-  );
-  const totalReviewedCount = Object.values(reviewedMap).reduce(
-    (s, set) => s + set.size,
-    0
-  );
-  const allReviewed = totalReviewedCount >= totalTopicCount;
 
-  const markReviewed = (unitKey: string, topicId: string) => {
-    setReviewedMap((prev) => {
-      const next = new Set<string>(prev[unitKey] ?? new Set<string>());
-      next.add(topicId);
-      return { ...prev, [unitKey]: next };
-    });
-  };
+
 
   // ── Pre-generate: topics list for the accordion (level + hours badges only) ──
   const buildInitialTopics = () => {
-    if (!raw) return [];
-    return raw.topics.map((topic) => ({
-      id: topic.id,
-      title: `Topic ${topic.id} — ${topic.title}`,
-      button: {
-        label: `Generate Material`,
-        icon: <Sparkles className="h-3 w-3" />,
-      },
-      verified: topic.status,
-      verified_status: topic.status,
-
+    if (!state?.material_data?.selected_unit?.topics) return [];
+    return state?.material_data?.selected_unit?.topics.map((topic: any) => ({
+      id: topic.topic_id,
+      title: `${topic.topic_code} — ${topic.topic_name}`,
+      collapsedBadge: [
+        {
+          label: topic.status_display,
+          className: `${
+            topic.status_badge === "warning"
+              ? "bg-yellow-100 text-yellow-700 font-bold"
+              : topic.status_badge === "neutral"
+              ? "bg-gray-200 text-gray-600 font-bold"
+              : topic.status_badge === "success"
+              ? "bg-green-100 text-green-700 font-bold"
+              : "bg-gray-200 text-gray-600 font-bold"
+          }`,
+        },
+      ],
+      actions: [
+        {
+          key: "action",
+          label: topic.action_label || "Generate Material",
+          icon: <Sparkles className="h-3 w-3" />,
+          asTag: false,
+          className: topic.status === "Approved" 
+            ? "bg-blue-600 text-white hover:bg-blue-700 rounded-full px-6 py-2 flex items-center gap-2 transition-colors"
+            : topic.status === "Review Required"
+            ? "bg-orange-600 text-white hover:bg-orange-700 rounded-full px-6 py-2 flex items-center gap-2 transition-colors"
+            : "bg-purple-600 text-white hover:bg-purple-700 rounded-full px-6 py-2 flex items-center gap-2 transition-colors",
+          onClick: (topicData: any) => {
+            // Check if action is "view" - redirect to view-learning-material
+            if (topicData?.action === "view") {
+              const course_id = state.courseData?.id;
+              router.push(`/neurobe/view-learning-materials?topic_id=${topicData.id}&course_id=${course_id}`);
+            } else {
+              // Otherwise open the generate modal
+              setState({ showGenerateModal: true, selectedTopic: topicData });
+            }
+          },
+        },
+      ],
+      action: topic.action,
       items: [],
     }));
   };
@@ -602,6 +614,59 @@ const LearningMeterials = () => {
       ),
     },
   ];
+  const generate = async () => {
+    try {
+      setState({ generateLoading: true });
+
+      const payload = {
+        instructions: state.materialInstructions || "",
+        include_examples: state.includeExamples !== undefined ? state.includeExamples : true,
+        include_exercises: state.includeExercises !== undefined ? state.includeExercises : true,
+      };
+      console.log('✌️payload --->', payload);
+
+
+      const response = await Models.learning_material.generate(
+        state.selectedTopic?.id,
+        payload
+      );
+
+      console.log('✌️Generate response --->', response);
+
+      Success("Learning material generation initiated successfully!");
+
+      // Navigate to view-learning-material with topic_id
+      const topic_id = state.selectedTopic?.id;
+      if (topic_id && response) {
+        const course_id = state.courseData?.id;
+
+        router.push(`/neurobe/view-learning-materials?topic_id=${topic_id}&course_id=${course_id}`);
+      }
+
+      // Reset form and close modal
+      setState({
+        showGenerateModal: false,
+        selectedTopic: null,
+        materialInstructions: "",
+        includeExamples: true,
+        includeExercises: true,
+      });
+
+      // Refresh material data
+      const syllabus_id = state.courseData?.latest_syllabus?.id;
+      const unit = state.activeTab?.split("-")[1] || "1";
+      if (syllabus_id) {
+        await material_data(syllabus_id, unit);
+      }
+
+    } catch (error: any) {
+      // console.error('✌️Generate error --->', error);
+      const errorMsg = error?.message || "Failed to generate learning material";
+      // Error toast would be shown here
+    } finally {
+      setState({ generateLoading: false });
+    }
+  }
 
   return (
     <div className="min-h-screen">
@@ -629,7 +694,7 @@ const LearningMeterials = () => {
       />
 
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-        {STAT_TABS.map((tab) => (
+        {state.matrix?.map((tab) => (
           <StatTabCard
             key={tab.key}
             icon={tab.icon}
@@ -648,10 +713,20 @@ const LearningMeterials = () => {
       />
 
       <div className="mt-4">
-        <GenericTabs
-          tabs={UNIT_TABS}
+        <GenericTabsData
+          tabs={
+            state?.courseData?.latest_syllabus?.units?.map((unit: any) => ({
+              key: `unit-${unit.unit_number}`,
+              label: `${unit.unit_number}`,
+            })) || []
+          }
           activeKey={state.activeTab}
-          onChange={(unit) => setState({ activeTab: unit as string })}
+          onChange={(unit) => {
+            setState({ activeTab: unit as string });
+            // Extract unit number from key (e.g., "unit-1" -> 1)
+            const unitNumber = parseInt((unit as string).split('-')[1], 10);
+            material_data(state?.courseData?.latest_syllabus?.id, unitNumber);
+          }}
         />
 
         {state.recommendationsGenerated ? (
@@ -660,30 +735,43 @@ const LearningMeterials = () => {
             {/* dark header */}
             <div className="flex items-center justify-between bg-[#111238] px-4 py-3 text-white">
               <div>
-                <h3 className="text-lg font-bold">{raw?.title}</h3>
+                <h3 className="text-lg font-bold">{state?.material_data?.selected_unit?.unit_title}</h3>
                 <p className="mt-0.5 text-sm text-white/70">
-                  Approved topic sequencing and teaching methods
+                  Learning materials for approved topics
                 </p>
               </div>
               <span className="rounded bg-white/15 px-4 py-1 text-sm font-semibold">
-                {raw?.totalHours} Hours
+                {state?.material_data?.selected_unit?.approved_topics_count} Topics
               </span>
             </div>
             <TableComponent
-              records={raw?.topics ?? []}
+              records={state?.material_data?.selected_unit?.topics?.map((topic: any) => ({
+                id: topic.topic_id,
+                seq: topic.topic_code,
+                title: topic.topic_name,
+                status: topic.status_display,
+                status_badge: topic.status_badge,
+                action: topic.action,
+                action_label: topic.action_label,
+              })) ?? []}
               columns={lessonPlanColumns}
             />
           </div>
         ) : (
-          /* ── Pre-generate: accordion with level/hours badges ── */
+          /* ── Pre-generate: accordion with status badges ── */
           <AccordiansStyle
             expandable={false}
             topics={buildInitialTopics()}
-            title={raw?.title}
-            subtitle="4 Approved Topics"
-            btnOnClick={(data: any) =>
-              setState({ showGenerateModal: true, selectedTopic: data })
+            title={state?.material_data?.selected_unit?.unit_title}
+            subtitle={`${state?.material_data?.selected_unit?.approved_topics_count} Approved Topics`}
+            footerContent={
+              <>
+                <Sparkles className="h-4 w-4" /> NEURO AI will generate learning materials including concepts, examples, and exercises.
+              </>
             }
+            btnOnClick={(data: any) => {
+              console.log("btnOnClick disabled - actions handle routing");
+            }}
           />
         )}
       </div>
@@ -696,10 +784,8 @@ const LearningMeterials = () => {
           setState({ showGenerateModal: false, selectedTopic: null })
         }
         open={state.showGenerateModal}
-        onAction={() => {
-          setState({ showGenerateModal: false, selectedTopic: null });
-          router.push("/neurobe/view-learning-materials");
-        }}
+        actionLoading={state.generateLoading}
+        onAction={generate}
         actionIcon={<Sparkles className="h-4 w-4" />}
         actionLabel="Generate with NEURO AI"
         render={() => (
@@ -711,7 +797,7 @@ const LearningMeterials = () => {
               </p>
               <div className="flex items-center gap-3">
                 <span className="text-color2 rounded-lg bg-purple-100 px-3 py-1 text-sm font-bold">
-                  Topic {state.selectedTopic?.id}
+                  Topic {state.selectedTopic?.topic_code}
                 </span>
                 <span className="text-base font-semibold text-[#000]">
                   {state.selectedTopic?.title?.replace(/^Topic [\d.]+ — /, "")}
@@ -724,6 +810,8 @@ const LearningMeterials = () => {
               title="Material Instructions"
               name="materialInstructions"
               placeholder="Explain this topic clearly for engineering students."
+              value={state.materialInstructions}
+              onChange={(e) => setState({ materialInstructions: e.target.value })}
               rows={5}
             />
 

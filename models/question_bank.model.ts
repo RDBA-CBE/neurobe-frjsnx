@@ -1,10 +1,68 @@
 import { commonInstance } from '@/utils/axios.utils';
 
-const learning_material = {
+const question_bank = {
 
-    detail: (syllabus_id: string | number,unit: string | number,) => {
+    question_list: (body) => {
         let promise = new Promise((resolve, reject) => {
-            let url = `course/syllabi/${syllabus_id}/learning-materials-workspace?unit_number=${unit}`;
+            let url = `course/mcq/history/questions`;
+            commonInstance()
+                .get(url)
+                .then((res) => {
+                    resolve(res.data);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        reject(error.response.data?.message || error.response.data);
+                    } else {
+                        reject(error);
+                    }
+                });
+        });
+        return promise;
+    },
+
+    approve_question: (question_id,body) => {
+        let promise = new Promise((resolve, reject) => {
+            let url = `course/mcq/history/questions/${question_id}`;
+            commonInstance()
+                .put(url,body)
+                .then((res) => {
+                    resolve(res.data);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        reject(error.response.data?.message || error.response.data);
+                    } else {
+                        reject(error);
+                    }
+                });
+        });
+        return promise;
+    },
+
+    generate: (data) => {
+        let promise = new Promise((resolve, reject) => {
+            let url = `course/mcq/generate`;
+            
+            commonInstance()
+                .post(url,data)
+                .then((res) => {
+                    resolve(res.data);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        reject(error.response.data?.message || error.response.data);
+                    } else {
+                        reject(error);
+                    }
+                });
+        });
+        return promise;
+    },
+
+    detail: (question_id) => {
+        let promise = new Promise((resolve, reject) => {
+            let url = `course/mcq/history/questions/${question_id}`;
             
             commonInstance()
                 .get(url)
@@ -22,12 +80,12 @@ const learning_material = {
         return promise;
     },
 
-    generate: (topic_id: string | number,data) => {
+    update: (question_id, data) => {
         let promise = new Promise((resolve, reject) => {
-            let url = `course/topics/${topic_id}/learning-materials/generate`;
+            let url = `course/mcq/history/questions/${question_id}`;
             
             commonInstance()
-                .post(url,data)
+                .put(url, data)
                 .then((res) => {
                     resolve(res.data);
                 })
@@ -41,6 +99,7 @@ const learning_material = {
         });
         return promise;
     },
+ 
 
      get_topics: (topic_id: string | number) => {
         let promise = new Promise((resolve, reject) => {
@@ -128,4 +187,4 @@ const learning_material = {
     
 };
 
-export default learning_material;
+export default question_bank;
