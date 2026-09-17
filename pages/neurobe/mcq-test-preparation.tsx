@@ -11,11 +11,21 @@ import {
   Monitor,
 } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
-import { useSetState } from "@/utils/function.utils";
+import { useSetState, Dropdown, Failure } from "@/utils/function.utils";
 import PrivateRouter from "@/hook/privateRouter";
 import CourseBanner from "@/components/academic-setup/CourseBanner";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import PageHeader from "@/components/common-components/PageHeader";
+import Models from "@/imports/models.import";
+
+const getErrorMessage = (error: any, fallback: string) => {
+  if (!error) return fallback;
+  if (typeof error === "string") return error;
+  if (typeof error?.message === "string") return error.message;
+  if (typeof error?.detail === "string") return error.detail;
+  if (typeof error?.error === "string") return error.error;
+  return fallback;
+};
 import {
   FilterValues,
 } from "@/components/question-bank/QuestionBankFilter";
@@ -426,6 +436,8 @@ const MCQ_PREPARATION_TESTS: McqTestPrepCardProps[] = [
 const MCQTextPreperation = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const course_id = searchParams.get("course_id");
 
   const [state, setState] = useSetState({
     activeTab: "unit-1",
@@ -446,11 +458,85 @@ const MCQTextPreperation = () => {
     isSyllabusOpen: false,
     selectedSetId: null as string | null,
     activeBannerTab: "coordinator",
+    courseDetail: null as any,
+    courseList: [] as any[],
+    selectedCourse: null as any,
+    organization_id: "",
+    coordinator_id: "",
+    isCourseCoordinator: false,
+    loadingCourses: false,
+    loadingCourseDetail: false,
   });
 
   useEffect(() => {
-    dispatch(setPageTitle("View Learning Material"));
+    dispatch(setPageTitle("MCQ Test Preparation"));
   }, [dispatch]);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (user?.role === "course_coordinator") {
+      setState({
+        isCourseCoordinator: true,
+        coordinator_id: user.id,
+      });
+    }
+    setState({
+      organization_id: user?.organization_id,
+    });
+    if (user?.organization_id) {
+      getAllCourse(user.organization_id);
+    } else {
+      getAllCourse();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (course_id) {
+      getCourseDetails(course_id);
+    }
+  }, [course_id]);
+
+  const getAllCourse = async (orgId?: any) => {
+    try {
+      setState({ loadingCourses: true });
+      const targetOrg = orgId || state?.organization_id;
+      const res: any = await Models.course.list(targetOrg ? { organization_id: targetOrg } : {});
+      const courseData = Array.isArray(res) ? res : res?.data || [];
+      const dropdown = Dropdown(courseData, "course_title");
+      setState({
+        courseList: dropdown,
+        loadingCourses: false,
+      });
+
+      // If no course_id query parameter, automatically navigate to the first course
+      if (!course_id && Array.isArray(courseData) && courseData.length > 0) {
+        const firstCourse = courseData[0];
+        router.push(`/neurobe/mcq-test-preparation?course_id=${firstCourse.id}`);
+      }
+    } catch (error: any) {
+      console.log("error fetching course list", error);
+      setState({ loadingCourses: false });
+      Failure(getErrorMessage(error, "Failed to fetch course list"));
+    }
+  };
+
+  const getCourseDetails = async (targetCourseId?: any) => {
+    const cid = targetCourseId || course_id;
+    if (!cid) return;
+    try {
+      setState({ loadingCourseDetail: true });
+      const res: any = await Models.course.detail(cid);
+      setState({
+        courseDetail: res,
+        selectedCourse: res ? { value: res.id, label: `${res.course_code} - ${res.course_title}` } : null,
+        loadingCourseDetail: false,
+      });
+    } catch (error: any) {
+      console.log("error fetching course detail", error);
+      setState({ loadingCourseDetail: false });
+      Failure(getErrorMessage(error, "Failed to fetch course detail"));
+    }
+  };
 
   const filteredTests = MCQ_PREPARATION_TESTS.filter((test) => {
     if (state.statusFilter !== "all" && test.status !== state.statusFilter) {
@@ -471,19 +557,19 @@ const MCQTextPreperation = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <CourseBanner
-        courseCode="CS301"
-        courseTitle="Computer Networks"
+        courseCode={state?.courseDetail?.course_code}
+        courseTitle={state?.courseDetail?.course_title}
         description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
-        programme="B.Tech CSE"
-        batch="2025–2029"
-        academicYear="2026–2027 / Semester 3"
-        students="40 Students"
-        selectedCourse="CS309"
-        courseOptions={[
-          { value: "CS309", label: "Course: CS309" },
-          { value: "CS301", label: "Course: CS301" },
-        ]}
-        onCourseChange={(val) => console.log("course", val)}
+        programme={state?.courseDetail?.programme}
+        batch={state?.courseDetail?.batch_name}
+        academicYear={state?.courseDetail?.academic_year}
+        students={state?.courseDetail?.students_count}
+        selectedCourse={state.selectedCourse}
+        courseOptions={state.courseList}
+        onCourseChange={(val) => {
+          setState({ selectedCourse: val });
+          router.push(`/neurobe/mcq-test-preparation?course_id=${val.value}`);
+        }}
         activeView={state.activeBannerTab}
         onBack={() => router.back()}
         onViewChange={(view) => setState({ activeBannerTab: view })}
@@ -491,7 +577,11 @@ const MCQTextPreperation = () => {
 
       <PageHeader
         title="MCQ Test Preparation"
-        records="CS309 - Computer Networks"
+        records={
+          state.courseDetail
+            ? `${state.courseDetail.course_code} — ${state.courseDetail.course_title}`
+            : ""
+        }
         subtitle={`Create and configure an MCQ test using approved Question Bank questions.`}
         icon={<Users className="h-5 w-5 text-color2" />}
         actionBtn1={
@@ -514,7 +604,14 @@ const MCQTextPreperation = () => {
             : {
               label: "Question Bank",
               icon: <Monitor className="h-4 w-4" />,
-              onClick: () => {},
+              onClick: () => {
+                const cid = course_id || state.selectedCourse?.value;
+                router.push(
+                  cid
+                    ? `/neurobe/question-bank?course_id=${cid}`
+                    : "/neurobe/question-bank",
+                );
+              },
             }
         }
       />
@@ -611,7 +708,9 @@ const MCQTextPreperation = () => {
               code: state.activeViewTest.code,
               title: state.activeViewTest.title,
               status: state.activeViewTest.status === "live" ? "Live" : state.activeViewTest.status === "upcoming" ? "Upcoming" : "Draft",
-              courseCode: "CS309 – Computer Networks",
+              courseCode: state.courseDetail
+                ? `${state.courseDetail.course_code} — ${state.courseDetail.course_title}`
+                : "CS309 – Computer Networks",
               unit: state.activeViewTest.unit,
               questionsCount: state.activeViewTest.questionsCount,
               knowledgeLevels: state.activeViewTest.knowledgeLevels,
