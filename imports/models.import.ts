@@ -17,6 +17,7 @@ import learning_material from "@/models/learning_material.model";
 import COPOMap from "@/models/copo_map.models";
 import topics from "@/models/topics.models";
 import pedagogy from "@/models/pedagogy.models";
+import question_bank from "@/models/question_bank.model";
 
 export const Models = {
   test,
@@ -40,6 +41,8 @@ export const Models = {
   COPOMap,
   topics,
   pedagogy,
+  question_bank,
+  
 };
 
 export default Models;

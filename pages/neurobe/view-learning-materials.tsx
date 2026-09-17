@@ -11,7 +11,7 @@ import {
   ArrowBigRight,
 } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
-import { useSetState } from "@/utils/function.utils";
+import { Success, useSetState } from "@/utils/function.utils";
 import PrivateRouter from "@/hook/privateRouter";
 import CourseBanner from "@/components/academic-setup/CourseBanner";
 import { useRouter } from "next/router";
@@ -263,6 +263,7 @@ const ViewLearningMaterials = () => {
       // Call approve API
       const response = await Models.learning_material.approve_material(topic_id);
       console.log('✌️Material approved --->', response);
+      Success("Material approved successfully!");
 
       // Refresh material data after approve
       await get_data();
@@ -378,7 +379,7 @@ const ViewLearningMaterials = () => {
               ? {
                   label: "Next Question Bank",
                   icon: <ArrowBigRight className="h-4 w-4" />,
-                  onClick: () => router.push("/neurobe/question-bank"),
+                  onClick: () => router.push(`/neurobe/question-bank?course_id=${course_id}`),
                 }
               : {
                   label: "Approve Material",

@@ -140,7 +140,7 @@ const QUESTION_TYPE_OPTIONS = [
 ];
 
 const MARKS_OPTIONS = [
-  { value: "1", label: "1 Mark" },
+  // { value: "1", label: "1 Mark" },
   { value: "2", label: "2 Marks" },
   { value: "5", label: "5 Marks" },
   { value: "10", label: "10 Marks" },
@@ -153,10 +153,40 @@ const K_LEVELS = [
   { key: "K4", label: "Analyze" },
 ];
 
+interface Unit {
+  unit_number: number;
+  unit_title: string;
+  theory_hours: number;
+  lab_hours: number;
+  id: number;
+  topics: Topic[];
+}
+
+interface Topic {
+  topic_code: string;
+  topic_name: string;
+  id: number;
+  learning_sequence: number;
+}
+
+interface CourseOutcome {
+  co_code: string;
+  description: string;
+  bloom_level: string;
+  knowledge_level: string;
+  is_accepted: boolean;
+  reason_for_inferred_level: string | null;
+  id: number;
+  syllabus_id: number;
+}
+
 interface GenerateQuestionsModalProps {
   open: boolean;
   onClose: () => void;
   courseCode?: string;
+  courseId?: string;
+  units?: Unit[];
+  outcomes?: CourseOutcome[];
   onSubmit?: (data: any) => void;
 }
 
@@ -164,16 +194,29 @@ const GenerateQuestionsModal = ({
   open,
   onClose,
   courseCode = "CS2304 — Computer Networks",
+  courseId = "1",
+  units = [],
+  outcomes = [],
   onSubmit,
 }: GenerateQuestionsModalProps) => {
   const [activeUnit, setActiveUnit] = useState(0);
-  const [selectedTopics, setSelectedTopics] = useState<string[]>(["1.1"]);
-  const [selectedSubtopics, setSelectedSubtopics] = useState<string[]>([
-    "OSI 7-Layer Reference Model",
-    "TCP/IP 5-Layer Protocol Suite",
-    "Layer Functions & Protocol Data Units (PDU)",
-  ]);
-  const [co, setCo] = useState(CO_OPTIONS[0]);
+  const [selectedTopics, setSelectedTopics] = useState<Record<number, string[]>>({});
+  const [selectedSubtopics, setSelectedSubtopics] = useState<Record<number, string[]>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Use API units if provided, otherwise use UNITS constant
+  const displayUnits = (units && units.length > 0 ? units : UNITS) as any[];
+  const unit = displayUnits[activeUnit];
+
+  // Transform outcomes to CO_OPTIONS format
+  const dynamicCOOptions = (outcomes && outcomes.length > 0
+    ? outcomes.map((outcome: CourseOutcome) => ({
+      value: outcome.co_code,
+      label: `${outcome.co_code} — ${outcome.description}`,
+    }))
+    : CO_OPTIONS) as any[];
+
+  const [co, setCo] = useState<any>(dynamicCOOptions[0] || CO_OPTIONS[0]);
   const [questionType, setQuestionType] = useState(QUESTION_TYPE_OPTIONS[0]);
   const [marks, setMarks] = useState(MARKS_OPTIONS[1]);
   const [difficulty, setDifficulty] = useState<"Easy" | "Medium" | "Hard">(
@@ -188,6 +231,11 @@ const GenerateQuestionsModal = ({
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
+    // Reset selections when modal opens
+    if (open) {
+      setSelectedTopics({});
+      setSelectedSubtopics({});
+    }
     return () => {
       document.body.style.overflow = "";
     };
@@ -195,26 +243,47 @@ const GenerateQuestionsModal = ({
 
   if (!open) return null;
 
-  const unit = UNITS[activeUnit];
-
-  const toggleTopic = (id: string) => {
-    setSelectedTopics((prev) =>
-      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]
-    );
-    setSelectedSubtopics([]);
+  const toggleTopic = (unitIdx: number, id: string) => {
+    setSelectedTopics((prev) => {
+      const unitTopics = prev[unitIdx] || [];
+      return {
+        ...prev,
+        [unitIdx]: unitTopics.includes(id)
+          ? unitTopics.filter((t) => t !== id)
+          : [...unitTopics, id],
+      };
+    });
+    setSelectedSubtopics((prev) => ({
+      ...prev,
+      [unitIdx]: [],
+    }));
   };
 
-  const toggleSubtopic = (s: string) => {
-    setSelectedSubtopics((prev) =>
-      prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]
-    );
+  const toggleSubtopic = (unitIdx: number, s: string) => {
+    setSelectedSubtopics((prev) => {
+      const unitSubtopics = prev[unitIdx] || [];
+      return {
+        ...prev,
+        [unitIdx]: unitSubtopics.includes(s)
+          ? unitSubtopics.filter((x) => x !== s)
+          : [...unitSubtopics, s],
+      };
+    });
   };
 
   const allSubtopics = unit.topics
-    .filter((t) => selectedTopics.includes(t.id))
-    .flatMap((t) => t.subtopics);
+    .filter((t: any) => {
+      const unitTopicIds = selectedTopics[activeUnit] || [];
+      return unitTopicIds.includes(String(t.id || t.topic_id));
+    })
+    .flatMap((t: any) => t.subtopics);
 
-  const selectAllSubtopics = () => setSelectedSubtopics(allSubtopics);
+  const selectAllSubtopics = () => {
+    setSelectedSubtopics((prev) => ({
+      ...prev,
+      [activeUnit]: allSubtopics || [],
+    }));
+  };
 
   const adjustK = (key: string, delta: number) => {
     setKCounts((prev) => ({
@@ -225,21 +294,64 @@ const GenerateQuestionsModal = ({
 
   const total = Object.values(kCounts).reduce((a, b) => a + b, 0);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    // Transform selected topics and subtopics from ALL units into the required format
+    const selectedUnits = displayUnits
+      .map((u: any, unitIdx: number) => {
+        const unitTopicIds = selectedTopics[unitIdx] || [];
+        const unitSubtopics = selectedSubtopics[unitIdx] || [];
+
+        return {
+          unit_number: u.unit_number || u.id,
+          unit_title: u.unit_title || u.fullTitle || u.title,
+          topics: u.topics
+            .filter((t: any) => unitTopicIds.includes(String(t.id || t.topic_id)))
+            .map((t: any) => ({
+              topic_id: String(t.id || t.topic_id),
+              topic_name: t.topic_name || t.label,
+              subtopics: t.subtopics
+                ?.filter((s: any) => unitSubtopics.includes(s.subtopic_id || s.id))
+                .map((s: any) => ({
+                  subtopic_id: s.subtopic_id || s.id,
+                  subtopic_name: s.subtopic_name || s.name,
+                  micro_topics: s.micro_topics || [],
+                })) || [],
+            })),
+        };
+      })
+      .filter((u: any) => u.topics.length > 0); // Only include units with selected topics
+
     const data = {
-      unit: unit.fullTitle,
-      selectedTopics,
-      selectedSubtopics,
-      co: co?.value,
-      questionType: questionType?.value,
-      marks: marks?.value,
-      difficulty,
-      kCounts,
-      total,
+      // course_id: courseId,
+      syllabus: {
+        course_id: courseId,
+        units: selectedUnits,
+      },
+      "type": "mcq",
+      "include_explanation": true,
+      "shuffle_options": true,
+      "distribution_mode": "knowledge_level",
+      "knowledge_difficulty_breakdown": null,
+      question_count: total,
+      // marks_per_question: parseInt(marks?.value || "2"),
+      // target_difficulty: difficulty.toLowerCase(),
+      // course_outcome: co?.value,
+      knowledge_level_breakdown: kCounts,
     };
-    onSubmit?.(data);
-    console.log("Generate Questions Data:", data);
-    onClose();
+
+    try {
+      setIsSubmitting(true);
+      console.log("Generate Questions Data:", data);
+      
+      // Wait for the API call to complete
+      await onSubmit?.(data);
+      
+      // Close modal only after API call succeeds
+      onClose();
+    } catch (error) {
+      console.error("Error generating questions:", error);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -278,13 +390,11 @@ const GenerateQuestionsModal = ({
             Unit Selection
           </p>
           <div className="mb-5 grid grid-cols-5 gap-2">
-            {UNITS.map((u, i) => (
+            {displayUnits.map((u: any, i: number) => (
               <button
                 key={u.id}
                 onClick={() => {
                   setActiveUnit(i);
-                  setSelectedTopics([]);
-                  setSelectedSubtopics([]);
                 }}
                 className={`rounded-xl border px-3 py-2 text-left text-xs font-bold transition-all ${
                   i === activeUnit
@@ -292,13 +402,13 @@ const GenerateQuestionsModal = ({
                     : "border-gray-200 bg-white text-[#000] hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
                 }`}
               >
-                <div className=" text-sm font-bold">{u.label}</div>
+                <div className=" text-sm font-bold">Unit {u.unit_number}</div>
                 <div
-                  className={`mt-0.5 truncate font-normal ${
+                  className={`mt-0.5 truncate font-normal text-xs ${
                     i === activeUnit ? "text-white/80" : "text-gray-400"
                   }`}
                 >
-                  {u.title}
+                  {u.unit_title}
                 </div>
               </button>
             ))}
@@ -314,33 +424,38 @@ const GenerateQuestionsModal = ({
             </p>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setSelectedTopics(unit.topics.map((t) => t.id))}
+                onClick={() =>
+                  setSelectedTopics((prev) => ({
+                    ...prev,
+                    [activeUnit]: unit.topics?.map((t: any) => String(t.id || t.topic_id)) || [],
+                  }))
+                }
                 className="text-color2 text-xs font-semibold hover:underline"
               >
                 Select All
               </button>
               <span className="text-xs text-[#000]">
-                {selectedTopics.length} Selected
+                {(selectedTopics[activeUnit] || []).length} Selected
               </span>
             </div>
           </div>
           <div className="mb-4 grid grid-cols-2 gap-2">
-            {unit.topics.map((t) => {
-              const checked = selectedTopics.includes(t.id);
+            {unit.topics.map((t: any) => {
+              const unitTopicIds = selectedTopics[activeUnit] || [];
+              const topicId = String(t.id || t.topic_id);
+              const checked = unitTopicIds.includes(topicId);
               return (
                 <button
                   key={t.id}
-                  onClick={() => toggleTopic(t.id)}
-                  className={`flex items-center gap-2 rounded-xl border px-4 py-3 text-left text-sm transition-all ${
-                    checked
-                      ? "border-color2 bg-purple-50 dark:bg-purple-900/20"
-                      : "border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
-                  }`}
+                  onClick={() => toggleTopic(activeUnit, topicId)}
+                  className={`flex items-center gap-2 rounded-xl border px-4 py-3 text-left text-sm transition-all ${checked
+                    ? "border-color2 bg-purple-50 dark:bg-purple-900/20"
+                    : "border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+                    }`}
                 >
                   <span
-                    className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
-                      checked ? "border-color2 bg-color2" : "border-gray-300"
-                    }`}
+                    className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${checked ? "border-color2 bg-color2" : "border-gray-300"
+                      }`}
                   >
                     {checked && (
                       <svg
@@ -359,124 +474,57 @@ const GenerateQuestionsModal = ({
                     )}
                   </span>
                   <span
-                    className={`truncate text-xs font-semibold ${
-                      checked
-                        ? "text-color2"
-                        : "text-[#000] dark:text-gray-300"
-                    }`}
+                    className={`truncate text-xs font-semibold ${checked
+                      ? "text-color2"
+                      : "text-[#000] dark:text-gray-300"
+                      }`}
                   >
-                    {t.label}
+                    {t.topic_code} — {t.topic_name}
                   </span>
                 </button>
               );
             })}
           </div>
 
-          {/* Subtopics */}
-          {selectedTopics.length > 0 && allSubtopics.length > 0 && (
-            <div className="mb-4 rounded-xl border border-gray-200 p-4 dark:border-gray-700">
-              <div className="mb-3 flex items-center justify-between">
-                <p className="text-xs font-bold uppercase tracking-wide text-pri">
-                  {
-                    unit.topics.find((t) => selectedTopics.includes(t.id))
-                      ?.label
-                  }{" "}
-                  Subtopics
-                </p>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={selectAllSubtopics}
-                    className="text-color2 text-xs font-semibold hover:underline"
-                  >
-                    Select All
-                  </button>
-                  <span className="text-xs text-[#000]">
-                    {selectedSubtopics.length} Selected
-                  </span>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {allSubtopics.map((s) => {
-                  const checked = selectedSubtopics.includes(s);
-                  return (
-                    <button
-                      key={s}
-                      onClick={() => toggleSubtopic(s)}
-                      className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-left text-xs transition-all ${
-                        checked
-                          ? "border-color2 bg-purple-50 dark:bg-purple-900/20"
-                          : "border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
-                      }`}
-                    >
-                      <span
-                        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
-                          checked
-                            ? "border-color2 bg-color2"
-                            : "border-gray-300"
-                        }`}
-                      >
-                        {checked && (
-                          <svg
-                            className="h-3 w-3 text-white"
-                            fill="none"
-                            viewBox="0 0 12 12"
-                          >
-                            <path
-                              d="M2 6l3 3 5-5"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        )}
-                      </span>
-                      <span
-                        className={`truncate font-semibold ${
-                          checked
-                            ? "text-color2"
-                            : "text-[#000] dark:text-gray-300"
-                        }`}
-                      >
-                        {s}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+          {/* Subtopics - Hidden for API data */}
+          {Object.values(selectedTopics).some((topics) => topics.length > 0) && units && units.length > 0 && (
+            <div className="mb-4 rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Topics have been selected. Questions will be generated from these topics.
+              </p>
             </div>
           )}
 
           {/* CO + Type + Marks */}
-          <div className="mb-4 grid grid-cols-3 gap-4">
-            <CustomSelect
+          {/* <div className="mb-4 grid grid-cols-3 gap-4"> */}
+            {/* <CustomSelect
               title="Course Outcome (CO)"
-              options={CO_OPTIONS}
+              options={dynamicCOOptions}
               value={co}
               onChange={(v: any) => setCo(v)}
               isSearchable={false}
               isClearable={false}
-            />
-            <CustomSelect
+            /> */}
+            {/* <CustomSelect
               title="Question Type"
               options={QUESTION_TYPE_OPTIONS}
               value={questionType}
               onChange={(v: any) => setQuestionType(v)}
               isSearchable={false}
               isClearable={false}
-            />
-            <CustomSelect
+            /> */}
+            {/* <CustomSelect
               title="Marks per Question"
               options={MARKS_OPTIONS}
               value={marks}
               onChange={(v: any) => setMarks(v)}
               isSearchable={false}
               isClearable={false}
-            />
-          </div>
+            /> */}
+          {/* </div> */}
 
           {/* Difficulty */}
-          <p className="mb-2 text-sm font-bold text-[#000] dark:text-white">
+          {/* <p className="mb-2 text-sm font-bold text-[#000] dark:text-white">
             Target Difficulty
           </p>
           <div className="mb-4 grid grid-cols-3 gap-2 rounded-xl border border-gray-200 p-1 dark:border-gray-700">
@@ -493,7 +541,7 @@ const GenerateQuestionsModal = ({
                 {d}
               </button>
             ))}
-          </div>
+          </div> */}
 
           {/* K-level counts */}
           <div className="mb-4 rounded-xl border border-gray-200 p-4 dark:border-gray-700">
@@ -571,9 +619,11 @@ const GenerateQuestionsModal = ({
           </button>
           <button
             onClick={handleSubmit}
-            className="bg-color2 flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-semibold text-white hover:opacity-90"
+            disabled={isSubmitting}
+            className="bg-color2 flex items-center gap-2 rounded-lg px-6 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Sparkles className="h-4 w-4" /> Generate Questions
+            <Sparkles className="h-4 w-4" /> 
+            {isSubmitting ? "Generating..." : "Generate Questions"}
           </button>
         </div>
       </div>
