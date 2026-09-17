@@ -23,32 +23,7 @@ const pedagogy = {
         return promise;
     },
 
-    create : (unit_id?: any, body?: any) => { 
-        let promise = new Promise((resolve, reject) => {
-            let url = `course/units/${unit_id}/topics`;
-
-            const config: any = {};
-            if (body instanceof FormData) {
-                config.headers = { "Content-Type": "multipart/form-data" };
-            }
-
-            commonInstance()
-                 .post(url, body || {}, config)
-                .then((res) => {
-                    resolve(res.data);
-                })
-                .catch((error) => {
-                    if (error.response) {
-                        reject(error.response.data?.message || error.response.data?.detail || error.response.data);
-                    } else {
-                        reject(error?.message || error);
-                    }
-                });
-        });
-        return promise;
-    },
-
-
+    
     generate : (syllabus_id?: any, body?: any) => { 
         let promise = new Promise((resolve, reject) => {
             let url = `course/syllabi/${syllabus_id}/generate-pedagogies`;
@@ -74,9 +49,9 @@ const pedagogy = {
         return promise;
     },
 
-    update: (topic_id?: any, body?: any) => { 
+    update: (pedagogy_id?: any, body?: any) => { 
         let promise = new Promise((resolve, reject) => {
-            let url = `course/topics/${topic_id}`;
+            let url = `course/pedagogies/${pedagogy_id}`;
 
             commonInstance()
                 .put(url, body)
@@ -94,12 +69,15 @@ const pedagogy = {
         return promise;
     },
 
-    subTopics_update: (topic_id?: any, body?: any) => { 
+   
+
+    accept: (topic_id?: any, pedagogy_id?: any, body?: any) => { 
         let promise = new Promise((resolve, reject) => {
-            let url = `course/topics/${topic_id}/subtopics`;
+            let url = `course/topics/${topic_id}/pedagogies/${pedagogy_id}/accept`;
+            const payload = body || { is_selected: true };
 
             commonInstance()
-                .post(url, body)
+                .post(url, payload)
                 .then((res) => {
                     resolve(res.data);
                 })
@@ -114,16 +92,32 @@ const pedagogy = {
         return promise;
     },
 
-    save_draft: (syllabus_id?: any, body?: any) => { 
+    save_draft: (syllabus_id?: any, body?: any, endpoint?: any) => { 
         let promise = new Promise((resolve, reject) => {
-            let url = `course/syllabi/${syllabus_id}/topics/draft`;
+            let url = `course/syllabi/${syllabus_id}/pedagogy/draft`;
+            if (endpoint) {
+                let cleaned = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+                if (cleaned.startsWith('api/v1/')) {
+                    cleaned = cleaned.replace(/^api\/v1\//, 'course/');
+                }
+                url = cleaned;
+            }
 
             commonInstance()
-                .post(url, body)
+                .post(url, body || {})
                 .then((res) => {
                     resolve(res.data);
                 })
                 .catch((error) => {
+                    if (error?.response?.status === 404 && url !== `course/syllabi/${syllabus_id}/pedagogy/draft`) {
+                        commonInstance()
+                            .post(`course/syllabi/${syllabus_id}/pedagogy/draft`, body || {})
+                            .then((res) => resolve(res.data))
+                            .catch((err) => {
+                                reject(err?.response?.data?.message || err?.response?.data?.detail || err?.response?.data || err?.message || err);
+                            });
+                        return;
+                    }
                     if (error.response) {
                         reject(error.response.data?.message || error.response.data?.detail || error.response.data);
                     } else {
@@ -134,16 +128,32 @@ const pedagogy = {
         return promise;
     },
 
-    approve_topics: (syllabus_id?: any, body?: any) => { 
+    approve_topics: (syllabus_id?: any, body?: any, endpoint?: any) => { 
         let promise = new Promise((resolve, reject) => {
-            let url = `course/syllabi/${syllabus_id || 9}/topics/approve`;
+            let url = `course/syllabi/${syllabus_id}/pedagogy/complete`;
+            if (endpoint) {
+                let cleaned = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+                if (cleaned.startsWith('api/v1/')) {
+                    cleaned = cleaned.replace(/^api\/v1\//, 'course/');
+                }
+                url = cleaned;
+            }
 
             commonInstance()
-                .post(url, body)
+                .post(url, body || {})
                 .then((res) => {
                     resolve(res.data);
                 })
                 .catch((error) => {
+                    if (error?.response?.status === 404 && url !== `course/syllabi/${syllabus_id}/pedagogy/complete`) {
+                        commonInstance()
+                            .post(`course/syllabi/${syllabus_id}/pedagogy/complete`, body || {})
+                            .then((res) => resolve(res.data))
+                            .catch((err) => {
+                                reject(err?.response?.data?.message || err?.response?.data?.detail || err?.response?.data || err?.message || err);
+                            });
+                        return;
+                    }
                     if (error.response) {
                         reject(error.response.data?.message || error.response.data?.detail || error.response.data);
                     } else {

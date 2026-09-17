@@ -1,108 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Check, EditIcon, Hourglass, Lightbulb, Presentation, RefreshCw, ReplaceAll, Save, Sparkles } from "lucide-react";
+import { Check, EditIcon, Hourglass, Lightbulb, RefreshCw, ReplaceAll, Save, Sparkles } from "lucide-react";
 import { setPageTitle } from "@/store/themeConfigSlice";
 import { useSetState, Success, Failure, Dropdown } from "@/utils/function.utils";
 import PrivateRouter from "@/hook/privateRouter";
 import CourseBanner from "@/components/academic-setup/CourseBanner";
-import StepHeader from "@/components/academic-setup/StepHeader";
 import StatTabCard from "@/components/academic-setup/StatTabCard";
 import PageFooter from "@/components/common-components/PageFooter";
 import GenericTabs from "@/components/common-components/GenericTabs";
-import AccordiansStyle from "@/components/common-components/AccordiansStyle";
+import PedadgogyAccordiansStyle from "@/components/pedagogy/PedadgogyAccordiansStyle";
 import { EditPedagogyModal, ReplacePedagogyModal } from "@/components/co-po-mapping/PedagogyModals";
 import { useRouter, useSearchParams } from "next/navigation";
 import TableTitle from "@/components/common-components/TableTitle";
-import { UNIT_TABS } from "@/utils/constant.utils";
 import PageHeader from "@/components/common-components/PageHeader";
 import Models from "@/imports/models.import";
 
-// ─── Static config ────────────────────────────────────────────────────────────
-
-
-
-
-
-// Raw source data — no AccordiansStyle types here
-const RAW_UNIT_DATA: Record<string, {
-  title: string;
-  topics: { id: string; title: string; level: string; hours: string }[];
-  recommendations: { id: string; title: string; badge?: string; description: string; selected?: boolean }[];
-}> = {
-  "unit-1": {
-    title: "Unit 1 — Physical Layer & Network Architectures",
-    topics: [
-      { id: "1.1", title: "Topic 1.1 — Network Models & Layered Architecture", level: "Knowledge Level K2", hours: "2 Hours" },
-      { id: "1.2", title: "Topic 1.2 — Physical Layer & Transmission Media", level: "Knowledge Level K2", hours: "2 Hours" },
-      { id: "1.3", title: "Topic 1.3 — Network Topologies & Switching Techniques", level: "Knowledge Level K3", hours: "2.5 Hours" },
-      { id: "1.4", title: "Topic 1.4 — Network Performance Metrics", level: "Knowledge Level K2", hours: "2.5 Hours" },
-    ],
-    recommendations: [
-      { id: "r1", title: "Concept Exploration", badge: "Directed", description: "Direct instruction on OSI layers to TCP/IP 5-layer reference models.", selected: true },
-      { id: "r2", title: "Guided Discussion", badge: "Directed", description: "Interactive comparison of protocol encapsulation and layer boundaries.", selected: true },
-      { id: "r3", title: "Collaborative Learning", description: "Small group mapping of real-world internet protocols to OSI layers." },
-    ],
-  },
-  "unit-2": {
-    title: "Unit 2 — Data Link Layer & Error Control",
-    topics: [
-      { id: "2.1", title: "Topic 2.1 — Framing & Error Detection", level: "Knowledge Level K2", hours: "2 Hours" },
-      { id: "2.2", title: "Topic 2.2 — Flow Control Protocols", level: "Knowledge Level K3", hours: "2.5 Hours" },
-      { id: "2.3", title: "Topic 2.3 — MAC Protocols & CSMA/CD", level: "Knowledge Level K3", hours: "2.5 Hours" },
-    ],
-    recommendations: [
-      { id: "r1", title: "Problem-Based Learning", description: "Solve CRC and checksum problems with real packet examples.", selected: true },
-      { id: "r2", title: "Simulation Lab", description: "Use Wireshark to capture and analyze data link frames." },
-      { id: "r3", title: "Peer Teaching", description: "Students explain sliding window protocols to each other." },
-    ],
-  },
-  "unit-3": {
-    title: "Unit 3 — Network Layer & Routing",
-    topics: [
-      { id: "3.1", title: "Topic 3.1 — IP Addressing & Subnetting", level: "Knowledge Level K3", hours: "3 Hours" },
-      { id: "3.2", title: "Topic 3.2 — Routing Algorithms", level: "Knowledge Level K4", hours: "3 Hours" },
-      { id: "3.3", title: "Topic 3.3 — IPv6 & Transition Mechanisms", level: "Knowledge Level K2", hours: "2 Hours" },
-      { id: "3.4", title: "Topic 3.4 — ICMP & Network Diagnostics", level: "Knowledge Level K3", hours: "2 Hours" },
-    ],
-    recommendations: [
-      { id: "r1", title: "Case Study Analysis", description: "Analyze real-world routing table configurations.", selected: true },
-      { id: "r2", title: "Hands-on Lab", description: "Configure static and dynamic routing using Cisco Packet Tracer." },
-      { id: "r3", title: "Flipped Classroom", description: "Students watch routing algorithm videos before class discussion." },
-    ],
-  },
-  "unit-4": {
-    title: "Unit 4 — Transport Layer & TCP/UDP",
-    topics: [
-      { id: "4.1", title: "Topic 4.1 — TCP Connection Management", level: "Knowledge Level K3", hours: "3 Hours" },
-      { id: "4.2", title: "Topic 4.2 — UDP & Real-time Applications", level: "Knowledge Level K2", hours: "2 Hours" },
-      { id: "4.3", title: "Topic 4.3 — Congestion Control Mechanisms", level: "Knowledge Level K4", hours: "3 Hours" },
-    ],
-    recommendations: [
-      { id: "r1", title: "Demonstration", description: "Live demo of TCP three-way handshake using network tools.", selected: true },
-      { id: "r2", title: "Comparative Analysis", description: "Compare TCP vs UDP performance in different scenarios." },
-      { id: "r3", title: "Project Work", description: "Build a simple client-server application using sockets." },
-    ],
-  },
-  "unit-5": {
-    title: "Unit 5 — Application Layer & Security",
-    topics: [
-      { id: "5.1", title: "Topic 5.1 — DNS & HTTP Protocols", level: "Knowledge Level K2", hours: "2 Hours" },
-      { id: "5.2", title: "Topic 5.2 — Email & FTP Protocols", level: "Knowledge Level K2", hours: "2 Hours" },
-      { id: "5.3", title: "Topic 5.3 — Network Security Fundamentals", level: "Knowledge Level K3", hours: "3 Hours" },
-    ],
-    recommendations: [
-      { id: "r1", title: "Interactive Demo", description: "Trace HTTP requests using browser developer tools.", selected: true },
-      { id: "r2", title: "Guest Lecture", description: "Industry expert on real-world network security practices." },
-      { id: "r3", title: "Research Assignment", description: "Investigate a recent network security breach and present findings." },
-    ],
-  },
-};
-
-const totalTopics = UNIT_TABS.reduce((a, b) => a + b.count, 0);
-const totalUnits = UNIT_TABS.length;
-const totalRecs = Object.values(RAW_UNIT_DATA).reduce((s, u) => s + u.recommendations.length, 0);
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 const getErrorMessage = (error: any, fallback: string) => {
   if (!error) return fallback;
   if (typeof error === "string") return error;
@@ -111,16 +23,16 @@ const getErrorMessage = (error: any, fallback: string) => {
   if (typeof error?.error === "string") return error.error;
   return fallback;
 };
+
 const Pedagogy = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const course_id = useSearchParams().get("course_id");
+  const searchParams = useSearchParams();
+  const course_id = searchParams.get("course_id");
 
   const [state, setState] = useSetState({
     activeTab: "unit-1",
     activeUnitNumber: 1,
-    recommendationsGenerated: false,
-    acceptedCount: 0,
     pedagogyApproved: false,
     activeBannerTab: "coordinator",
     courseDetail: null as any,
@@ -129,13 +41,34 @@ const Pedagogy = () => {
     organization_id: "",
     coordinator_id: "",
     isCourseCoordinator: false,
-    unitsList: [] as any[],
-    unitDetailsMap: {} as Record<number, any>,
-    loadingUnits: false,
+    pedagogyData: null as any,
+    loadingCourses: false,
+    loadingCourseDetail: false,
     loadingUnitDetail: false,
     generatingRecommendations: false,
     pollingJob: false,
+    savingDraft: false,
+    completingReview: false,
   });
+
+  // Modals state
+  const [editModal, setEditModal] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+    topicLabel: string;
+    topicId?: any;
+    pedagogyId?: any;
+  }>({ open: false, title: "", description: "", topicLabel: "" });
+
+  const [replaceModal, setReplaceModal] = useState<{
+    open: boolean;
+    currentTitle: string;
+    topicLabel: string;
+    topicId?: any;
+    selectedOptionId?: any;
+    options: { title: string; description: string; id?: any }[];
+  }>({ open: false, currentTitle: "", topicLabel: "", options: [] });
 
   const pollRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -147,19 +80,6 @@ const Pedagogy = () => {
   };
 
   useEffect(() => () => stopPolling(), []);
-
-  // accepted set per unit-tab
-  const [acceptedMap, setAcceptedMap] = useState<Record<string, Set<string>>>({});
-
-  // modal state — owned here, passed down via renderModals
-  const [editModal, setEditModal] = useState<{
-    open: boolean; title: string; description: string; topicLabel: string;
-  }>({ open: false, title: "", description: "", topicLabel: "" });
-
-  const [replaceModal, setReplaceModal] = useState<{
-    open: boolean; currentTitle: string; topicLabel: string;
-    options: { title: string; description: string }[];
-  }>({ open: false, currentTitle: "", topicLabel: "", options: [] });
 
   useEffect(() => {
     dispatch(setPageTitle("Pedagogy & Teaching Methodologies"));
@@ -185,164 +105,81 @@ const Pedagogy = () => {
 
   useEffect(() => {
     if (course_id) {
-      getCourseDetails();
-    } else {
-      getUnits(1);
+      getCourseDetails(course_id);
     }
   }, [course_id]);
 
-  const activeUnitNum =
-    state.activeUnitNumber ||
-    (typeof state.activeTab === "string" ? Number(state.activeTab.replace("unit-", "")) : 1) ||
-    1;
-  const activeUnitDetail = state.unitDetailsMap?.[activeUnitNum];
-
-  const unitTabs = state.unitsList.length > 0
-    ? state.unitsList.map((u: any) => ({
-        key: `unit-${u.unit_number}`,
-        label: `Unit ${u.unit_number}`,
-        count: u.topics_count ?? u.topics?.length ?? 0,
-      }))
-    : [];
-
-  const apiTopics: any[] | null = (() => {
-    if (!activeUnitDetail) return null;
-    if (Array.isArray(activeUnitDetail.selected_unit?.topics)) return activeUnitDetail.selected_unit.topics;
-    if (Array.isArray(activeUnitDetail.topics)) return activeUnitDetail.topics;
-    return null;
-  })();
-
-  const computedTotalUnits = state.unitsList.length;
-  const computedTotalTopics = state.unitsList.reduce((acc: number, u: any) => {
-        const uDetail = state.unitDetailsMap?.[u.unit_number];
-        const topicsArr = uDetail?.selected_unit?.topics || uDetail?.topics;
-        return acc + (Array.isArray(topicsArr) ? topicsArr.length : (u.topics_count ?? 0));
-      }, 0)
-    ;
-
-  const allAccepted = state.acceptedCount >= totalRecs;
-  const raw = RAW_UNIT_DATA[state.activeTab];
-  const accepted = acceptedMap[state.activeTab] ?? new Set<string>(
-    raw?.recommendations.filter((r) => r.selected).map((r) => r.id) ?? []
-  );
-
-  const toggleAccept = (unitKey: string, recId: string) => {
-    setAcceptedMap((prev) => {
-      const current = prev[unitKey] ?? new Set<string>(
-        RAW_UNIT_DATA[unitKey]?.recommendations.filter((r) => r.selected).map((r) => r.id) ?? []
-      );
-      const next = new Set(current);
-      if (next.has(recId)) next.delete(recId); else next.add(recId);
-      // recount total
-      const newMap = { ...prev, [unitKey]: next };
-      const total = Object.entries(newMap).reduce((s, [k, set]) => s + set.size, 0);
-      setState({ acceptedCount: total });
-      return newMap;
-    });
-  };
-
-  // api integration 
+  // ─── API Integrations ──────────────────────────────────────────────────────────
 
   const getAllCourse = async (orgId?: any) => {
-     try {
-       const targetOrg = orgId || state?.organization_id;
-       const res: any = await Models.course.list(targetOrg ? { organization_id: targetOrg } : {});
-       const dropdown = Dropdown(res, "course_title");
-       setState({
-         courseList: dropdown,
-       });
-     } catch (error: any) {
-       console.log("error fetching course list", error);
-       Failure(getErrorMessage(error, "Failed to fetch course list"));
-     }
-   };
-    
-  const getCourseDetails = async () => {
     try {
-      const res: any = await Models.course.detail(course_id);
+      setState({ loadingCourses: true });
+      const targetOrg = orgId || state?.organization_id;
+      const res: any = await Models.course.list(targetOrg ? { organization_id: targetOrg } : {});
+      const dropdown = Dropdown(res, "course_title");
+      setState({
+        courseList: dropdown,
+        loadingCourses: false,
+      });
+
+      // If no course_id query parameter, automatically navigate to the first course
+      if (!course_id && Array.isArray(res) && res.length > 0) {
+        const firstCourse = res[0];
+        router.push(`/neurobe/pedagogy?course_id=${firstCourse.id}`);
+      }
+    } catch (error: any) {
+      console.log("error fetching course list", error);
+      setState({ loadingCourses: false });
+      Failure(getErrorMessage(error, "Failed to fetch course list"));
+    }
+  };
+
+  const getCourseDetails = async (targetCourseId?: any) => {
+    const cid = targetCourseId || course_id;
+    if (!cid) return;
+    try {
+      setState({ loadingCourseDetail: true });
+      const res: any = await Models.course.detail(cid);
       setState({
         courseDetail: res,
         selectedCourse: res ? { value: res.id, label: `${res.course_code} - ${res.course_title}` } : null,
+        loadingCourseDetail: false,
       });
+
       const sid = res?.syllabus_id || res?.latest_syllabus?.id;
-      getUnits(sid);
-    } catch (error: any) {
-      console.log("error fetching course detail", error);
-      Failure(getErrorMessage(error, "Failed to fetch course detail"));
-      getUnits();
-    }
-  };
-
-  const getUnits = async (syllabusId?: any) => {
-    const sid = syllabusId || state.courseDetail?.latest_syllabus?.id;
-    try {
-      setState({ loadingUnits: true });
-      const res: any = await Models.topics.units(sid);
-      const rawUnitsData = Array.isArray(res) ? res : res?.data || [];
-      const unitsData = rawUnitsData.map((u: any, idx: number) => {
-        const num = u.unit_number ?? (idx + 1);
-        const realId = u.id ?? u.unit_id;
-        return { ...u, id: realId, unit_id: realId, unit_number: num };
-      });
-
-      if (unitsData.length > 0) {
-        const initialUnit = unitsData[0];
-        const initialUnitNum = initialUnit.unit_number || 1;
-        setState({
-          unitsList: unitsData,
-          activeTab: `unit-${initialUnitNum}`,
-          activeUnitNumber: initialUnitNum,
-          loadingUnits: false,
-        });
-        getUnitDetail(sid, initialUnitNum);
-      } else {
-        setState({ loadingUnits: false });
-        getUnitDetail(sid, 1);
+      if (sid) {
+        getUnitDetail(sid, state.activeUnitNumber || 1);
       }
     } catch (error: any) {
-      console.log("error fetching units", error);
-      setState({ loadingUnits: false });
-      Failure(getErrorMessage(error, "Failed to fetch syllabus units"));
+      console.log("error fetching course detail", error);
+      setState({ loadingCourseDetail: false });
+      Failure(getErrorMessage(error, "Failed to fetch course detail"));
     }
   };
 
-
   const getUnitDetail = async (syllabusId?: any, unitNumber?: any) => {
-    const sid = syllabusId || state.courseDetail?.latest_syllabus?.id || state.unitsList?.[0]?.syllabus_id;
-    const uNum = unitNumber ?? state.activeUnitNumber;
+    const sid =
+      syllabusId ||
+      state.pedagogyData?.syllabus_id ||
+      state.courseDetail?.latest_syllabus?.id ||
+      state.courseDetail?.syllabus_id;
+    const uNum = unitNumber ?? state.activeUnitNumber ?? 1;
+
+    if (!sid) return;
+
     try {
       setState({ loadingUnitDetail: true });
       const res: any = await Models.pedagogy.unit_detail(sid, uNum);
       const data = res?.data || res;
 
-      setState((prev: any) => {
-        const targetUnitNum = data?.selected_unit?.unit_number ?? uNum;
-        const existingCourse = prev.courseDetail || {};
-        const updatedCourseDetail = data?.course_code
-          ? {
-              ...existingCourse,
-              id: data.course_id ?? existingCourse.id,
-              course_code: data.course_code ?? existingCourse.course_code,
-              course_title: data.course_title ?? existingCourse.course_title,
-              programme: data.programme ?? existingCourse.programme,
-              batch_name: data.batch ?? existingCourse.batch_name,
-              students_count: data.student_count ?? existingCourse.students_count,
-              latest_syllabus: { id: data.syllabus_id ?? existingCourse.latest_syllabus?.id ?? sid },
-            }
-          : existingCourse;
-
-        return {
-          loadingUnitDetail: false,
-          courseDetail: updatedCourseDetail,
-          unitDetailsMap: {
-            ...(prev.unitDetailsMap || {}),
-            [targetUnitNum]: data,
-            [uNum]: data,
-          },
-        };
+      setState({
+        pedagogyData: data,
+        activeUnitNumber: data?.selected_unit?.unit_number ?? uNum,
+        activeTab: `unit-${data?.selected_unit?.unit_number ?? uNum}`,
+        loadingUnitDetail: false,
       });
     } catch (error: any) {
-      console.log("error fetching unit detail", error);
+      console.log(`error fetching unit detail for Unit ${uNum}`, error);
       setState({ loadingUnitDetail: false });
       Failure(getErrorMessage(error, `Failed to fetch Unit ${uNum} details`));
     }
@@ -353,16 +190,127 @@ const Pedagogy = () => {
     const unitNum = Number(keyStr.replace("unit-", "")) || 1;
     setState({ activeTab: keyStr, activeUnitNumber: unitNum });
     const sid =
+      state.pedagogyData?.syllabus_id ||
       state.courseDetail?.latest_syllabus?.id ||
-      state.unitsList?.[0]?.syllabus_id;
-    getUnitDetail(sid, unitNum);
+      state.courseDetail?.syllabus_id;
+    if (sid) {
+      getUnitDetail(sid, unitNum);
+    }
+  };
+
+  const handleAcceptPedagogy = async (topicId: any, pedagogyId: any) => {
+    try {
+      const payload = {
+        is_selected: true,
+      };
+
+      // Optimistically update is_selected in state for instant UI feedback
+      setState((prev: any) => {
+        if (!prev.pedagogyData?.selected_unit?.topics) return prev;
+        const updatedTopics = prev.pedagogyData.selected_unit.topics.map((t: any) => {
+          if (String(t.id) === String(topicId)) {
+            const updatedPeds = (t.suggested_pedagogies || []).map((sp: any) => ({
+              ...sp,
+              is_selected: String(sp.id) === String(pedagogyId),
+            }));
+            return {
+              ...t,
+              suggested_pedagogies: updatedPeds,
+              pedagogy_status: "Reviewed",
+              pedagogy_status_display: "Reviewed",
+              pedagogy_status_badge: "success",
+            };
+          }
+          return t;
+        });
+        return {
+          ...prev,
+          pedagogyData: {
+            ...prev.pedagogyData,
+            selected_unit: {
+              ...prev.pedagogyData.selected_unit,
+              topics: updatedTopics,
+            },
+          },
+        };
+      });
+
+      const res: any = await Models.pedagogy.accept(topicId, pedagogyId, payload);
+      Success(res?.message || "Teaching method accepted successfully");
+
+      const sid =
+        state.pedagogyData?.syllabus_id ||
+        state.courseDetail?.latest_syllabus?.id ||
+        state.courseDetail?.syllabus_id;
+      if (sid) {
+        await getUnitDetail(sid, state.activeUnitNumber);
+      }
+    } catch (error: any) {
+      console.log("error accepting pedagogy", error);
+      Failure(getErrorMessage(error, "Failed to accept teaching method"));
+      const sid =
+        state.pedagogyData?.syllabus_id ||
+        state.courseDetail?.latest_syllabus?.id ||
+        state.courseDetail?.syllabus_id;
+      if (sid) {
+        getUnitDetail(sid, state.activeUnitNumber);
+      }
+    }
+  };
+
+  const handleEditSubmit = async (formData?: { title: string; description: string }) => {
+    if (!editModal.pedagogyId) return;
+    try {
+      await Models.pedagogy.update(editModal.pedagogyId, {
+        pedagogy_name: formData?.title ?? editModal.title,
+        methodology: formData?.description ?? editModal.description,
+      });
+      Success("Teaching method updated successfully");
+      setEditModal((p) => ({ ...p, open: false }));
+      const sid =
+        state.pedagogyData?.syllabus_id ||
+        state.courseDetail?.latest_syllabus?.id ||
+        state.courseDetail?.syllabus_id;
+      getUnitDetail(sid, state.activeUnitNumber);
+    } catch (error: any) {
+      console.log("error updating pedagogy", error);
+      Failure(getErrorMessage(error, "Failed to update teaching method"));
+    }
+  };
+
+  const handleReplaceSubmit = async (replacementPedagogyId: any) => {
+    if (!replaceModal.topicId || !replacementPedagogyId) return;
+    try {
+      const payload = {
+        is_selected: true,
+      };
+      const res: any = await Models.pedagogy.accept(replaceModal.topicId, replacementPedagogyId, payload);
+      Success(res?.message || "Teaching method replaced successfully");
+      setReplaceModal((p) => ({ ...p, open: false }));
+      const sid =
+        state.pedagogyData?.syllabus_id ||
+        state.courseDetail?.latest_syllabus?.id ||
+        state.courseDetail?.syllabus_id;
+      if (sid) {
+        getUnitDetail(sid, state.activeUnitNumber);
+      }
+    } catch (error: any) {
+      console.log("error replacing pedagogy", error);
+      Failure(getErrorMessage(error, "Failed to replace teaching method"));
+    }
   };
 
   const handleGenerateRecommendations = async () => {
     const sid =
+      state.pedagogyData?.syllabus_id ||
       state.courseDetail?.latest_syllabus?.id ||
-      state.unitsList?.[0]?.syllabus_id ||
-      activeUnitDetail?.syllabus_id;
+      state.courseDetail?.syllabus_id;
+
+    if (!sid) {
+      Failure("Syllabus ID not found for this course");
+      return;
+    }
+
     try {
       setState({ generatingRecommendations: true });
       const res: any = await Models.pedagogy.generate(sid, {});
@@ -375,9 +323,9 @@ const Pedagogy = () => {
             const status = jobRes?.status ?? jobRes?.state?.live_redis_status ?? jobRes?.result?.status;
             if (status === "complete" || status === "completed" || status === "success" || status === "finished") {
               stopPolling();
-              setState({ generatingRecommendations: false, pollingJob: false, recommendationsGenerated: true });
+              setState({ generatingRecommendations: false, pollingJob: false });
               Success(res?.message || "Pedagogy recommendations generated successfully");
-              getUnitDetail(sid, activeUnitNum);
+              getUnitDetail(sid, state.activeUnitNumber);
             } else if (status === "failed" || status === "error") {
               stopPolling();
               setState({ generatingRecommendations: false, pollingJob: false });
@@ -390,10 +338,9 @@ const Pedagogy = () => {
           }
         }, 3000);
       } else {
-        // no job_id — treat as immediate success
-        setState({ generatingRecommendations: false, recommendationsGenerated: true });
+        setState({ generatingRecommendations: false });
         Success(res?.message || "Pedagogy recommendations generated successfully");
-        getUnitDetail(sid, activeUnitNum);
+        getUnitDetail(sid, state.activeUnitNumber);
       }
     } catch (error: any) {
       console.log("error generating recommendations", error);
@@ -401,128 +348,241 @@ const Pedagogy = () => {
       Failure(getErrorMessage(error, "Failed to generate pedagogy recommendations"));
     }
   };
-  
 
-  // Build AccordionTopic[] from raw data + accepted state
-  const buildTopics = () => {
-    if (!raw) return [];
-    return raw.topics.map((topic) => {
-      const items= raw.recommendations.map((rec, idx) => {
-        const isAccepted = accepted.has(rec.id);
-        const actions = [];
+  const handleSaveDraft = async () => {
+    const sid =
+      state.pedagogyData?.syllabus_id ||
+      state.courseDetail?.latest_syllabus?.id ||
+      state.courseDetail?.syllabus_id;
+    if (!sid) return;
+    try {
+      setState({ savingDraft: true });
+      const endpoint = state.pedagogyData?.bottom_bar?.actions?.save_draft?.endpoint;
+      const res: any = await Models.pedagogy.save_draft(sid, {}, endpoint);
+      setState({ savingDraft: false });
+      Success(res?.message || "Draft saved successfully");
+    } catch (error: any) {
+      console.log("error saving draft", error);
+      setState({ savingDraft: false });
+      Failure(getErrorMessage(error, "Failed to save draft"));
+    }
+  };
 
-        actions.push({
+  const handleCompleteReview = async () => {
+    const sid =
+      state.pedagogyData?.syllabus_id ||
+      state.courseDetail?.latest_syllabus?.id ||
+      state.courseDetail?.syllabus_id;
+    if (!sid) return;
+    try {
+      setState({ completingReview: true });
+      const endpoint = state.pedagogyData?.bottom_bar?.actions?.complete_review?.endpoint;
+      await Models.pedagogy.approve_topics(sid, {}, endpoint);
+      setState({ completingReview: false, pedagogyApproved: true });
+      Success("Pedagogy review completed successfully");
+      getUnitDetail(sid, state.activeUnitNumber);
+    } catch (error: any) {
+      console.log("error approving pedagogy", error);
+      setState({ completingReview: false });
+      Failure(getErrorMessage(error, "Failed to complete pedagogy review"));
+    }
+  };
+
+  // ─── Dynamic Data Parsing ─────────────────────────────────────────────────────
+
+  const data = state.pedagogyData;
+
+  const isNotGenerated =
+    data?.overall_approval_status === "Not Generated" ||
+    data?.metrics?.pedagogy_recommendations?.status === "not_generated";
+
+  // Unit tabs from API
+  const unitTabs = Array.isArray(data?.unit_tabs)
+    ? data.unit_tabs.map((u: any) => ({
+        key: `unit-${u.unit_number}`,
+        label: `Unit ${u.unit_number}`,
+        title: u.unit_title,
+        count: u.topics_count ?? 0,
+      }))
+    : [];
+
+  // Summary counts from API
+  const totalUnits = data?.summary?.total_units ?? data?.structure_units ?? unitTabs.length ?? 0;
+  const totalTopics = data?.summary?.total_topics ?? data?.target_topics ?? 0;
+
+  // Review progress from API
+  const reviewProgress = data?.review_progress;
+
+  // Metrics for StatTabCard - rendered dynamically from API
+  const metrics = data?.metrics;
+
+  const STAT_TABS = [
+    {
+      key: "approved-topics",
+      label: "Approved Topics",
+      count: metrics?.approved_topics?.display ?? metrics?.approved_topics?.value ?? 0,
+      icon: <Check className="h-5 w-5" />,
+    },
+    {
+      key: "pedagogy-recommendations",
+      label:  "Pending Pedagogy Recommendations",
+      subLabel: "Pending approval of pedagogy recommendations",
+      count: metrics?.pending_approval?.display ?? metrics?.pending_approval?.value ?? 0,
+      icon: <Hourglass className="h-5 w-5" />,
+    },
+  ];
+
+  // Topics for PedadgogyAccordiansStyle directly from dynamic selected_unit.topics
+  const currentUnitTopics: any[] = Array.isArray(data?.selected_unit?.topics)
+    ? data.selected_unit.topics
+    : Array.isArray(data?.topics)
+    ? data.topics
+    : [];
+
+  const accordionTopics = currentUnitTopics.map((topic: any, idx: number) => {
+    const topicId = String(topic.id ?? idx + 1);
+    const topicCode = topic.topic_code;
+    const topicName = topic.topic_name || topic.title || `Topic ${idx + 1}`;
+    const displayTitle = topicCode && !topicName.startsWith(topicCode) ? `${topicCode} — ${topicName}` : topicName;
+
+    const isReviewed =
+      topic.pedagogy_status === "Reviewed" ||
+      topic.pedagogy_status_badge === "success" ||
+      topic.suggested_pedagogies?.some((p: any) => p.is_selected);
+
+    const statusLabel = topic.pedagogy_status_display || topic.pedagogy_status || (isReviewed ? "Reviewed" : "Needs Review");
+    const statusClass =
+      topic.pedagogy_status_badge === "success" || isReviewed
+        ? "border border-emerald-300 bg-emerald-50 text-emerald-600 font-semibold"
+        : "border border-amber-300 bg-amber-50 text-amber-600 font-semibold";
+
+    const hoursText =
+      topic.hours !== undefined && topic.hours !== null
+        ? typeof topic.hours === "number"
+          ? `${topic.hours} Hours`
+          : topic.hours
+        : "";
+
+    const badges = [
+      topic.knowledge_level
+        ? {
+            id: "level",
+            label: topic.knowledge_level,
+            className: "bg-color2-l text-color2 font-bold",
+          }
+        : null,
+      hoursText
+        ? {
+            id: "hours",
+            label: hoursText,
+            className: "bg-gray-100 text-pri font-bold dark:bg-gray-800 dark:text-gray-300",
+          }
+        : null,
+      statusLabel
+        ? {
+            id: "status",
+            label: statusLabel,
+            className: statusClass,
+          }
+        : null,
+    ].filter(Boolean);
+
+    // Subtopics as pedagogy recommendations from API
+    const suggestedPedagogies: any[] = Array.isArray(topic.suggested_pedagogies) ? topic.suggested_pedagogies : [];
+    const items = suggestedPedagogies.map((p: any, pi: number) => {
+      const pId = String(p.id ?? pi + 1);
+      const isSelected = Boolean(p.is_selected);
+
+      const actions: any[] = [
+        {
           key: "edit",
           label: "Edit",
           icon: <EditIcon className="h-3.5 w-3.5" />,
-          className: "flex items-center gap-1.5 rounded-full border border-gray-400 px-3 py-1 text-xs font-semibold text-pri hover:border-[#000] hover:text-[#000]",
-          onClick: (item) => setEditModal({
-            open: true,
-            title: item.title,
-            description: item.description ?? "",
-            topicLabel: topic.title,
-          }),
-        });
-
-        if (isAccepted) {
-          actions.push({
-            key: "replace",
-            label: "Replace",
-            icon: <ReplaceAll className="h-3.5 w-3.5" />,
-            className: "flex items-center gap-1.5 rounded-full border border-gray-400 px-3 py-1 text-xs font-semibold text-pri hover:border-[#000] hover:text-[#000]",
-            onClick: () => setReplaceModal({
+          className:
+            "flex items-center gap-1.5 rounded-full border border-gray-400 px-3 py-1 text-xs font-semibold text-pri hover:border-[#000] hover:text-[#000] dark:border-gray-600 dark:text-gray-300 cursor-pointer",
+          onClick: () =>
+            setEditModal({
               open: true,
-              currentTitle: rec.title,
-              topicLabel: topic.title,
-              options: raw.recommendations.map((r) => ({ title: r.title, description: r.description })),
+              title: p.pedagogy_name || p.strategy_name || "",
+              description: p.methodology || "",
+              topicLabel: displayTitle,
+              topicId: topic.id,
+              pedagogyId: p.id,
             }),
-          });
-          actions.push({
-            key: "selected",
-            label: "Selected",
-            asTag: true,
-            className: "rounded-full bg-green-600 px-3 py-1 text-xs font-semibold text-white",
-          });
-        } else {
-          actions.push({
-            key: "accept",
-            label: "Accept",
-            className: "rounded-full border border-color2 px-3 py-1 text-xs font-semibold text-color2 hover:bg-color2-l",
-            onClick: () => toggleAccept(state.activeTab, rec.id),
-          });
-        }
+        },
+      ];
 
-        return {
-          id: rec.id,
-          index: idx + 1,
-          title: rec.title,
-          description: rec.description,
-          badge: rec.badge ? { label: rec.badge, className: "bg-green-500" } : undefined,
-          highlighted: isAccepted,
-          actions,
-        };
-      });
+      if (isSelected) {
+        // actions.push({
+        //   key: "replace",
+        //   label: "Replace",
+        //   icon: <ReplaceAll className="h-3.5 w-3.5" />,
+        //   className:
+        //     "flex items-center gap-1.5 rounded-full border border-gray-400 px-3 py-1 text-xs font-semibold text-pri hover:border-[#000] hover:text-[#000] dark:border-gray-600 dark:text-gray-300 cursor-pointer",
+        //   onClick: () =>
+        //     setReplaceModal({
+        //       open: true,
+        //       currentTitle: p.pedagogy_name || p.strategy_name || "",
+        //       topicLabel: displayTitle,
+        //       topicId: topic.id,
+        //       selectedOptionId: p.id,
+        //       options: suggestedPedagogies.map((r: any) => ({
+        //         id: r.id,
+        //         title: r.pedagogy_name || r.strategy_name,
+        //         description: r.methodology,
+        //       })),
+        //     }),
+        // });
+        actions.push({
+          key: "selected",
+          label: "Selected",
+          icon: <Check className="h-3.5 w-3.5" />,
+          disabled: true,
+          className:
+            "flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white cursor-default select-none shadow-xs",
+        });
+      } else {
+        actions.push({
+          key: "accept",
+          label: "Accept",
+          className:
+            "rounded-full border border-color2 px-3 py-1 text-xs font-semibold text-color2 hover:bg-color2-l transition-colors cursor-pointer",
+          onClick: () => handleAcceptPedagogy(topic.id, p.id),
+        });
+      }
 
       return {
-        id: topic.id,
-        title: topic.title,
-        meta: `${topic.level} · ${topic.hours} Hours`,
-        collapsedBadge: { label: "Needs Review", className: "border border-orange-200 bg-orange-50 text-orange-600" },
-        expandedBadge: { label: "Reviewed", className: "border border-green-200 bg-green-50 text-green-700" },
-        items,
+        id: pId,
+        index: pi + 1,
+        title: p.pedagogy_name || p.strategy_name,
+        description: p.methodology,
+        highlighted: isSelected,
+        actions,
       };
     });
-  };
 
-  // Initial (pre-generate) topics — no items, just meta badges
-  const buildInitialTopics = () => {
-    if (apiTopics && apiTopics.length > 0) {
-      return apiTopics.map((topic: any, idx: number) => {
-        const topicName = topic.topic_name || topic.title || `Topic ${idx + 1}`;
-        const displayTitle = topic.topic_code && !topicName.startsWith(topic.topic_code)
-          ? `${topic.topic_code} — ${topicName}`
-          : topicName;
-        const levelBadge = topic.level ||
-          (topic.knowledge_level ? `Knowledge Level ${String(topic.knowledge_level).startsWith("K") ? topic.knowledge_level : `K${topic.knowledge_level}`}` : "Knowledge Level K2");
-        const hoursBadge = topic.theory_hours ? `${topic.theory_hours} Hours` : (topic.hours ? `${topic.hours} Hours` : "2 Hours");
-        return {
-          id: topic.id || `${idx + 1}`,
-          title: displayTitle,
-          collapsedBadge: [
-            { label: levelBadge, className: "bg-color2-l text-color2 font-bold" },
-            { label: hoursBadge, className: "bg-gray-200 text-pri font-bold" },
-          ],
-          items: [],
-        };
-      });
-    }
-    if (!raw) return [];
-    return raw.topics.map((topic) => ({
-      id: topic.id,
-      title: topic.title,
-      collapsedBadge: [{ label: topic.level, className: "bg-color2-l text-color2 font-bold" }, { label: topic.hours, className: "bg-gray-200 text-pri font-bold" }],
-      items: [],
-    }));
-  };
+    return {
+      id: topicId,
+      title: displayTitle,
+      collapsedBadge: badges,
+      expandedBadge: badges,
+      items,
+    };
+  });
 
-  console.log("state?.unitDetailsMap?.metrics?.approved_topics?.value", state?.unitDetailsMap);
-  
-
-  const STAT_TABS = [
-  { key: "approved-topics", label: "Approved Topics", count: state?.unitDetailsMap?.metrics?.approved_topics?.value, icon: <Check className="h-5 w-5" /> },
-  { key: "pedagogy-recommendations", label: "Pending Pedagogy Recommendations", subLabel: "Pending Pedagogy Recommendations", count: 4, icon: <Hourglass className="h-5 w-5" /> },
-];
+  const unitTitle = data?.selected_unit?.unit_title || (data ? `Unit ${state.activeUnitNumber}` : "");
+  const unitSubtitle = data?.selected_unit?.subtitle;
 
   return (
     <div className="min-h-screen">
       <CourseBanner
-        courseCode={state?.courseDetail?.course_code}
-        courseTitle={state?.courseDetail?.course_title}
+        courseCode={data?.course_code || state?.courseDetail?.course_code}
+        courseTitle={data?.course_title || state?.courseDetail?.course_title}
         description="Coordinator View — Academic course preparation, syllabus, outcomes mapping, lesson plans, question banking, and CIA paper generation."
-        programme={state?.courseDetail?.programme}
-        batch={state?.courseDetail?.batch_name}
-        academicYear={`${state?.courseDetail?.batch_name}`}
-        students={state?.courseDetail?.students_count}
+        programme={data?.programme || state?.courseDetail?.programme}
+        batch={data?.batch || state?.courseDetail?.batch_name}
+        academicYear={data?.academic_year_term || state?.courseDetail?.academic_year}
+        students={data?.student_count || state?.courseDetail?.students_count}
         selectedCourse={state.selectedCourse}
         courseOptions={state.courseList}
         onCourseChange={(val) => {
@@ -534,159 +594,221 @@ const Pedagogy = () => {
         onViewChange={(view) => setState({ activeBannerTab: view })}
       />
 
-
       <PageHeader
-         title="Pedagogy"
-        records={state.courseDetail ? `${state.courseDetail.course_code} — ${state.courseDetail.course_title}` : ""}
-        subtitle={`Choose suitable teaching methods for the approved topics.`}
+        title="Pedagogy"
+        records={
+          data?.course_display_tag ||
+          (state.courseDetail ? `${state.courseDetail.course_code} — ${state.courseDetail.course_title}` : "")
+        }
+        subtitle="Choose suitable teaching methods for the approved topics."
         icon={<Lightbulb className="h-5 w-5 text-color2" />}
-        
       />
 
-      {/* ── Stat tabs — shown only before recommendations are generated ── */}
-      {!state.recommendationsGenerated && (
-        <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-          {STAT_TABS.map((tab) => (
-            <StatTabCard
-              key={tab.key}
-              icon={tab.icon}
-              label={tab.label}
-              subLabel={tab.subLabel}
-              count={tab.count}
-              active={state.activeTab === tab.key}
-            />
-          ))}
+      {/* ── Loading indicator when fetching workspace data ── */}
+      {state.loadingUnitDetail && !data && (
+        <div className="flex flex-col items-center justify-center py-20">
+          <RefreshCw className="h-8 w-8 animate-spin text-color2" />
+          <p className="mt-3 text-sm font-semibold text-pri">Loading pedagogy workspace from API...</p>
         </div>
       )}
 
-      {/* ── Progress bar — shown after recommendations are generated ── */}
-      {state.recommendationsGenerated && (
-        <div className="mb-6 rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm dark:border-gray-700 dark:bg-gray-900">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-bold text-[#000] dark:text-white">Pedagogy Review Progress</p>
-              <p className="mt-0.5 text-xs text-pri">{state.acceptedCount}/{totalRecs} Topics Reviewed</p>
+      {/* ── Empty state when no data is returned from API ── */}
+      {!state.loadingUnitDetail && !data && (
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 py-16 text-center dark:border-gray-700">
+          <Lightbulb className="h-10 w-10 text-gray-400" />
+          <h3 className="mt-3 text-base font-bold text-[#000] dark:text-white">No Pedagogy Workspace Data</h3>
+          <p className="mt-1 max-w-sm text-xs text-pri">
+            Please select a course with an approved syllabus to view and assign teaching methods.
+          </p>
+        </div>
+      )}
+
+      {/* ── Dynamic Content Rendered Only from API ── */}
+      {data && (
+        <>
+          {/* ── Stat tabs — rendered dynamically from metrics ── */}
+          {STAT_TABS.length > 0 && (
+            <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+              {STAT_TABS.map((tab) => (
+                <StatTabCard
+                  key={tab.key}
+                  icon={tab.icon}
+                  label={tab.label}
+                  subLabel={tab.subLabel}
+                  count={tab.count}
+                  active={false}
+                />
+              ))}
             </div>
-            <span className="text-xs font-semibold text-color2">
-              {totalRecs > 0 ? Math.round((state.acceptedCount / totalRecs) * 100) : 0}% Complete
-            </span>
-          </div>
-          <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
-            <div
-              className="h-full rounded-full bg-color2 transition-all duration-500"
-              style={{ width: `${totalRecs > 0 ? (state.acceptedCount / totalRecs) * 100 : 0}%` }}
-            />
-          </div>
-        </div>
-      )}
-
-        <TableTitle
-        title="Approved Topics"
-        label={`${computedTotalUnits} Units`}
-        subLabel={`${computedTotalTopics} Topics`}
-        />
-
-      <div className="mt-4">
-        <GenericTabs
-          tabs={unitTabs}
-          activeKey={state.activeTab}
-          onChange={(unit) => handleTabChange(unit)}
-        />
-
-        
-
-        <AccordiansStyle
-          expandable={state.recommendationsGenerated}
-          topics={state.recommendationsGenerated ? buildTopics() : buildInitialTopics()}
-          title={activeUnitDetail?.selected_unit?.unit_title || activeUnitDetail?.unit_title || raw?.title}
-          subtitle={
-            state.recommendationsGenerated
-              ? "Click a topic to expand and view recommended teaching methods."
-              : "Approved syllabus topics ready for pedagogy assignment."
-          }
-          expandedSectionLabel={<><Sparkles className="h-3.5 w-3.5" /> Recommended Teaching Methods</>}
-          footerContent={
-            state.recommendationsGenerated ? (
-              <><RefreshCw className="h-3 w-3" /> Review the recommendations above and select the methods that best fit this topic.</>
-            ) : (
-              <><Sparkles className="h-4 w-4" /> NEURO AI will use each topic, its Knowledge Level, and duration to recommend up to 3 suitable teaching methods.</>
-            )
-          }
-          renderModals={() => (
-            <>
-              <EditPedagogyModal
-                open={editModal.open}
-                onClose={() => setEditModal((p) => ({ ...p, open: false }))}
-                topicLabel={editModal.topicLabel}
-                initialTitle={editModal.title}
-                initialDescription={editModal.description}
-              />
-              <ReplacePedagogyModal
-                open={replaceModal.open}
-                onClose={() => setReplaceModal((p) => ({ ...p, open: false }))}
-                topicLabel={replaceModal.topicLabel}
-                currentTitle={replaceModal.currentTitle}
-                options={replaceModal.options}
-              />
-            </>
           )}
-        />
 
-        {state.recommendationsGenerated ? (
-          <PageFooter
-            content1={`Status: ${state.acceptedCount}/${totalRecs} Accepted`}
-            content2={
-              state.courseDetail
-                ? `Course: ${state.courseDetail.course_code} — ${state.courseDetail.course_title}`
-                : (activeUnitDetail?.course_display_tag || "")
-            }
-            batch
-            actionBtn1={
-              state.pedagogyApproved
-                ? {
-                    label: activeUnitDetail?.bottom_bar?.actions?.next?.label || "Next: Lesson Plan",
-                    icon: <Check className="h-4 w-4" />,
-                    onClick: () => {
-                      const cid = course_id || state.selectedCourse?.value || state.courseDetail?.id;
-                      router.push(cid ? `/neurobe/lesson-plan?course_id=${cid}` : "/neurobe/lesson-plan");
-                    },
-                    className: "create-btn",
-                  }
-                : {
-                    label: activeUnitDetail?.bottom_bar?.actions?.approve?.label || "Complete Pedagogy Review",
-                    icon: <Check className="h-4 w-4" />,
-                    onClick: () => { Success("Pedagogy approved successfully"); setState({ pedagogyApproved: true }); },
-                    disabled: !allAccepted,
-                  }
-            }
-            actionBtn2={{
-              label: activeUnitDetail?.bottom_bar?.actions?.save_draft?.label || "Save Draft",
-              icon: <Save className="h-4 w-4" />,
-              onClick: () => {},
-            }}
+          {/* ── Progress bar — shown when recommendations are generated / in progress ── */}
+          {!isNotGenerated && (
+            <div className="mb-6 rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-bold text-[#000] dark:text-white">Pedagogy Review Progress</p>
+                  <p className="mt-0.5 text-xs text-pri">
+                    {reviewProgress?.subtitle ||
+                      `${reviewProgress?.reviewed_count ?? 0} of ${reviewProgress?.total_count ?? totalTopics} Topics Reviewed`}
+                  </p>
+                </div>
+                <span className="text-xs font-semibold text-color2">
+                  {reviewProgress?.display || `${reviewProgress?.percentage ?? 0}% Complete`}
+                </span>
+              </div>
+              <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
+                <div
+                  className="h-full rounded-full bg-color2 transition-all duration-500"
+                  style={{ width: `${reviewProgress?.percentage ?? 0}%` }}
+                />
+              </div>
+            </div>
+          )}
+
+          <TableTitle
+            title="Approved Topics"
+            label={`${totalUnits} Units`}
+            subLabel={`${totalTopics} Topics`}
           />
-        ) : (
-          <PageFooter
-            content1={
-              state.courseDetail
-                ? `Course: ${state.courseDetail.course_code} — ${state.courseDetail.course_title}`
-                : (activeUnitDetail?.course_display_tag || "")
-            }
-            content2={activeUnitDetail?.bottom_bar?.subtitle || ""}
-            actionBtn1={{
-              label: state.generatingRecommendations || state.pollingJob
-                ? "Generating..."
-                : (activeUnitDetail?.cta_action?.label || "Generate Recommendations with NEURO AI"),
-              icon: state.generatingRecommendations || state.pollingJob
-                ? <RefreshCw className="h-4 w-4 animate-spin" />
-                : <Sparkles className="h-4 w-4" />,
-              onClick: handleGenerateRecommendations,
-              disabled: state.generatingRecommendations || state.pollingJob,
-              className: "create-btn",
-            }}
-          />
-        )}
-      </div>
+
+          <div className="mt-4">
+            {unitTabs.length > 0 && (
+              <GenericTabs
+                tabs={unitTabs}
+                activeKey={state.activeTab}
+                onChange={(unit) => handleTabChange(unit)}
+              />
+            )}
+
+            {/* ── Accordion with subtopics as pedagogy recommendations ── */}
+            <PedadgogyAccordiansStyle
+              loading={state.loadingUnitDetail}
+              expandable={true}
+              topics={accordionTopics}
+              title={unitTitle}
+              subtitle={unitSubtitle}
+              topicCount={data?.selected_unit?.topics_count ?? currentUnitTopics.length}
+              topicCountLabel="Topics"
+              expandedSectionLabel={
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5 text-color2" />
+                  Recommended Teaching Methods
+                </span>
+              }
+              footerContent={
+                data?.callout_message ? (
+                  <span className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 shrink-0" />
+                    {data.callout_message}
+                  </span>
+                ) : null
+              }
+              renderModals={() => (
+                <>
+                  <EditPedagogyModal
+                    open={editModal.open}
+                    onClose={() => setEditModal((p) => ({ ...p, open: false }))}
+                    topicLabel={editModal.topicLabel}
+                    initialTitle={editModal.title}
+                    initialDescription={editModal.description}
+                    onSave={handleEditSubmit}
+                  />
+                  <ReplacePedagogyModal
+                    open={replaceModal.open}
+                    onClose={() => setReplaceModal((p) => ({ ...p, open: false }))}
+                    topicLabel={replaceModal.topicLabel}
+                    currentTitle={replaceModal.currentTitle}
+                    options={replaceModal.options}
+                    onReplace={(opt: any) => handleReplaceSubmit(opt?.id)}
+                  />
+                </>
+              )}
+            />
+
+            {/* ── Bottom PageFooter ── */}
+            {isNotGenerated ? (
+              <PageFooter
+                content1={data?.bottom_bar?.course || data?.course_display_tag || ""}
+                content2={data?.callout_message || ""}
+                actionBtn1={{
+                  label:
+                    state.generatingRecommendations || state.pollingJob
+                      ? "Generating..."
+                      : data?.bottom_bar?.action?.label || "Generate Recommendations with NEURO AI",
+                  icon:
+                    state.generatingRecommendations || state.pollingJob ? (
+                      <RefreshCw className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Sparkles className="h-4 w-4" />
+                    ),
+                  onClick: handleGenerateRecommendations,
+                  disabled:
+                    state.generatingRecommendations ||
+                    state.pollingJob ||
+                    data?.bottom_bar?.action?.enabled === false,
+                  className: "create-btn",
+                }}
+                actionBtn2={
+                  data?.bottom_bar?.actions?.save_draft
+                    ? {
+                        label:
+                          state.savingDraft
+                            ? "Saving..."
+                            : data?.bottom_bar?.actions?.save_draft?.label || "Save Draft",
+                        icon: state.savingDraft ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />,
+                        onClick: handleSaveDraft,
+                        disabled: state.savingDraft || data?.bottom_bar?.actions?.save_draft?.enabled === false,
+                      }
+                    : undefined
+                }
+              />
+            ) : (
+              <PageFooter
+                content1={
+                  data?.bottom_bar?.status ||
+                  `Status: ${reviewProgress?.display || "In Progress"}`
+                }
+                content2={data?.bottom_bar?.course || data?.course_display_tag || ""}
+                batch
+                actionBtn1={
+                  state.pedagogyApproved
+                    ? {
+                        label: "Next: Lesson Plan",
+                        icon: <Check className="h-4 w-4" />,
+                        onClick: () => {
+                          const cid = course_id || state.selectedCourse?.value || data?.course_id;
+                          router.push(cid ? `/neurobe/lesson-plan?course_id=${cid}` : "/neurobe/lesson-plan");
+                        },
+                        className: "create-btn",
+                      }
+                    : {
+                        label: data?.bottom_bar?.actions?.complete_review?.label || "Complete Pedagogy Review",
+                        icon: <Check className="h-4 w-4" />,
+                        onClick: handleCompleteReview,
+                        disabled:
+                          state.completingReview ||
+                          data?.bottom_bar?.actions?.complete_review?.enabled === false,
+                      }
+                }
+                actionBtn2={
+                  data?.bottom_bar?.actions?.save_draft
+                    ? {
+                        label:
+                          state.savingDraft
+                            ? "Saving..."
+                            : data?.bottom_bar?.actions?.save_draft?.label || "Save Draft",
+                        icon: state.savingDraft ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />,
+                        onClick: handleSaveDraft,
+                        disabled: state.savingDraft || data?.bottom_bar?.actions?.save_draft?.enabled === false,
+                      }
+                    : undefined
+                }
+              />
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

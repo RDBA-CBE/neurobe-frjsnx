@@ -11,6 +11,7 @@ interface EditPedagogyModalProps {
   topicLabel?: string;
   initialTitle?: string;
   initialDescription?: string;
+  onSave?: (data: { title: string; description: string }) => void;
 }
 
 export const EditPedagogyModal = ({
@@ -19,6 +20,7 @@ export const EditPedagogyModal = ({
   topicLabel = "",
   initialTitle = "",
   initialDescription = "",
+  onSave,
 }: EditPedagogyModalProps) => {
   const [form, setForm] = useState({ title: initialTitle, description: initialDescription });
 
@@ -34,7 +36,13 @@ export const EditPedagogyModal = ({
       open={open}
       onClose={onClose}
     >
-      <form onSubmit={(e) => { e.preventDefault(); onClose(); }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSave?.(form);
+          onClose();
+        }}
+      >
         <TextInput
           title="Teaching Method Name"
           required
@@ -78,6 +86,7 @@ interface ReplacePedagogyModalProps {
   topicLabel?: string;
   currentTitle?: string;
   options?: any;
+  onReplace?: (selectedOption: any) => void;
 }
 
 export const ReplacePedagogyModal = ({
@@ -86,12 +95,15 @@ export const ReplacePedagogyModal = ({
   topicLabel = "",
   currentTitle = "",
   options = [],
+  onReplace,
 }: ReplacePedagogyModalProps) => {
   const [selected, setSelected] = useState(currentTitle);
 
   useEffect(() => {
     setSelected(currentTitle);
   }, [open, currentTitle]);
+
+  const selectedOpt = options.find((opt: any) => opt.title === selected) || options[0];
 
   return (
     <ModalShell
@@ -101,16 +113,22 @@ export const ReplacePedagogyModal = ({
       open={open}
       onClose={onClose}
     >
-      <form onSubmit={(e) => { e.preventDefault(); onClose(); }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onReplace?.(selectedOpt);
+          onClose();
+        }}
+      >
         <p className="mb-3 text-xs text-[#000] dark:text-white/70">
           Select an alternative teaching method from the library:
         </p>
         <div className="space-y-2">
-          {options.map((opt) => {
+          {options.map((opt: any) => {
             const isSelected = selected === opt.title;
             return (
               <button
-                key={opt.title}
+                key={opt.id ?? opt.title}
                 type="button"
                 onClick={() => setSelected(opt.title)}
                 className={`flex w-full items-start justify-between rounded-xl border px-4 py-3 text-left transition-all ${
@@ -127,9 +145,11 @@ export const ReplacePedagogyModal = ({
                     <p className="mt-0.5 text-xs text-pri dark:text-white/60">{opt.description}</p>
                   )}
                 </div>
-                <span className={`ml-3 mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 ${
-                  isSelected ? "border-color2 bg-color2" : "border-gray-300"
-                }`}>
+                <span
+                  className={`ml-3 mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 ${
+                    isSelected ? "border-color2 bg-color2" : "border-gray-300"
+                  }`}
+                >
                   {isSelected && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                 </span>
               </button>
